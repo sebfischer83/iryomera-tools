@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.iryomera.org/modio/v1/contracts.schema.json",
+  "$defs": {
+    "modOrigin": {
+      "type": "object",
+      "properties": {
+        "provider": {
+          "enum": [
+            "local",
+            "modio"
+          ]
+        },
+        "gameId": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "modId": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "fileId": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "provider"
+      ],
+      "additionalProperties": true,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "provider": {
+                "const": "modio"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "gameId",
+              "modId",
+              "fileId"
+            ]
+          },
+          "else": {
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "gameId"
+                  ]
+                },
+                {
+                  "required": [
+                    "modId"
+                  ]
+                },
+                {
+                  "required": [
+                    "fileId"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "modInstallReceipt": {
+      "type": "object",
+      "properties": {
+        "schemaVersion": {
+          "const": "1.0.0"
+        },
+        "packageId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "namespace": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z.-]+)?(\\+[0-9A-Za-z.-]+)?$(?![\\s\\S])"
+        },
+        "archiveSha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$(?![\\s\\S])"
+        },
+        "origin": {
+          "$ref": "#/$defs/modOrigin"
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "packageId",
+        "namespace",
+        "version",
+        "archiveSha256",
+        "origin"
+      ],
+      "additionalProperties": true
+    }
+  }
+}

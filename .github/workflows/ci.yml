@@ -37,6 +37,7 @@ jobs:
           python scripts/generate-importer-schemas.py
           python scripts/generate-studio-schemas.py
           python scripts/generate-modkit-schemas.py
+          python scripts/generate-modio-schemas.py
           python scripts/generate-diagnostic-example.py
           python scripts/generate-modkit-example.py
           git diff --exit-code -- schemas
@@ -51,6 +52,8 @@ jobs:
       - run: python scripts/run-importer-example.py
       - name: Exercise data-only ModKit CLI round trip
         run: python scripts/run-modkit-example.py
+      - name: Exercise optional distribution entirely offline
+        run: dotnet run --project examples/Iryomera.ModIo.Sample --configuration Release --no-build
       - name: Install browser test dependencies
         run: |
           python -m pip install -r scripts/requirements-browser.txt
@@ -63,6 +66,8 @@ jobs:
         if: github.event_name == 'workflow_dispatch' && inputs.full_datasets
         run: python scripts/run-full-dataset-tests.py --data-dir "${{ runner.temp }}/iryomera-official" --download-open-ontologies
       - run: dotnet pack Iryomera.Tools.sln --configuration Release --no-build --output artifacts
+      - name: Verify the locally packed CLI tool in isolation
+        run: python scripts/run-packed-modkit-smoke.py
       - name: Test packaged net8.0 binaries inside Godot 4.7.2 .NET
         run: python scripts/run-godot-smoke.py
       - uses: actions/upload-artifact@v7.0.2

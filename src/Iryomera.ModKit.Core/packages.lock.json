@@ -1,0 +1,168 @@
+{
+  "version": 2,
+  "dependencies": {
+    "net10.0": {
+      "Humanizer.Core": {
+        "type": "Transitive",
+        "resolved": "2.14.1",
+        "contentHash": "lQKvtaTDOXnoVJ20ibTuSIOf2i0uO0MPbDhd1jm238I+U/2ZnRENj0cktKZhtchBMtCUSRQ5v4xBCUbKNmyVMw=="
+      },
+      "Json.More.Net": {
+        "type": "Transitive",
+        "resolved": "2.1.1",
+        "contentHash": "ZXAKl2VsdnIZeUo1PFII3Oi1m1L4YQjEyDjygHfHln5vgsjgIo749X6xWkv7qFYp8RROES+vOEfDcvvoVgs8kA=="
+      },
+      "JsonPointer.Net": {
+        "type": "Transitive",
+        "resolved": "5.3.1",
+        "contentHash": "3e2OJjU0OaE26XC/klgxbJuXvteFWTDJIJv0ITYWcJEoskq7jzUwPSC1s0iz4wPPQnfN7vwwFmg2gJfwRAPwgw==",
+        "dependencies": {
+          "Humanizer.Core": "2.14.1",
+          "Json.More.Net": "2.1.1"
+        }
+      },
+      "ZString": {
+        "type": "Transitive",
+        "resolved": "2.6.0",
+        "contentHash": "XE8a+11nZg0LRaf+RGABEWaHIf8yGd5w8v/Ra1iWxMBmAVzwuKbW7G21mS0U7w7sh1lYcgckInWGgnz4qyET8A=="
+      },
+      "iryomera.content.sdk": {
+        "type": "Project",
+        "dependencies": {
+          "JsonSchema.Net": "[7.3.4, )",
+          "NuGet.Versioning": "[7.0.0, )"
+        }
+      },
+      "iryomera.localization": {
+        "type": "Project",
+        "dependencies": {
+          "Iryomera.Content.SDK": "[0.6.0, )",
+          "Microsoft.Extensions.Localization.Abstractions": "[10.0.0, )",
+          "SmartFormat": "[3.6.1, )"
+        }
+      },
+      "JsonSchema.Net": {
+        "type": "CentralTransitive",
+        "requested": "[7.3.4, )",
+        "resolved": "7.3.4",
+        "contentHash": "7GggWrdzKrtGWETRn3dcMnmuLSyWaDkBK94TK80LEHQEVz4bmsQc7FYO7qL40RDdZU2YPz5d98aT9lW5OYExuA==",
+        "dependencies": {
+          "JsonPointer.Net": "5.3.1"
+        }
+      },
+      "Microsoft.Extensions.Localization.Abstractions": {
+        "type": "CentralTransitive",
+        "requested": "[10.0.0, )",
+        "resolved": "10.0.0",
+        "contentHash": "+gopxHC5+vWE61Qq2i+aFblxjSiS4UyjUG5kpfXodWbeBVwXPeP66s8uAi0LPAwnhS5jInmYJNRFYUMn+sdtKg=="
+      },
+      "NuGet.Versioning": {
+        "type": "CentralTransitive",
+        "requested": "[7.0.0, )",
+        "resolved": "7.0.0",
+        "contentHash": "vMEhpystjAmHzWARE09PjYMWOiGgM+f9rJYMcXGs8soz9/url4qmU9O9Y+hy22kPuqozCMoGcJt0JzKRZ1woZg=="
+      },
+      "SmartFormat": {
+        "type": "CentralTransitive",
+        "requested": "[3.6.1, )",
+        "resolved": "3.6.1",
+        "contentHash": "URa4c3DJcP8B+WNK3jd1AyuBAXmyRKEwTifzJOLeZ9Vud5PcQTGzBG5XkyhebD4tYj+VdyHwwjeBtgwJSIig9A==",
+        "dependencies": {
+          "ZString": "2.6.0"
+        }
+      }
+    },
+    "net8.0": {
+      "Humanizer.Core": {
+        "type": "Transitive",
+        "resolved": "2.14.1",
+        "contentHash": "lQKvtaTDOXnoVJ20ibTuSIOf2i0uO0MPbDhd1jm238I+U/2ZnRENj0cktKZhtchBMtCUSRQ5v4xBCUbKNmyVMw=="
+      },
+      "Json.More.Net": {
+        "type": "Transitive",
+        "resolved": "2.1.1",
+        "contentHash": "ZXAKl2VsdnIZeUo1PFII3Oi1m1L4YQjEyDjygHfHln5vgsjgIo749X6xWkv7qFYp8RROES+vOEfDcvvoVgs8kA=="
+      },
+      "JsonPointer.Net": {
+        "type": "Transitive",
+        "resolved": "5.3.1",
+        "contentHash": "3e2OJjU0OaE26XC/klgxbJuXvteFWTDJIJv0ITYWcJEoskq7jzUwPSC1s0iz4wPPQnfN7vwwFmg2gJfwRAPwgw==",
+        "dependencies": {
+          "Humanizer.Core": "2.14.1",
+          "Json.More.Net": "2.1.1"
+        }
+      },
+      "System.IO.Pipelines": {
+        "type": "Transitive",
+        "resolved": "10.0.13",
+        "contentHash": "KyPO1f2rgg2GK211d0khYeqWtVsV8Veu/3dvl9V+vml9uLVc9AkxfQg7ay3fi0Nfznf6LNltPSe06VefT+hLVA=="
+      },
+      "System.Text.Encodings.Web": {
+        "type": "Transitive",
+        "resolved": "10.0.13",
+        "contentHash": "rNYrJlPi22TM3PhkWdgB0jPYw/umbURQWlu1kg1nbsu3wP6LHsCBdG7NOG3Jf/8/CaC7WjE7tSH+TiQepPbOVQ=="
+      },
+      "ZString": {
+        "type": "Transitive",
+        "resolved": "2.6.0",
+        "contentHash": "XE8a+11nZg0LRaf+RGABEWaHIf8yGd5w8v/Ra1iWxMBmAVzwuKbW7G21mS0U7w7sh1lYcgckInWGgnz4qyET8A=="
+      },
+      "iryomera.content.sdk": {
+        "type": "Project",
+        "dependencies": {
+          "JsonSchema.Net": "[7.3.4, )",
+          "NuGet.Versioning": "[7.0.0, )",
+          "System.Text.Json": "[10.0.13, )"
+        }
+      },
+      "iryomera.localization": {
+        "type": "Project",
+        "dependencies": {
+          "Iryomera.Content.SDK": "[0.6.0, )",
+          "Microsoft.Extensions.Localization.Abstractions": "[10.0.0, )",
+          "SmartFormat": "[3.6.1, )"
+        }
+      },
+      "JsonSchema.Net": {
+        "type": "CentralTransitive",
+        "requested": "[7.3.4, )",
+        "resolved": "7.3.4",
+        "contentHash": "7GggWrdzKrtGWETRn3dcMnmuLSyWaDkBK94TK80LEHQEVz4bmsQc7FYO7qL40RDdZU2YPz5d98aT9lW5OYExuA==",
+        "dependencies": {
+          "JsonPointer.Net": "5.3.1"
+        }
+      },
+      "Microsoft.Extensions.Localization.Abstractions": {
+        "type": "CentralTransitive",
+        "requested": "[10.0.0, )",
+        "resolved": "10.0.0",
+        "contentHash": "+gopxHC5+vWE61Qq2i+aFblxjSiS4UyjUG5kpfXodWbeBVwXPeP66s8uAi0LPAwnhS5jInmYJNRFYUMn+sdtKg=="
+      },
+      "NuGet.Versioning": {
+        "type": "CentralTransitive",
+        "requested": "[7.0.0, )",
+        "resolved": "7.0.0",
+        "contentHash": "vMEhpystjAmHzWARE09PjYMWOiGgM+f9rJYMcXGs8soz9/url4qmU9O9Y+hy22kPuqozCMoGcJt0JzKRZ1woZg=="
+      },
+      "SmartFormat": {
+        "type": "CentralTransitive",
+        "requested": "[3.6.1, )",
+        "resolved": "3.6.1",
+        "contentHash": "URa4c3DJcP8B+WNK3jd1AyuBAXmyRKEwTifzJOLeZ9Vud5PcQTGzBG5XkyhebD4tYj+VdyHwwjeBtgwJSIig9A==",
+        "dependencies": {
+          "ZString": "2.6.0"
+        }
+      },
+      "System.Text.Json": {
+        "type": "CentralTransitive",
+        "requested": "[10.0.13, )",
+        "resolved": "10.0.13",
+        "contentHash": "IjBLCOgNyv48I7G69EWDUalJ0mVHyZdiH1drbPrNsQRJssvjmGVn0Q/CoZSG1RGUCCCgpdiQbZI4i9Z6Q5jnWQ==",
+        "dependencies": {
+          "System.IO.Pipelines": "10.0.13",
+          "System.Text.Encodings.Web": "10.0.13"
+        }
+      }
+    }
+  }
+}

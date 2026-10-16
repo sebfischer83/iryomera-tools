@@ -52,7 +52,7 @@ internal static class PackageFiles
             if (read > limit - count) throw new InvalidDataException("Expanded file exceeds its size limit: " + path);
             count += read; hash.AppendData(buffer, 0, read); await output.WriteAsync(buffer.AsMemory(0, read), ct);
         }
-        return new() { Path = path, SizeBytes = count, Sha256 = Convert.ToHexStringLower(hash.GetHashAndReset()) };
+        return new() { Path = path, SizeBytes = count, Sha256 = Convert.ToHexString(hash.GetHashAndReset()).ToLowerInvariant() };
     }
     internal static async Task<T> ReadJsonAsync<T>(string root, string relative, PackageLimits limits, Func<Stream, Task<T>> read) where T : class
     {

@@ -42,9 +42,16 @@
       "iryomera.localization": {
         "type": "Project",
         "dependencies": {
-          "Iryomera.Content.SDK": "[0.5.0, )",
+          "Iryomera.Content.SDK": "[0.6.0, )",
           "Microsoft.Extensions.Localization.Abstractions": "[10.0.0, )",
           "SmartFormat": "[3.6.1, )"
+        }
+      },
+      "iryomera.modkit.core": {
+        "type": "Project",
+        "dependencies": {
+          "Iryomera.Content.SDK": "[0.6.0, )",
+          "Iryomera.Localization": "[0.6.0, )"
         }
       },
       "JsonSchema.Net": {

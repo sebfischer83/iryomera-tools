@@ -28,10 +28,7 @@ public static class Program
                 var dependencies = new List<ContentPackage>();
                 foreach (var file in p.GetValue(dependency) ?? [])
                 {
-                    PackageFiles.NoLinks(file); await using var stream = File.OpenRead(file);
-                    if (stream.Length > new PackageLimits().MaxJsonBytes) throw new InvalidDataException("Dependency JSON exceeds size limit.");
-                    var package = await ContentDocuments.ReadValidatedAsync<ContentPackage>(stream, _ => [], cancellationToken: ct);
-                    if (!package.IsValid) throw new InvalidDataException("Dependency JSON does not match the SDK schema."); dependencies.Add(package.Value!);
+                    dependencies.Add(await ModDocuments.ReadDependencyAsync(file, ct: ct));
                 }
                 var source = p.GetValue(input)!; var version = p.GetValue(game); var archives = new ModArchive();
                 switch (verb)

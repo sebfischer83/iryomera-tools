@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><TargetFramework /><TargetFrameworks>net8.0;net10.0</TargetFrameworks><Description>Engine-independent data-only mod authoring, validation and bounded archive APIs.</Description></PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../Iryomera.Content.SDK/Iryomera.Content.SDK.csproj" />
+    <ProjectReference Include="../Iryomera.Localization/Iryomera.Localization.csproj" />
+    <EmbeddedResource Include="../../schemas/modkit/v1/contracts.schema.json" LogicalName="Iryomera.ModKit.Schemas.v1.json" />
+    <EmbeddedResource Include="../../examples/modkit/example-mod/mod.json" LogicalName="Templates/mod.json" />
+    <EmbeddedResource Include="../../examples/modkit/example-mod/content.json" LogicalName="Templates/content.json" />
+    <EmbeddedResource Include="../../examples/modkit/example-mod/localization/en.json" LogicalName="Templates/localization/en.json" />
+    <EmbeddedResource Include="../../examples/modkit/example-mod/localization/de.json" LogicalName="Templates/localization/de.json" />
+    <EmbeddedResource Include="../../examples/modkit/example-mod/assets/cube.glb" LogicalName="Templates/assets/cube.glb" />
+    <EmbeddedResource Include="../../examples/modkit/example-mod/assets/texture.png" LogicalName="Templates/assets/texture.png" />
+    <EmbeddedResource Include="../../examples/modkit/example-mod/assets/icon.png" LogicalName="Templates/assets/icon.png" />
+    <EmbeddedResource Include="../../examples/modkit/example-mod/LICENSE.txt" LogicalName="Templates/LICENSE.txt" />
+    <None Include="../../schemas/modkit/v1/*.json" Pack="true" PackagePath="schemas/modkit/v1" />
+  </ItemGroup>
+</Project>

@@ -8,6 +8,7 @@ import subprocess
 import tempfile
 import time
 import urllib.request
+import urllib.parse
 import zipfile
 from playwright.sync_api import sync_playwright
 
@@ -37,65 +38,81 @@ with tempfile.TemporaryDirectory(prefix='iryomera-studio-browser-') as temporary
             except (OSError, TimeoutError): time.sleep(.25)
         else: raise RuntimeError('Studio health timeout.')
         with sync_playwright() as playwright:
-            browser = playwright.chromium.launch(headless=True)
-            context = browser.new_context(accept_downloads=True, viewport={'width':1360,'height':950})
-            external_requests = []
-            def offline(route):
-                if route.request.url.startswith(base+'/'): route.continue_()
-                else: external_requests.append(route.request.url); route.abort()
-            context.route('**/*', offline)
-            page = context.new_page()
-            errors = []
-            page.on('pageerror', lambda error: errors.append(str(error)))
-            page.goto(base); page.get_by_role('heading', name='Projects', exact=True).wait_for()
-            page.locator('main[data-studio-ready="true"]').wait_for()
-            page.get_by_label('Operator / reviewer', exact=True).fill('Synthetic browser test operator')
-            page.get_by_role('button', name='Load synthetic examples', exact=True).click()
-            page.wait_for_url('**/projects/*'); project_url = page.url
-            page.get_by_role('link', name='Synthetic Amber syndrome', exact=True).wait_for()
-            # Actual language switch, including the interactive circuit after reload.
-            page.get_by_role('link', name='Deutsch', exact=True).click()
-            page.locator('main[data-studio-ready="true"]').wait_for()
-            page.get_by_role('link', name='Synthetisches Bernsteinsyndrom', exact=True).wait_for()
-            page.get_by_role('link', name='Synthetisches Bernsteinsyndrom', exact=True).click()
-            page.get_by_label('Name', exact=True).nth(0).fill('Synthetic browser-edited condition')
-            page.get_by_label('Bearbeiter / Prüfer', exact=True).fill('Synthetic browser test operator')
-            page.get_by_label('Begründung und Nachweise', exact=True).fill('Own fictional fixture editing test')
-            page.get_by_role('button', name='Entwurf speichern', exact=True).click()
-            page.get_by_text('Änderung gespeichert.', exact=True).wait_for()
-            page.get_by_role('link', name='English', exact=True).click()
-            page.locator('main[data-studio-ready="true"]').wait_for()
-            page.get_by_role('heading', name='Synthetic browser-edited condition', exact=True).wait_for()
-            # Open the graph and prove existing links render as SVG and can be selected.
-            page.get_by_role('link', name='Relationships', exact=True).click()
-            page.locator('svg.graph g').first.wait_for(); page.locator('svg.graph g').first.click()
-            page.get_by_role('heading', name='Medical review status', exact=True).wait_for()
-            # Explicit selection and rights decisions; nothing is automatically approved.
-            page.get_by_role('link', name='Review & export', exact=True).click()
-            page.get_by_role('button', name='Select all records', exact=True).click()
-            page.get_by_label('Operator / reviewer', exact=True).fill('Synthetic browser review')
-            page.get_by_label('Reason and evidence', exact=True).fill('Own fictional MIT software fixture only')
-            page.get_by_role('button', name='Approve selected records').click()
-            page.get_by_text('Operation saved.', exact=True).wait_for()
-            page.get_by_role('button', name='Confirm project rights', exact=True).click()
-            page.get_by_text('Project rights confirmed by the operator.', exact=True).wait_for()
-            with page.expect_download() as downloaded:
-                page.get_by_role('link', name='Download approved JSON release (ZIP)', exact=True).click()
-            path = temporary/'release.zip'; downloaded.value.save_as(path)
-            with zipfile.ZipFile(path) as release:
-                content = json.loads(release.read('content.json'))
-                assert len(content['definitions']) == 22
-                assert all(d['provenance']['reviewStatus'] == 'approved' for d in content['definitions'])
-                english = json.loads(release.read('localization/en.json'))
-                assert 'Synthetic browser-edited condition' in english['entries'].values()
-                assert 'localization/de.json' in release.namelist()
-            assert not errors, errors
-            assert not external_requests, external_requests
-            assert page.request.get(base+'/studio.css').status == 200
-            # Ensure review/audit navigation survives a real reload backed by SQLite.
-            page.goto(project_url+'/audit'); page.get_by_text('Own fictional fixture editing test', exact=True).wait_for()
-            browser.close()
-            print('IRYOMERA_STUDIO_SMOKE_OK: real interactive de/en editor, SQLite, SVG, review/rights, JSON export; no external requests.')
+            try:
+                browser = playwright.chromium.launch(headless=True)
+                context = browser.new_context(accept_downloads=True, viewport={'width':1360,'height':950})
+                external_requests = []
+                def offline(route):
+                    if route.request.url.startswith(base+'/'): route.continue_()
+                    else: external_requests.append(route.request.url); route.abort()
+                context.route('**/*', offline)
+                page = context.new_page()
+                errors = []
+                page.on('pageerror', lambda error: errors.append(str(error)))
+                page.goto(base); page.get_by_role('heading', name='Projects', exact=True).wait_for()
+                page.locator('main[data-studio-ready="true"]').wait_for()
+                page.get_by_label('Operator / reviewer', exact=True).fill('Synthetic browser test operator')
+                page.get_by_role('button', name='Load synthetic examples', exact=True).click()
+                page.wait_for_url('**/projects/*'); project_url = page.url
+                page.get_by_role('link', name='Synthetic Amber syndrome', exact=True).wait_for()
+                # Actual language switch, including the interactive circuit after reload.
+                with page.expect_navigation(wait_until='domcontentloaded'):
+                    page.get_by_role('link', name='Deutsch', exact=True).click()
+                page.locator('html[lang="de"]').wait_for()
+                page.locator('main[data-studio-ready="true"]').wait_for()
+                page.get_by_role('link', name='Synthetisches Bernsteinsyndrom', exact=True).wait_for()
+                page.get_by_role('link', name='Synthetisches Bernsteinsyndrom', exact=True).click()
+                page.wait_for_url(lambda url: urllib.parse.unquote(urllib.parse.urlparse(url).path).endswith('/definitions/synthetic:amber_syndrome'))
+                page.get_by_role('heading', name='Synthetisches Bernsteinsyndrom', exact=True).wait_for()
+                page.locator('main[data-studio-ready="true"]').wait_for()
+                page.get_by_label('Name', exact=True).nth(0).fill('Synthetic browser-edited condition')
+                page.get_by_label('Bearbeiter / Prüfer', exact=True).fill('Synthetic browser test operator')
+                page.get_by_label('Begründung und Nachweise', exact=True).fill('Own fictional fixture editing test')
+                page.get_by_role('button', name='Entwurf speichern', exact=True).click()
+                page.get_by_text('Änderung gespeichert.', exact=True).wait_for()
+                with page.expect_navigation(wait_until='domcontentloaded'):
+                    page.get_by_role('link', name='English', exact=True).click()
+                page.locator('html[lang="en"]').wait_for()
+                page.locator('main[data-studio-ready="true"]').wait_for()
+                page.get_by_role('heading', name='Synthetic browser-edited condition', exact=True).wait_for()
+                # Open the graph and prove existing links render as SVG and can be selected.
+                page.get_by_role('link', name='Relationships', exact=True).click()
+                page.locator('svg.graph g').first.wait_for(); page.locator('svg.graph g').first.click()
+                page.get_by_role('heading', name='Medical review status', exact=True).wait_for()
+                # Explicit selection and rights decisions; nothing is automatically approved.
+                page.get_by_role('link', name='Review & export', exact=True).click()
+                page.get_by_role('button', name='Select all records', exact=True).click()
+                page.get_by_label('Operator / reviewer', exact=True).fill('Synthetic browser review')
+                page.get_by_label('Reason and evidence', exact=True).fill('Own fictional MIT software fixture only')
+                page.get_by_role('button', name='Approve selected records').click()
+                page.get_by_text('Operation saved.', exact=True).wait_for()
+                page.get_by_role('button', name='Confirm project rights', exact=True).click()
+                page.get_by_text('Project rights confirmed by the operator.', exact=True).wait_for()
+                with page.expect_download() as downloaded:
+                    page.get_by_role('link', name='Download approved JSON release (ZIP)', exact=True).click()
+                path = temporary/'release.zip'; downloaded.value.save_as(path)
+                with zipfile.ZipFile(path) as release:
+                    content = json.loads(release.read('content.json'))
+                    assert len(content['definitions']) == 22
+                    assert all(d['provenance']['reviewStatus'] == 'approved' for d in content['definitions'])
+                    english = json.loads(release.read('localization/en.json'))
+                    assert 'Synthetic browser-edited condition' in english['entries'].values()
+                    assert 'localization/de.json' in release.namelist()
+                assert not errors, errors
+                assert not external_requests, external_requests
+                assert page.request.get(base+'/studio.css').status == 200
+                # Ensure review/audit navigation survives a real reload backed by SQLite.
+                page.goto(project_url+'/audit'); page.get_by_text('Own fictional fixture editing test', exact=True).wait_for()
+                browser.close()
+                print('IRYOMERA_STUDIO_SMOKE_OK: real interactive de/en editor, SQLite, SVG, review/rights, JSON export; no external requests.')
+            except Exception:
+                if 'page' in locals():
+                    try:
+                        print('Browser failure URL:', page.url)
+                        print(page.content()[-12000:])
+                    except Exception as snapshot_error:
+                        print('Browser snapshot unavailable:', type(snapshot_error).__name__)
+                raise
     except Exception:
         log.flush()
         print((temporary/'server.log').read_text(encoding='utf-8')[-6000:])

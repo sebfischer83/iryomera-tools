@@ -5,6 +5,9 @@ using System.Text.Json;
 using Godot;
 using Iryomera.Content.SDK;
 using Iryomera.Localization;
+using Iryomera.ModIo;
+using Iryomera.ModIo.ModKit;
+using HttpClient = System.Net.Http.HttpClient;
 
 public partial class SmokeTest : Node
 {
@@ -60,7 +63,26 @@ public partial class SmokeTest : Node
                 modCatalogs.Add(await ContentJson.ReadAsync<LocalizationDefinition>(input));
             }
             Assert(ContentLocalizationValidator.Validate(modContent.Value, modCatalogs, ["example_mod.mod.name"]).Count == 0, "Mod localization validation failed.");
-            GD.Print("IRYOMERA_GODOT_SMOKE_OK: net8 package binaries, annotations, diagnostics, mod asset/layout contracts, en/de localization and plurals.");
+            Assert(typeof(ModIoClient).Assembly.GetCustomAttribute<TargetFrameworkAttribute>()!.FrameworkName == ".NETCoreApp,Version=v8.0", "ModIo net8 package asset was not selected.");
+            using var mockHttp = new HttpClient(new OfflineApiHandler());
+            var credentials = new InMemoryModIoCredentials(); credentials.Set("own-synthetic-offline-key");
+            var modApi = new ModIoClient(mockHttp, new() { GameId = 7 }, credentials);
+            Assert((await modApi.GetModAsync(3)).Id == 3, "Portable offline ModIo request failed inside Godot.");
+            using var receiptBytes = new MemoryStream();
+            await ModReceiptDocuments.WriteAsync(receiptBytes, new() { PackageId = "example_mod:mod", Namespace = "example_mod", Version = "1.0.0", ArchiveSha256 = new('a', 64), Origin = new() { Provider = "local" } });
+            receiptBytes.Position = 0; Assert((await ModReceiptDocuments.ReadAsync(receiptBytes)).Origin.Provider == "local", "Portable receipt schema failed inside Godot.");
+            Assert(typeof(ModKitInstaller).Assembly.GetCustomAttribute<TargetFrameworkAttribute>()!.FrameworkName == ".NETCoreApp,Version=v8.0", "ModKit bridge net8 package asset was not selected.");
+            var localWork = Path.Combine(Path.GetTempPath(), "iryomera-godot-mod-" + Guid.NewGuid().ToString("N")); Directory.CreateDirectory(localWork);
+            try
+            {
+                var archivePath = Path.Combine(localWork, "example.zip");
+                await new Iryomera.ModKit.ModArchive().PackAsync(ProjectSettings.GlobalizePath("res://example-mod"), archivePath);
+                var localSource = new LocalArchiveSource(new Dictionary<string, string> { ["example"] = archivePath });
+                var installed = await new ModRuntime(new ModKitInstaller()).InstallAsync(localSource, "example", Path.Combine(localWork, "installed"));
+                Assert(installed.Receipt.Origin.Provider == "local" && installed.Content.Definitions.Count == 13, "Real offline package installation failed in Godot.");
+            }
+            finally { Directory.Delete(localWork, true); }
+            GD.Print("IRYOMERA_GODOT_SMOKE_OK: portable ModKit installation,  portable ModIo mock HTTP/receipt,  net8 package binaries, annotations, diagnostics, mod asset/layout contracts, en/de localization and plurals.");
             GetTree().Quit(0);
         }
         catch (Exception exception)
@@ -72,5 +94,14 @@ public partial class SmokeTest : Node
     private static void Assert(bool condition, string message)
     {
         if (!condition) throw new InvalidOperationException(message);
+    }
+}
+
+internal sealed class OfflineApiHandler : HttpMessageHandler
+{
+    protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken ct)
+    {
+        ct.ThrowIfCancellationRequested();
+        return Task.FromResult(new HttpResponseMessage(System.Net.HttpStatusCode.OK) { Content = new StringContent("{\"id\":3,\"game_id\":7,\"name\":\"Own synthetic offline mod\"}") });
     }
 }

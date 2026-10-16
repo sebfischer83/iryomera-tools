@@ -22,6 +22,7 @@ version = '4.7.2'
 package_version = ET.parse(root/'Directory.Build.props').getroot().find('.//Version').text
 assert (root/'artifacts'/('Iryomera.Content.SDK.'+package_version+'.nupkg')).is_file(), 'Pack the solution first.'
 assert (root/'artifacts'/('Iryomera.Localization.'+package_version+'.nupkg')).is_file(), 'Pack the solution first.'
+assert (root/'artifacts'/('Iryomera.ModIo.'+package_version+'.nupkg')).is_file(), 'Pack the solution first.'
 
 def download(url, target):
     with urllib.request.urlopen(url, timeout=90) as response, target.open('wb') as output:
@@ -61,6 +62,7 @@ else:
 with tempfile.TemporaryDirectory(prefix='iryomera-godot-smoke-') as temporary:
     project = Path(temporary)/'project'
     shutil.copytree(root/'tests/Iryomera.Godot.Integration', project, ignore=shutil.ignore_patterns('bin','obj','.godot'))
+    shutil.copytree(root/'examples/modkit/example-mod', project/'example-mod')
     for name in ['annotations','en','de','diagnostics','diagnostics.en','diagnostics.de']:
         shutil.copyfile(root/'examples/synthetic'/(name+'.json'), project/(name+'.json'))
     shutil.copyfile(root/'examples/modkit/example-mod/content.json', project/'mod-content.json')

@@ -51,3 +51,7 @@ The source catalogs come from your own resource loader and retain stable keys/ID
 ## Limits
 
 This proves the pinned Windows/Linux desktop scenario. It does not establish support for every Godot 4 version, older .NET 6 game targets, Android/iOS, browser export, trimming or NativeAOT. Changing the game's exact engine/target/export settings should rerun the integration test and may require a separate decision. .NET 10 remains the toolchain's primary target; the net8.0 asset is an explicit game compatibility target, not a downgrade of the tooling.
+
+## Optional mod distribution (0.6.0)
+
+ModIo, ModKit.Core and the optional ModIo.ModKit bridge also ship net8/net10 package assets. The real-engine test restores these packed normal library dependencies, performs an in-memory HTTP request and receipt schema roundtrip, then packages and installs the own synthetic example locally using ModRuntime/ModKitInstaller on the actual .NET 8 runtime. No mod.io service, account or credentials are used. The game controls discovery, platform selection, identity pinning and activation; no foreign mod code is executed. See [mod.io integration](modio.md).

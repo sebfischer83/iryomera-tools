@@ -1,6 +1,6 @@
 # ModKit: data-only authoring and ZIP packages
 
-ModKit is the Phase 4 .NET 10 tool and async application API. It creates, edits, validates, packages, inspects and unpacks local mods independently of Studio, Godot, databases and mod.io. It does not execute mod code, download resources, simulate patients, approve medical claims or grant redistribution rights. English documentation is authoritative. See [ADR 0010](architecture/0010-data-only-mod-packages.md) and [the implementation plan](plans/phase-4.md).
+ModKit is the Phase 4 .NET 10 tool and async application API. It creates, edits, validates, packages, inspects and unpacks local mods independently of Studio, Godot, databases and mod.io. It does not execute mod code, download resources, simulate patients, approve medical claims or grant redistribution rights. English documentation is authoritative. From 0.6.0, reusable APIs live in the normal net8/net10 `Iryomera.ModKit.Core` library; the .NET 10 CLI keeps its command and API namespaces. See [ADR 0010](architecture/0010-data-only-mod-packages.md) and [the implementation plan](plans/phase-4.md).
 
 ## Build and use
 
@@ -14,7 +14,7 @@ Replace `iryomera-mod` below with `dotnet run --project src/Iryomera.ModKit -c R
 
 ```sh
 dotnet pack src/Iryomera.ModKit -c Release --no-build -o artifacts
-dotnet tool install Iryomera.ModKit --version 0.5.0 --add-source ./artifacts --tool-path ./artifacts/mod-tools
+dotnet tool install Iryomera.ModKit --version 0.6.0 --add-source ./artifacts --tool-path ./artifacts/mod-tools
 # Windows: artifacts/mod-tools/iryomera-mod.exe
 # Linux: ./artifacts/mod-tools/iryomera-mod
 ```
@@ -92,4 +92,4 @@ Inspect/unpack verify into fresh staging; unpack moves the fully validated folde
 - `ModDocuments.ReadAsync<T>`: original JSON schema boundary for ModProject/ModArchiveIndex, before defaults. Schemas are embedded and resolved offline.
 - All I/O APIs accept CancellationToken. CLI exit codes: 0 success, 1 invocation/I/O/format/packaging failure, 2 semantic validation issues, 130 handled cancellation.
 
-Public entry schemas are under [schemas/modkit/v1](../schemas/modkit/v1/), separately versioned from SDK v1. Regenerate with `python scripts/generate-modkit-schemas.py`; regenerate own data/assets with `python scripts/generate-modkit-example.py`. See [the runnable example](../examples/modkit/README.md) and [verification report](phase-4-verification.md). Phase 5 mod.io, a graphical ModKit editor, signatures, a private game loader and patient simulation remain outside this phase.
+Public entry schemas are under [schemas/modkit/v1](../schemas/modkit/v1/), separately versioned from SDK v1. Regenerate with `python scripts/generate-modkit-schemas.py`; regenerate own data/assets with `python scripts/generate-modkit-example.py`. See [the runnable example](../examples/modkit/README.md) and [verification report](phase-4-verification.md). The optional [mod.io bridge](modio.md) is implemented separately; Core and the CLI have no distribution dependency. A graphical ModKit editor, signatures, a private game loader and patient simulation remain outside this phase.

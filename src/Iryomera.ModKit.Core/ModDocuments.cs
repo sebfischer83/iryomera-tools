@@ -12,6 +12,16 @@ public static class ModDocuments
         using var stream = typeof(ModDocuments).Assembly.GetManifestResourceStream("Iryomera.ModKit.Schemas.v1.json")!;
         using var reader = new StreamReader(stream); return JsonSchema.FromText(reader.ReadToEnd());
     });
+    /// <summary>Read an explicit host dependency file without applying package-internal portable path rules.</summary>
+    public static async Task<ContentPackage> ReadDependencyAsync(string path, long maxJsonBytes = 8L * 1024 * 1024, CancellationToken ct = default)
+    {
+        if (maxJsonBytes <= 0) throw new ArgumentOutOfRangeException(nameof(maxJsonBytes));
+        PackageFiles.NoLinks(path); await using var input = File.OpenRead(path);
+        if (input.Length > maxJsonBytes) throw new InvalidDataException("Dependency JSON exceeds limit.");
+        var result = await ContentDocuments.ReadValidatedAsync<ContentPackage>(input, _ => [], cancellationToken: ct);
+        if (!result.IsValid) throw new InvalidDataException("Dependency JSON does not match the SDK schema.");
+        return result.Value!;
+    }
     public static async Task<T> ReadAsync<T>(Stream stream, CancellationToken ct = default) where T : class
     {
         if (typeof(T) != typeof(ModProject) && typeof(T) != typeof(ModArchiveIndex)) throw new NotSupportedException("Use a registered ModKit document type.");

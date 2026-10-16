@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><TargetFramework /><TargetFrameworks>net8.0;net10.0</TargetFrameworks><Description>Portable optional mod.io REST, verified downloads and distribution-neutral mod runtime contracts.</Description></PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../Iryomera.Content.SDK/Iryomera.Content.SDK.csproj" />
+    <PackageReference Include="Microsoft.Extensions.Http" />
+    <EmbeddedResource Include="../../schemas/modio/v1/contracts.schema.json" LogicalName="Iryomera.ModIo.Schemas.v1.json" />
+    <None Include="../../schemas/modio/v1/*.json" Pack="true" PackagePath="schemas/modio/v1" />
+  </ItemGroup>
+</Project>

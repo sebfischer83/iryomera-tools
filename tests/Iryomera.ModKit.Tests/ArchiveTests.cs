@@ -121,7 +121,7 @@ public sealed class ArchiveTests
         BinaryPrimitives.WriteUInt32LittleEndian(bytes.AsSpan(12), (uint)json.Length); BinaryPrimitives.WriteUInt32LittleEndian(bytes.AsSpan(16), 0x4e4f534a); json.CopyTo(bytes, 20);
         var entries = await Entries(await data.Pack()); var modelIndex = entries.FindIndex(e => e.Name == "assets/cube.glb"); entries[modelIndex] = entries[modelIndex] with { Bytes = bytes };
         var indexIndex = entries.FindIndex(e => e.Name == "checksums.json"); var index = JsonSerializer.Deserialize<ModArchiveIndex>(entries[indexIndex].Bytes, ContentJson.Options)!;
-        var digestIndex = index.Files.FindIndex(e => e.Path == "assets/cube.glb"); index.Files[digestIndex] = index.Files[digestIndex] with { SizeBytes = bytes.Length, Sha256 = Convert.ToHexStringLower(SHA256.HashData(bytes)) };
+        var digestIndex = index.Files.FindIndex(e => e.Path == "assets/cube.glb"); index.Files[digestIndex] = index.Files[digestIndex] with { SizeBytes = bytes.Length, Sha256 = Convert.ToHexString(SHA256.HashData(bytes)).ToLowerInvariant() };
         entries[indexIndex] = entries[indexIndex] with { Bytes = JsonSerializer.SerializeToUtf8Bytes(index, ContentJson.Options) };
         var bad = data.PathFor("external.zip"); Write(bad, entries);
         await Assert.ThrowsAsync<InvalidDataException>(() => new ModArchive().UnpackAsync(bad, data.PathFor("output"))); Assert.False(Directory.Exists(data.PathFor("output")));
