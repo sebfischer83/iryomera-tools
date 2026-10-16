@@ -4,8 +4,14 @@ using Iryomera.Localization;
 
 var data = Path.Combine(AppContext.BaseDirectory, "data");
 await using var input = File.OpenRead(Path.Combine(data, "content.json"));
-var package = await ContentJson.ReadAsync<ContentPackage>(input);
-var issues = ContentValidator.Validate(package);
+var result = await ContentDocuments.ReadValidatedAsync<ContentPackage>(input);
+if (!result.IsValid)
+{
+    foreach (var issue in result.Issues) Console.Error.WriteLine($"{issue.Code} {issue.Path}: {issue.Message}");
+    return 1;
+}
+var package = result.Value!;
+var issues = result.Issues;
 var catalogs = new List<LocalizationDefinition>();
 foreach (var language in new[] { "en", "de" })
 {

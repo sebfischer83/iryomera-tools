@@ -1,0 +1,21 @@
+{
+  "input": "hp.json",
+  "sha256": "a7b3a012e7b4007a35a7cf8da35f2373b54cc16907f80d13d62470d31f833501",
+  "licenseFile": "../../../docs/data-sources/terms/hpo-license.html",
+  "options": {
+    "source": "hpo",
+    "sourceVersion": "2026-09-01",
+    "sourceUrl": "https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2026-09-01/hp.json",
+    "license": "LicenseRef-HPO",
+    "attribution": "Human Phenotype Ontology Consortium; https://hpo.jax.org/; https://doi.org/10.1093/nar/gkad1005",
+    "importedAt": "2026-10-16T00:00:00Z",
+    "namespace": "official_benchmark",
+    "format": "json"
+  },
+  "expectedTerms": 20482,
+  "expectedAssertions": 25087,
+  "expectedErrors": {
+    "unresolved-reference": 651
+  },
+  "expectedNormalizedSha256": "fac800d1c0cb76685f806bd4a23088ce86350b36aba9bf6ccdbc868e29027190"
+}

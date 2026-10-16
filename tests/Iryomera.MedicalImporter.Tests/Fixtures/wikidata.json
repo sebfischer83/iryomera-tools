@@ -1,0 +1,591 @@
+{
+  "head": {
+    "vars": [
+      "externalId",
+      "externalSystem",
+      "hpoId",
+      "icd10",
+      "item",
+      "itemAliasDe",
+      "itemAliasEn",
+      "itemDescriptionDe",
+      "itemDescriptionEn",
+      "itemLabelDe",
+      "itemLabelEn",
+      "property",
+      "qualifierProperty",
+      "qualifierValue",
+      "rank",
+      "reference",
+      "referenceProperty",
+      "referenceValue",
+      "statement",
+      "value",
+      "valueDescriptionDe",
+      "valueDescriptionEn",
+      "valueKind",
+      "valueLabelDe",
+      "valueLabelEn"
+    ]
+  },
+  "results": {
+    "bindings": [
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q999990001"
+        },
+        "itemLabelEn": {
+          "type": "literal",
+          "value": "Fictional amber condition",
+          "xml:lang": "en"
+        },
+        "itemLabelDe": {
+          "type": "literal",
+          "value": "Fiktiver Bernsteinzustand",
+          "xml:lang": "de"
+        },
+        "itemDescriptionEn": {
+          "type": "literal",
+          "value": "Own synthetic disease claim for software tests",
+          "xml:lang": "en"
+        },
+        "itemDescriptionDe": {
+          "type": "literal",
+          "value": "Eigene synthetische Krankheitsaussage für Softwaretests",
+          "xml:lang": "de"
+        },
+        "itemAliasEn": {
+          "type": "literal",
+          "value": "Synthetic amber alias",
+          "xml:lang": "en"
+        },
+        "itemAliasDe": {
+          "type": "literal",
+          "value": "Synthetischer Bernsteinalias",
+          "xml:lang": "de"
+        },
+        "property": {
+          "type": "literal",
+          "value": "P780"
+        },
+        "statement": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/statement/Q999990001-SYNTHETIC-P780"
+        },
+        "value": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q999990002"
+        },
+        "valueKind": {
+          "type": "literal",
+          "value": "symptom"
+        },
+        "valueLabelEn": {
+          "type": "literal",
+          "value": "Fictional reported symptom",
+          "xml:lang": "en"
+        },
+        "valueLabelDe": {
+          "type": "literal",
+          "value": "Fiktives berichtetes Symptom",
+          "xml:lang": "de"
+        },
+        "valueDescriptionEn": {
+          "type": "literal",
+          "value": "Own synthetic target, not medical knowledge",
+          "xml:lang": "en"
+        },
+        "valueDescriptionDe": {
+          "type": "literal",
+          "value": "Eigenes synthetisches Ziel, kein medizinisches Wissen",
+          "xml:lang": "de"
+        },
+        "rank": {
+          "type": "uri",
+          "value": "http://wikiba.se/ontology#NormalRank"
+        },
+        "reference": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/reference/SYNTHETIC-P780"
+        },
+        "referenceProperty": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/prop/reference/P248"
+        },
+        "referenceValue": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q999990099"
+        },
+        "qualifierProperty": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/prop/qualifier/P518"
+        },
+        "qualifierValue": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q999990098"
+        },
+        "hpoId": {
+          "type": "literal",
+          "value": "HP:9999001"
+        },
+        "externalSystem": {
+          "type": "literal",
+          "value": "MAXO"
+        },
+        "externalId": {
+          "type": "literal",
+          "value": "MAXO:9999001"
+        },
+        "icd10": {
+          "type": "literal",
+          "value": "X99.0"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q999990001"
+        },
+        "itemLabelEn": {
+          "type": "literal",
+          "value": "Fictional amber condition",
+          "xml:lang": "en"
+        },
+        "itemLabelDe": {
+          "type": "literal",
+          "value": "Fiktiver Bernsteinzustand",
+          "xml:lang": "de"
+        },
+        "itemDescriptionEn": {
+          "type": "literal",
+          "value": "Own synthetic disease claim for software tests",
+          "xml:lang": "en"
+        },
+        "itemDescriptionDe": {
+          "type": "literal",
+          "value": "Eigene synthetische Krankheitsaussage für Softwaretests",
+          "xml:lang": "de"
+        },
+        "itemAliasEn": {
+          "type": "literal",
+          "value": "Synthetic amber alias",
+          "xml:lang": "en"
+        },
+        "itemAliasDe": {
+          "type": "literal",
+          "value": "Synthetischer Bernsteinalias",
+          "xml:lang": "de"
+        },
+        "property": {
+          "type": "literal",
+          "value": "P923"
+        },
+        "statement": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/statement/Q999990001-SYNTHETIC-P923"
+        },
+        "value": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q999990003"
+        },
+        "valueKind": {
+          "type": "literal",
+          "value": "examination"
+        },
+        "valueLabelEn": {
+          "type": "literal",
+          "value": "Fictional shared examination",
+          "xml:lang": "en"
+        },
+        "valueLabelDe": {
+          "type": "literal",
+          "value": "Fiktive gemeinsame Untersuchung",
+          "xml:lang": "de"
+        },
+        "valueDescriptionEn": {
+          "type": "literal",
+          "value": "Own synthetic target, not medical knowledge",
+          "xml:lang": "en"
+        },
+        "valueDescriptionDe": {
+          "type": "literal",
+          "value": "Eigenes synthetisches Ziel, kein medizinisches Wissen",
+          "xml:lang": "de"
+        },
+        "rank": {
+          "type": "uri",
+          "value": "http://wikiba.se/ontology#NormalRank"
+        },
+        "reference": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/reference/SYNTHETIC-P923"
+        },
+        "referenceProperty": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/prop/reference/P248"
+        },
+        "referenceValue": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q999990099"
+        },
+        "qualifierProperty": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/prop/qualifier/P518"
+        },
+        "qualifierValue": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q999990098"
+        },
+        "hpoId": {
+          "type": "literal",
+          "value": "HP:9999001"
+        },
+        "externalSystem": {
+          "type": "literal",
+          "value": "MAXO"
+        },
+        "externalId": {
+          "type": "literal",
+          "value": "MAXO:9999001"
+        },
+        "icd10": {
+          "type": "literal",
+          "value": "X99.0"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q999990001"
+        },
+        "itemLabelEn": {
+          "type": "literal",
+          "value": "Fictional amber condition",
+          "xml:lang": "en"
+        },
+        "itemLabelDe": {
+          "type": "literal",
+          "value": "Fiktiver Bernsteinzustand",
+          "xml:lang": "de"
+        },
+        "itemDescriptionEn": {
+          "type": "literal",
+          "value": "Own synthetic disease claim for software tests",
+          "xml:lang": "en"
+        },
+        "itemDescriptionDe": {
+          "type": "literal",
+          "value": "Eigene synthetische Krankheitsaussage für Softwaretests",
+          "xml:lang": "de"
+        },
+        "itemAliasEn": {
+          "type": "literal",
+          "value": "Synthetic amber alias",
+          "xml:lang": "en"
+        },
+        "itemAliasDe": {
+          "type": "literal",
+          "value": "Synthetischer Bernsteinalias",
+          "xml:lang": "de"
+        },
+        "property": {
+          "type": "literal",
+          "value": "P924"
+        },
+        "statement": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/statement/Q999990001-SYNTHETIC-P924"
+        },
+        "value": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q999990004"
+        },
+        "valueKind": {
+          "type": "literal",
+          "value": "treatment"
+        },
+        "valueLabelEn": {
+          "type": "literal",
+          "value": "Fictional supportive action",
+          "xml:lang": "en"
+        },
+        "valueLabelDe": {
+          "type": "literal",
+          "value": "Fiktive unterstützende Maßnahme",
+          "xml:lang": "de"
+        },
+        "valueDescriptionEn": {
+          "type": "literal",
+          "value": "Own synthetic target, not medical knowledge",
+          "xml:lang": "en"
+        },
+        "valueDescriptionDe": {
+          "type": "literal",
+          "value": "Eigenes synthetisches Ziel, kein medizinisches Wissen",
+          "xml:lang": "de"
+        },
+        "rank": {
+          "type": "uri",
+          "value": "http://wikiba.se/ontology#NormalRank"
+        },
+        "reference": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/reference/SYNTHETIC-P924"
+        },
+        "referenceProperty": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/prop/reference/P248"
+        },
+        "referenceValue": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q999990099"
+        },
+        "qualifierProperty": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/prop/qualifier/P518"
+        },
+        "qualifierValue": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q999990098"
+        },
+        "hpoId": {
+          "type": "literal",
+          "value": "HP:9999001"
+        },
+        "externalSystem": {
+          "type": "literal",
+          "value": "MAXO"
+        },
+        "externalId": {
+          "type": "literal",
+          "value": "MAXO:9999001"
+        },
+        "icd10": {
+          "type": "literal",
+          "value": "X99.0"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q999990001"
+        },
+        "itemLabelEn": {
+          "type": "literal",
+          "value": "Fictional amber condition",
+          "xml:lang": "en"
+        },
+        "itemLabelDe": {
+          "type": "literal",
+          "value": "Fiktiver Bernsteinzustand",
+          "xml:lang": "de"
+        },
+        "itemDescriptionEn": {
+          "type": "literal",
+          "value": "Own synthetic disease claim for software tests",
+          "xml:lang": "en"
+        },
+        "itemDescriptionDe": {
+          "type": "literal",
+          "value": "Eigene synthetische Krankheitsaussage für Softwaretests",
+          "xml:lang": "de"
+        },
+        "itemAliasEn": {
+          "type": "literal",
+          "value": "Synthetic amber alias",
+          "xml:lang": "en"
+        },
+        "itemAliasDe": {
+          "type": "literal",
+          "value": "Synthetischer Bernsteinalias",
+          "xml:lang": "de"
+        },
+        "property": {
+          "type": "literal",
+          "value": "P828"
+        },
+        "statement": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/statement/Q999990001-SYNTHETIC-P828"
+        },
+        "value": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q999990005"
+        },
+        "valueLabelEn": {
+          "type": "literal",
+          "value": "Fictional unspecified cause",
+          "xml:lang": "en"
+        },
+        "valueLabelDe": {
+          "type": "literal",
+          "value": "Fiktive unspezifizierte Ursache",
+          "xml:lang": "de"
+        },
+        "valueDescriptionEn": {
+          "type": "literal",
+          "value": "Own synthetic target, not medical knowledge",
+          "xml:lang": "en"
+        },
+        "valueDescriptionDe": {
+          "type": "literal",
+          "value": "Eigenes synthetisches Ziel, kein medizinisches Wissen",
+          "xml:lang": "de"
+        },
+        "rank": {
+          "type": "uri",
+          "value": "http://wikiba.se/ontology#NormalRank"
+        },
+        "reference": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/reference/SYNTHETIC-P828"
+        },
+        "referenceProperty": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/prop/reference/P248"
+        },
+        "referenceValue": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q999990099"
+        },
+        "qualifierProperty": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/prop/qualifier/P518"
+        },
+        "qualifierValue": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q999990098"
+        },
+        "hpoId": {
+          "type": "literal",
+          "value": "HP:9999001"
+        },
+        "externalSystem": {
+          "type": "literal",
+          "value": "MAXO"
+        },
+        "externalId": {
+          "type": "literal",
+          "value": "MAXO:9999001"
+        },
+        "icd10": {
+          "type": "literal",
+          "value": "X99.0"
+        }
+      },
+      {
+        "item": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q999990001"
+        },
+        "itemLabelEn": {
+          "type": "literal",
+          "value": "Fictional amber condition",
+          "xml:lang": "en"
+        },
+        "itemLabelDe": {
+          "type": "literal",
+          "value": "Fiktiver Bernsteinzustand",
+          "xml:lang": "de"
+        },
+        "itemDescriptionEn": {
+          "type": "literal",
+          "value": "Own synthetic disease claim for software tests",
+          "xml:lang": "en"
+        },
+        "itemDescriptionDe": {
+          "type": "literal",
+          "value": "Eigene synthetische Krankheitsaussage für Softwaretests",
+          "xml:lang": "de"
+        },
+        "itemAliasEn": {
+          "type": "literal",
+          "value": "Another synthetic alias",
+          "xml:lang": "en"
+        },
+        "itemAliasDe": {
+          "type": "literal",
+          "value": "Weiterer synthetischer Alias",
+          "xml:lang": "de"
+        },
+        "property": {
+          "type": "literal",
+          "value": "P780"
+        },
+        "statement": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/statement/Q999990001-SYNTHETIC-P780"
+        },
+        "value": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q999990002"
+        },
+        "valueKind": {
+          "type": "literal",
+          "value": "symptom"
+        },
+        "valueLabelEn": {
+          "type": "literal",
+          "value": "Fictional reported symptom",
+          "xml:lang": "en"
+        },
+        "valueLabelDe": {
+          "type": "literal",
+          "value": "Fiktives berichtetes Symptom",
+          "xml:lang": "de"
+        },
+        "valueDescriptionEn": {
+          "type": "literal",
+          "value": "Own synthetic target, not medical knowledge",
+          "xml:lang": "en"
+        },
+        "valueDescriptionDe": {
+          "type": "literal",
+          "value": "Eigenes synthetisches Ziel, kein medizinisches Wissen",
+          "xml:lang": "de"
+        },
+        "rank": {
+          "type": "uri",
+          "value": "http://wikiba.se/ontology#NormalRank"
+        },
+        "reference": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/reference/SECOND-SYNTHETIC"
+        },
+        "referenceProperty": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/prop/reference/P248"
+        },
+        "referenceValue": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q999990097"
+        },
+        "qualifierProperty": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/prop/qualifier/P518"
+        },
+        "qualifierValue": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q999990098"
+        },
+        "hpoId": {
+          "type": "literal",
+          "value": "HP:9999001"
+        },
+        "externalSystem": {
+          "type": "literal",
+          "value": "MAXO"
+        },
+        "externalId": {
+          "type": "literal",
+          "value": "MAXO:9999001"
+        },
+        "icd10": {
+          "type": "literal",
+          "value": "X99.0"
+        }
+      }
+    ]
+  }
+}

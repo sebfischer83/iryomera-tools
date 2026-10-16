@@ -1,0 +1,22 @@
+@inherits LayoutComponentBase
+@inject IStringLocalizer L
+@inject NavigationManager Nav
+<div class="shell">
+    <header>
+        <a class="brand" href="/">Iryomera <span>ContentStudio</span></a>
+        <nav aria-label="@L["studio.navigation"]"><NavLink href="/" Match="NavLinkMatch.All">@L["studio.projects"]</NavLink><NavLink href="/imports">@L["studio.imports"]</NavLink></nav>
+        <div class="languages"><a href="@CultureLink("en")" lang="en">English</a><a href="@CultureLink("de")" lang="de">Deutsch</a></div>
+    </header>
+    <aside class="notice">@L["studio.localNotice"]</aside>
+    <main data-studio-ready="@Interactive.ToString().ToLowerInvariant()">@Body</main>
+    <footer>@L["studio.footer"]</footer>
+</div>
+<div id="blazor-error-ui">@L["studio.connectionError"] <a href="">@L["studio.reload"]</a></div>
+@code {
+    private bool Interactive;
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender) { Interactive = true; StateHasChanged(); }
+    }
+    private string CultureLink(string culture) => "/culture?culture=" + culture + "&returnUrl=" + Uri.EscapeDataString(new Uri(Nav.Uri).PathAndQuery);
+}

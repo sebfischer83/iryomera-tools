@@ -1,0 +1,1677 @@
+{
+  "schemaVersion": "1.0.0",
+  "manifest": {
+    "schemaVersion": "1.0.0",
+    "id": "diagnostics_demo:content",
+    "namespace": "diagnostics_demo",
+    "version": "1.0.0",
+    "license": "MIT",
+    "dependencies": []
+  },
+  "definitions": [
+    {
+      "kind": "disease",
+      "id": "diagnostics_demo:amber_condition",
+      "nameKey": "diagnostics_demo.amber_condition.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "amber_condition",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "disease",
+      "id": "diagnostics_demo:azure_condition",
+      "nameKey": "diagnostics_demo.azure_condition.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "azure_condition",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "disease",
+      "id": "diagnostics_demo:coral_condition",
+      "nameKey": "diagnostics_demo.coral_condition.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "coral_condition",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "symptom",
+      "id": "diagnostics_demo:reported_discomfort",
+      "nameKey": "diagnostics_demo.reported_discomfort.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "reported_discomfort",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "finding",
+      "id": "diagnostics_demo:pressure_response",
+      "nameKey": "diagnostics_demo.pressure_response.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "pressure_response",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "finding",
+      "id": "diagnostics_demo:amber_pattern",
+      "nameKey": "diagnostics_demo.amber_pattern.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "amber_pattern",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "finding",
+      "id": "diagnostics_demo:azure_pattern",
+      "nameKey": "diagnostics_demo.azure_pattern.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "azure_pattern",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "room",
+      "id": "diagnostics_demo:consultation_room",
+      "nameKey": "diagnostics_demo.consultation_room.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "consultation_room",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "medicalEquipment",
+      "id": "diagnostics_demo:demo_device",
+      "nameKey": "diagnostics_demo.demo_device.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "demo_device",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "staffQualification",
+      "id": "diagnostics_demo:demo_operator",
+      "nameKey": "diagnostics_demo.demo_operator.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "demo_operator",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "treatment",
+      "id": "diagnostics_demo:demo_support",
+      "nameKey": "diagnostics_demo.demo_support.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "demo_support",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "examination",
+      "id": "diagnostics_demo:history",
+      "nameKey": "diagnostics_demo.history.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "history",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "observation",
+      "id": "diagnostics_demo:narrative",
+      "nameKey": "diagnostics_demo.narrative.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "narrative",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      },
+      "result": {
+        "valueKind": "text",
+        "categories": [],
+        "patientContextKeys": []
+      }
+    },
+    {
+      "kind": "examination",
+      "id": "diagnostics_demo:pressure_check",
+      "nameKey": "diagnostics_demo.pressure_check.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "pressure_check",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "observation",
+      "id": "diagnostics_demo:pressure_present",
+      "nameKey": "diagnostics_demo.pressure_present.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "pressure_present",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      },
+      "result": {
+        "valueKind": "boolean",
+        "categories": [],
+        "patientContextKeys": []
+      }
+    },
+    {
+      "kind": "examination",
+      "id": "diagnostics_demo:sample_measurement",
+      "nameKey": "diagnostics_demo.sample_measurement.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "sample_measurement",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "observation",
+      "id": "diagnostics_demo:sample_index",
+      "nameKey": "diagnostics_demo.sample_index.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "sample_index",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      },
+      "result": {
+        "valueKind": "numeric",
+        "categories": [],
+        "patientContextKeys": [
+          "diagnostics_demo.patient.group"
+        ],
+        "unitCode": "1"
+      }
+    },
+    {
+      "kind": "examination",
+      "id": "diagnostics_demo:image_scan",
+      "nameKey": "diagnostics_demo.image_scan.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "image_scan",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "observation",
+      "id": "diagnostics_demo:image_pattern",
+      "nameKey": "diagnostics_demo.image_pattern.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "image_pattern",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      },
+      "result": {
+        "valueKind": "categorical",
+        "categories": [
+          {
+            "key": "clear",
+            "nameKey": "diagnostics_demo.image_pattern.clear"
+          },
+          {
+            "key": "pattern",
+            "nameKey": "diagnostics_demo.image_pattern.pattern",
+            "findingId": "diagnostics_demo:amber_pattern"
+          }
+        ],
+        "patientContextKeys": []
+      }
+    },
+    {
+      "kind": "examination",
+      "id": "diagnostics_demo:rhythm_trace",
+      "nameKey": "diagnostics_demo.rhythm_trace.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "rhythm_trace",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "observation",
+      "id": "diagnostics_demo:rhythm_pattern",
+      "nameKey": "diagnostics_demo.rhythm_pattern.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "rhythm_pattern",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      },
+      "result": {
+        "valueKind": "categorical",
+        "categories": [
+          {
+            "key": "clear",
+            "nameKey": "diagnostics_demo.rhythm_pattern.clear"
+          },
+          {
+            "key": "pattern",
+            "nameKey": "diagnostics_demo.rhythm_pattern.pattern",
+            "findingId": "diagnostics_demo:azure_pattern"
+          }
+        ],
+        "patientContextKeys": []
+      }
+    }
+  ],
+  "relations": [
+    {
+      "id": "diagnostics_demo:link_examinationobservation_history_narrative",
+      "version": "1.0.0",
+      "kind": "examinationObservation",
+      "fromId": "diagnostics_demo:history",
+      "toId": "diagnostics_demo:narrative",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "link_examinationobservation_history_narrative",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "diagnostics_demo:link_examinationroom_history_consultation_room",
+      "version": "1.0.0",
+      "kind": "examinationRoom",
+      "fromId": "diagnostics_demo:history",
+      "toId": "diagnostics_demo:consultation_room",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "link_examinationroom_history_consultation_room",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "diagnostics_demo:link_examinationqualification_history_demo_operator",
+      "version": "1.0.0",
+      "kind": "examinationQualification",
+      "fromId": "diagnostics_demo:history",
+      "toId": "diagnostics_demo:demo_operator",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "link_examinationqualification_history_demo_operator",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "diagnostics_demo:link_examinationobservation_pressure_check_pressure_present",
+      "version": "1.0.0",
+      "kind": "examinationObservation",
+      "fromId": "diagnostics_demo:pressure_check",
+      "toId": "diagnostics_demo:pressure_present",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "link_examinationobservation_pressure_check_pressure_present",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "diagnostics_demo:link_examinationroom_pressure_check_consultation_room",
+      "version": "1.0.0",
+      "kind": "examinationRoom",
+      "fromId": "diagnostics_demo:pressure_check",
+      "toId": "diagnostics_demo:consultation_room",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "link_examinationroom_pressure_check_consultation_room",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "diagnostics_demo:link_examinationqualification_pressure_check_demo_operator",
+      "version": "1.0.0",
+      "kind": "examinationQualification",
+      "fromId": "diagnostics_demo:pressure_check",
+      "toId": "diagnostics_demo:demo_operator",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "link_examinationqualification_pressure_check_demo_operator",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "diagnostics_demo:link_examinationobservation_sample_measurement_sample_index",
+      "version": "1.0.0",
+      "kind": "examinationObservation",
+      "fromId": "diagnostics_demo:sample_measurement",
+      "toId": "diagnostics_demo:sample_index",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "link_examinationobservation_sample_measurement_sample_index",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "diagnostics_demo:link_examinationroom_sample_measurement_consultation_room",
+      "version": "1.0.0",
+      "kind": "examinationRoom",
+      "fromId": "diagnostics_demo:sample_measurement",
+      "toId": "diagnostics_demo:consultation_room",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "link_examinationroom_sample_measurement_consultation_room",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "diagnostics_demo:link_examinationqualification_sample_measurement_demo_operator",
+      "version": "1.0.0",
+      "kind": "examinationQualification",
+      "fromId": "diagnostics_demo:sample_measurement",
+      "toId": "diagnostics_demo:demo_operator",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "link_examinationqualification_sample_measurement_demo_operator",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "diagnostics_demo:link_examinationequipment_sample_measurement_demo_device",
+      "version": "1.0.0",
+      "kind": "examinationEquipment",
+      "fromId": "diagnostics_demo:sample_measurement",
+      "toId": "diagnostics_demo:demo_device",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "link_examinationequipment_sample_measurement_demo_device",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "diagnostics_demo:link_examinationobservation_image_scan_image_pattern",
+      "version": "1.0.0",
+      "kind": "examinationObservation",
+      "fromId": "diagnostics_demo:image_scan",
+      "toId": "diagnostics_demo:image_pattern",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "link_examinationobservation_image_scan_image_pattern",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "diagnostics_demo:link_examinationroom_image_scan_consultation_room",
+      "version": "1.0.0",
+      "kind": "examinationRoom",
+      "fromId": "diagnostics_demo:image_scan",
+      "toId": "diagnostics_demo:consultation_room",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "link_examinationroom_image_scan_consultation_room",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "diagnostics_demo:link_examinationqualification_image_scan_demo_operator",
+      "version": "1.0.0",
+      "kind": "examinationQualification",
+      "fromId": "diagnostics_demo:image_scan",
+      "toId": "diagnostics_demo:demo_operator",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "link_examinationqualification_image_scan_demo_operator",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "diagnostics_demo:link_examinationequipment_image_scan_demo_device",
+      "version": "1.0.0",
+      "kind": "examinationEquipment",
+      "fromId": "diagnostics_demo:image_scan",
+      "toId": "diagnostics_demo:demo_device",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "link_examinationequipment_image_scan_demo_device",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "diagnostics_demo:link_examinationobservation_rhythm_trace_rhythm_pattern",
+      "version": "1.0.0",
+      "kind": "examinationObservation",
+      "fromId": "diagnostics_demo:rhythm_trace",
+      "toId": "diagnostics_demo:rhythm_pattern",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "link_examinationobservation_rhythm_trace_rhythm_pattern",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "diagnostics_demo:link_examinationroom_rhythm_trace_consultation_room",
+      "version": "1.0.0",
+      "kind": "examinationRoom",
+      "fromId": "diagnostics_demo:rhythm_trace",
+      "toId": "diagnostics_demo:consultation_room",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "link_examinationroom_rhythm_trace_consultation_room",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "diagnostics_demo:link_examinationqualification_rhythm_trace_demo_operator",
+      "version": "1.0.0",
+      "kind": "examinationQualification",
+      "fromId": "diagnostics_demo:rhythm_trace",
+      "toId": "diagnostics_demo:demo_operator",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "link_examinationqualification_rhythm_trace_demo_operator",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "diagnostics_demo:link_examinationequipment_rhythm_trace_demo_device",
+      "version": "1.0.0",
+      "kind": "examinationEquipment",
+      "fromId": "diagnostics_demo:rhythm_trace",
+      "toId": "diagnostics_demo:demo_device",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "link_examinationequipment_rhythm_trace_demo_device",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "diagnostics_demo:link_examinationprerequisite_image_scan_history",
+      "version": "1.0.0",
+      "kind": "examinationPrerequisite",
+      "fromId": "diagnostics_demo:image_scan",
+      "toId": "diagnostics_demo:history",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "link_examinationprerequisite_image_scan_history",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "diagnostics_demo:link_diseasesymptom_amber_condition_reported_discomfort",
+      "version": "1.0.0",
+      "kind": "diseaseSymptom",
+      "fromId": "diagnostics_demo:amber_condition",
+      "toId": "diagnostics_demo:reported_discomfort",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "link_diseasesymptom_amber_condition_reported_discomfort",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "diagnostics_demo:link_diseasefinding_amber_condition_pressure_response",
+      "version": "1.0.0",
+      "kind": "diseaseFinding",
+      "fromId": "diagnostics_demo:amber_condition",
+      "toId": "diagnostics_demo:pressure_response",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "link_diseasefinding_amber_condition_pressure_response",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "diagnostics_demo:link_diseasetreatment_amber_condition_demo_support",
+      "version": "1.0.0",
+      "kind": "diseaseTreatment",
+      "fromId": "diagnostics_demo:amber_condition",
+      "toId": "diagnostics_demo:demo_support",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "link_diseasetreatment_amber_condition_demo_support",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "diagnostics_demo:link_diseaseexamination_amber_condition_history",
+      "version": "1.0.0",
+      "kind": "diseaseExamination",
+      "fromId": "diagnostics_demo:amber_condition",
+      "toId": "diagnostics_demo:history",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "link_diseaseexamination_amber_condition_history",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "diagnostics_demo:link_diseaseexamination_amber_condition_pressure_check",
+      "version": "1.0.0",
+      "kind": "diseaseExamination",
+      "fromId": "diagnostics_demo:amber_condition",
+      "toId": "diagnostics_demo:pressure_check",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "link_diseaseexamination_amber_condition_pressure_check",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "diagnostics_demo:link_diseaseexamination_amber_condition_sample_measurement",
+      "version": "1.0.0",
+      "kind": "diseaseExamination",
+      "fromId": "diagnostics_demo:amber_condition",
+      "toId": "diagnostics_demo:sample_measurement",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "link_diseaseexamination_amber_condition_sample_measurement",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "diagnostics_demo:link_diseaseexamination_amber_condition_image_scan",
+      "version": "1.0.0",
+      "kind": "diseaseExamination",
+      "fromId": "diagnostics_demo:amber_condition",
+      "toId": "diagnostics_demo:image_scan",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "link_diseaseexamination_amber_condition_image_scan",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "diagnostics_demo:link_diseaseexamination_amber_condition_rhythm_trace",
+      "version": "1.0.0",
+      "kind": "diseaseExamination",
+      "fromId": "diagnostics_demo:amber_condition",
+      "toId": "diagnostics_demo:rhythm_trace",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "link_diseaseexamination_amber_condition_rhythm_trace",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "diagnostics_demo:link_diseasesymptom_azure_condition_reported_discomfort",
+      "version": "1.0.0",
+      "kind": "diseaseSymptom",
+      "fromId": "diagnostics_demo:azure_condition",
+      "toId": "diagnostics_demo:reported_discomfort",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "link_diseasesymptom_azure_condition_reported_discomfort",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "diagnostics_demo:link_diseasefinding_azure_condition_pressure_response",
+      "version": "1.0.0",
+      "kind": "diseaseFinding",
+      "fromId": "diagnostics_demo:azure_condition",
+      "toId": "diagnostics_demo:pressure_response",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "link_diseasefinding_azure_condition_pressure_response",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "diagnostics_demo:link_diseasetreatment_azure_condition_demo_support",
+      "version": "1.0.0",
+      "kind": "diseaseTreatment",
+      "fromId": "diagnostics_demo:azure_condition",
+      "toId": "diagnostics_demo:demo_support",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "link_diseasetreatment_azure_condition_demo_support",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "diagnostics_demo:link_diseaseexamination_azure_condition_history",
+      "version": "1.0.0",
+      "kind": "diseaseExamination",
+      "fromId": "diagnostics_demo:azure_condition",
+      "toId": "diagnostics_demo:history",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "link_diseaseexamination_azure_condition_history",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "diagnostics_demo:link_diseaseexamination_azure_condition_pressure_check",
+      "version": "1.0.0",
+      "kind": "diseaseExamination",
+      "fromId": "diagnostics_demo:azure_condition",
+      "toId": "diagnostics_demo:pressure_check",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "link_diseaseexamination_azure_condition_pressure_check",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "diagnostics_demo:link_diseaseexamination_azure_condition_sample_measurement",
+      "version": "1.0.0",
+      "kind": "diseaseExamination",
+      "fromId": "diagnostics_demo:azure_condition",
+      "toId": "diagnostics_demo:sample_measurement",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "link_diseaseexamination_azure_condition_sample_measurement",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "diagnostics_demo:link_diseaseexamination_azure_condition_image_scan",
+      "version": "1.0.0",
+      "kind": "diseaseExamination",
+      "fromId": "diagnostics_demo:azure_condition",
+      "toId": "diagnostics_demo:image_scan",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "link_diseaseexamination_azure_condition_image_scan",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "diagnostics_demo:link_diseaseexamination_azure_condition_rhythm_trace",
+      "version": "1.0.0",
+      "kind": "diseaseExamination",
+      "fromId": "diagnostics_demo:azure_condition",
+      "toId": "diagnostics_demo:rhythm_trace",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "link_diseaseexamination_azure_condition_rhythm_trace",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "diagnostics_demo:link_diseasesymptom_coral_condition_reported_discomfort",
+      "version": "1.0.0",
+      "kind": "diseaseSymptom",
+      "fromId": "diagnostics_demo:coral_condition",
+      "toId": "diagnostics_demo:reported_discomfort",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "link_diseasesymptom_coral_condition_reported_discomfort",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "diagnostics_demo:link_diseasefinding_coral_condition_pressure_response",
+      "version": "1.0.0",
+      "kind": "diseaseFinding",
+      "fromId": "diagnostics_demo:coral_condition",
+      "toId": "diagnostics_demo:pressure_response",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "link_diseasefinding_coral_condition_pressure_response",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "diagnostics_demo:link_diseasetreatment_coral_condition_demo_support",
+      "version": "1.0.0",
+      "kind": "diseaseTreatment",
+      "fromId": "diagnostics_demo:coral_condition",
+      "toId": "diagnostics_demo:demo_support",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "link_diseasetreatment_coral_condition_demo_support",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "diagnostics_demo:link_diseaseexamination_coral_condition_history",
+      "version": "1.0.0",
+      "kind": "diseaseExamination",
+      "fromId": "diagnostics_demo:coral_condition",
+      "toId": "diagnostics_demo:history",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "link_diseaseexamination_coral_condition_history",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "diagnostics_demo:link_diseaseexamination_coral_condition_pressure_check",
+      "version": "1.0.0",
+      "kind": "diseaseExamination",
+      "fromId": "diagnostics_demo:coral_condition",
+      "toId": "diagnostics_demo:pressure_check",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "link_diseaseexamination_coral_condition_pressure_check",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "diagnostics_demo:link_diseaseexamination_coral_condition_sample_measurement",
+      "version": "1.0.0",
+      "kind": "diseaseExamination",
+      "fromId": "diagnostics_demo:coral_condition",
+      "toId": "diagnostics_demo:sample_measurement",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "link_diseaseexamination_coral_condition_sample_measurement",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "diagnostics_demo:link_diseaseexamination_coral_condition_image_scan",
+      "version": "1.0.0",
+      "kind": "diseaseExamination",
+      "fromId": "diagnostics_demo:coral_condition",
+      "toId": "diagnostics_demo:image_scan",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "link_diseaseexamination_coral_condition_image_scan",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "diagnostics_demo:link_diseaseexamination_coral_condition_rhythm_trace",
+      "version": "1.0.0",
+      "kind": "diseaseExamination",
+      "fromId": "diagnostics_demo:coral_condition",
+      "toId": "diagnostics_demo:rhythm_trace",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "link_diseaseexamination_coral_condition_rhythm_trace",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    }
+  ],
+  "medicalAnnotations": [],
+  "referenceRanges": [
+    {
+      "schemaVersion": "1.0.0",
+      "id": "diagnostics_demo:fictional_reference_range",
+      "version": "1.0.0",
+      "observationId": "diagnostics_demo:sample_index",
+      "unitCode": "1",
+      "minimum": 0,
+      "maximum": 5,
+      "appliesWhen": [
+        {
+          "factorKey": "diagnostics_demo.patient.group",
+          "category": "illustrative"
+        }
+      ],
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "fictional_reference_range",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    }
+  ],
+  "diagnosticRecommendations": [
+    {
+      "schemaVersion": "1.0.0",
+      "id": "diagnostics_demo:fictional_recommendation",
+      "version": "1.0.0",
+      "diseaseId": "diagnostics_demo:amber_condition",
+      "examinationId": "diagnostics_demo:sample_measurement",
+      "contextDefinitionIds": [
+        "diagnostics_demo:reported_discomfort"
+      ],
+      "rationaleKey": "diagnostics_demo.recommendation.rationale",
+      "provenance": {
+        "source": "Iryomera own fictional diagnostic software fixtures; not medical knowledge",
+        "externalId": "fictional_recommendation",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic test fixture only; no medical reference interval or recommendation"
+          }
+        ]
+      }
+    }
+  ],
+  "gameplay": [
+    {
+      "definitionId": "diagnostics_demo:history",
+      "examinationCost": 10,
+      "examinationDurationSeconds": 15,
+      "diagnosticDifficulty": 0.2,
+      "requiredResources": {
+        "diagnostics_demo:consultation_room": 1
+      }
+    },
+    {
+      "definitionId": "diagnostics_demo:pressure_check",
+      "examinationCost": 15,
+      "examinationDurationSeconds": 25,
+      "diagnosticDifficulty": 0.2,
+      "requiredResources": {
+        "diagnostics_demo:consultation_room": 1
+      }
+    },
+    {
+      "definitionId": "diagnostics_demo:sample_measurement",
+      "examinationCost": 20,
+      "examinationDurationSeconds": 35,
+      "diagnosticDifficulty": 0.2,
+      "requiredResources": {
+        "diagnostics_demo:consultation_room": 1
+      }
+    },
+    {
+      "definitionId": "diagnostics_demo:image_scan",
+      "examinationCost": 25,
+      "examinationDurationSeconds": 45,
+      "diagnosticDifficulty": 0.2,
+      "requiredResources": {
+        "diagnostics_demo:consultation_room": 1
+      }
+    },
+    {
+      "definitionId": "diagnostics_demo:rhythm_trace",
+      "examinationCost": 30,
+      "examinationDurationSeconds": 55,
+      "diagnosticDifficulty": 0.2,
+      "requiredResources": {
+        "diagnostics_demo:consultation_room": 1
+      }
+    }
+  ],
+  "diagnosticSimulation": {
+    "simulationOnly": true,
+    "observationDistributions": [
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "diagnostics_demo:distribution_amber_narrative",
+        "version": "1.0.0",
+        "diseaseId": "diagnostics_demo:amber_condition",
+        "observationId": "diagnostics_demo:narrative",
+        "categoryWeights": {},
+        "textKey": "diagnostics_demo.response_amber"
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "diagnostics_demo:distribution_amber_pressure_present",
+        "version": "1.0.0",
+        "diseaseId": "diagnostics_demo:amber_condition",
+        "observationId": "diagnostics_demo:pressure_present",
+        "categoryWeights": {},
+        "trueProbability": 0.2
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "diagnostics_demo:distribution_amber_sample_index",
+        "version": "1.0.0",
+        "diseaseId": "diagnostics_demo:amber_condition",
+        "observationId": "diagnostics_demo:sample_index",
+        "categoryWeights": {},
+        "numericMinimum": 10,
+        "numericMaximum": 14
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "diagnostics_demo:distribution_amber_image_pattern",
+        "version": "1.0.0",
+        "diseaseId": "diagnostics_demo:amber_condition",
+        "observationId": "diagnostics_demo:image_pattern",
+        "categoryWeights": {
+          "clear": 3,
+          "pattern": 1
+        }
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "diagnostics_demo:distribution_amber_rhythm_pattern",
+        "version": "1.0.0",
+        "diseaseId": "diagnostics_demo:amber_condition",
+        "observationId": "diagnostics_demo:rhythm_pattern",
+        "categoryWeights": {
+          "clear": 3,
+          "pattern": 1
+        }
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "diagnostics_demo:distribution_azure_narrative",
+        "version": "1.0.0",
+        "diseaseId": "diagnostics_demo:azure_condition",
+        "observationId": "diagnostics_demo:narrative",
+        "categoryWeights": {},
+        "textKey": "diagnostics_demo.response_azure"
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "diagnostics_demo:distribution_azure_pressure_present",
+        "version": "1.0.0",
+        "diseaseId": "diagnostics_demo:azure_condition",
+        "observationId": "diagnostics_demo:pressure_present",
+        "categoryWeights": {},
+        "trueProbability": 0.4
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "diagnostics_demo:distribution_azure_sample_index",
+        "version": "1.0.0",
+        "diseaseId": "diagnostics_demo:azure_condition",
+        "observationId": "diagnostics_demo:sample_index",
+        "categoryWeights": {},
+        "numericMinimum": 15,
+        "numericMaximum": 19
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "diagnostics_demo:distribution_azure_image_pattern",
+        "version": "1.0.0",
+        "diseaseId": "diagnostics_demo:azure_condition",
+        "observationId": "diagnostics_demo:image_pattern",
+        "categoryWeights": {
+          "clear": 2,
+          "pattern": 2
+        }
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "diagnostics_demo:distribution_azure_rhythm_pattern",
+        "version": "1.0.0",
+        "diseaseId": "diagnostics_demo:azure_condition",
+        "observationId": "diagnostics_demo:rhythm_pattern",
+        "categoryWeights": {
+          "clear": 2,
+          "pattern": 2
+        }
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "diagnostics_demo:distribution_coral_narrative",
+        "version": "1.0.0",
+        "diseaseId": "diagnostics_demo:coral_condition",
+        "observationId": "diagnostics_demo:narrative",
+        "categoryWeights": {},
+        "textKey": "diagnostics_demo.response_coral"
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "diagnostics_demo:distribution_coral_pressure_present",
+        "version": "1.0.0",
+        "diseaseId": "diagnostics_demo:coral_condition",
+        "observationId": "diagnostics_demo:pressure_present",
+        "categoryWeights": {},
+        "trueProbability": 0.6000000000000001
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "diagnostics_demo:distribution_coral_sample_index",
+        "version": "1.0.0",
+        "diseaseId": "diagnostics_demo:coral_condition",
+        "observationId": "diagnostics_demo:sample_index",
+        "categoryWeights": {},
+        "numericMinimum": 20,
+        "numericMaximum": 24
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "diagnostics_demo:distribution_coral_image_pattern",
+        "version": "1.0.0",
+        "diseaseId": "diagnostics_demo:coral_condition",
+        "observationId": "diagnostics_demo:image_pattern",
+        "categoryWeights": {
+          "clear": 1,
+          "pattern": 3
+        }
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "diagnostics_demo:distribution_coral_rhythm_pattern",
+        "version": "1.0.0",
+        "diseaseId": "diagnostics_demo:coral_condition",
+        "observationId": "diagnostics_demo:rhythm_pattern",
+        "categoryWeights": {
+          "clear": 1,
+          "pattern": 3
+        }
+      }
+    ],
+    "manifestations": [
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "diagnostics_demo:manifestation_amber",
+        "version": "1.0.0",
+        "diseaseId": "diagnostics_demo:amber_condition",
+        "manifestationId": "diagnostics_demo:reported_discomfort",
+        "probability": 0.5,
+        "visibility": "initiallyVisible"
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "diagnostics_demo:manifestation_azure",
+        "version": "1.0.0",
+        "diseaseId": "diagnostics_demo:azure_condition",
+        "manifestationId": "diagnostics_demo:reported_discomfort",
+        "probability": 0.5,
+        "visibility": "initiallyVisible"
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "diagnostics_demo:manifestation_coral",
+        "version": "1.0.0",
+        "diseaseId": "diagnostics_demo:coral_condition",
+        "manifestationId": "diagnostics_demo:reported_discomfort",
+        "probability": 0.5,
+        "visibility": "initiallyVisible"
+      }
+    ],
+    "examinationPolicies": [
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "diagnostics_demo:policy_history",
+        "version": "1.0.0",
+        "examinationId": "diagnostics_demo:history",
+        "visibility": "afterExamination",
+        "repeatPolicy": "untilPatientStateChanges"
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "diagnostics_demo:policy_pressure_check",
+        "version": "1.0.0",
+        "examinationId": "diagnostics_demo:pressure_check",
+        "visibility": "afterExamination",
+        "repeatPolicy": "untilPatientStateChanges"
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "diagnostics_demo:policy_sample_measurement",
+        "version": "1.0.0",
+        "examinationId": "diagnostics_demo:sample_measurement",
+        "visibility": "afterExamination",
+        "repeatPolicy": "untilPatientStateChanges"
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "diagnostics_demo:policy_image_scan",
+        "version": "1.0.0",
+        "examinationId": "diagnostics_demo:image_scan",
+        "visibility": "afterExamination",
+        "repeatPolicy": "untilPatientStateChanges"
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "diagnostics_demo:policy_rhythm_trace",
+        "version": "1.0.0",
+        "examinationId": "diagnostics_demo:rhythm_trace",
+        "visibility": "afterExamination",
+        "repeatPolicy": "untilPatientStateChanges"
+      }
+    ]
+  },
+  "examplePurpose": "Fictional software fixtures, not clinical facts; no patient runtime is implemented",
+  "privateGameExampleSeed": 2026
+}

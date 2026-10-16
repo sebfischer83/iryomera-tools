@@ -58,6 +58,7 @@ public sealed record ExternalIdentifier : ExtensibleRecord
 [JsonDerivedType(typeof(SymptomDefinition), "symptom")]
 [JsonDerivedType(typeof(FindingDefinition), "finding")]
 [JsonDerivedType(typeof(ExaminationDefinition), "examination")]
+[JsonDerivedType(typeof(ObservationDefinition), "observation")]
 [JsonDerivedType(typeof(TreatmentDefinition), "treatment")]
 [JsonDerivedType(typeof(MedicalProcedureDefinition), "medicalProcedure")]
 [JsonDerivedType(typeof(MedicalDepartmentDefinition), "medicalDepartment")]
@@ -81,6 +82,11 @@ public sealed record DiseaseDefinition : ContentDefinition;
 public sealed record SymptomDefinition : ContentDefinition;
 public sealed record FindingDefinition : ContentDefinition;
 public sealed record ExaminationDefinition : ContentDefinition;
+/// <summary>An observation/measurement or panel code; does not declare a playable examination.</summary>
+public sealed record ObservationDefinition : ContentDefinition
+{
+    public ObservationResultDefinition? Result { get; init; }
+}
 public sealed record TreatmentDefinition : ContentDefinition;
 public sealed record MedicalProcedureDefinition : ContentDefinition;
 public sealed record MedicalDepartmentDefinition : ContentDefinition;
@@ -94,7 +100,7 @@ public sealed record StaffRoleDefinition : ContentDefinition;
 public enum RelationKind
 {
     DiseaseSymptom, DiseaseFinding, ExaminationFinding, DiseaseExamination,
-    DiseaseTreatment, ExaminationEquipment, TreatmentQualification, RoomFurniture
+    DiseaseTreatment, ExaminationEquipment, TreatmentQualification, RoomFurniture, ExaminationObservation, ExaminationRoom, ExaminationQualification, ExaminationPrerequisite
 }
 
 public sealed record ContentRelation : ExtensibleRecord
@@ -114,6 +120,7 @@ public sealed record GameplayBalance : ExtensibleRecord
     public decimal? Rarity { get; init; }
     public decimal? Severity { get; init; }
     public decimal? TreatmentDurationSeconds { get; init; }
+    public decimal? ExaminationDurationSeconds { get; init; }
     public decimal? ExaminationCost { get; init; }
     public decimal? TreatmentCost { get; init; }
     public decimal? DiagnosticDifficulty { get; init; }
@@ -129,6 +136,7 @@ public sealed record ContentDependency : ExtensibleRecord
 
 public sealed record ContentPackageManifest : ExtensibleRecord
 {
+    [JsonRequired]
     public string SchemaVersion { get; init; } = ContentFormat.SchemaVersion;
     public required string Id { get; init; }
     public required string Namespace { get; init; }
@@ -140,6 +148,7 @@ public sealed record ContentPackageManifest : ExtensibleRecord
 /// <summary>Phase 1 data contract only; package loading/installation is planned in ModKit.</summary>
 public sealed record ModManifest : ExtensibleRecord
 {
+    [JsonRequired]
     public string SchemaVersion { get; init; } = ContentFormat.SchemaVersion;
     public required string Id { get; init; }
     public required string Namespace { get; init; }
@@ -156,16 +165,22 @@ public sealed record ModManifest : ExtensibleRecord
 /// <summary>A package is the atomic content exchange unit; dependencies are explicit inputs.</summary>
 public sealed record ContentPackage : ExtensibleRecord
 {
+    [JsonRequired]
     public string SchemaVersion { get; init; } = ContentFormat.SchemaVersion;
     public required ContentPackageManifest Manifest { get; init; }
     public List<ContentDefinition> Definitions { get; init; } = [];
     public List<ContentRelation> Relations { get; init; } = [];
+    public List<MedicalAnnotation> MedicalAnnotations { get; init; } = [];
+    public List<ObservationReferenceRange> ReferenceRanges { get; init; } = [];
+    public List<DiagnosticRecommendation> DiagnosticRecommendations { get; init; } = [];
+    public DiagnosticSimulationSettings? DiagnosticSimulation { get; init; }
     public List<GameplayBalance> Gameplay { get; init; } = [];
 }
 
 /// <summary>A separately stored language catalog, owned by a package namespace.</summary>
 public sealed record LocalizationDefinition : ExtensibleRecord
 {
+    [JsonRequired]
     public string SchemaVersion { get; init; } = ContentFormat.SchemaVersion;
     public required string Namespace { get; init; }
     public required string Language { get; init; }

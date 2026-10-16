@@ -1,0 +1,5 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.iryomera.org/importer/v1/importDiagnostic.schema.json",
+  "$ref": "contracts.schema.json#/$defs/importDiagnostic"
+}

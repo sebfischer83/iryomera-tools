@@ -1,6 +1,8 @@
 # ADR 0001: Portable foundation and project boundaries
 
-Status: accepted for Phase 1, package version 0.1.0 / exchange schema 1.0.0.
+Status: original Phase 1 decision, package 0.1.0 / exchange schema 1.0.0.
+
+Review update (0.2.0): [ADR 0003](0003-medical-annotations.md) adds lossless medical annotations; [ADR 0004](0004-godot-runtime.md) adds net8.0/net10.0 assets and actual Godot integration. JsonSchema.Net is now an SDK runtime dependency for shared raw-document validation, not solely a test dependency. These explicit updates supersede the original dependency/target statements below.
 
 ## Context and decision
 

@@ -1,0 +1,2 @@
+# Test-only browser automation; Studio itself has no Python/browser-package dependency.
+playwright==1.62.0

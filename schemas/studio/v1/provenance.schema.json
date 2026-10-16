@@ -1,0 +1,5 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.iryomera.org/studio/v1/provenance.schema.json",
+  "$ref": "contracts.schema.json#/$defs/provenance"
+}

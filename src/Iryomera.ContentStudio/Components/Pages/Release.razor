@@ -1,0 +1,25 @@
+@page "/projects/{Id:guid}/release"
+@inherits StudioPage
+@inject ProjectService Projects
+<h1>@L["studio.release"]</h1><ProjectNav Id="Id" /><Feedback Error="Error" Message="@Message" />
+@if (State is not null)
+{
+    <p>@L["studio.releaseHint"]</p><a href="@($"/projects/{Id}/validation")">@L["studio.validation"]</a>
+    <section class="card"><h2>@L["studio.selectedReview"]</h2><div class="toolbar"><button class="secondary" @onclick="SelectAll">@L["studio.selectAll"]</button><button class="secondary" @onclick="() => Selected.Clear()">@L["studio.clearSelection"]</button></div>
+        <div class="record-list">@foreach (var record in StudioContent.Records(State.Package)) { <label><input type="checkbox" checked="@Selected.Contains(record.Id)" @onchange="args => Toggle(record.Id, args)" /><code>@record.Id</code> · @L["studio.status." + record.Provenance.ReviewStatus]</label> }</div>
+        <label>@L["studio.reviewer"]<input @bind="Actor" /></label><label>@L["studio.reason"]<textarea @bind="Note"></textarea></label><button @onclick="Approve" disabled="@(Busy || Selected.Count == 0)">@L["studio.approveSelected"] (@Selected.Count)</button>
+    </section>
+    <section class="card"><h2>@L["studio.projectRights"]</h2><p>@L["studio.rightsHint"]</p><p>@L[State.Project.RightsConfirmed ? "studio.rightsConfirmed" : "studio.rightsMissing"]</p>
+        <div class="toolbar"><button @onclick="() => Rights(true)">@L["studio.confirmRights"]</button><button class="secondary" @onclick="() => Rights(false)">@L["studio.block"]</button></div>
+    </section>
+    <a class="button" href="@($"/download/{Id}")" target="_blank">@L["studio.export"]</a>
+}
+@code {
+    [Parameter] public Guid Id { get; set; } private ProjectSnapshot? State; private string Actor = ""; private string Note = ""; private HashSet<string> Selected = new(StringComparer.Ordinal);
+    protected override Task OnParametersSetAsync() => Run(Load);
+    private async Task Load() => State = await Projects.GetAsync(Id);
+    private void SelectAll() => Selected = StudioContent.Records(State!.Package).Select(r => r.Id).ToHashSet(StringComparer.Ordinal);
+    private void Toggle(string id, ChangeEventArgs args) { if (args.Value is true) Selected.Add(id); else Selected.Remove(id); }
+    private Task Approve() => Run(async () => { await Projects.ReviewSelectionAsync(Id, State!.Project.Revision, Selected, Actor, Note); await Load(); });
+    private Task Rights(bool allow) => Run(async () => { await Projects.ConfirmRightsAsync(Id, State!.Project.Revision, allow, Actor, Note); await Load(); });
+}

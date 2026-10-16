@@ -1,0 +1,30 @@
+@page "/"
+@inherits StudioPage
+@inject ProjectService Projects
+<PageTitle>Iryomera ContentStudio</PageTitle>
+<h1>@L["studio.projects"]</h1><p>@L["studio.introduction"]</p>
+<Feedback Error="Error" Message="@Message" />
+<section class="card"><h2>@L["studio.startSynthetic"]</h2><p>@L["studio.syntheticNotice"]</p><label>@L["studio.reviewer"]<input @bind="Actor" required /></label><button @onclick="LoadSynthetic" disabled="@Busy">@L["studio.loadSynthetic"]</button></section>
+<div class="columns">
+    <section class="card"><h2>@L["studio.createProject"]</h2>
+        <label>@L["studio.title"]<input @bind="Title" /></label><label>@L["studio.namespace"]<input @bind="Namespace" /></label>
+        <button @onclick="Create" disabled="@Busy">@L["studio.create"]</button>
+    </section>
+    <section class="card"><h2>@L["studio.importContent"]</h2><p>@L["studio.contentUploadHint"]</p><InputFile OnChange="Upload" accept=".json" disabled="@Busy" /></section>
+</div>
+@if (Items is not null)
+{
+    <table><thead><tr><th>@L["studio.project"]</th><th>@L["studio.revision"]</th><th>@L["studio.updated"]</th></tr></thead>
+        <tbody>@foreach (var project in Items) { <tr><td><a href="@($"/projects/{project.Id}")">@project.Title</a></td><td>@project.Revision</td><td>@project.UpdatedAtUtc.ToLocalTime().ToString("g", CultureInfo.CurrentCulture)</td></tr> }</tbody>
+    </table>
+    @if (Items.Count == 0) { <p>@L["studio.emptyProjects"]</p> }
+}
+@code {
+    private List<StudioProject>? Items;
+    private string Actor = ""; private string Title = ""; private string Namespace = "my_content";
+    protected override async Task OnInitializedAsync() => Items = await Projects.ListAsync();
+    private Task LoadSynthetic() => Run(async () => Nav.NavigateTo("/projects/" + await Projects.LoadSyntheticAsync(Actor)));
+    private Task Create() => Run(async () => Nav.NavigateTo("/projects/" + await Projects.CreateAsync(Title, Namespace, Actor)));
+    private Task Upload(InputFileChangeEventArgs args) => Run(async () =>
+    { await using var input = args.File.OpenReadStream(StudioOptions.MaxUploadBytes); var id = await Projects.ImportPackageAsync(Path.GetFileNameWithoutExtension(args.File.Name), input, Actor); Nav.NavigateTo("/projects/" + id); });
+}

@@ -1,0 +1,6 @@
+@page "/projects/{Id:guid}/audit"
+@inherits StudioPage
+@inject ProjectService Projects
+<h1>@L["studio.audit"]</h1><ProjectNav Id="Id" /><Feedback Error="Error" Message="@Message" />
+@if (Entries is not null) { @foreach (var audit in Entries) { <section class="card"><h2>@audit.Action · @audit.Actor</h2><p>@audit.AtUtc.ToLocalTime().ToString("g", CultureInfo.CurrentCulture) · @audit.Target</p><p>@audit.Note</p><details><summary>@L["studio.before"]</summary><pre>@audit.BeforeJson</pre></details><details><summary>@L["studio.after"]</summary><pre>@audit.AfterJson</pre></details></section> } }
+@code { [Parameter] public Guid Id { get; set; } private List<StudioAudit>? Entries; protected override Task OnParametersSetAsync() => Run(async () => Entries = await Projects.AuditAsync(Id)); }

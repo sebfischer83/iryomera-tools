@@ -101,11 +101,30 @@ public static class ContentValidator
                 }
                 definitions.TryAdd(definition.Id, (definition, item));
             }
+            foreach (var range in item.ReferenceRanges) { Register(range.Id, manifest.Namespace, range.Id); CheckSchema(range.SchemaVersion, range.Id); CheckVersion(range.Version, range.Id); CheckProvenance(range.Provenance, range.Id); }
+            foreach (var recommendation in item.DiagnosticRecommendations) { Register(recommendation.Id, manifest.Namespace, recommendation.Id); CheckSchema(recommendation.SchemaVersion, recommendation.Id); CheckVersion(recommendation.Version, recommendation.Id); CheckProvenance(recommendation.Provenance, recommendation.Id); }
+            if (item.DiagnosticSimulation is { } simulation)
+            {
+                foreach (var record in simulation.ObservationDistributions.Select(d => (d.Id, d.Version, d.SchemaVersion)).Concat(simulation.Manifestations.Select(m => (m.Id, m.Version, m.SchemaVersion))).Concat(simulation.ExaminationPolicies.Select(p => (p.Id, p.Version, p.SchemaVersion))))
+                { Register(record.Id, manifest.Namespace, record.Id); CheckSchema(record.SchemaVersion, record.Id); CheckVersion(record.Version, record.Id); }
+            }
             foreach (var relation in item.Relations)
             {
                 Register(relation.Id, manifest.Namespace, path + ".relations[" + relation.Id + "]");
                 CheckVersion(relation.Version, relation.Id);
                 CheckProvenance(relation.Provenance, relation.Id);
+            }
+            foreach (var annotation in item.MedicalAnnotations)
+            {
+                Register(annotation.Id, manifest.Namespace, path + ".medicalAnnotations[" + annotation.Id + "]");
+                CheckSchema(annotation.SchemaVersion, annotation.Id);
+                CheckVersion(annotation.Version, annotation.Id);
+                CheckProvenance(annotation.Provenance, annotation.Id);
+                if (!Enum.IsDefined(annotation.Kind)) Error("annotation-kind", annotation.Id, "Unknown medical annotation kind.");
+                if (string.IsNullOrWhiteSpace(annotation.Predicate)) Error("annotation-predicate", annotation.Id, "The original source predicate is required.");
+                if (annotation.Qualifiers.Any(string.IsNullOrWhiteSpace)) Error("annotation-qualifier", annotation.Id, "Qualifier values must be nonempty when present.");
+                if (annotation.Frequency is { } frequency && string.IsNullOrWhiteSpace(frequency.SourceValue))
+                    Error("annotation-frequency", annotation.Id, "Preserve a nonempty original frequency string; do not invent a numeric probability.");
             }
         }
         // Resolve the package graph before validating references: only declared dependencies are visible.
@@ -148,6 +167,32 @@ public static class ContentValidator
                          (to is not null && to.Value.Definition.GetType() != types.Value.To))
                     Error("relation-type", relation.Id, "Endpoint definition types do not match the relation kind.");
             }
+            foreach (var annotation in item.MedicalAnnotations)
+            {
+                var subjectTypes = annotation.Kind == MedicalAnnotationKind.DiseasePhenotype
+                    ? new[] { typeof(DiseaseDefinition) }
+                    : new[] { typeof(MedicalProcedureDefinition), typeof(TreatmentDefinition), typeof(ExaminationDefinition) };
+                CheckAnnotationReference(annotation.Subject, annotation.Id + ".subject", true, subjectTypes);
+                CheckAnnotationReference(annotation.Object, annotation.Id + ".object", true, typeof(FindingDefinition), typeof(SymptomDefinition));
+                if (annotation.DiseaseContext is not null) CheckAnnotationReference(annotation.DiseaseContext, annotation.Id + ".diseaseContext", true, typeof(DiseaseDefinition));
+                if (annotation.ExtensionContext is not null) CheckAnnotationReference(annotation.ExtensionContext, annotation.Id + ".extensionContext", false);
+                if (annotation.Onset is not null) CheckAnnotationReference(annotation.Onset, annotation.Id + ".onset", false);
+                if (annotation.Frequency?.Term is not null) CheckAnnotationReference(annotation.Frequency.Term, annotation.Id + ".frequency.term", false);
+                foreach (var modifier in annotation.Modifiers) CheckAnnotationReference(modifier, annotation.Id + ".modifiers", false);
+            }
+            void CheckAnnotationReference(AnnotationReference reference, string path, bool requireResolution, params Type[] expectedTypes)
+            {
+                if (string.IsNullOrWhiteSpace(reference.ExternalId)) Error("annotation-external-id", path, "The unchanged source identifier is required.");
+                if (reference.ContentId is null)
+                {
+                    if (requireResolution) Error("unresolved-annotation-reference", path, $"Source reference {reference.ExternalId} has no explicit content resolution.");
+                    return;
+                }
+                var resolved = Resolve(reference.ContentId, path + ".contentId");
+                if (resolved is not null && expectedTypes.Length > 0 && !expectedTypes.Contains(resolved.Value.Definition.GetType()))
+                    Error("annotation-type", path, "Resolved definition type does not match its annotation role.");
+            }
+            errors.AddRange(DiagnosticValidator.Validate(item, id => Resolve(id, id)?.Definition));
             var balances = new HashSet<string>(StringComparer.Ordinal);
             foreach (var balance in item.Gameplay)
             {
@@ -155,7 +200,7 @@ public static class ContentValidator
                 if (!balances.Add(balance.DefinitionId)) Error("duplicate-balance", balance.DefinitionId, "Multiple balance records for one definition.");
                 if (new[] { balance.Rarity, balance.Severity, balance.DiagnosticDifficulty, balance.SimulatedSuccessProbability }.Any(x => x is < 0 or > 1))
                     Error("balance-range", balance.DefinitionId, "Normalized simulation values must be within [0,1].");
-                if (new[] { balance.TreatmentDurationSeconds, balance.ExaminationCost, balance.TreatmentCost }.Any(x => x < 0) || balance.RequiredResources.Values.Any(x => x < 0))
+                if (new[] { balance.TreatmentDurationSeconds, balance.ExaminationDurationSeconds, balance.ExaminationCost, balance.TreatmentCost }.Any(x => x < 0) || balance.RequiredResources.Values.Any(x => x < 0))
                     Error("balance-range", balance.DefinitionId, "Simulation time, costs and resources must be nonnegative.");
                 foreach (var resource in balance.RequiredResources.Keys)
                     if (string.IsNullOrWhiteSpace(resource)) Error("resource-key", balance.DefinitionId, "Resource keys must be nonempty.");
@@ -213,6 +258,10 @@ public static class ContentValidator
         RelationKind.DiseaseTreatment => (typeof(DiseaseDefinition), typeof(TreatmentDefinition)),
         RelationKind.ExaminationEquipment => (typeof(ExaminationDefinition), typeof(MedicalEquipmentDefinition)),
         RelationKind.TreatmentQualification => (typeof(TreatmentDefinition), typeof(StaffQualificationDefinition)),
+        RelationKind.ExaminationObservation => (typeof(ExaminationDefinition), typeof(ObservationDefinition)),
+        RelationKind.ExaminationRoom => (typeof(ExaminationDefinition), typeof(RoomDefinition)),
+        RelationKind.ExaminationQualification => (typeof(ExaminationDefinition), typeof(StaffQualificationDefinition)),
+        RelationKind.ExaminationPrerequisite => (typeof(ExaminationDefinition), typeof(ExaminationDefinition)),
         RelationKind.RoomFurniture => (typeof(RoomDefinition), typeof(FurnitureDefinition)),
         _ => null
     };

@@ -1,0 +1,15 @@
+{
+  "graphs": [{
+    "id": "urn:iryomera:synthetic:hpo",
+    "meta": {"version": "synthetic-1", "license": "MIT — synthetic fixtures only"},
+    "nodes": [
+      {"id": "http://purl.obolibrary.org/obo/HP_9999001", "type": "CLASS", "lbl": "Synthetic amber finding", "meta": {
+        "definition": {"val": "Fictional observable feature for importer tests; not medical knowledge."},
+        "synonyms": [{"pred": "hasExactSynonym", "val": "Synthetic amber feature"}],
+        "basicPropertyValues": [{"pred": "http://www.geneontology.org/formats/oboInOwl#hasAlternativeId", "val": "HP:9999091"}]
+      }},
+      {"id": "http://purl.obolibrary.org/obo/HP_9999002", "type": "CLASS", "lbl": "Synthetic parent finding"}
+    ],
+    "edges": [{"sub": "http://purl.obolibrary.org/obo/HP_9999001", "pred": "is_a", "obj": "http://purl.obolibrary.org/obo/HP_9999002"}]
+  }]
+}

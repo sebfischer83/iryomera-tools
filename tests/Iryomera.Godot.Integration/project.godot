@@ -1,0 +1,11 @@
+config_version=5
+
+[application]
+config/name="Iryomera Foundation integration"
+run/main_scene="res://Smoke.tscn"
+
+[dotnet]
+project/assembly_name="Iryomera.Godot.Integration"
+
+[rendering]
+renderer/rendering_method="gl_compatibility"

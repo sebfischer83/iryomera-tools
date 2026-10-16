@@ -19,3 +19,13 @@ Run the actual validation/localization example from the repository root:
 ```sh
 dotnet run --project examples/Iryomera.Foundation.Sample
 ```
+
+## Lossless medical annotation fixtures
+
+`annotations.json` is a separate self-contained package in namespace `annotation_demo`, with three fictional definitions and two explicitly synthetic HPO-/MAxO-shaped assertions. `annotations.en.json` and `annotations.de.json` provide its name keys. Do not combine its namespace with the original synthetic package by replacing either manifest; validate each package normally.
+
+The HPO-shaped fixture retains negation, exact `0/5` source frequency, qualifiers/onset/sex/modifier/aspect and all twelve raw columns. The MAxO-shaped fixture retains original predicate, action/phenotype/disease/extension context and all fifteen raw columns. They do not create positive binary relations, clinical advice or gameplay probabilities. These examples exercise the model only; no importer or real upstream dataset is included.
+
+## Diagnostic definition prototype
+
+`diagnostics.json`, `diagnostics.en.json` and `diagnostics.de.json` form a separate referentially consistent package: three fictional diseases, five reusable examinations, numeric/boolean/text/categorical observation definitions, resource/prerequisite links, a fictional interval/recommendation and explicitly separate simulation parameters. No patient simulation or medical facts are included. Regenerate with `python scripts/generate-diagnostic-example.py`. See [the contract guide](../../docs/diagnostic-content.md).

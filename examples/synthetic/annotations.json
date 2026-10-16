@@ -1,0 +1,187 @@
+{
+  "schemaVersion": "1.0.0",
+  "manifest": {
+    "schemaVersion": "1.0.0",
+    "id": "annotation_demo:annotations",
+    "namespace": "annotation_demo",
+    "version": "1.0.0",
+    "license": "MIT"
+  },
+  "definitions": [
+    {
+      "kind": "disease",
+      "id": "annotation_demo:disease",
+      "nameKey": "annotation_demo.disease.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera synthetic annotation fixtures — not medical knowledge",
+        "externalId": "SYNTHETIC:DISEASE_A",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "SYNTHETIC:fixture",
+            "evidenceCode": "SYNTHETIC"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "finding",
+      "id": "annotation_demo:finding",
+      "nameKey": "annotation_demo.finding.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera synthetic annotation fixtures — not medical knowledge",
+        "externalId": "SYNTHETIC:PHENOTYPE_A",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "SYNTHETIC:fixture",
+            "evidenceCode": "SYNTHETIC"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "medicalProcedure",
+      "id": "annotation_demo:action",
+      "nameKey": "annotation_demo.action.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera synthetic annotation fixtures — not medical knowledge",
+        "externalId": "SYNTHETIC:ACTION_A",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "SYNTHETIC:fixture",
+            "evidenceCode": "SYNTHETIC"
+          }
+        ]
+      }
+    }
+  ],
+  "medicalAnnotations": [
+    {
+      "schemaVersion": "1.0.0",
+      "id": "annotation_demo:hpo_assertion",
+      "version": "1.0.0",
+      "kind": "diseasePhenotype",
+      "predicate": "has_phenotype",
+      "subject": {
+        "externalId": "SYNTHETIC:DISEASE_A",
+        "contentId": "annotation_demo:disease"
+      },
+      "object": {
+        "externalId": "SYNTHETIC:PHENOTYPE_A",
+        "contentId": "annotation_demo:finding"
+      },
+      "isNegated": true,
+      "frequency": {
+        "sourceValue": "0/5"
+      },
+      "onset": {
+        "externalId": "SYNTHETIC:ONSET"
+      },
+      "sex": "SYNTHETIC_SEX",
+      "aspect": "P",
+      "modifiers": [
+        {
+          "externalId": "SYNTHETIC:MODIFIER"
+        }
+      ],
+      "qualifiers": [
+        "NOT"
+      ],
+      "provenance": {
+        "source": "Iryomera synthetic annotation fixtures — not medical knowledge",
+        "externalId": "SYNTHETIC:HPO_ROW_A",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "SYNTHETIC:fixture",
+            "evidenceCode": "SYNTHETIC"
+          }
+        ]
+      },
+      "sourceFields": {
+        "database_id": "SYNTHETIC:DISEASE_A",
+        "disease_name": "Synthetic annotation disease",
+        "qualifier": "NOT",
+        "hpo_id": "SYNTHETIC:PHENOTYPE_A",
+        "reference": "SYNTHETIC:fixture",
+        "evidence": "SYNTHETIC",
+        "onset": "SYNTHETIC:ONSET",
+        "frequency": "0/5",
+        "sex": "SYNTHETIC_SEX",
+        "modifier": "SYNTHETIC:MODIFIER",
+        "aspect": "P",
+        "biocuration": "SYNTHETIC:curator[2026-01-01]"
+      }
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "annotation_demo:maxo_assertion",
+      "version": "1.0.0",
+      "kind": "medicalAction",
+      "predicate": "TREATS",
+      "subject": {
+        "externalId": "SYNTHETIC:ACTION_A",
+        "contentId": "annotation_demo:action"
+      },
+      "object": {
+        "externalId": "SYNTHETIC:PHENOTYPE_A",
+        "contentId": "annotation_demo:finding"
+      },
+      "diseaseContext": {
+        "externalId": "SYNTHETIC:DISEASE_A",
+        "contentId": "annotation_demo:disease"
+      },
+      "extensionContext": {
+        "externalId": "SYNTHETIC:EXTENSION"
+      },
+      "provenance": {
+        "source": "Iryomera synthetic annotation fixtures — not medical knowledge",
+        "externalId": "SYNTHETIC:MAXO_ROW_A",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "SYNTHETIC:fixture",
+            "evidenceCode": "SYNTHETIC"
+          }
+        ]
+      },
+      "sourceFields": {
+        "disease_id": "SYNTHETIC:DISEASE_A",
+        "disease_name": "Synthetic annotation disease",
+        "source_id": "SYNTHETIC:fixture",
+        "maxo_id": "SYNTHETIC:ACTION_A",
+        "maxo_name": "Synthetic annotation action",
+        "hpo_id": "SYNTHETIC:PHENOTYPE_A",
+        "relation": "TREATS",
+        "evidence": "SYNTHETIC",
+        "extension_id": "SYNTHETIC:EXTENSION",
+        "extension_name": "Synthetic external context",
+        "comment": "Fictional assertion for transport tests only",
+        "other": "",
+        "author": "SYNTHETIC:curator",
+        "last_updated": "2026-01-01",
+        "created": "2026-01-01"
+      }
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+@page "/projects/{Id:guid}/validation"
+@inherits StudioPage
+@inject ProjectService Projects
+<h1>@L["studio.validation"]</h1><ProjectNav Id="Id" /><Feedback Error="Error" Message="@Message" />
+@if (State is not null)
+{
+    <h2>@L["studio.validationIssues"] (@Issues.Count)</h2>
+    @if (Issues.Count == 0) { <p class="success">@L["studio.valid"]</p> }
+    <table><thead><tr><th>@L["studio.code"]</th><th>@L["studio.id"]</th><th>@L["studio.details"]</th></tr></thead><tbody>@foreach (var issue in Issues) { <tr><td><code>@issue.Code</code></td><td>@issue.Path</td><td>@issue.Message</td></tr> }</tbody></table>
+    <h2>@L["studio.duplicates"]</h2><p>@L["studio.duplicateHint"]</p><ul>@foreach (var pair in ProjectService.Duplicates(State)) { <li>@pair.Text: <code>@pair.LeftId ↔ @pair.RightId</code></li> }</ul>
+    <section class="card"><h2>@L["studio.importCatalog"]</h2><label>@L["studio.reviewer"]<input @bind="Actor" /></label><label>@L["studio.reason"]<textarea @bind="Note"></textarea></label><InputFile OnChange="UploadCatalog" accept=".json" /></section>
+    <section class="card"><h2>@L["studio.diagnosticContracts"]</h2><p>@L["studio.diagnosticHint"]</p>
+        <label>@L["studio.kind"]<select @bind="ContractKind" @bind:after="SelectContract"><option value="result">@L["studio.resultDescriptor"]</option><option value="range">@L["studio.referenceRanges"]</option><option value="recommendation">@L["studio.recommendations"]</option><option value="simulation">@L["studio.section.gameplay"]</option></select></label>
+        <label>@L["studio.select"]<select @bind="SelectedContractId" @bind:after="SelectContract">@foreach (var key in ContractIds()) { <option value="@key">@key</option> }</select></label>
+        <textarea class="json" @bind="ContractJson"></textarea><button @onclick="SaveContract">@L["studio.saveDraft"]</button>
+        @foreach (var record in State.Package.ReferenceRanges.Select(r => (r.Id, r.Provenance)).Concat(State.Package.DiagnosticRecommendations.Select(r => (r.Id, r.Provenance))))
+        { <ReviewPanel ProjectId="Id" Revision="State.Project.Revision" RecordId="@record.Id" Provenance="record.Provenance" OnChanged="Load" /> }
+    </section>
+}
+@code {
+    [Parameter] public Guid Id { get; set; } private ProjectSnapshot? State; private IReadOnlyList<ValidationIssue> Issues = [];
+    private string Actor = ""; private string Note = ""; private string ContractKind = "result"; private string SelectedContractId = ""; private string ContractJson = "{}";
+    protected override Task OnParametersSetAsync() => Run(Load);
+    private async Task Load() { State = await Projects.GetAsync(Id); Issues = ProjectService.Validate(State); SelectContract(); }
+    private IEnumerable<string> ContractIds() => ContractKind switch { "result" => State!.Package.Definitions.OfType<ObservationDefinition>().Select(o => o.Id), "range" => State!.Package.ReferenceRanges.Select(r => r.Id), "recommendation" => State!.Package.DiagnosticRecommendations.Select(r => r.Id), _ => ["simulation"] };
+    private void SelectContract()
+    {
+        var ids = ContractIds().ToArray(); if (!ids.Contains(SelectedContractId, StringComparer.Ordinal)) SelectedContractId = ids.FirstOrDefault() ?? "";
+        object? value = ContractKind switch { "result" => State!.Package.Definitions.OfType<ObservationDefinition>().FirstOrDefault(o => o.Id == SelectedContractId)?.Result,
+            "range" => State!.Package.ReferenceRanges.Find(r => r.Id == SelectedContractId), "recommendation" => State!.Package.DiagnosticRecommendations.Find(r => r.Id == SelectedContractId), _ => State!.Package.DiagnosticSimulation };
+        ContractJson = value is null ? "{}" : StudioContent.Json(value);
+    }
+    private Task UploadCatalog(InputFileChangeEventArgs args) => Run(async () => { await using var input = args.File.OpenReadStream(StudioOptions.MaxUploadBytes); await Projects.ImportCatalogAsync(Id, State!.Project.Revision, input, Actor, Note); await Load(); });
+    private Task SaveContract() => Run(async () => { await Projects.SaveDiagnosticJsonAsync(Id, State!.Project.Revision, ContractKind, ContractJson, Actor, Note, SelectedContractId); await Load(); });
+}

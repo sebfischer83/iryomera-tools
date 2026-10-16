@@ -1,0 +1,51 @@
+@page "/projects/{Id:guid}/relations"
+@inherits StudioPage
+@inject ProjectService Projects
+<Feedback Error="Error" Message="@Message" />
+@if (State is not null)
+{
+    <h1>@L["studio.relationships"]</h1><ProjectNav Id="Id" />
+    <div class="toolbar"><label>@L["studio.focus"]<select @bind="Focus"><option value="">@L["studio.all"]</option>@foreach (var d in State.Package.Definitions) { <option value="@d.Id">@StudioContent.Name(State, d, CultureInfo.CurrentUICulture.Name)</option> }</select></label><button @onclick="New">@L["studio.newRelation"]</button></div>
+    <p>@L["studio.graphHint"]</p>
+    <svg class="graph" viewBox="0 0 900 @Math.Max(160, Visible.Take(12).Count() * 65 + 40)" role="img" aria-label="@L["studio.relationships"]">
+        @foreach (var pair in Visible.Take(12).Select((r, i) => (Relation: r, Y: 45 + i * 65)))
+        {
+            <g @onclick="() => Select(pair.Relation)" @onkeydown="e => SelectByKeyboard(e, pair.Relation)" tabindex="0" role="button" aria-label="@(Label(pair.Relation.FromId) + " → " + Label(pair.Relation.ToId))" class="graph-link">
+                <rect x="10" y="@(pair.Y - 18)" width="235" height="38" rx="7" /><text x="20" y="@(pair.Y + 6)">@Label(pair.Relation.FromId)</text>
+                <line x1="245" y1="@pair.Y" x2="625" y2="@pair.Y" /><text x="265" y="@(pair.Y - 7)">@L["studio.relation." + pair.Relation.Kind]</text>
+                <rect x="625" y="@(pair.Y - 18)" width="255" height="38" rx="7" /><text x="635" y="@(pair.Y + 6)">@Label(pair.Relation.ToId)</text>
+            </g>
+        }
+    </svg>
+    <div class="columns">
+        <section class="card"><h2>@L["studio.editRelation"]</h2>
+            <label>@L["studio.id"]<input @bind="RecordId" readonly="@(!Creating)" /></label>
+            <label>@L["studio.kind"]<select @bind="Kind">@foreach (var kind in Enum.GetValues<RelationKind>()) { <option value="@kind">@L["studio.relation." + kind]</option> }</select></label>
+            <label>@L["studio.from"]<select @bind="From"><option value="">@L["studio.select"]</option>@foreach (var d in State.Package.Definitions) { <option value="@d.Id">@Label(d.Id) (@StudioContent.Kind(d))</option> }</select></label>
+            <label>@L["studio.to"]<select @bind="To"><option value="">@L["studio.select"]</option>@foreach (var d in State.Package.Definitions) { <option value="@d.Id">@Label(d.Id) (@StudioContent.Kind(d))</option> }</select></label>
+            @if (Creating) { <label>@L["studio.source"]<input @bind="Source" /></label><label>@L["studio.license"]<input @bind="License" /></label> }
+            <label>@L["studio.reviewer"]<input @bind="Actor" /></label><label>@L["studio.reason"]<textarea @bind="Note"></textarea></label><button @onclick="Save" disabled="@Busy">@L["studio.saveDraft"]</button>
+        </section>
+        @if (Selected is not null) { <div><ReviewPanel ProjectId="Id" Revision="State.Project.Revision" RecordId="@Selected.Id" Provenance="Selected.Provenance" OnChanged="Refresh" /><details><summary>@L["studio.originalSource"]</summary><pre>@StudioContent.Json(Selected)</pre></details></div> }
+    </div>
+    <table><thead><tr><th>@L["studio.kind"]</th><th>@L["studio.from"]</th><th>@L["studio.to"]</th><th>@L["studio.reviewStatus"]</th></tr></thead><tbody>@foreach (var r in Visible) { <tr><td><button class="secondary" @onclick="() => Select(r)">@L["studio.relation." + r.Kind]</button></td><td>@Label(r.FromId)</td><td>@Label(r.ToId)</td><td>@L["studio.status." + r.Provenance.ReviewStatus]</td></tr> }</tbody></table>
+    <section class="card"><h2>@L["studio.annotation"]</h2>@foreach (var a in State.Package.MedicalAnnotations) { <p><a href="@($"/projects/{Id}/annotations/{Uri.EscapeDataString(a.Id)}")">@a.Predicate · @a.Id</a></p> }</section>
+}
+@code {
+    [Parameter] public Guid Id { get; set; } [SupplyParameterFromQuery(Name = "focus")] public string? Focus { get; set; }
+    private ProjectSnapshot? State; private ContentRelation? Selected; private bool Creating = true;
+    private string RecordId = ""; private RelationKind Kind = RelationKind.DiseaseFinding; private string From = ""; private string To = ""; private string Actor = ""; private string Note = ""; private string Source = "local:curation"; private string License = "MIT";
+    private IEnumerable<ContentRelation> Visible => State!.Package.Relations.Where(r => string.IsNullOrEmpty(Focus) || r.FromId == Focus || r.ToId == Focus);
+    protected override Task OnParametersSetAsync() => Run(async () => { State = await Projects.GetAsync(Id); New(); });
+    private void New() { Creating = true; Selected = null; RecordId = State!.Package.Manifest.Namespace + ":new_relation"; From = Focus ?? ""; To = ""; }
+    private void Select(ContentRelation relation) { Creating = false; Selected = relation; RecordId = relation.Id; Kind = relation.Kind; From = relation.FromId; To = relation.ToId; }
+    private void SelectByKeyboard(KeyboardEventArgs args, ContentRelation relation) { if (args.Key is "Enter" or " ") Select(relation); }
+    private string Label(string id) { var d = State!.Package.Definitions.Find(d => d.Id == id); var label = d is null ? id : StudioContent.Name(State, d, CultureInfo.CurrentUICulture.Name); return label.Length > 33 ? label[..30] + "…" : label; }
+    private async Task Refresh() { State = await Projects.GetAsync(Id); if (Selected is not null) Select(State.Package.Relations.Single(r => r.Id == Selected.Id)); }
+    private Task Save() => Run(async () =>
+    {
+        var provenance = Selected?.Provenance ?? new Provenance { Source = Source, ExternalId = RecordId, SourceVersion = "1.0.0", License = License, ImportedAt = DateTimeOffset.UtcNow };
+        await Projects.SaveRelationAsync(Id, State!.Project.Revision, new() { Id = RecordId, Version = Selected?.Version ?? "1.0.0", Kind = Kind, FromId = From, ToId = To, Provenance = provenance }, Actor, Note, Creating);
+        State = await Projects.GetAsync(Id); Select(State.Package.Relations.Single(r => r.Id == RecordId));
+    });
+}

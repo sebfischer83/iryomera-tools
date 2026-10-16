@@ -6,3 +6,6 @@ TestResults/
 artifacts/
 *.user
 .env
+.iryomera/
+
+**/__pycache__/

@@ -1,0 +1,21 @@
+{
+  "input": "maxo.json",
+  "sha256": "d00f355f7e1be3fef44becd639d033e40ecc9ab4e3849f32b97cc06a28b5cbe6",
+  "licenseFile": "../../../docs/data-sources/terms/maxo-license.txt",
+  "options": {
+    "source": "maxo",
+    "sourceVersion": "2026-01-15",
+    "sourceUrl": "https://github.com/monarch-initiative/MAxO/releases/download/v2026-01-15/maxo.json",
+    "license": "CC-BY-4.0",
+    "attribution": "MAxO contributors; https://github.com/monarch-initiative/MAxO; normalized for importer testing, no clinical changes or approval",
+    "importedAt": "2026-10-16T00:00:00Z",
+    "namespace": "official_benchmark",
+    "format": "json"
+  },
+  "expectedTerms": 2003,
+  "expectedAssertions": 16082,
+  "expectedErrors": {
+    "unresolved-reference": 25970
+  },
+  "expectedNormalizedSha256": "79708d1eb1a5b1481aa07ff4572f91acaf15282a7cba52be20d3387a39d3d4ac"
+}

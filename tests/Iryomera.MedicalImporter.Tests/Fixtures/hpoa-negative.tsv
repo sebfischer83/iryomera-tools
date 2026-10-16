@@ -1,0 +1,3 @@
+#description: Entirely synthetic; MIT
+database_id	disease_name	qualifier	hpo_id	reference	evidence	onset	frequency	sex	modifier	aspect	biocuration
+SYNTHETIC:amber	Synthetic amber syndrome	NOT	HP:9999001	SYNTHETIC:reference	PCS		2/5			P	SYNTHETIC:reviewer[2026-01-01]

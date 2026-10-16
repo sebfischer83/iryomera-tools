@@ -151,7 +151,7 @@ public sealed class ContentTests
 
     [Theory]
     [InlineData("{\"schemaVersion\":\"1.0.0\",\"manifest\":null}")]
-    [InlineData("{\"manifest\":{\"id\":\"a:b\",\"namespace\":\"a\",\"version\":\"1.0.0\",\"license\":\"MIT\"},\"definitions\":[null]}")]
+    [InlineData("{\"schemaVersion\":\"1.0.0\",\"manifest\":{\"schemaVersion\":\"1.0.0\",\"id\":\"a:b\",\"namespace\":\"a\",\"version\":\"1.0.0\",\"license\":\"MIT\"},\"definitions\":[null]}")]
     public void JsonNullsProduceDiagnosticsInsteadOfCrashes(string json)
     {
         var p = JsonSerializer.Deserialize<ContentPackage>(json, ContentJson.Options)!;

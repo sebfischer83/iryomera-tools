@@ -1,0 +1,33 @@
+@page "/projects/{Id:guid}"
+@inherits StudioPage
+@inject ProjectService Projects
+@if (State is not null)
+{
+    <h1>@State.Project.Title</h1><ProjectNav Id="Id" />
+    <p class="badge">@L["studio.draftNotice"]</p><Feedback Error="Error" Message="@Message" />
+    <div class="toolbar">
+        <label>@L["studio.search"]<input @bind="Search" @bind:event="oninput" @bind:after="Filter" /></label>
+        <label>@L["studio.kind"]<select @bind="Kind" @bind:after="Filter"><option value="">@L["studio.all"]</option>@foreach (var kind in StudioContent.Kinds) { <option value="@kind">@L["studio.kind." + kind]</option> }</select></label>
+        <label>@L["studio.reviewStatus"]<select @bind="Status" @bind:after="Filter"><option value="">@L["studio.all"]</option>@foreach (var status in Enum.GetValues<ReviewStatus>()) { <option value="@status">@L["studio.status." + status]</option> }</select></label>
+        <a class="button" href="@($"/projects/{Id}/new")">@L["studio.newDefinition"]</a>
+    </div>
+    @if (Results is not null)
+    {
+        <p>@L["studio.results"]: @Results.Total</p>
+        <table><thead><tr><th>@L["studio.name"]</th><th>@L["studio.kind"]</th><th>@L["studio.reviewStatus"]</th><th>@L["studio.id"]</th></tr></thead><tbody>
+            @foreach (var item in Results.Items)
+            { <tr><td><a href="@($"/projects/{Id}/definitions/{Uri.EscapeDataString(item.Id)}")">@(CultureInfo.CurrentUICulture.Name == "de" && item.NameDe.Length > 0 ? item.NameDe : item.NameEn.Length > 0 ? item.NameEn : item.Id)</a></td><td>@L["studio.kind." + item.Kind]</td><td><span class="status">@L["studio.status." + item.Status]</span></td><td><code>@item.Id</code></td></tr> }
+        </tbody></table>
+        <div class="toolbar"><button disabled="@(Page == 0)" @onclick="Previous">@L["studio.previous"]</button><span>@(Page + 1)</span><button disabled="@((Page + 1) * 30 >= Results.Total)" @onclick="Next">@L["studio.next"]</button></div>
+    }
+}
+@code {
+    [Parameter] public Guid Id { get; set; }
+    private ProjectSnapshot? State; private SearchResult? Results;
+    private string Search = ""; private string Kind = ""; private string Status = ""; private int Page;
+    protected override async Task OnParametersSetAsync() => await Run(async () => { State = await Projects.GetAsync(Id); await Find(); });
+    private async Task Find() => Results = await Projects.SearchAsync(Id, Search, Kind, Status, Page);
+    private async Task Filter() { Page = 0; await Find(); }
+    private async Task SearchChanged(KeyboardEventArgs _) => await Filter();
+    private async Task Previous() { Page--; await Find(); } private async Task Next() { Page++; await Find(); }
+}
