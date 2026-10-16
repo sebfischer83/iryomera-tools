@@ -35,7 +35,20 @@ public partial class SmokeTest : Node
             Assert(localizer.Format(key, CultureInfo.GetCultureInfo("en")) == "Synthetic Amber syndrome", "English rendering failed.");
             Assert(localizer.Format(key, CultureInfo.GetCultureInfo("de")) == "Synthetisches Bernsteinsyndrom", "German rendering failed.");
             Assert(localizer.Format("synthetic.ui.patients", CultureInfo.GetCultureInfo("de"), new Dictionary<string, object?> { ["count"] = 2 }) == "2 Demo-Patienten", "Plural formatting failed.");
-            GD.Print("IRYOMERA_GODOT_SMOKE_OK: net8 package binaries, schema/semantic validation, annotation round trip, en/de localization and plurals.");
+            await using var diagnosticSource = File.OpenRead(ProjectSettings.GlobalizePath("res://diagnostics.json"));
+            var diagnostic = await ContentDocuments.ReadValidatedAsync<ContentPackage>(diagnosticSource);
+            Assert(diagnostic.IsValid, string.Join("; ", diagnostic.Issues));
+            Assert(diagnostic.Value!.Definitions.OfType<ExaminationDefinition>().Count() == 5, "Shared examination definitions were lost.");
+            Assert(diagnostic.Value.Definitions.OfType<ObservationDefinition>().Select(o => o.Result!.ValueKind).Distinct().Count() == 4, "Typed observation results were lost.");
+            Assert(diagnostic.Value.DiagnosticSimulation!.ObservationDistributions.Count == 15, "Simulation configuration was lost.");
+            var diagnosticCatalogs = new List<LocalizationDefinition>();
+            foreach (var language in new[] { "en", "de" })
+            {
+                await using var input = File.OpenRead(ProjectSettings.GlobalizePath("res://diagnostics." + language + ".json"));
+                diagnosticCatalogs.Add(await ContentJson.ReadAsync<LocalizationDefinition>(input));
+            }
+            Assert(LocalizationValidator.Validate(diagnosticCatalogs, LocalizationValidator.GetContentKeys(diagnostic.Value), ["en", "de"]).Count == 0, "Diagnostic DE/EN catalogs do not match.");
+            GD.Print("IRYOMERA_GODOT_SMOKE_OK: net8 package binaries, schema/semantic validation, annotations, diagnostic contracts, en/de localization and plurals.");
             GetTree().Quit(0);
         }
         catch (Exception exception)

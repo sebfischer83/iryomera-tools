@@ -28,6 +28,8 @@ public static class ContentDocuments
     private static readonly ConcurrentDictionary<Type, JsonSchema> EntrySchemas = new();
     private static readonly HashSet<Type> SupportedTypes =
     [
+        typeof(ObservationResultDefinition), typeof(ObservationCategory), typeof(PatientContextCriterion), typeof(ObservationReferenceRange),
+        typeof(DiagnosticRecommendation), typeof(SimulatedObservationDistribution), typeof(SimulatedManifestation), typeof(ExaminationResultPolicy), typeof(DiagnosticSimulationSettings),
         typeof(ContentPackage), typeof(ContentPackageManifest), typeof(ModManifest), typeof(ContentDependency),
         typeof(LocalizationDefinition), typeof(ContentRelation), typeof(MedicalAnnotation), typeof(AnnotationReference),
         typeof(ObservationFrequency), typeof(Provenance), typeof(EvidenceReference), typeof(ExternalIdentifier), typeof(GameplayBalance),

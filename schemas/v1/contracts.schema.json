@@ -436,6 +436,16 @@
             "type": "string",
             "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
           }
+        },
+        "result": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/observationResultDefinition"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
@@ -887,6 +897,609 @@
       ],
       "additionalProperties": true
     },
+    "observationCategory": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "nameKey": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+        },
+        "findingId": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "key",
+        "nameKey"
+      ],
+      "additionalProperties": true
+    },
+    "observationResultDefinition": {
+      "type": "object",
+      "properties": {
+        "valueKind": {
+          "enum": [
+            "numeric",
+            "categorical",
+            "boolean",
+            "text"
+          ]
+        },
+        "unitCode": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "categories": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/observationCategory"
+          }
+        },
+        "patientContextKeys": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+          }
+        }
+      },
+      "required": [
+        "valueKind"
+      ],
+      "additionalProperties": true
+    },
+    "patientContextCriterion": {
+      "type": "object",
+      "properties": {
+        "factorKey": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+        },
+        "minimum": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "maximum": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "unitCode": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "category": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "booleanValue": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "factorKey"
+      ],
+      "additionalProperties": true,
+      "oneOf": [
+        {
+          "anyOf": [
+            {
+              "required": [
+                "minimum"
+              ]
+            },
+            {
+              "required": [
+                "maximum"
+              ]
+            }
+          ],
+          "properties": {
+            "minimum": {
+              "type": "number"
+            },
+            "maximum": {
+              "type": "number"
+            },
+            "category": {
+              "type": "null"
+            },
+            "booleanValue": {
+              "type": "null"
+            }
+          }
+        },
+        {
+          "required": [
+            "category"
+          ],
+          "properties": {
+            "category": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "minimum": {
+              "type": "null"
+            },
+            "maximum": {
+              "type": "null"
+            },
+            "booleanValue": {
+              "type": "null"
+            },
+            "unitCode": {
+              "type": "null"
+            }
+          }
+        },
+        {
+          "required": [
+            "booleanValue"
+          ],
+          "properties": {
+            "booleanValue": {
+              "type": "boolean"
+            },
+            "minimum": {
+              "type": "null"
+            },
+            "maximum": {
+              "type": "null"
+            },
+            "category": {
+              "type": "null"
+            },
+            "unitCode": {
+              "type": "null"
+            }
+          }
+        }
+      ]
+    },
+    "observationReferenceRange": {
+      "type": "object",
+      "properties": {
+        "schemaVersion": {
+          "const": "1.0.0"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z.-]+)?(\\+[0-9A-Za-z.-]+)?$(?![\\s\\S])"
+        },
+        "observationId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "unitCode": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "minimum": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "maximum": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "appliesWhen": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/patientContextCriterion"
+          }
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "id",
+        "version",
+        "observationId",
+        "unitCode",
+        "provenance"
+      ],
+      "additionalProperties": true,
+      "allOf": [
+        {
+          "properties": {
+            "provenance": {
+              "required": [
+                "evidence"
+              ],
+              "properties": {
+                "evidence": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "$ref": "#/$defs/evidenceReference"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "diagnosticRecommendation": {
+      "type": "object",
+      "properties": {
+        "schemaVersion": {
+          "const": "1.0.0"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z.-]+)?(\\+[0-9A-Za-z.-]+)?$(?![\\s\\S])"
+        },
+        "diseaseId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "examinationId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "contextDefinitionIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+          }
+        },
+        "appliesWhen": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/patientContextCriterion"
+          }
+        },
+        "rationaleKey": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "id",
+        "version",
+        "diseaseId",
+        "examinationId",
+        "provenance"
+      ],
+      "additionalProperties": true,
+      "allOf": [
+        {
+          "properties": {
+            "provenance": {
+              "required": [
+                "evidence"
+              ],
+              "properties": {
+                "evidence": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "$ref": "#/$defs/evidenceReference"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "simulatedObservationDistribution": {
+      "type": "object",
+      "properties": {
+        "schemaVersion": {
+          "const": "1.0.0"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z.-]+)?(\\+[0-9A-Za-z.-]+)?$(?![\\s\\S])"
+        },
+        "simulationOnly": {
+          "const": true
+        },
+        "diseaseId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "observationId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "numericMinimum": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "numericMaximum": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "categoryWeights": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+          },
+          "additionalProperties": {
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "trueProbability": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "textKey": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "appliesWhen": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/patientContextCriterion"
+          }
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "simulationOnly",
+        "id",
+        "version",
+        "diseaseId",
+        "observationId"
+      ],
+      "additionalProperties": true
+    },
+    "simulatedManifestation": {
+      "type": "object",
+      "properties": {
+        "schemaVersion": {
+          "const": "1.0.0"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z.-]+)?(\\+[0-9A-Za-z.-]+)?$(?![\\s\\S])"
+        },
+        "simulationOnly": {
+          "const": true
+        },
+        "diseaseId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "manifestationId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "probability": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "visibility": {
+          "enum": [
+            "initiallyVisible",
+            "afterExamination",
+            "hidden"
+          ]
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "simulationOnly",
+        "id",
+        "version",
+        "diseaseId",
+        "manifestationId",
+        "probability"
+      ],
+      "additionalProperties": true
+    },
+    "examinationResultPolicy": {
+      "type": "object",
+      "properties": {
+        "schemaVersion": {
+          "const": "1.0.0"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z.-]+)?(\\+[0-9A-Za-z.-]+)?$(?![\\s\\S])"
+        },
+        "simulationOnly": {
+          "const": true
+        },
+        "examinationId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "visibility": {
+          "enum": [
+            "initiallyVisible",
+            "afterExamination",
+            "hidden"
+          ]
+        },
+        "repeatPolicy": {
+          "enum": [
+            "untilPatientStateChanges",
+            "afterInterval"
+          ]
+        },
+        "repeatIntervalSeconds": {
+          "anyOf": [
+            {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "simulationOnly",
+        "id",
+        "version",
+        "examinationId"
+      ],
+      "additionalProperties": true
+    },
+    "diagnosticSimulationSettings": {
+      "type": "object",
+      "properties": {
+        "simulationOnly": {
+          "const": true
+        },
+        "observationDistributions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/simulatedObservationDistribution"
+          }
+        },
+        "manifestations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/simulatedManifestation"
+          }
+        },
+        "examinationPolicies": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/examinationResultPolicy"
+          }
+        }
+      },
+      "required": [
+        "simulationOnly"
+      ],
+      "additionalProperties": true
+    },
     "contentDefinition": {
       "oneOf": [
         {
@@ -950,7 +1563,11 @@
             "diseaseTreatment",
             "examinationEquipment",
             "treatmentQualification",
-            "roomFurniture"
+            "roomFurniture",
+            "examinationObservation",
+            "examinationRoom",
+            "examinationQualification",
+            "examinationPrerequisite"
           ]
         },
         "fromId": {
@@ -1350,6 +1967,17 @@
             }
           ]
         },
+        "examinationDurationSeconds": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
         "examinationCost": {
           "anyOf": [
             {
@@ -1416,6 +2044,28 @@
           "items": {
             "$ref": "#/$defs/medicalAnnotation"
           }
+        },
+        "referenceRanges": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/observationReferenceRange"
+          }
+        },
+        "diagnosticRecommendations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/diagnosticRecommendation"
+          }
+        },
+        "diagnosticSimulation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/diagnosticSimulationSettings"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "gameplay": {
           "type": "array",

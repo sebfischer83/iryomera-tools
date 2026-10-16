@@ -136,7 +136,7 @@
       "iryomera.localization": {
         "type": "Project",
         "dependencies": {
-          "Iryomera.Content.SDK": "[0.3.0, )",
+          "Iryomera.Content.SDK": "[0.4.0, )",
           "Microsoft.Extensions.Localization.Abstractions": "[10.0.0, )",
           "SmartFormat": "[3.6.1, )"
         }
@@ -309,7 +309,7 @@
       "iryomera.localization": {
         "type": "Project",
         "dependencies": {
-          "Iryomera.Content.SDK": "[0.3.0, )",
+          "Iryomera.Content.SDK": "[0.4.0, )",
           "Microsoft.Extensions.Localization.Abstractions": "[10.0.0, )",
           "SmartFormat": "[3.6.1, )"
         }

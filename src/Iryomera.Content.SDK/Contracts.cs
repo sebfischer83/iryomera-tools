@@ -83,7 +83,10 @@ public sealed record SymptomDefinition : ContentDefinition;
 public sealed record FindingDefinition : ContentDefinition;
 public sealed record ExaminationDefinition : ContentDefinition;
 /// <summary>An observation/measurement or panel code; does not declare a playable examination.</summary>
-public sealed record ObservationDefinition : ContentDefinition;
+public sealed record ObservationDefinition : ContentDefinition
+{
+    public ObservationResultDefinition? Result { get; init; }
+}
 public sealed record TreatmentDefinition : ContentDefinition;
 public sealed record MedicalProcedureDefinition : ContentDefinition;
 public sealed record MedicalDepartmentDefinition : ContentDefinition;
@@ -97,7 +100,7 @@ public sealed record StaffRoleDefinition : ContentDefinition;
 public enum RelationKind
 {
     DiseaseSymptom, DiseaseFinding, ExaminationFinding, DiseaseExamination,
-    DiseaseTreatment, ExaminationEquipment, TreatmentQualification, RoomFurniture
+    DiseaseTreatment, ExaminationEquipment, TreatmentQualification, RoomFurniture, ExaminationObservation, ExaminationRoom, ExaminationQualification, ExaminationPrerequisite
 }
 
 public sealed record ContentRelation : ExtensibleRecord
@@ -117,6 +120,7 @@ public sealed record GameplayBalance : ExtensibleRecord
     public decimal? Rarity { get; init; }
     public decimal? Severity { get; init; }
     public decimal? TreatmentDurationSeconds { get; init; }
+    public decimal? ExaminationDurationSeconds { get; init; }
     public decimal? ExaminationCost { get; init; }
     public decimal? TreatmentCost { get; init; }
     public decimal? DiagnosticDifficulty { get; init; }
@@ -167,6 +171,9 @@ public sealed record ContentPackage : ExtensibleRecord
     public List<ContentDefinition> Definitions { get; init; } = [];
     public List<ContentRelation> Relations { get; init; } = [];
     public List<MedicalAnnotation> MedicalAnnotations { get; init; } = [];
+    public List<ObservationReferenceRange> ReferenceRanges { get; init; } = [];
+    public List<DiagnosticRecommendation> DiagnosticRecommendations { get; init; } = [];
+    public DiagnosticSimulationSettings? DiagnosticSimulation { get; init; }
     public List<GameplayBalance> Gameplay { get; init; } = [];
 }
 

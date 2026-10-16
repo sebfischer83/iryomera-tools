@@ -32,7 +32,7 @@
         "type": "Project",
         "dependencies": {
           "CsvHelper": "[33.1.0, )",
-          "Iryomera.Content.SDK": "[0.3.0, )",
+          "Iryomera.Content.SDK": "[0.4.0, )",
           "System.CommandLine": "[2.0.0, )"
         }
       },

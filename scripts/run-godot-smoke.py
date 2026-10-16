@@ -61,7 +61,7 @@ else:
 with tempfile.TemporaryDirectory(prefix='iryomera-godot-smoke-') as temporary:
     project = Path(temporary)/'project'
     shutil.copytree(root/'tests/Iryomera.Godot.Integration', project, ignore=shutil.ignore_patterns('bin','obj','.godot'))
-    for name in ['annotations','en','de']:
+    for name in ['annotations','en','de','diagnostics','diagnostics.en','diagnostics.de']:
         shutil.copyfile(root/'examples/synthetic'/(name+'.json'), project/(name+'.json'))
     dotnet = [args.dotnet]
     project_file = project/'Iryomera.Godot.Integration.csproj'

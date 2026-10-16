@@ -14,7 +14,7 @@ Use `ContentJson.Options` or `ContentJson.ReadAsync<T>` / `WriteAsync<T>`. Seria
 
 | Contract | Fields and rules |
 | --- | --- |
-| ContentPackage | `schemaVersion`, `manifest`, `definitions`, `relations`, `medicalAnnotations`, `gameplay`; atomic exchange envelope |
+| ContentPackage | `schemaVersion`, `manifest`, `definitions`, `relations`, `medicalAnnotations`, optional `referenceRanges`, `diagnosticRecommendations`, `diagnosticSimulation`, `gameplay`; atomic exchange envelope |
 | ContentPackageManifest | `schemaVersion`, `id`, `namespace`, `version`, `license`, `dependencies` |
 | ContentDefinition | Abstract tagged union with `kind`, `id`, `nameKey`, optional `descriptionKey`, `version`, `provenance`, `classifications`, `synonymKeys` |
 | Definition variants | `disease`, `symptom`, `finding`, `examination`, `observation`, `treatment`, `medicalProcedure`, `medicalDepartment`, `medicalEquipment`, `staffQualification`, `room`, `furniture`, `staffRole` |
@@ -23,7 +23,7 @@ Use `ContentJson.Options` or `ContentJson.ReadAsync<T>` / `WriteAsync<T>`. Seria
 | EvidenceReference | `citation`, optional absolute `uri` and `evidenceCode`; does not invent a grading system |
 | ExternalIdentifier | `system`, `value`, `provenance`; external classification independent of internal ID |
 | ContentDependency | `packageId`, `versionRange` |
-| GameplayBalance | `definitionId`, optional normalized `rarity`, `severity`, `diagnosticDifficulty`, `simulatedSuccessProbability`; nonnegative `treatmentDurationSeconds`, `examinationCost`, `treatmentCost`; nonnegative quantities in `requiredResources` |
+| GameplayBalance | `definitionId`, optional normalized `rarity`, `severity`, `diagnosticDifficulty`, `simulatedSuccessProbability`; nonnegative `treatmentDurationSeconds`, `examinationDurationSeconds`, `examinationCost`, `treatmentCost`; nonnegative quantities in `requiredResources` |
 | ModManifest | package metadata plus `nameKey`, `author`, `compatibleGameVersions`, relative `contentFiles`, `supportedLanguages`; installation format remains planned |
 | LocalizationDefinition | `schemaVersion`, `namespace`, `language`, `entries` key/template dictionary |
 
@@ -39,6 +39,10 @@ Namespace segments and local ID segments start with a lowercase ASCII letter, fo
 | diseaseExamination | DiseaseDefinition | ExaminationDefinition |
 | diseaseTreatment | DiseaseDefinition | TreatmentDefinition |
 | examinationEquipment | ExaminationDefinition | MedicalEquipmentDefinition |
+| examinationObservation | ExaminationDefinition | ObservationDefinition |
+| examinationRoom | ExaminationDefinition | RoomDefinition |
+| examinationQualification | ExaminationDefinition | StaffQualificationDefinition |
+| examinationPrerequisite | ExaminationDefinition | ExaminationDefinition (required first; acyclic) |
 | treatmentQualification | TreatmentDefinition | StaffQualificationDefinition |
 | roomFurniture | RoomDefinition | FurnitureDefinition |
 
@@ -49,7 +53,7 @@ Phase 1 does not infer department, room or staffing assignments for diseases. Th
 1. Parse via `ContentJson`: syntax, types, required members, duplicate properties and enum discriminators.
 2. Validate JSON against the appropriate schema: structural shape, ID patterns, ranges, timestamps (enable `format` assertions), required audit metadata. The SDK bundles schemas and JsonSchema.Net; ContentDocuments composes raw schema and semantic validation offline.
 3. Call `ContentValidator.Validate(package, installedPackages)` and `ManifestValidator.Validate(mod, installedPackages)`: global uniqueness, version ranges, namespace ownership, reference existence and endpoint types, dependency graph, review metadata and balance constraints.
-4. Call `LocalizationValidator.Validate(catalogs, usedKeys)` for language completeness, key usage and parsed placeholder parity. `GetContentKeys(package)` provides definition name/description/synonym keys; add mod/UI/dynamic keys separately.
+4. Call `LocalizationValidator.Validate(catalogs, usedKeys)` for language completeness, key usage and parsed placeholder parity. `GetContentKeys(package)` provides definition name/description/synonym keys, result category labels, recommendation rationales and simulated text keys; add mod/UI/dynamic keys separately.
 
 Schemas intentionally allow extensions. They cannot express cross-file uniqueness, dependency ranges, locale availability, reference typing or placeholder parity. They are not a replacement for semantic validators. Diagnostics are `ValidationIssue(Code, Path, Message)` and are not stored in content JSON. Import/export stream methods propagate I/O exceptions and cancellation. ContractShape.Validate guards non-null object graphs before semantic validation.
 
@@ -81,3 +85,9 @@ Default semantic rules cover ContentPackage (complete dependency/reference graph
 `ObservationDefinition` is a neutral observation/panel/document code using the standard definition fields and `kind: "observation"`. Its standalone schema and content union are additive to v1. It does not satisfy examination relation endpoints and does not imply a playable workflow. All original v1 examples still validate. A new observation needs the 0.3.0 reader; unknown discriminators remain errors in older binaries. See [ADR 0006](architecture/0006-observation-definitions.md).
 
 The importer now exports contextual HPO/MAxO claims in `medicalAnnotations` as well as the compatible source sidecar. Raw frequency and fields survive; MAxO disease/extension contexts are explicit and negation stays tri-state. No new medical relation or numeric assumption is inferred. Importer workspaces and reports have their own schemas under `schemas/importer/v1`; their optional rights scope, permission evidence, bulk audits and sourceClaims are documented in [the CLI guide](medical-importer.md).
+
+## Diagnostic content additions (library 0.4.0)
+
+See [the diagnostic contract reference](diagnostic-content.md) and [ADR 0008](architecture/0008-diagnostic-content.md) for optional observation result descriptors, independently sourced intervals/recommendations, new examination relation kinds and explicitly simulation-only configuration. Dedicated entry schemas cover `observationResultDefinition`, `observationCategory`, `patientContextCriterion`, `observationReferenceRange`, `diagnosticRecommendation`, `simulatedObservationDistribution`, `simulatedManifestation`, `examinationResultPolicy` and `diagnosticSimulationSettings`. Original valid v1 content remains readable; new contracts require updated binaries.
+
+Studio release audit files have their own versioned `schemas/studio/v1` bundle and `studioReleaseReport` entry. They record project revision, explicit rights evidence, approved record provenance and record-specific permission digests. SQLite snapshots are internal persistence, not a separately promised public format or game save format. A Studio ZIP is an approved content download, not a ModKit archive format.
