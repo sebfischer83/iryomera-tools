@@ -63,6 +63,9 @@ with tempfile.TemporaryDirectory(prefix='iryomera-godot-smoke-') as temporary:
     shutil.copytree(root/'tests/Iryomera.Godot.Integration', project, ignore=shutil.ignore_patterns('bin','obj','.godot'))
     for name in ['annotations','en','de','diagnostics','diagnostics.en','diagnostics.de']:
         shutil.copyfile(root/'examples/synthetic'/(name+'.json'), project/(name+'.json'))
+    shutil.copyfile(root/'examples/modkit/example-mod/content.json', project/'mod-content.json')
+    for language in ['en','de']:
+        shutil.copyfile(root/'examples/modkit/example-mod/localization'/(language+'.json'), project/('mod-'+language+'.json'))
     dotnet = [args.dotnet]
     project_file = project/'Iryomera.Godot.Integration.csproj'
     config = ET.Element('configuration')

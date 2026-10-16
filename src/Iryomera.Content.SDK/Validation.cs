@@ -193,6 +193,7 @@ public static class ContentValidator
                     Error("annotation-type", path, "Resolved definition type does not match its annotation role.");
             }
             errors.AddRange(DiagnosticValidator.Validate(item, id => Resolve(id, id)?.Definition));
+            errors.AddRange(AssetValidator.Validate(item, id => Resolve(id, id)?.Definition));
             var balances = new HashSet<string>(StringComparer.Ordinal);
             foreach (var balance in item.Gameplay)
             {

@@ -9,3 +9,4 @@ artifacts/
 .iryomera/
 
 **/__pycache__/
+**/.iryomera-mod.lock
