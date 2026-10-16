@@ -30,7 +30,20 @@ New tests cover exact auth/form/multipart shape, credential/log/exception redact
 
 The fresh locally installed CLI passed create/validate/pack/inspect/unpack with exact payload bytes using only the local NuGet source. Packed ModIo/Core/bridge net8 binaries passed a real Godot 4.7.2 .NET run: mock HTTP, receipt schema validation and actual local archive creation/installation on runtime 8.0.32. The published Studio browser smoke passed twice, including DE/EN switches, SQLite editing, SVG, review/rights and approved ZIP export with external application requests blocked.
 
-Windows/Linux branch CI evidence will be added after completion. No live mod.io account/game request is part of testing.
+No live mod.io account/game request is part of testing.
+
+## GitHub Actions
+
+Both runs completed successfully on 2026-10-16, testing implementation commit `c6514b5cc8ff5b3add7ad57b576c6cb712101df8` on `feature/phase-5-modio`. All four jobs passed on their first attempt.
+
+| Run | Linux | Windows | Scope |
+| --- | --- | --- | --- |
+| [Push 38967511848](https://github.com/sebfischer83/iryomera-tools/actions/runs/38967511848) | Passed | Passed | Complete standard Release matrix |
+| [Full-dataset 38967510834](https://github.com/sebfischer83/iryomera-tools/actions/runs/38967510834) | Passed | Passed | Complete Release matrix plus four pinned official HPO/MAxO ontology cases, each imported twice |
+
+The matrix regenerates schemas/examples, restores in locked mode, builds and runs all 603 .NET test executions and four Python tests, executes Foundation/importer/ModKit/offline-distribution examples, publishes/tests the bilingual Studio in Chromium, packs seven NuGet packages, installs the CLI from only the local package feed and exercises portable normal packages in real Godot. The optional ontology regression preserves its existing expected diagnostic baselines; a pass is not a clean medical release or clinical approval. Raw datasets are not uploaded as artifacts.
+
+The final verification-only commit leaves the tested implementation unchanged. Phase 4 is merged into main; Phase 5 remains separately reviewable on its feature branch.
 
 ## Limits and remaining work
 
