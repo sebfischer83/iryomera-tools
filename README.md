@@ -2,7 +2,7 @@
 
 Open-source .NET tools and portable content formats for Iryomera, a planned free hospital management game built with Godot 4/C#. The game remains closed source; these libraries work independently. Own code and synthetic examples are MIT-licensed. Imported data will retain its original licenses.
 
-**Status: Foundation, MedicalImporter with offline Wikidata support and the local bilingual ContentStudio (0.4.0).** Reusable diagnostic content contracts are implemented; patient simulation belongs to the private game. ModKit and ModIo remain planned with no placeholder projects. No real medical datasets or clinically approved content are included. Exact source licenses and unsupported formats are documented explicitly.
+**Status: Foundation, MedicalImporter, local bilingual ContentStudio and data-only ModKit (0.5.0).** Reusable diagnostic content contracts are implemented; patient simulation belongs to the private game. ModIo remains planned with no placeholder project. No real medical datasets or clinically approved content are included. Exact source licenses and unsupported formats are documented explicitly.
 
 ## Projects
 
@@ -12,6 +12,8 @@ Open-source .NET tools and portable content formats for Iryomera, a planned free
 | `src/Iryomera.Localization` | Separate de/en catalogs, English fallback, variables, plurals, culture formatting, translation diagnostics, engine-independent interface and .NET IStringLocalizer adapter; net8.0/net10.0 NuGet library |
 | `src/Iryomera.MedicalImporter` | Local .NET CLI/tool: eight adapters including Wikidata SPARQL JSON/CSV, reproducible staging, explicit review/rights history, reference validation and approved JSON release export |
 | `src/Iryomera.ContentStudio` | Local Blazor Interactive Server/SQLite editor, DE/EN UI, EF migrations, search/authoring, import review, separate balancing, audited rights and approved JSON export |
+| `src/Iryomera.ModKit` | Local .NET CLI/tool and async APIs: create/edit/validate data mods, asset/layout references, explicit dependencies, bounded ZIP pack/inspect/unpack and integrity checks |
+| `tests/Iryomera.ModKit.Tests` | Synthetic CLI/project/archive tests including traversal, links, corruption, limits, dependencies and cancellation |
 | `tests/Iryomera.ContentStudio.Tests` | Real SQLite/service/export/HTTP integration tests; a real browser smoke script also runs in CI |
 | `tests/Iryomera.MedicalImporter.Integration` | Opt-in pinned full official ontology import/reproducibility/performance runner; no clinical approval or source publication |
 | `tests/Iryomera.MedicalImporter.Tests` | Synthetic adapter, pipeline, CLI, reproducibility, failure and schema integration tests |
@@ -30,6 +32,7 @@ dotnet test Iryomera.Tools.sln -c Release --no-build
 dotnet run --project examples/Iryomera.Foundation.Sample -c Release --no-build
 dotnet run --project src/Iryomera.MedicalImporter -c Release --no-build -- sources list
 python scripts/run-importer-example.py
+python scripts/run-modkit-example.py
 dotnet pack Iryomera.Tools.sln -c Release --no-build -o artifacts
 # Optional locally; required in Windows/Linux CI (Python 3, downloads pinned Godot .NET):
 python scripts/run-godot-smoke.py
@@ -68,6 +71,7 @@ The additional [diagnostic prototype](docs/diagnostic-content.md) defines three 
 - [MedicalImporter guide](docs/medical-importer.md), [source field/license review](docs/data-sources/README.md), [Phase 2 architecture](docs/architecture/0003-importer.md) and [verification report](docs/phase-2-verification.md).
 - [Phase 2 review plan](docs/plans/phase-2-review.md), [record-rights decision](docs/architecture/0005-record-rights-and-review.md), [LOINC observation decision](docs/architecture/0006-observation-definitions.md) and [full-dataset tests](docs/full-dataset-tests.md).
 - [Studio startup, workflows and limits](docs/content-studio.md), [Studio architecture](docs/architecture/0007-content-studio.md), [diagnostic formats](docs/diagnostic-content.md) and [Wikidata import](docs/wikidata-import.md).
+- [ModKit guide](docs/modkit.md), [package decision](docs/architecture/0010-data-only-mod-packages.md), [synthetic mod](examples/modkit/README.md) and [Phase 4 verification](docs/phase-4-verification.md).
 - [0.4.0 verification report and current limits](docs/phase-3-verification.md).
 - [Contributing](CONTRIBUTING.md) and [binding agent rules](AGENTS.md).
 
@@ -75,6 +79,6 @@ Technical validation checks IDs, duplicates, references and endpoint types, name
 
 ## Remaining work
 
-The importer supports HPO/MAxO OBO Graph JSON and OBO, HPOA/current MAxO TSV, ICD-10-GM/OPS ClaML categories LOINC CSV and the documented saved Wikidata SPARQL profile. OWL, legacy MAxO layouts, modifier expansion, clinical reasoning and automatic translation are not implemented. Real-data redistribution still requires exact-release/license/clinical review; default CI tests use synthetic MIT fixtures; opt-in full HPO/MAxO ontology tests are documented with measured errors and resource use. Full ICD-10-GM/OPS/LOINC tests still require legitimately supplied inputs. Studio’s advanced diagnostic editing uses validated JSON; richer workflow widgets and large-data capacity tuning remain open. Phase 4 adds secure data-only mod archives, asset references and examples. Phase 5 adds the optional official mod.io REST integration with mock HTTP tests. These two tools remain unimplemented.
+The importer supports HPO/MAxO OBO Graph JSON and OBO, HPOA/current MAxO TSV, ICD-10-GM/OPS ClaML categories, LOINC CSV and the documented saved Wikidata SPARQL profile. OWL, legacy MAxO layouts, modifier expansion, clinical reasoning and automatic translation are not implemented. Real-data redistribution still requires exact-release/license/clinical review; default CI tests use synthetic MIT fixtures; opt-in full HPO/MAxO ontology tests are documented with measured errors and resource use. Full ICD-10-GM/OPS/LOINC tests still require legitimately supplied inputs. Studio’s advanced diagnostic editing uses validated JSON; richer workflow widgets and large-data capacity tuning remain open. Phase 4 provides data-only archives, asset references and a synthetic mod; its graphical editor, publisher signatures and game runtime are future work. Phase 5 adds the optional official mod.io REST integration with mock HTTP tests and remains unimplemented.
 
 NuGet publication, medical expert review and authenticated approval workflows remain outside this implementation. The CLI records trusted local operator decisions; it does not grant legal permission or medical authority. Verified CI and Godot runs are recorded in the verification reports. The [MIT license](LICENSE) covers our work, not third-party data.

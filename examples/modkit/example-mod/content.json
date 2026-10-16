@@ -1,0 +1,415 @@
+{
+  "schemaVersion": "1.0.0",
+  "manifest": {
+    "schemaVersion": "1.0.0",
+    "id": "example_mod:mod",
+    "namespace": "example_mod",
+    "version": "1.0.0",
+    "license": "MIT",
+    "dependencies": []
+  },
+  "definitions": [
+    {
+      "kind": "disease",
+      "id": "example_mod:demo_disease",
+      "nameKey": "example_mod.demo_disease.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Own fictional ModKit software fixture, not medical knowledge",
+        "externalId": "synthetic-demo",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed"
+      }
+    },
+    {
+      "kind": "symptom",
+      "id": "example_mod:demo_symptom",
+      "nameKey": "example_mod.demo_symptom.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Own fictional ModKit software fixture, not medical knowledge",
+        "externalId": "synthetic-demo",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed"
+      }
+    },
+    {
+      "kind": "finding",
+      "id": "example_mod:demo_finding",
+      "nameKey": "example_mod.demo_finding.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Own fictional ModKit software fixture, not medical knowledge",
+        "externalId": "synthetic-demo",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed"
+      }
+    },
+    {
+      "kind": "examination",
+      "id": "example_mod:demo_examination",
+      "nameKey": "example_mod.demo_examination.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Own fictional ModKit software fixture, not medical knowledge",
+        "externalId": "synthetic-demo",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed"
+      }
+    },
+    {
+      "kind": "observation",
+      "id": "example_mod:demo_observation",
+      "nameKey": "example_mod.demo_observation.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Own fictional ModKit software fixture, not medical knowledge",
+        "externalId": "synthetic-demo",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed"
+      },
+      "result": {
+        "valueKind": "numeric",
+        "unitCode": "1"
+      }
+    },
+    {
+      "kind": "treatment",
+      "id": "example_mod:demo_treatment",
+      "nameKey": "example_mod.demo_treatment.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Own fictional ModKit software fixture, not medical knowledge",
+        "externalId": "synthetic-demo",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed"
+      }
+    },
+    {
+      "kind": "medicalProcedure",
+      "id": "example_mod:demo_procedure",
+      "nameKey": "example_mod.demo_procedure.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Own fictional ModKit software fixture, not medical knowledge",
+        "externalId": "synthetic-demo",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed"
+      }
+    },
+    {
+      "kind": "medicalDepartment",
+      "id": "example_mod:demo_department",
+      "nameKey": "example_mod.demo_department.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Own fictional ModKit software fixture, not medical knowledge",
+        "externalId": "synthetic-demo",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed"
+      }
+    },
+    {
+      "kind": "medicalEquipment",
+      "id": "example_mod:demo_equipment",
+      "nameKey": "example_mod.demo_equipment.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Own fictional ModKit software fixture, not medical knowledge",
+        "externalId": "synthetic-demo",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed"
+      }
+    },
+    {
+      "kind": "staffQualification",
+      "id": "example_mod:demo_qualification",
+      "nameKey": "example_mod.demo_qualification.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Own fictional ModKit software fixture, not medical knowledge",
+        "externalId": "synthetic-demo",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed"
+      }
+    },
+    {
+      "kind": "room",
+      "id": "example_mod:demo_room",
+      "nameKey": "example_mod.demo_room.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Own fictional ModKit software fixture, not medical knowledge",
+        "externalId": "synthetic-demo",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed"
+      }
+    },
+    {
+      "kind": "furniture",
+      "id": "example_mod:demo_furniture",
+      "nameKey": "example_mod.demo_furniture.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Own fictional ModKit software fixture, not medical knowledge",
+        "externalId": "synthetic-demo",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed"
+      },
+      "assets": [
+        {
+          "path": "assets/cube.glb",
+          "kind": "modelGlb",
+          "license": "MIT",
+          "attribution": "Iryomera own synthetic mesh"
+        },
+        {
+          "path": "assets/texture.png",
+          "kind": "texture",
+          "license": "MIT",
+          "attribution": "Iryomera own synthetic image"
+        },
+        {
+          "path": "assets/icon.png",
+          "kind": "icon",
+          "license": "MIT",
+          "attribution": "Iryomera own synthetic image"
+        }
+      ],
+      "placement": {
+        "footprint": {
+          "width": 2,
+          "depth": 1,
+          "cellSizeMeters": 1,
+          "occupiedCells": [
+            {
+              "x": 0,
+              "z": 0
+            },
+            {
+              "x": 1,
+              "z": 0
+            }
+          ]
+        },
+        "interactionPoints": [
+          {
+            "key": "service",
+            "x": 1,
+            "y": 0,
+            "z": -0.5,
+            "headingDegrees": 0,
+            "requiredQualificationId": "example_mod:demo_qualification"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "staffRole",
+      "id": "example_mod:demo_role",
+      "nameKey": "example_mod.demo_role.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Own fictional ModKit software fixture, not medical knowledge",
+        "externalId": "synthetic-demo",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed"
+      }
+    }
+  ],
+  "relations": [
+    {
+      "id": "example_mod:relation_0",
+      "version": "1.0.0",
+      "kind": "diseaseSymptom",
+      "fromId": "example_mod:demo_disease",
+      "toId": "example_mod:demo_symptom",
+      "provenance": {
+        "source": "Own fictional ModKit software fixture, not medical knowledge",
+        "externalId": "synthetic-demo",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed"
+      }
+    },
+    {
+      "id": "example_mod:relation_1",
+      "version": "1.0.0",
+      "kind": "diseaseFinding",
+      "fromId": "example_mod:demo_disease",
+      "toId": "example_mod:demo_finding",
+      "provenance": {
+        "source": "Own fictional ModKit software fixture, not medical knowledge",
+        "externalId": "synthetic-demo",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed"
+      }
+    },
+    {
+      "id": "example_mod:relation_2",
+      "version": "1.0.0",
+      "kind": "diseaseExamination",
+      "fromId": "example_mod:demo_disease",
+      "toId": "example_mod:demo_examination",
+      "provenance": {
+        "source": "Own fictional ModKit software fixture, not medical knowledge",
+        "externalId": "synthetic-demo",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed"
+      }
+    },
+    {
+      "id": "example_mod:relation_3",
+      "version": "1.0.0",
+      "kind": "diseaseTreatment",
+      "fromId": "example_mod:demo_disease",
+      "toId": "example_mod:demo_treatment",
+      "provenance": {
+        "source": "Own fictional ModKit software fixture, not medical knowledge",
+        "externalId": "synthetic-demo",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed"
+      }
+    },
+    {
+      "id": "example_mod:relation_4",
+      "version": "1.0.0",
+      "kind": "examinationObservation",
+      "fromId": "example_mod:demo_examination",
+      "toId": "example_mod:demo_observation",
+      "provenance": {
+        "source": "Own fictional ModKit software fixture, not medical knowledge",
+        "externalId": "synthetic-demo",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed"
+      }
+    },
+    {
+      "id": "example_mod:relation_5",
+      "version": "1.0.0",
+      "kind": "examinationEquipment",
+      "fromId": "example_mod:demo_examination",
+      "toId": "example_mod:demo_equipment",
+      "provenance": {
+        "source": "Own fictional ModKit software fixture, not medical knowledge",
+        "externalId": "synthetic-demo",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed"
+      }
+    },
+    {
+      "id": "example_mod:relation_6",
+      "version": "1.0.0",
+      "kind": "examinationRoom",
+      "fromId": "example_mod:demo_examination",
+      "toId": "example_mod:demo_room",
+      "provenance": {
+        "source": "Own fictional ModKit software fixture, not medical knowledge",
+        "externalId": "synthetic-demo",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed"
+      }
+    },
+    {
+      "id": "example_mod:relation_7",
+      "version": "1.0.0",
+      "kind": "examinationQualification",
+      "fromId": "example_mod:demo_examination",
+      "toId": "example_mod:demo_qualification",
+      "provenance": {
+        "source": "Own fictional ModKit software fixture, not medical knowledge",
+        "externalId": "synthetic-demo",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed"
+      }
+    },
+    {
+      "id": "example_mod:relation_8",
+      "version": "1.0.0",
+      "kind": "treatmentQualification",
+      "fromId": "example_mod:demo_treatment",
+      "toId": "example_mod:demo_qualification",
+      "provenance": {
+        "source": "Own fictional ModKit software fixture, not medical knowledge",
+        "externalId": "synthetic-demo",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed"
+      }
+    },
+    {
+      "id": "example_mod:relation_9",
+      "version": "1.0.0",
+      "kind": "roomFurniture",
+      "fromId": "example_mod:demo_room",
+      "toId": "example_mod:demo_furniture",
+      "provenance": {
+        "source": "Own fictional ModKit software fixture, not medical knowledge",
+        "externalId": "synthetic-demo",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed"
+      }
+    }
+  ],
+  "gameplay": [
+    {
+      "definitionId": "example_mod:demo_examination",
+      "examinationDurationSeconds": 12,
+      "examinationCost": 8,
+      "diagnosticDifficulty": 0.2,
+      "requiredResources": {
+        "example_mod:demo_room": 1
+      }
+    },
+    {
+      "definitionId": "example_mod:demo_disease",
+      "rarity": 0.3,
+      "severity": 0.2
+    }
+  ],
+  "examplePurpose": "Own fictional data-only mod; not medical advice or reviewed content"
+}

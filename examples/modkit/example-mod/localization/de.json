@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "1.0.0",
+  "namespace": "example_mod",
+  "language": "de",
+  "entries": {
+    "example_mod.mod.name": "Synthetische Beispiel-Mod",
+    "example_mod.demo_disease.name": "Fiktiver Bernsteinzustand",
+    "example_mod.demo_symptom.name": "Fiktiv berichtetes Unbehagen",
+    "example_mod.demo_finding.name": "Fiktives sichtbares Muster",
+    "example_mod.demo_examination.name": "Fiktive gemeinsame Untersuchung",
+    "example_mod.demo_observation.name": "Fiktiver Zahlenindex",
+    "example_mod.demo_treatment.name": "Fiktive unterstützende Maßnahme",
+    "example_mod.demo_procedure.name": "Fiktive Prozedur",
+    "example_mod.demo_department.name": "Synthetische Abteilung",
+    "example_mod.demo_equipment.name": "Synthetisches Gerät",
+    "example_mod.demo_qualification.name": "Synthetische Qualifikation",
+    "example_mod.demo_room.name": "Synthetischer Untersuchungsraum",
+    "example_mod.demo_furniture.name": "Synthetisches Würfelmöbel",
+    "example_mod.demo_role.name": "Synthetische Personalrolle"
+  }
+}

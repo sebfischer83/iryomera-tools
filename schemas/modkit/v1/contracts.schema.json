@@ -1,0 +1,201 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.iryomera.org/modkit/v1/contracts.schema.json",
+  "$defs": {
+    "modManifest": {
+      "type": "object",
+      "properties": {
+        "schemaVersion": {
+          "const": "1.0.0"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "namespace": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z.-]+)?(\\+[0-9A-Za-z.-]+)?$(?![\\s\\S])"
+        },
+        "license": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "dependencies": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/contentDependency"
+          }
+        },
+        "nameKey": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+        },
+        "author": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "compatibleGameVersions": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "contentFiles": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^(?!/)(?!.*\\\\)(?!.*:)(?!.*(?:^|/)\\.\\.?(/|$)).+$(?![\\s\\S])"
+          }
+        },
+        "supportedLanguages": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z]{2,3}(-[A-Za-z0-9]{2,8})*$(?![\\s\\S])"
+          }
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "id",
+        "namespace",
+        "nameKey",
+        "author",
+        "version",
+        "compatibleGameVersions",
+        "license"
+      ],
+      "additionalProperties": true
+    },
+    "contentDependency": {
+      "type": "object",
+      "properties": {
+        "packageId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "versionRange": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "packageId",
+        "versionRange"
+      ],
+      "additionalProperties": true
+    },
+    "modFile": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "kind": {
+          "enum": [
+            "content",
+            "localization",
+            "modelGlb",
+            "texture",
+            "icon",
+            "notice"
+          ]
+        },
+        "license": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "attribution": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "path",
+        "kind",
+        "license"
+      ],
+      "additionalProperties": true
+    },
+    "modProject": {
+      "type": "object",
+      "properties": {
+        "schemaVersion": {
+          "const": "1.0.0"
+        },
+        "manifest": {
+          "$ref": "#/$defs/modManifest"
+        },
+        "files": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/modFile"
+          }
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "manifest",
+        "files"
+      ],
+      "additionalProperties": true
+    },
+    "modFileDigest": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "sizeBytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$(?![\\s\\S])"
+        }
+      },
+      "required": [
+        "path",
+        "sizeBytes",
+        "sha256"
+      ],
+      "additionalProperties": true
+    },
+    "modArchiveIndex": {
+      "type": "object",
+      "properties": {
+        "schemaVersion": {
+          "const": "1.0.0"
+        },
+        "files": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/modFileDigest"
+          }
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "files"
+      ],
+      "additionalProperties": true
+    }
+  }
+}

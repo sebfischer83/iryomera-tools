@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "1.0.0",
+  "namespace": "example_mod",
+  "language": "en",
+  "entries": {
+    "example_mod.mod.name": "Synthetic example mod",
+    "example_mod.demo_disease.name": "Fictional amber condition",
+    "example_mod.demo_symptom.name": "Fictional reported discomfort",
+    "example_mod.demo_finding.name": "Fictional visible pattern",
+    "example_mod.demo_examination.name": "Fictional shared test",
+    "example_mod.demo_observation.name": "Fictional numeric index",
+    "example_mod.demo_treatment.name": "Fictional supportive action",
+    "example_mod.demo_procedure.name": "Fictional procedure",
+    "example_mod.demo_department.name": "Synthetic department",
+    "example_mod.demo_equipment.name": "Synthetic equipment",
+    "example_mod.demo_qualification.name": "Synthetic qualification",
+    "example_mod.demo_room.name": "Synthetic examination room",
+    "example_mod.demo_furniture.name": "Synthetic unit cube furniture",
+    "example_mod.demo_role.name": "Synthetic staff role"
+  }
+}

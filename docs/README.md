@@ -13,6 +13,7 @@ English is the authoritative language for repository documentation, public API d
 ## Tools and integration
 
 - [Content Studio](content-studio.md): local authoring, review and export.
+- [ModKit](modkit.md), [data-only package architecture](architecture/0010-data-only-mod-packages.md) and [Phase 4 verification](phase-4-verification.md).
 - [Medical Importer](medical-importer.md), [Wikidata](wikidata-import.md) and [source formats/licenses](data-sources/README.md).
 - [Localization](localization.md) and [Godot integration](godot-integration.md).
 - [Architecture foundations](architecture/0001-foundation.md) and [binding development rules](../AGENTS.md).

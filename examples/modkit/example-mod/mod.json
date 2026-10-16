@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "1.0.0",
+  "manifest": {
+    "schemaVersion": "1.0.0",
+    "id": "example_mod:mod",
+    "namespace": "example_mod",
+    "version": "1.0.0",
+    "license": "MIT",
+    "dependencies": [],
+    "nameKey": "example_mod.mod.name",
+    "author": "Iryomera contributors",
+    "compatibleGameVersions": "[0.1.0,1.0.0)",
+    "contentFiles": [
+      "content.json",
+      "localization/en.json",
+      "localization/de.json"
+    ],
+    "supportedLanguages": [
+      "en",
+      "de"
+    ]
+  },
+  "files": [
+    {
+      "path": "content.json",
+      "kind": "content",
+      "license": "MIT"
+    },
+    {
+      "path": "localization/en.json",
+      "kind": "localization",
+      "license": "MIT"
+    },
+    {
+      "path": "localization/de.json",
+      "kind": "localization",
+      "license": "MIT"
+    },
+    {
+      "path": "assets/cube.glb",
+      "kind": "modelGlb",
+      "license": "MIT",
+      "attribution": "Iryomera own synthetic mesh"
+    },
+    {
+      "path": "assets/texture.png",
+      "kind": "texture",
+      "license": "MIT",
+      "attribution": "Iryomera own synthetic image"
+    },
+    {
+      "path": "assets/icon.png",
+      "kind": "icon",
+      "license": "MIT",
+      "attribution": "Iryomera own synthetic image"
+    },
+    {
+      "path": "LICENSE.txt",
+      "kind": "notice",
+      "license": "MIT"
+    }
+  ]
+}

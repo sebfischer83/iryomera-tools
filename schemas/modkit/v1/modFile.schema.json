@@ -1,0 +1,5 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.iryomera.org/modkit/v1/modFile.schema.json",
+  "$ref": "contracts.schema.json#/$defs/modFile"
+}

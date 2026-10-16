@@ -36,9 +36,11 @@ jobs:
           python scripts/generate-schemas.py
           python scripts/generate-importer-schemas.py
           python scripts/generate-studio-schemas.py
+          python scripts/generate-modkit-schemas.py
           python scripts/generate-diagnostic-example.py
+          python scripts/generate-modkit-example.py
           git diff --exit-code -- schemas
-          git diff --exit-code -- examples/synthetic
+          git diff --exit-code -- examples
       - name: Test full-dataset acquisition boundaries offline
         run: python -m unittest discover -s scripts -p "test_*.py"
       - run: dotnet restore Iryomera.Tools.sln --locked-mode
@@ -47,6 +49,8 @@ jobs:
         run: dotnet test Iryomera.Tools.sln --configuration Release --no-build --logger trx --results-directory TestResults
       - run: dotnet run --project examples/Iryomera.Foundation.Sample --configuration Release --no-build
       - run: python scripts/run-importer-example.py
+      - name: Exercise data-only ModKit CLI round trip
+        run: python scripts/run-modkit-example.py
       - name: Install browser test dependencies
         run: |
           python -m pip install -r scripts/requirements-browser.txt

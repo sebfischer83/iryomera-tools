@@ -1,0 +1,3 @@
+# ModKit binary dependency notices
+
+The ModKit .NET tool bundles unmodified SDK, Localization and CLI dependencies. Own source and synthetic examples/assets are MIT. Preserve the notices and original license texts in `THIRD-PARTY-NOTICES.md` and `third-party/`: System.CommandLine, JsonSchema.Net/JsonPointer.Net/Json.More.Net, Humanizer and NuGet.Versioning; SmartFormat 3.6.1 (MIT, SmartFormat Project contributors) and ZString 2.6.0 (MIT, Cysharp). Original SmartFormat/ZString licenses are included. No EF, SQLite, Godot, browser or mod.io runtime is bundled. Medical data and third-party mod assets retain their own licenses; packaging grants no rights or medical approval.
