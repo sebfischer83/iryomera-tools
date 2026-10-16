@@ -129,6 +129,7 @@ public sealed record ContentDependency : ExtensibleRecord
 
 public sealed record ContentPackageManifest : ExtensibleRecord
 {
+    [JsonRequired]
     public string SchemaVersion { get; init; } = ContentFormat.SchemaVersion;
     public required string Id { get; init; }
     public required string Namespace { get; init; }
@@ -140,6 +141,7 @@ public sealed record ContentPackageManifest : ExtensibleRecord
 /// <summary>Phase 1 data contract only; package loading/installation is planned in ModKit.</summary>
 public sealed record ModManifest : ExtensibleRecord
 {
+    [JsonRequired]
     public string SchemaVersion { get; init; } = ContentFormat.SchemaVersion;
     public required string Id { get; init; }
     public required string Namespace { get; init; }
@@ -156,16 +158,19 @@ public sealed record ModManifest : ExtensibleRecord
 /// <summary>A package is the atomic content exchange unit; dependencies are explicit inputs.</summary>
 public sealed record ContentPackage : ExtensibleRecord
 {
+    [JsonRequired]
     public string SchemaVersion { get; init; } = ContentFormat.SchemaVersion;
     public required ContentPackageManifest Manifest { get; init; }
     public List<ContentDefinition> Definitions { get; init; } = [];
     public List<ContentRelation> Relations { get; init; } = [];
+    public List<MedicalAnnotation> MedicalAnnotations { get; init; } = [];
     public List<GameplayBalance> Gameplay { get; init; } = [];
 }
 
 /// <summary>A separately stored language catalog, owned by a package namespace.</summary>
 public sealed record LocalizationDefinition : ExtensibleRecord
 {
+    [JsonRequired]
     public string SchemaVersion { get; init; } = ContentFormat.SchemaVersion;
     public required string Namespace { get; init; }
     public required string Language { get; init; }

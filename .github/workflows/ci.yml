@@ -3,23 +3,27 @@ name: Foundation CI
 on:
   push:
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
   foundation:
+    timeout-minutes: 20
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-dotnet@v4
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-dotnet@v6.0.0
         with:
-          dotnet-version: '10.0.x'
-      - uses: actions/setup-python@v5
+          dotnet-version: |
+            8.0.x
+            10.0.x
+      - uses: actions/setup-python@v7.0.0
         with:
           python-version: '3.x'
       - name: Verify generated schemas
@@ -28,10 +32,13 @@ jobs:
           git diff --exit-code -- schemas
       - run: dotnet restore Iryomera.Tools.sln --locked-mode
       - run: dotnet build Iryomera.Tools.sln --configuration Release --no-restore
-      - run: dotnet test Iryomera.Tools.sln --configuration Release --no-build --logger trx --results-directory TestResults
+      - name: Test both net8.0 and net10.0
+        run: dotnet test Iryomera.Tools.sln --configuration Release --no-build --logger trx --results-directory TestResults
       - run: dotnet run --project examples/Iryomera.Foundation.Sample --configuration Release --no-build
       - run: dotnet pack Iryomera.Tools.sln --configuration Release --no-build --output artifacts
-      - uses: actions/upload-artifact@v4
+      - name: Test packaged net8.0 binaries inside Godot 4.7.2 .NET
+        run: python scripts/run-godot-smoke.py
+      - uses: actions/upload-artifact@v7.0.2
         if: always()
         with:
           name: foundation-${{ matrix.os }}

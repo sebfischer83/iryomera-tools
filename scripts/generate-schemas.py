@@ -33,6 +33,18 @@ base={'id':id,'nameKey':key,'descriptionKey':nullable(key),'version':version,'pr
 for kind in kinds:defs[kind+'Definition']=obj({'kind':{'const':kind},**base},['kind','id','nameKey','version','provenance'])
 defs['contentDefinition']={'oneOf':[ref(k+'Definition') for k in kinds]}
 defs['contentRelation']=obj({'id':id,'version':version,'kind':{'enum':rels},'fromId':id,'toId':id,'provenance':ref('provenance')},['id','version','kind','fromId','toId','provenance'])
+defs['annotationReference']=obj({'externalId':text,'contentId':nullable(id)},['externalId'])
+defs['observationFrequency']=obj({'sourceValue':text,'term':nullable(ref('annotationReference'))},['sourceValue'])
+defs['medicalAnnotation']=obj({
+    'schemaVersion':{'const':'1.0.0'},'id':id,'version':version,
+    'kind':{'enum':['diseasePhenotype','medicalAction']},'predicate':text,
+    'subject':ref('annotationReference'),'object':ref('annotationReference'),
+    'diseaseContext':nullable(ref('annotationReference')),'extensionContext':nullable(ref('annotationReference')),
+    'isNegated':{'type':['boolean','null']},'frequency':nullable(ref('observationFrequency')),
+    'onset':nullable(ref('annotationReference')),'sex':nullable({'type':'string'}),'aspect':nullable({'type':'string'}),
+    'modifiers':array(ref('annotationReference')),'qualifiers':array(text),'provenance':ref('provenance'),
+    'sourceFields':{'type':'object','additionalProperties':True}
+},['schemaVersion','id','version','kind','predicate','subject','object','provenance'])
 defs['contentDependency']=obj({'packageId':id,'versionRange':text},['packageId','versionRange'])
 manifest={'schemaVersion':{'const':'1.0.0'},'id':id,'namespace':ns,'version':version,'license':text,'dependencies':array(ref('contentDependency'))}
 defs['contentPackageManifest']=obj(manifest,['schemaVersion','id','namespace','version','license'])
@@ -42,7 +54,7 @@ for name in ['rarity','severity','diagnosticDifficulty','simulatedSuccessProbabi
 for name in ['treatmentDurationSeconds','examinationCost','treatmentCost']:bal[name]=nullable({'type':'number','minimum':0})
 bal['requiredResources']={'type':'object','propertyNames':text,'additionalProperties':{'type':'number','minimum':0}}
 defs['gameplayBalance']=obj(bal,['definitionId'])
-defs['contentPackage']=obj({'schemaVersion':{'const':'1.0.0'},'manifest':ref('contentPackageManifest'),'definitions':array(ref('contentDefinition')),'relations':array(ref('contentRelation')),'gameplay':array(ref('gameplayBalance'))},['schemaVersion','manifest'])
+defs['contentPackage']=obj({'schemaVersion':{'const':'1.0.0'},'manifest':ref('contentPackageManifest'),'definitions':array(ref('contentDefinition')),'relations':array(ref('contentRelation')),'medicalAnnotations':array(ref('medicalAnnotation')),'gameplay':array(ref('gameplayBalance'))},['schemaVersion','manifest'])
 defs['localizationDefinition']=obj({'schemaVersion':{'const':'1.0.0'},'namespace':ns,'language':{'type':'string','pattern':r'^[a-z]{2,3}(-[A-Za-z0-9]{2,8})*$'},'entries':{'type':'object','propertyNames':{'pattern':keypattern},'additionalProperties':text}},['schemaVersion','namespace','language'])
 # A single bundled file supports every public exchange contract; small entry files work offline.
 dump(s/'contracts.schema.json',{'$schema':'https://json-schema.org/draft/2020-12/schema','$id':'https://schemas.iryomera.org/v1/contracts.schema.json','title':'Iryomera v1 exchange contracts','$defs':defs})

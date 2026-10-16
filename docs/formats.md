@@ -52,3 +52,26 @@ Phase 1 does not infer department, room or staffing assignments for diseases. Th
 4. Call `LocalizationValidator.Validate(catalogs, usedKeys)` for language completeness, key usage and parsed placeholder parity. `GetContentKeys(package)` provides definition name/description/synonym keys; add mod/UI/dynamic keys separately.
 
 Schemas intentionally allow extensions. They cannot express cross-file uniqueness, dependency ranges, locale availability, reference typing or placeholder parity. They are not a replacement for semantic validators. Diagnostics are `ValidationIssue(Code, Path, Message)` and are not stored in content JSON. Import/export stream methods propagate I/O exceptions and cancellation. ContractShape.Validate guards non-null object graphs before semantic validation.
+
+## Phase 1 review additions (library 0.2.0, compatible schema 1.0.0)
+
+`ContentPackage.medicalAnnotations` is optional and defaults to an empty list. Its independent `MedicalAnnotation` records preserve original predicates, explicit subject/object resolutions, optional disease/extension context, nullable negation, exact observational frequency strings, qualifiers, onset, sex/aspect, modifiers, provenance and complete raw source fields. `AnnotationReference` and `ObservationFrequency` have dedicated entry schemas. See [ADR 0003](architecture/0003-medical-annotations.md) and the synthetic `examples/synthetic/annotations.json` package. The SDK never converts contextual annotations into unqualified binary relations or game probabilities.
+
+Wire-required `schemaVersion` is now enforced with JsonRequired on **every** version-bearing exchange object, including nested package manifests and standalone annotations. It still defaults to 1.0.0 for C# object construction. Existing valid JSON already contains these schema-required fields and remains valid; previously accepted malformed JSON with omitted versions must be corrected rather than silently defaulted. Explicit null/wrong values remain invalid.
+
+### Unified raw-document entry
+
+```csharp
+await using var input = File.OpenRead("content.json");
+var result = await ContentDocuments.ReadValidatedAsync<ContentPackage>(input,
+    installedPackages: installedPackages, cancellationToken: cancellationToken);
+if (!result.IsValid)
+    foreach (var issue in result.Issues)
+        Console.WriteLine($"{issue.Code} {issue.Path}: {issue.Message}");
+```
+
+`ContentDocuments.ReadValidatedAsync<T>` evaluates the **original JSON** against the embedded matching schema before deserialization/defaults. JsonSchema.Net is now a runtime dependency; the bundled schema is resolved locally without a network fetch. Duplicate JSON properties are rejected. Invalid JSON/schema yields diagnostics and no Value. On schema-valid content, Value remains available with semantic errors so an editor can inspect it; `IsValid` requires a non-null Value and zero issues. Cancellation/I/O errors propagate instead of being reported as content success.
+
+Default semantic rules cover ContentPackage (complete dependency/reference graph), ModManifest and ContentPackageManifest. Standalone leaf contracts receive schema/shape checks; graph reference semantics need the owning ContentPackage or an explicitly supplied validator. The registered CLR contract types are explicitly allowlisted. A supplied `semanticValidator` callback composes domain checks while sharing exactly the same raw schema pipeline.
+
+`LocalizationDocuments.ReadValidatedAsync` composes that pipeline with `LocalizationValidator`, other loaded catalogs, the usage set and required languages. Supply English alongside a German catalog to validate placeholder parity; it never bypasses missing schemaVersion. Raw `ContentJson.ReadAsync` and direct System.Text.Json using ContentJson.Options also enforce JsonRequired members, but do not replace schema/graph validation. C# object-only validation cannot discover whether a caller previously discarded an absent wire field; validate the original bytes at the boundary.

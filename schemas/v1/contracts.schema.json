@@ -917,6 +917,186 @@
       ],
       "additionalProperties": true
     },
+    "annotationReference": {
+      "type": "object",
+      "properties": {
+        "externalId": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "contentId": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "externalId"
+      ],
+      "additionalProperties": true
+    },
+    "observationFrequency": {
+      "type": "object",
+      "properties": {
+        "sourceValue": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "term": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/annotationReference"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "sourceValue"
+      ],
+      "additionalProperties": true
+    },
+    "medicalAnnotation": {
+      "type": "object",
+      "properties": {
+        "schemaVersion": {
+          "const": "1.0.0"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z.-]+)?(\\+[0-9A-Za-z.-]+)?$(?![\\s\\S])"
+        },
+        "kind": {
+          "enum": [
+            "diseasePhenotype",
+            "medicalAction"
+          ]
+        },
+        "predicate": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "subject": {
+          "$ref": "#/$defs/annotationReference"
+        },
+        "object": {
+          "$ref": "#/$defs/annotationReference"
+        },
+        "diseaseContext": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/annotationReference"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "extensionContext": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/annotationReference"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "isNegated": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "frequency": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/observationFrequency"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "onset": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/annotationReference"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sex": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "aspect": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "modifiers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/annotationReference"
+          }
+        },
+        "qualifiers": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          }
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        },
+        "sourceFields": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "id",
+        "version",
+        "kind",
+        "predicate",
+        "subject",
+        "object",
+        "provenance"
+      ],
+      "additionalProperties": true
+    },
     "contentDependency": {
       "type": "object",
       "properties": {
@@ -1171,6 +1351,12 @@
           "type": "array",
           "items": {
             "$ref": "#/$defs/contentRelation"
+          }
+        },
+        "medicalAnnotations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/medicalAnnotation"
           }
         },
         "gameplay": {

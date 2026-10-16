@@ -11,3 +11,8 @@
 - Add architecture decisions to docs/architecture. Read docs/plans before changing scope. Prefer small comprehensible changes and no unnecessary external services.
 - Future imports must be reproducible, licensed and auditable. Future ZIP handling must enforce traversal/size limits. Never execute mod scripts or DLLs automatically.
 - Consult current official documentation when integrating external APIs. mod.io is optional and requires mock HTTP tests; no live requests without explicit configuration.
+
+- Foundation review: SDK and Localization target net8.0/net10.0; build with .NET 10 and test both runtimes. Keep Godot out of library dependencies; verify packed net8.0 binaries in the pinned real Godot integration test on Windows/Linux.
+- Preserve lossless MedicalAnnotation context; never flatten negation/frequency/qualifiers or MAxO disease/extension context into unconditional medical/gameplay relations. Keep observational frequency as original source text.
+- Validate original JSON at boundaries with ContentDocuments/LocalizationDocuments. Schema-required schemaVersion must be present even when C# construction has a default. Do not remove JsonRequired or silently weaken schema checks.
+- This branch is a Phase 1 remediation only. Previously prepared Phase 2 work is archived locally on archive/phase-2-local; do not merge or expand the importer without a new explicit task.

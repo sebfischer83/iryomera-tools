@@ -1,5 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework />
+    <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
+  </PropertyGroup>
   <PropertyGroup><Description>Engine-independent Iryomera content contracts, JSON and validation.</Description></PropertyGroup>
-  <ItemGroup><PackageReference Include="NuGet.Versioning" /></ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="NuGet.Versioning" />
+    <PackageReference Include="JsonSchema.Net" />
+    <PackageReference Include="System.Text.Json" Condition="'$(TargetFramework)' == 'net8.0'" />
+  </ItemGroup>
+  <ItemGroup><EmbeddedResource Include="../../schemas/v1/contracts.schema.json" LogicalName="Iryomera.Content.SDK.Schemas.v1.json" /></ItemGroup>
   <ItemGroup><None Include="../../schemas/v1/*.json" Pack="true" PackagePath="schemas/v1" /></ItemGroup>
 </Project>

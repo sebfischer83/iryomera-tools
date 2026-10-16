@@ -1,5 +1,11 @@
 # Phase 2 — MedicalImporter implementation plan (not implemented)
 
+## Foundation review prerequisites
+
+The Phase 1 remediation adds canonical `MedicalAnnotation` / `AnnotationReference` / `ObservationFrequency` contracts. Future HPO/MAxO adapters must target those lossless SDK contracts (including raw source fields), use ContentDocuments/LocalizationDocuments at raw JSON boundaries and preserve explicit unresolved references. Do not replace this with an unconditional binary projection or a separate incompatible medical assertion schema. See ADR 0003 and ADR 0004 for semantics and game/runtime targets. The .NET 10 CLI should consume the net10.0 asset; the game can consume net8.0.
+
+The unpublished local importer archive is not part of the approved Foundation and must be reconciled with these contracts/validation rules before a later Phase 2 task; this review does not authorize merging or expanding it.
+
 ## Goal and project boundaries
 
 Add the executable/tool package `src/Iryomera.MedicalImporter` and `tests/Iryomera.MedicalImporter.Tests`. It references Content.SDK; Content.SDK must not reference importer adapters, CLI, storage or HTTP. Use an established CLI parser after reviewing its current official API and license. Keep all adapter tests offline and synthetic. Add actual import examples, not empty adapter classes.

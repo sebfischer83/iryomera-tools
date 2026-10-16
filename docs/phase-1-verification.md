@@ -1,49 +1,60 @@
 # Phase 1 verification report
 
-Verified locally on Linux, 2026-10-16, .NET SDK **10.0.402**, target `net10.0`, Release configuration.
+Updated 2026-10-16 after the external Phase 1 review. Historical evidence and the remediation revision are recorded separately; local Linux results are not described as Windows results.
 
-| Check | Observed result |
-| --- | --- |
-| Locked restore | Successful against committed dependency lock files |
-| Solution build | Successful, **0 warnings, 0 errors** |
-| xUnit | **73 passed, 0 failed, 0 skipped** |
-| Console example | Exit 0; **22 definitions / 22 relations** validated; English/German names, plurals and number formats rendered |
-| NuGet pack | `Iryomera.Content.SDK.0.1.0.nupkg` and `Iryomera.Localization.0.1.0.nupkg` created locally |
-| Package inspection | Both contain net10.0 DLL, XML API docs and README; SDK includes all **24 schema files** |
-| Schema/example compatibility | Independent JsonSchema.Net evaluation of all example documents, all twelve definition kinds and nested public formats passed as part of tests |
+## Original Foundation 0.1.0: verified GitHub Actions evidence
 
-## Commands
+Commit: [`5646c93581ad21c0e5c2a49f5015af647b83e22c`](https://github.com/sebfischer83/iryomera-tools/commit/5646c93581ad21c0e5c2a49f5015af647b83e22c).
+
+[Foundation CI run 38923703189](https://github.com/sebfischer83/iryomera-tools/actions/runs/38923703189) completed successfully. Job status/steps were checked through the GitHub API during this review:
+
+| Platform | Verified result | Job |
+| --- | --- | --- |
+| Windows (`windows-latest`) | Success; 2026-10-16 15:24:42–15:26:01 UTC | [Windows job 117049764127](https://github.com/sebfischer83/iryomera-tools/actions/runs/38923703189/job/117049764127) |
+| Linux (`ubuntu-latest`) | Success; 2026-10-16 15:24:42–15:25:08 UTC | [Linux job 117049764538](https://github.com/sebfischer83/iryomera-tools/actions/runs/38923703189/job/117049764538) |
+
+That revision built net10.0, passed 73 xUnit cases per operating system, ran the synthetic console example and packed both 0.1.0 libraries. The original sample had 22 definitions and 22 relations; the SDK package had 24 schema files. It did **not** prove Godot binary compatibility or lossless HPO/MAxO annotation handling. The earlier statement that Windows CI was unobserved is superseded by the linked completed run.
+
+## Review remediation 0.2.0
+
+Scope: Foundation only, based on the published Phase 1 commit. The previously prepared but unpublished importer was preserved on a separate local `archive/phase-2-local` branch. It is not in this branch, solution, CI or release packages.
+
+Changes under verification:
+
+- Lossless standalone `MedicalAnnotation`, `AnnotationReference` and `ObservationFrequency` contracts, optional package collection, full source fields/provenance and synthetic bilingual examples. No source import adapters or clinical projections.
+- JsonRequired schemaVersion on every version-bearing exchange object. Defaults remain convenient for C# construction; missing wire fields fail explicitly.
+- Shared offline schema-before-deserialization and semantic validation through ContentDocuments, with LocalizationDocuments composing catalog checks.
+- SDK/Localization net8.0/net10.0 package assets and both-runtime tests; actual packed-library Godot 4.7.2 .NET desktop smoke test.
+- Verified current official action releases: checkout 7.0.1, setup-dotnet 6.0.0, setup-python 7.0.0 and upload-artifact 7.0.2. CI provisions .NET 8 and 10, runs schema generation/locked restore/build/tests/example/pack/Godot integration on Windows and Linux.
+
+Local Linux build/validation: .NET SDK 10.0.402 with .NET 8.0.32 runtime; Release compilation has no warnings/errors. **104 tests per framework** (208 executions locally, zero failures/skips), library package contents and the real headless Godot game process are checked. The Godot scene asserts actual .NET 8 execution, net8 package asset selection, schema/semantic loading, annotation round trip and English/German/plural rendering. Editor import is separately checked for errors with the .NET 10 SDK environment.
+
+The new exact-revision Windows/Linux run and final test counts are recorded below once its jobs complete. Do not infer success from workflow configuration alone.
+
+## Reproduce the complete process
+
+Install .NET 10 SDK, .NET 8 runtime/SDK and Python 3:
 
 ```sh
+python scripts/generate-schemas.py
+git diff --exit-code -- schemas
 dotnet restore Iryomera.Tools.sln --locked-mode
 dotnet build Iryomera.Tools.sln -c Release --no-restore
 dotnet test Iryomera.Tools.sln -c Release --no-build --logger trx
 dotnet run --project examples/Iryomera.Foundation.Sample -c Release --no-build
 dotnet pack Iryomera.Tools.sln -c Release --no-build -o artifacts
+python scripts/run-godot-smoke.py
 ```
 
-The managed workspace required a local SDK under `/tmp/iryomera-dotnet`, writable CLI/NuGet/XDG directories, single-node builds and disabled shared compilation. Test execution needed local socket permission for the VSTest host. These are execution-environment constraints, not runtime dependencies or changes to the application. Initial restore/install used the network; the tests and example do not call remote APIs or medical sources.
+The managed local workspace uses SDK/CLI/NuGet paths under /tmp and single-node builds with shared compilation disabled; these are environment accommodations, not application dependencies. Prerequisite/package/engine setup uses the network. The libraries, bundled schema evaluation, tests and content/localization operations are offline.
 
-## Tested behavior
+## Limits and remaining work
 
-- All twelve definition kinds and eight directed relation kinds; separate simulation balancing.
-- Invalid IDs, including final newlines, namespace ownership, duplicate IDs/packages, missing definitions and incorrect relation endpoint types.
-- Missing/version-incompatible/undeclared dependencies and dependency cycles.
-- Required provenance, unknown review values, approval audit fields, unsupported schema versions, invalid balancing ranges and duplicate balance records.
-- Async JSON round trips and cancellation, null object graphs, required fields, duplicate JSON properties, unknown discriminators and preservation of nested additive extension fields.
-- Concrete and base definition JSON round trips with discriminator/type checking.
-- Complete de/en catalogs, culture parents and English/key fallback, plural and numeric formatting, .NET adapter positional formatting, mod namespace isolation and unchanged content IDs.
-- Missing/unused translation keys, malformed templates, unsafe property selectors, unknown formatter names, nested placeholder mismatch, duplicate catalogs and null translation values.
-- Published schemas accept examples and reject malformed definitions, timestamps, review metadata and null translations.
-- Mod manifest metadata validation, including unsafe relative path rejection; archive loading is not implemented.
+- No real medical data, clinical approval, importer, editor, SQLite, mod archives or mod.io integration is part of this remediation. Real source license/release review belongs to Phase 2 before implementing imports.
+- Observational frequency is preserved exactly, not interpreted as game probability. Negation/qualifiers and MAxO context are never flattened into positive binary medical assertions.
+- Existing valid v1 JSON remains compatible. Missing required versions were malformed under the published schema already; accepting them through C# defaults was a bug.
+- Binary compatibility is verified for pinned Godot 4.7.2 .NET Windows/Linux desktop with net8.0 assets. Other engine/framework/export combinations, trimming and NativeAOT need separate verification.
+- Packages are local/CI artifacts, not automatically published to NuGet. Schema URIs are identifiers resolved from the embedded/bundled schema, not an online service.
+- Semantic graph checks require a ContentPackage/dependency closure. Standalone leaf schemas cannot prove reference closure. Object-only validation cannot reconstruct a wire field discarded before validation.
 
-## Limits and open work
-
-- Windows/Linux GitHub Actions workflow is configured; **GitHub Actions and Windows execution have not been observed in this local session**.
-- Packages are local artifacts, not published to NuGet. Repository changes have not been pushed.
-- No actual third-party medical data, clinical approval, importer, editor, database, ZIP mod packager or mod.io client is included. Full source/license review belongs to Phase 2 before import.
-- Schema identifiers are offline-resolvable URIs, not an online schema hosting service. Both schema and semantic validation are needed.
-- Godot integration is a documented engine-independent interface, not a tested Godot runtime adapter. Confirm the game's supported runtime separately.
-- Review authorization, approved export policies and field-level source merging belong to later importer/editor workflows. Technical validation does not approve medicine.
-
-Next implementation work is specified in [the Phase 2 plan](plans/phase-2.md).
+Decisions: [medical annotations](architecture/0003-medical-annotations.md), [runtime/multi-targeting](architecture/0004-godot-runtime.md). Usage: [formats](formats.md), [Godot integration](godot-integration.md), [review work plan](plans/foundation-review.md).

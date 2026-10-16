@@ -1,0 +1,16 @@
+<Project Sdk="Godot.NET.Sdk/4.7.2">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
+    <RestorePackagesWithLockFile>false</RestorePackagesWithLockFile>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <IsPackable>false</IsPackable>
+    <FoundationPackageVersion Condition="'$(FoundationPackageVersion)' == ''">0.2.0</FoundationPackageVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Iryomera.Content.SDK" Version="$(FoundationPackageVersion)" />
+    <PackageReference Include="Iryomera.Localization" Version="$(FoundationPackageVersion)" />
+  </ItemGroup>
+</Project>

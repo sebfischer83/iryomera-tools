@@ -1,0 +1,10 @@
+{
+  "schemaVersion": "1.0.0",
+  "namespace": "annotation_demo",
+  "language": "en",
+  "entries": {
+    "annotation_demo.disease.name": "Synthetic annotation disease",
+    "annotation_demo.finding.name": "Synthetic annotation finding",
+    "annotation_demo.action.name": "Synthetic annotation action"
+  }
+}
