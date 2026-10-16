@@ -4,7 +4,7 @@ All public exchange contracts are in `schemas/v1/contracts.schema.json` (`$defs`
 
 ## Encoding and compatibility
 
-UTF-8, camelCase property names, case-sensitive identifiers, string enums only, strict JSON numbers. `schemaVersion` is `1.0.0`. Package and individual assertion versions are independent canonical SemVer 2 strings. Dependency ranges use NuGet.Versioning notation: `[1.0.0]` is exact, `[1.0.0,2.0.0)` is a bounded interval, `1.0.0` is a minimum. Prefer bounded intervals for published content.
+UTF-8 with LF formatting newlines on every platform, camelCase property names, case-sensitive identifiers, string enums only, strict JSON numbers. `schemaVersion` is `1.0.0`. Package and individual assertion versions are independent canonical SemVer 2 strings. Dependency ranges use NuGet.Versioning notation: `[1.0.0]` is exact, `[1.0.0,2.0.0)` is a bounded interval, `1.0.0` is a minimum. Prefer bounded intervals for published content.
 
 Unknown additive properties are accepted and preserved by `JsonExtensionData` on contracts, including nested records. Do not use extension fields to bypass typed relationships or hide medical facts in gameplay. Unknown `kind` values and unknown enum values are errors. Duplicate JSON properties are rejected. Missing C# `required` members fail deserialization; explicit nulls are diagnosed by validation. Optional arrays/maps default to empty and optional nullable properties can be omitted. Always emit `schemaVersion`; defaults permit constructing current-version documents in code, but published JSON must pass the schema.
 

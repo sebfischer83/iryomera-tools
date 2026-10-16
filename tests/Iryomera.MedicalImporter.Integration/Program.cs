@@ -115,6 +115,8 @@ public static class Program
             await using var output = File.Create(args[1]);
             await ContentJson.WriteAsync(output, report);
             Console.WriteLine($"{report.Source}: {report.Terms} terms, {report.Assertions} assertions; reproducible={report.Reproducible}, expectations={report.ExpectationsMatch}; errors={report.ErrorCounts.Values.Sum()}");
+            if (!report.ExpectationsMatch)
+                Console.Error.WriteLine($"Expected terms={test.ExpectedTerms}, assertions={test.ExpectedAssertions}, digest={test.ExpectedNormalizedSha256}; observed digest={report.NormalizedSha256}, errors={JsonSerializer.Serialize(report.ErrorCounts)}");
             return report.Reproducible && report.ExpectationsMatch ? 0 : 2;
         }
         catch (Exception exception) when (exception is IOException or JsonException or ArgumentException or InvalidOperationException)

@@ -26,7 +26,9 @@ public static class WorkspaceValidation
             if (!batchIds.Add(batch.Id)) Error("duplicate-batch", batch.Id, "Duplicate import batch.");
             try { ImportEngine.ValidateOptions(batch.Options); }
             catch (ArgumentException e) { Error("options", batch.Id, e.Message); }
-            if (batch.Id != ImportEngine.BatchId(batch.InputSha256, batch.Options, batch.AdapterVersion) || batch.AdapterVersion is not ("1.0.0" or ImportEngine.AdapterVersion) || batch.InputBytes <= 0 ||
+            var validBatchId = batch.Id == ImportEngine.BatchId(batch.InputSha256, batch.Options, batch.AdapterVersion) ||
+                (batch.AdapterVersion == "1.0.0" && batch.Id == ImportEngine.BatchId(batch.InputSha256, batch.Options, batch.AdapterVersion, "\r\n"));
+            if (!validBatchId || batch.AdapterVersion is not ("1.0.0" or ImportEngine.AdapterVersion) || batch.InputBytes <= 0 ||
                 batch.InputSha256.Length != 64 || batch.InputSha256.Any(c => !char.IsAsciiHexDigitLower(c)))
                 Error("batch-integrity", batch.Id, "Invalid batch metadata, digest or adapter version.");
             var localIds = new HashSet<string>(StringComparer.Ordinal);
@@ -56,8 +58,11 @@ public static class WorkspaceValidation
                     else Error("duplicate-id", assertion.Id, "Conflicting claims for one assertion ID.");
                 }
                 assertionClaims.TryAdd(assertion.Id, assertion);
-                if (!Enum.IsDefined(assertion.Kind) || assertion.Id != ImportIdentity.AssertionId(batch.Options.Namespace, batch.Options.Source, assertion.Kind,
-                    assertion.SubjectExternalId, assertion.Predicate, assertion.ObjectExternalId, assertion.SourceFields)) Error("assertion", assertion.Id, "Invalid assertion kind or stable ID.");
+                var validAssertionId = assertion.Id == ImportIdentity.AssertionId(batch.Options.Namespace, batch.Options.Source, assertion.Kind,
+                    assertion.SubjectExternalId, assertion.Predicate, assertion.ObjectExternalId, assertion.SourceFields) ||
+                    (batch.AdapterVersion == "1.0.0" && assertion.Id == ImportIdentity.AssertionId(batch.Options.Namespace, batch.Options.Source, assertion.Kind,
+                        assertion.SubjectExternalId, assertion.Predicate, assertion.ObjectExternalId, assertion.SourceFields, "\r\n"));
+                if (!Enum.IsDefined(assertion.Kind) || !validAssertionId) Error("assertion", assertion.Id, "Invalid assertion kind or stable ID.");
                 CheckRawProvenance(assertion.Provenance, batch, assertion.Id);
             }
         }

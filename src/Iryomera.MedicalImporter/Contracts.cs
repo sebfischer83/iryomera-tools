@@ -152,6 +152,8 @@ public static class ImportIdentity
     public static string Key(string id) => id.Replace(':', '.') + ".name";
     public static string Hash(ReadOnlySpan<byte> bytes) => Convert.ToHexStringLower(SHA256.HashData(bytes));
     public static string AssertionId(string ns, string source, SourceAssertionKind kind, string subject, string predicate, string target, SortedDictionary<string, JsonElement> fields) =>
-        ns + ":assertion_" + Hash(JsonSerializer.SerializeToUtf8Bytes(new { source, kind, subject, predicate, target, fields }, ContentJson.Options));
+        AssertionId(ns, source, kind, subject, predicate, target, fields, null);
+    internal static string AssertionId(string ns, string source, SourceAssertionKind kind, string subject, string predicate, string target, SortedDictionary<string, JsonElement> fields, string? legacyNewLine) =>
+        ns + ":assertion_" + Hash(JsonSerializer.SerializeToUtf8Bytes(new { source, kind, subject, predicate, target, fields }, legacyNewLine is null ? ContentJson.Options : new(ContentJson.Options) { NewLine = legacyNewLine }));
     public static JsonElement Json<T>(T value) => JsonSerializer.SerializeToElement(value, ContentJson.Options);
 }

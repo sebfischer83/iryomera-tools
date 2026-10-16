@@ -29,4 +29,12 @@ public sealed class ObservationTests
         package.Definitions.Add(new ObservationDefinition { Id = examination.Id, NameKey = examination.NameKey, Version = examination.Version, Provenance = examination.Provenance });
         Assert.Contains(ContentValidator.Validate(package), issue => issue.Code == "relation-type");
     }
+    [Fact]
+    public void CanonicalJsonUsesLfOnEveryOperatingSystem()
+    {
+        var output = JsonSerializer.Serialize(Fixtures.Package(), ContentJson.Options);
+        Assert.Equal("\n", ContentJson.Options.NewLine);
+        Assert.Contains("\n", output); Assert.DoesNotContain("\r\n", output);
+    }
+
 }

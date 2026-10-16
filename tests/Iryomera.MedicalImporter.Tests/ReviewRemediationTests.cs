@@ -281,4 +281,22 @@ public sealed class ReviewRemediationTests
         Assert.Contains(WorkspaceValidation.Validate(new() { Batches = [batch] }), d => d.Code == "duplicate-id");
     }
 
+    [Theory]
+    [InlineData("\n")]
+    [InlineData("\r\n")]
+    public async Task LegacyPlatformSpecificBatchAndAssertionHashesRemainReadable(string newLine)
+    {
+        var batch = await TestData.Import("hpo-annotations", "hpoa.tsv");
+        var options = new JsonSerializerOptions(ContentJson.Options) { NewLine = newLine };
+        var legacyId = "batch_" + ImportIdentity.Hash(JsonSerializer.SerializeToUtf8Bytes(new { hash = batch.InputSha256, options = batch.Options, adapterVersion = "1.0.0" }, options));
+        var assertion = batch.Assertions[0];
+        var legacyAssertion = batch.Options.Namespace + ":assertion_" + ImportIdentity.Hash(JsonSerializer.SerializeToUtf8Bytes(new
+        { source = batch.Options.Source, kind = assertion.Kind, subject = assertion.SubjectExternalId, predicate = assertion.Predicate, target = assertion.ObjectExternalId, fields = assertion.SourceFields }, options));
+        batch.Assertions[0] = assertion with { Id = legacyAssertion, Provenance = assertion.Provenance with { ExternalId = legacyAssertion } };
+        var legacy = batch with { Id = legacyId, AdapterVersion = "1.0.0" };
+        Assert.DoesNotContain(WorkspaceValidation.Validate(new() { Batches = [legacy] }), d => d.Code is "batch-integrity" or "assertion");
+        var badModern = legacy with { AdapterVersion = "1.1.0" };
+        Assert.Contains(WorkspaceValidation.Validate(new() { Batches = [badModern] }), d => d.Code == "batch-integrity");
+    }
+
 }

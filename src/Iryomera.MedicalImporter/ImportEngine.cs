@@ -49,7 +49,7 @@ public sealed class ImportEngine
         return batch;
     }
 
-    internal static string BatchId(string hash, ImportOptions options, string adapterVersion = AdapterVersion) => "batch_" + ImportIdentity.Hash(JsonSerializer.SerializeToUtf8Bytes(new { hash, options, adapterVersion }, ContentJson.Options));
+    internal static string BatchId(string hash, ImportOptions options, string adapterVersion = AdapterVersion, string? legacyNewLine = null) => "batch_" + ImportIdentity.Hash(JsonSerializer.SerializeToUtf8Bytes(new { hash, options, adapterVersion }, legacyNewLine is null ? ContentJson.Options : new(ContentJson.Options) { NewLine = legacyNewLine }));
 
     public static void ValidateOptions(ImportOptions options)
     {
