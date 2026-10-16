@@ -1,0 +1,9 @@
+@inject IStringLocalizer L
+<nav class="tabs" aria-label="@L["studio.project"]">
+    <NavLink href="@($"/projects/{Id}")" Match="NavLinkMatch.All">@L["studio.content"]</NavLink>
+    <NavLink href="@($"/projects/{Id}/relations")">@L["studio.relationships"]</NavLink>
+    <NavLink href="@($"/projects/{Id}/validation")">@L["studio.validation"]</NavLink>
+    <NavLink href="@($"/projects/{Id}/release")">@L["studio.release"]</NavLink>
+    <NavLink href="@($"/projects/{Id}/audit")">@L["studio.audit"]</NavLink>
+</nav>
+@code { [Parameter] public Guid Id { get; set; } }

@@ -1,0 +1,41 @@
+@inherits StudioPage
+@inject ProjectService Projects
+<h2>@L["studio.section.gameplay"]</h2><p class="notice">@L["studio.simulationNotice"]</p><Feedback Error="Error" Message="@Message" />
+<EditForm Model="Model" OnSubmit="Save" FormName="gameplay">
+    <div class="card columns">
+        <label>@L["studio.rarity"]<InputNumber @bind-Value="Model.Rarity" step="any" /></label>
+        <label>@L["studio.severity"]<InputNumber @bind-Value="Model.Severity" step="any" /></label>
+        <label>@L["studio.duration"]<InputNumber @bind-Value="Model.Duration" step="any" /></label>
+        <label>@L["studio.examinationDuration"]<InputNumber @bind-Value="Model.ExaminationDuration" step="any" /></label>
+        <label>@L["studio.examinationCost"]<InputNumber @bind-Value="Model.ExaminationCost" step="any" /></label>
+        <label>@L["studio.treatmentCost"]<InputNumber @bind-Value="Model.TreatmentCost" step="any" /></label>
+        <label>@L["studio.difficulty"]<InputNumber @bind-Value="Model.Difficulty" step="any" /></label>
+        <label>@L["studio.successProbability"]<InputNumber @bind-Value="Model.Success" step="any" /></label>
+    </div>
+    <section class="card"><h3>@L["studio.requiredResources"]</h3><p>@L["studio.requirementsHint"]</p>
+        @foreach (var row in Resources)
+        { <div class="toolbar" @key="row"><label>@L["studio.resource"]<input @bind="row.Key" list="resource-options" /></label><label>@L["studio.quantity"]<input type="number" step="any" @bind="row.Quantity" /></label><button type="button" class="secondary" @onclick="() => Resources.Remove(row)">@L["studio.remove"]</button></div> }
+        <datalist id="resource-options">@foreach (var definition in State.Package.Definitions.Where(d => d is RoomDefinition or MedicalEquipmentDefinition or StaffRoleDefinition or StaffQualificationDefinition or FurnitureDefinition)) { <option value="@definition.Id">@StudioContent.Name(State, definition, CultureInfo.CurrentUICulture.Name)</option> }</datalist>
+        <button type="button" @onclick="() => Resources.Add(new())">@L["studio.addResource"]</button>
+    </section>
+    <section class="card"><label>@L["studio.reviewer"]<InputText @bind-Value="Actor" required /></label><label>@L["studio.reason"]<InputTextArea @bind-Value="Note" required /></label><button type="submit" disabled="@Busy">@L["studio.saveSimulation"]</button></section>
+</EditForm>
+@code {
+    [Parameter] public ProjectSnapshot State { get; set; } = null!; [Parameter] public string DefinitionId { get; set; } = ""; [Parameter] public EventCallback OnChanged { get; set; }
+    private BalanceModel Model = new(); private List<ResourceRow> Resources = []; private string Actor = ""; private string Note = ""; private long LoadedRevision = -1;
+    protected override void OnParametersSet()
+    {
+        if (LoadedRevision == State.Project.Revision) return; LoadedRevision = State.Project.Revision;
+        var old = State.Package.Gameplay.Find(b => b.DefinitionId == DefinitionId);
+        Model = new() { Rarity = old?.Rarity, Severity = old?.Severity, Duration = old?.TreatmentDurationSeconds, ExaminationDuration = old?.ExaminationDurationSeconds, ExaminationCost = old?.ExaminationCost, TreatmentCost = old?.TreatmentCost, Difficulty = old?.DiagnosticDifficulty, Success = old?.SimulatedSuccessProbability };
+        Resources = old?.RequiredResources.Select(r => new ResourceRow { Key = r.Key, Quantity = r.Value }).ToList() ?? [];
+    }
+    private Task Save() => Run(async () =>
+    {
+        await Projects.SaveGameplayAsync(State.Project.Id, State.Project.Revision, new()
+        { DefinitionId = DefinitionId, Rarity = Model.Rarity, Severity = Model.Severity, TreatmentDurationSeconds = Model.Duration, ExaminationDurationSeconds = Model.ExaminationDuration, ExaminationCost = Model.ExaminationCost, TreatmentCost = Model.TreatmentCost, DiagnosticDifficulty = Model.Difficulty, SimulatedSuccessProbability = Model.Success, RequiredResources = Resources.ToDictionary(r => r.Key, r => r.Quantity, StringComparer.Ordinal) }, Actor, Note);
+        await OnChanged.InvokeAsync();
+    });
+    private sealed class BalanceModel { public decimal? Rarity { get; set; } public decimal? Severity { get; set; } public decimal? Duration { get; set; } public decimal? ExaminationDuration { get; set; } public decimal? ExaminationCost { get; set; } public decimal? TreatmentCost { get; set; } public decimal? Difficulty { get; set; } public decimal? Success { get; set; } }
+    private sealed class ResourceRow { public string Key { get; set; } = ""; public decimal Quantity { get; set; } = 1; }
+}

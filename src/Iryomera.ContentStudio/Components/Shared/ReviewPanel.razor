@@ -1,0 +1,22 @@
+@inherits StudioPage
+@inject ProjectService Projects
+@inject StudioExportService Exports
+<section class="card">
+    <h2>@L["studio.reviewStatus"]</h2><p><span class="status">@L["studio.status." + Provenance.ReviewStatus]</span></p>
+    @if (Provenance.ReviewedBy is not null) { <p>@Provenance.ReviewedBy · @Provenance.ReviewedAt?.ToString("g", CultureInfo.CurrentCulture)</p> }
+    <Feedback Error="Error" Message="@Message" />
+    <label>@L["studio.reviewer"]<input @bind="Actor" /></label><label>@L["studio.reason"]<textarea @bind="Note"></textarea></label>
+    <label>@L["studio.reviewStatus"]<select @bind="Status">@foreach (var status in Enum.GetValues<ReviewStatus>()) { <option value="@status">@L["studio.status." + status]</option> }</select></label>
+    <button @onclick="Review" disabled="@Busy">@L["studio.recordReview"]</button>
+    <details><summary>@L["studio.recordRights"]</summary><p>@L["studio.permissionHint"]</p><label>@L["studio.permissionEvidence"]<textarea @bind="Evidence"></textarea></label><div class="toolbar"><button @onclick="() => Permission(true)">@L["studio.permit"]</button><button class="secondary" @onclick="() => Permission(false)">@L["studio.block"]</button></div></details>
+</section>
+@code {
+    [Parameter] public Guid ProjectId { get; set; }
+    [Parameter] public long Revision { get; set; }
+    [Parameter] public string RecordId { get; set; } = "";
+    [Parameter] public Provenance Provenance { get; set; } = null!;
+    [Parameter] public EventCallback OnChanged { get; set; }
+    private string Actor = ""; private string Note = ""; private string Evidence = ""; private ReviewStatus Status = ReviewStatus.InReview;
+    private Task Review() => Run(async () => { await Projects.ReviewAsync(ProjectId, Revision, RecordId, Status, Actor, Note); await OnChanged.InvokeAsync(); });
+    private Task Permission(bool allow) => Run(async () => { await Exports.GrantRecordPermissionAsync(ProjectId, Revision, RecordId, allow, Actor, Evidence); await OnChanged.InvokeAsync(); });
+}

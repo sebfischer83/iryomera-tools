@@ -1,0 +1,63 @@
+@page "/imports"
+@page "/imports/{Id:guid}"
+@inherits StudioPage
+@inject ImportService ImportsService
+@inject ProjectService Projects
+<h1>@L["studio.imports"]</h1><p>@L["studio.importHint"]</p><Feedback Error="Error" Message="@Message" />
+<label>@L["studio.reviewer"]<input @bind="Actor" /></label><label>@L["studio.reason"]<textarea @bind="Note"></textarea></label>
+<section class="card"><h2>@L["studio.uploadWorkspace"]</h2><InputFile OnChange="Upload" accept=".json" /><p>@L["studio.uploadLimit"]</p></section>
+@if (Items is not null)
+{
+    <nav class="tabs">@foreach (var item in Items) { <a href="@($"/imports/{item.Id}")">@item.Name</a> }</nav>
+}
+@if (State is not null)
+{
+    <h2>@State.Import.Name</h2><p><code>SHA-256: @State.Import.Sha256</code></p><p>@L["studio.immutableSource"]</p>
+    <div class="columns">
+        <section class="card"><h3>@L["studio.sourceReview"]</h3>
+            <label>@L["studio.batch"]<select @bind="BatchId" @bind:after="() => { RecordId = string.Empty; Page = 0; }">@foreach (var batch in State.Workspace.Batches) { <option value="@batch.Id">@batch.Options.Source · @batch.Options.SourceVersion</option> }</select></label>
+            <label>@L["studio.id"]<input @bind="RecordId" /></label><label>@L["studio.reviewStatus"]<select @bind="Status">@foreach (var status in Enum.GetValues<ReviewStatus>()) { <option value="@status">@L["studio.status." + status]</option> }</select></label>
+            <div class="toolbar"><button @onclick="() => Review(false)">@L["studio.reviewRecord"]</button><button class="secondary" @onclick="PreviewBulk">@L["studio.previewBulk"]</button><button @onclick="() => Review(true)" disabled="@(BulkPreview is null)">@L["studio.applyBulk"]</button></div>
+            @if (BulkPreview is not null) { <p>@L["studio.selected"]: @BulkPreview.SelectedIds.Count · @L["studio.excluded"]: @BulkPreview.Exceptions.Count</p><details><summary>@L["studio.details"]</summary><pre>@StudioContent.Json(BulkPreview)</pre></details> }
+        </section>
+        <section class="card"><h3>@L["studio.sourceRights"]</h3><p>@L["studio.sourceRightsHint"]</p>
+            <label>@L["studio.rightsScope"]<select @bind="RightsScope"><option value="batch">@L["studio.batch"]</option><option value="record">@L["studio.id"]</option></select></label>
+            <label>@L["studio.decision"]<select @bind="Decision">@foreach (var decision in Enum.GetValues<RedistributionDecision>()) { <option value="@decision">@L["studio.rights." + decision]</option> }</select></label>
+            <label>@L["studio.permissionEvidence"]<textarea @bind="Evidence"></textarea></label><button @onclick="Rights">@L["studio.recordRights"]</button>
+        </section>
+    </div>
+    <div class="columns"><section class="card"><h3>@L["studio.promote"]</h3><p>@L["studio.promoteHint"]</p><label>@L["studio.title"]<input @bind="Title" /></label><button @onclick="Promote">@L["studio.createDraft"]</button></section>
+        <section class="card"><h3>@L["studio.compare"]</h3><label>@L["studio.project"]<select @bind="CompareProject"><option value="@Guid.Empty">@L["studio.select"]</option>@foreach (var project in ProjectItems) { <option value="@project.Id">@project.Title</option> }</select></label><button @onclick="Compare">@L["studio.compare"]</button>
+            @if (Comparisons is not null) { <p>@L["studio.results"]: @Comparisons.Count</p><table><tbody>@foreach (var comparison in Comparisons.Take(100)) { <tr><td>@comparison.Id</td><td>@comparison.IncomingLabel</td><td>@comparison.ExistingLabel</td><td>@L["studio.compare." + comparison.State]</td></tr> }</tbody></table> }
+        </section></div>
+    <h3>@L["studio.sourceRecords"]</h3><label>@L["studio.search"]<input @bind="Search" @bind:event="oninput" @bind:after="() => Page = 0" /></label>
+    <table><thead><tr><th>@L["studio.id"]</th><th>@L["studio.name"]</th><th>@L["studio.reviewStatus"]</th><th>@L["studio.originalSource"]</th></tr></thead><tbody>
+        @foreach (var record in VisibleRecords.Skip(Page * 25).Take(25))
+        { <tr><td><button class="secondary" @onclick="() => RecordId = record.Id">@record.Id</button></td><td>@record.Label</td><td>@L["studio.status." + WorkspaceValidation.Status(State.Workspace, BatchId, record.Id)]</td><td><details><summary>@L["studio.details"]</summary><pre>@record.Json</pre></details></td></tr> }
+    </tbody></table>
+    <div class="toolbar"><button disabled="@(Page == 0)" @onclick="() => Page--">@L["studio.previous"]</button><button disabled="@((Page + 1) * 25 >= VisibleRecords.Count())" @onclick="() => Page++">@L["studio.next"]</button></div>
+    <h3>@L["studio.validationIssues"] (@Diagnostics.Count)</h3><table><tbody>@foreach (var d in Diagnostics.Take(200)) { <tr><td><code>@d.Code</code></td><td>@d.RecordId</td><td>@d.Message</td></tr> }</tbody></table>
+    <details><summary>@L["studio.identifierCandidates"]</summary><pre>@StudioContent.Json(IdentifierMatching.Candidates(State.Workspace))</pre></details>
+    <details><summary>@L["studio.reviewHistory"]</summary><pre>@StudioContent.Json(State.Workspace.Reviews)</pre><pre>@StudioContent.Json(State.Workspace.Rights)</pre></details>
+}
+@code {
+    [Parameter] public Guid? Id { get; set; }
+    private List<StudioImport>? Items; private List<StudioProject> ProjectItems = []; private ImportSnapshot? State; private IReadOnlyList<ImportDiagnostic> Diagnostics = [];
+    private string Actor = ""; private string Note = ""; private string BatchId = ""; private string RecordId = ""; private string Title = ""; private string Evidence = ""; private string RightsScope = "batch"; private string Search = ""; private int Page;
+    private ReviewStatus Status = ReviewStatus.InReview; private RedistributionDecision Decision = RedistributionDecision.Undecided; private Guid CompareProject; private IReadOnlyList<ImportComparison>? Comparisons; private BulkReviewAudit? BulkPreview;
+    private IEnumerable<(string Id, string Label, string Json)> VisibleRecords => State!.Workspace.Batches.Where(b => b.Id == BatchId).SelectMany(b => b.Terms.Select(t => (t.Id, Label: t.Label, Json: StudioContent.Json(t))).Concat(b.Assertions.Select(a => (a.Id, Label: a.Predicate, Json: StudioContent.Json(a))))).Where(r => r.Id.Contains(Search, StringComparison.OrdinalIgnoreCase) || r.Label.Contains(Search, StringComparison.OrdinalIgnoreCase));
+    protected override Task OnParametersSetAsync() => Run(Load);
+    private async Task Load()
+    {
+        Items = await ImportsService.ListAsync(); ProjectItems = await Projects.ListAsync();
+        if (Id is null) { State = null; return; }
+        State = await ImportsService.GetAsync(Id.Value); Diagnostics = WorkspaceValidation.Validate(State.Workspace);
+        if (!State.Workspace.Batches.Any(b => b.Id == BatchId)) BatchId = State.Workspace.Batches.FirstOrDefault()?.Id ?? "";
+    }
+    private Task Upload(InputFileChangeEventArgs args) => Run(async () => { await using var input = args.File.OpenReadStream(StudioOptions.MaxUploadBytes); var id = await ImportsService.UploadAsync(args.File.Name, input, Actor); Nav.NavigateTo("/imports/" + id); });
+    private Task Review(bool bulk) => Run(async () => { await ImportsService.ReviewAsync(Id!.Value, State!.Import.Revision, BatchId, RecordId, Status, Actor, Note, bulk); BulkPreview = null; await Load(); });
+    private Task PreviewBulk() => Run(() => { BulkPreview = BulkReview.Preview(State!.Workspace, BatchId, Status, Actor, DateTimeOffset.UtcNow, Note); return Task.CompletedTask; });
+    private Task Rights() => Run(async () => { await ImportsService.RightsAsync(Id!.Value, State!.Import.Revision, BatchId, RightsScope == "record" ? RecordId : null, Decision, Actor, Note, Evidence); BulkPreview = null; await Load(); });
+    private Task Promote() => Run(async () => Nav.NavigateTo("/projects/" + await ImportsService.PromoteAsync(Id!.Value, Title, Actor)));
+    private Task Compare() => Run(async () => Comparisons = await ImportsService.CompareAsync(Id!.Value, CompareProject));
+}

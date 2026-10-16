@@ -1,0 +1,17 @@
+@page "/projects/{Id:guid}/annotations/{RecordId}"
+@inherits StudioPage
+@inject ProjectService Projects
+<h1>@L["studio.annotation"]</h1><ProjectNav Id="Id" /><Feedback Error="Error" Message="@Message" />
+@if (State is not null && Original is not null)
+{
+    <p>@L["studio.annotationHint"]</p><textarea class="json" @bind="Json"></textarea>
+    <label>@L["studio.reviewer"]<input @bind="Actor" /></label><label>@L["studio.reason"]<textarea @bind="Note"></textarea></label><button @onclick="Save">@L["studio.saveDraft"]</button>
+    <ReviewPanel ProjectId="Id" Revision="State.Project.Revision" RecordId="@RecordId" Provenance="Original.Provenance" OnChanged="Load" />
+}
+@code {
+    [Parameter] public Guid Id { get; set; } [Parameter] public string RecordId { get; set; } = "";
+    private ProjectSnapshot? State; private MedicalAnnotation? Original; private string Json = ""; private string Actor = ""; private string Note = "";
+    protected override Task OnParametersSetAsync() => Run(Load);
+    private async Task Load() { State = await Projects.GetAsync(Id); Original = State.Package.MedicalAnnotations.Single(a => a.Id == RecordId); Json = StudioContent.Json(Original); }
+    private Task Save() => Run(async () => { await using var input = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(Json)); var result = await ContentDocuments.ReadValidatedAsync<MedicalAnnotation>(input); if (result.Value is null) throw new StudioValidationException(result.Issues); await Projects.SaveAnnotationAsync(Id, State!.Project.Revision, result.Value, Actor, Note); await Load(); });
+}

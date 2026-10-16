@@ -1,0 +1,7 @@
+@inject IStringLocalizer L
+@if (!string.IsNullOrWhiteSpace(Message)) { <p class="success" role="status">@Message</p> }
+@if (Error is not null)
+{
+    <div class="error" role="alert"><strong>@L[Error is StudioConflictException ? "studio.conflict" : "studio.operationFailed"]</strong><details><summary>@L["studio.details"]</summary><pre>@Error.Message</pre></details></div>
+}
+@code { [Parameter] public string? Message { get; set; } [Parameter] public Exception? Error { get; set; } }
