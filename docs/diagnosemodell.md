@@ -1,5 +1,7 @@
 # Untersuchungs- und Diagnosemodell
 
+> Ergänzende deutsche Übersetzung und Übersicht. Maßgeblich ist die [englische Modell- und Formatreferenz](diagnostic-content.md). Änderungen an Verhalten oder Verträgen werden zuerst dort dokumentiert und anschließend hier nachgeführt.
+
 Stand: Content SDK 0.4.0, Austauschformat `schemaVersion: "1.0.0"`.
 Diese Übersicht beschreibt die implementierten Inhaltsverträge und den geplanten Ablauf im privaten Spiel. Die englische [Formatreferenz](diagnostic-content.md), [ADR 0008](architecture/0008-diagnostic-content.md) und die [JSON-Schemas](../schemas/v1/) enthalten die technischen Details.
 

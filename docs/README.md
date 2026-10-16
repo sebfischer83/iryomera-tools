@@ -1,16 +1,18 @@
-# Dokumentation
+# Documentation
 
-## Untersuchungs- und Diagnosemodell
+English is the authoritative language for repository documentation, public API documentation, architecture decisions and format specifications. Additional translations are welcome; identify their English reference and update it first when behavior or contracts change. German documentation is supplementary. The tools' user interface and content localization continue to support both English and German.
 
-- [Deutsche Modellübersicht](diagnosemodell.md): Definitionen, Beziehungsgrafik, Ergebnistypen, JSON-Beispiele, Simulationsgrenze und Datenübergabe.
-- [Englische Formatreferenz](diagnostic-content.md): technische Verträge und additive v1-Erweiterungen.
-- [ADR 0008](architecture/0008-diagnostic-content.md): Architekturentscheidung und Planung für das private Spiel.
-- [JSON-Austauschformate](formats.md) und [Schema-Dateien](../schemas/v1/).
-- [Synthetische Beispiele](../examples/synthetic/README.md) und [Prüfbericht](phase-3-verification.md).
+## Examination and diagnostic model
 
-## Werkzeuge und Integration
+- [Diagnostic model and format reference](diagnostic-content.md): definitions, relationships, result types, JSON examples, simulation boundaries and additive v1 extensions.
+- [ADR 0008](architecture/0008-diagnostic-content.md): architecture decision and private-game runtime plan.
+- [JSON exchange formats](formats.md) and [schema files](../schemas/v1/).
+- [Synthetic examples](../examples/synthetic/README.md) and [verification report](phase-3-verification.md).
+- [Supplementary German model overview](diagnosemodell.md).
 
-- [Content Studio](content-studio.md): lokale Bearbeitung, Review und Export.
-- [Medical Importer](medical-importer.md), [Wikidata](wikidata-import.md) und [Quellformate/Lizenzen](data-sources/README.md).
-- [Lokalisierung](localization.md) und [Godot-Integration](godot-integration.md).
-- [Architekturgrundlagen](architecture/0001-foundation.md) und [verbindliche Entwicklungsregeln](../AGENTS.md).
+## Tools and integration
+
+- [Content Studio](content-studio.md): local authoring, review and export.
+- [Medical Importer](medical-importer.md), [Wikidata](wikidata-import.md) and [source formats/licenses](data-sources/README.md).
+- [Localization](localization.md) and [Godot integration](godot-integration.md).
+- [Architecture foundations](architecture/0001-foundation.md) and [binding development rules](../AGENTS.md).

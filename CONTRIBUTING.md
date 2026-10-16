@@ -2,6 +2,8 @@
 
 Read [AGENTS.md](AGENTS.md), the [architecture](docs/architecture/0001-foundation.md), and the current [phase plans](docs/plans/phase-3.md) and [diagnostic plan](docs/plans/diagnostic-content.md). Contributions are MIT-licensed; preserve upstream notices and data licenses. Do not include medical datasets, credentials or purchased assets in pull requests. Use synthetic or explicitly licensed fixtures with per-record lineage.
 
+Write authoritative repository documentation, public API documentation, ADRs and format specifications in English. Label supplementary translations and link their English reference; update the English reference first and keep translations aligned. See the [documentation index](docs/README.md). This documentation policy does not change the required English/German UI and content localization support.
+
 Install the .NET 10 SDK and .NET 8 runtime/SDK, then run from the repository root:
 
 ```sh

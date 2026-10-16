@@ -2,7 +2,7 @@
 
 These contracts describe authored content. They do not execute examinations or diagnose patients. [ADR 0008](architecture/0008-diagnostic-content.md) records the medical/simulation boundary, compatibility decision and private-game runtime plan.
 
-Deutsch: [Modellübersicht mit Beziehungsgrafik und JSON-Beispielen](diagnosemodell.md).
+This is the authoritative English model and format reference. A [supplementary German model overview](diagnosemodell.md) is available; update the English reference first when contracts or behavior change.
 
 ## Meaning and relationships
 
@@ -17,6 +17,25 @@ Deutsch: [Modellübersicht mit Beziehungsgrafik und JSON-Beispielen](diagnosemod
 | DiagnosticRecommendation | Optional sourced disease/examination/context assertion | Reviewed rationale, not an executable physician checklist |
 
 The clinical words in this table illustrate distinctions only. No disease associations, real reference intervals or treatment recommendations have been added. A future shared catalog of 30–50 examinations can serve hundreds of diseases without embedding copies in diseases.
+
+```mermaid
+flowchart LR
+    D["DiseaseDefinition"] -->|diseaseSymptom| S["SymptomDefinition"]
+    D -->|diseaseFinding| F["FindingDefinition"]
+    D -->|diseaseExamination| E["ExaminationDefinition"]
+    D -->|diseaseTreatment| T["TreatmentDefinition"]
+    E -->|examinationObservation| O["ObservationDefinition"]
+    E -->|examinationFinding| F
+    E -->|examinationEquipment| G["MedicalEquipmentDefinition"]
+    E -->|examinationRoom| R["RoomDefinition"]
+    E -->|examinationQualification| Q["StaffQualificationDefinition"]
+    O -. "Category: findingId" .-> F
+    RR["ObservationReferenceRange"] -->|observationId| O
+    DR["DiagnosticRecommendation"] -->|diseaseId| D
+    DR -->|examinationId| E
+```
+
+Labeled solid connections between definitions are independent ContentRelation records (`id`, `version`, `kind`, `fromId`, `toId`, `provenance`). Reference intervals and recommendations are separate sourced records. The dotted connection is an optional category-to-finding reference. One examination may reference multiple observation parameters, and multiple examinations may reference the same parameter.
 
 New relation kinds are `examinationObservation`, `examinationRoom`, `examinationQualification` and `examinationPrerequisite`. Existing `examinationEquipment`, disease/symptom/finding/examination/treatment relations remain usable. A prerequisite points from the dependent examination to the examination required first. Cycles fail validation. Each relationship remains an independently identified, versioned, sourced and reviewed assertion.
 
@@ -38,11 +57,40 @@ Standalone entry schemas exist for all nine new record types under `schemas/v1`.
 
 Units are exact codes, preferably UCUM; there is no automatic conversion. Unitless numeric observations can use `1`. A clinical reference range needs traceable evidence and a separate review; import is never approval. No reference range is inferred from LOINC. Overlapping context intervals and unit conversion policy require an explicit future authoring/runtime decision.
 
+The following **result descriptor** belongs to the fictional `diagnostics_demo:sample_index` observation. It defines a dimensionless numeric parameter, not an actual patient measurement:
+
+```json
+{
+  "valueKind": "numeric",
+  "categories": [],
+  "patientContextKeys": ["diagnostics_demo.patient.group"],
+  "unitCode": "1"
+}
+```
+
+Reference-range and simulated-distribution predicates must use patient factors declared in `patientContextKeys`. The consuming game must define the factors' meaning and supply their runtime values. Recommendation context may reference symptoms, findings and observations; a `diseaseExamination` association alone does not assert a clinical recommendation.
+
 ## Separate simulation configuration
 
 `SimulatedObservationDistribution` maps disease/observation/context IDs to **authored game parameters**: both numeric bounds, nonnegative category weights with a positive total, a true probability in [0,1], or a localized text key. Exactly one shape must match the observation descriptor. Category weights are weights, not asserted clinical frequencies; this contract does not select a distribution algorithm.
 
 `SimulatedManifestation` contains a disease, symptom/finding, game probability and visibility (`initiallyVisible`, `afterExamination`, `hidden`). `ExaminationResultPolicy` defines visibility and repetition: default `untilPatientStateChanges`, or `afterInterval` with a positive interval in simulated seconds. Each is explicitly `simulationOnly: true`; medical source provenance does not carry these invented values. Existing gameplay balancing holds costs, durations, difficulty, success and resource quantities separately.
+
+This **invented game distribution** is a separate record under `ContentPackage.diagnosticSimulation.observationDistributions` in the fictional example. Its numeric interval is neither a clinical reference range nor an imported medical frequency:
+
+```json
+{
+  "schemaVersion": "1.0.0",
+  "simulationOnly": true,
+  "id": "diagnostics_demo:distribution_amber_sample_index",
+  "version": "1.0.0",
+  "diseaseId": "diagnostics_demo:amber_condition",
+  "observationId": "diagnostics_demo:sample_index",
+  "categoryWeights": {},
+  "numericMinimum": 10,
+  "numericMaximum": 14
+}
+```
 
 ## Tested fictional example
 
