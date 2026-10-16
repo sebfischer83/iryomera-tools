@@ -80,3 +80,7 @@ The managed environment uses writable `/tmp` SDK/CLI/NuGet locations and single-
 - NuGet publication, Phase 3, ModKit and mod.io are outside this review.
 
 See [ADRs](architecture/0005-record-rights-and-review.md), [source/license scope](data-sources/README.md), [LOINC decision](architecture/0006-observation-definitions.md), [CLI/API guide](medical-importer.md) and [implementation plan](plans/phase-2-review.md).
+
+## 0.4.0 Wikidata and shared-contract regression
+
+The [0.4.0 verification report](phase-3-verification.md) records 95 passing importer tests, unchanged normalization pins for all seven existing adapters, the new offline Wikidata adapter and successful Windows/Linux Release/Studio/Godot CI at implementation commit `9a27267`. [Run 38949613685](https://github.com/sebfischer83/iryomera-tools/actions/runs/38949613685) additionally passed the four full official HPO/MAxO ontology cases on both operating systems, twice each. Existing unresolved-source/error baselines remain explicit; complete-file ICD-10-GM/OPS/LOINC tests still require legally supplied local inputs and exact terms.

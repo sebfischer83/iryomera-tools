@@ -30,7 +30,7 @@ The new net10 Studio host references SDK, Localization and importer application 
 
 All original tests were retained. Added cases include schema-required versions, typed units/categories/context, source evidence, invalid ranges/probabilities, missing diagnostic references, incorrect resource roles, prerequisite cycles, mod dependencies and localization of new category/rationale keys. The diagnostic fixture defines three fictional diseases and five shared examinations with numeric, categorical, boolean and text results. No real reference values or medical approval are claimed by its synthetic evidence.
 
-The CI workflow runs locked restore, generated schemas/examples, all test targets, samples, published Studio browser flow, packages and real Godot on both Windows and Linux. Browser/runtime setup needs network; the tested app and imports operate offline after setup. GitHub run links/results are recorded below once completed; local Linux results alone do not establish a Windows pass.
+The CI workflow runs locked restore, generated schemas/examples, all test targets, samples, published Studio browser flow, packages and real Godot on both Windows and Linux. Browser/runtime setup needs network; the tested app and imports operate offline after setup. The observed Windows/Linux run results are linked below; the local results are recorded separately.
 
 ## Pinned full official ontology regression (local)
 
@@ -55,4 +55,9 @@ MAxO JSON reports multiple issues for some records (25,970 error diagnostics); e
 
 ## GitHub Actions
 
-Pending final branch push and completion of the Windows/Linux workflow. This section will link the observed runs rather than infer success from configuration.
+Verified implementation commit: `9a27267f13ef692f917313a14a56e84384b3dde4` on `feature/phase-3-content-studio`.
+
+- [Push CI run 38949576186](https://github.com/sebfischer83/iryomera-tools/actions/runs/38949576186): **success**, both `tools (ubuntu-latest)` and `tools (windows-latest)` completed successfully. Includes generated schemas/examples, locked restore, Release build, all .NET/Python tests, samples, published-app DE/EN offline browser workflow, NuGet packaging and real Godot integration.
+- [Full-dataset CI run 38949613685](https://github.com/sebfischer83/iryomera-tools/actions/runs/38949613685): **success**, both operating systems completed the same checks plus all four pinned full official HPO/MAxO ontology imports, twice each. Input/output hashes, counts and expected-error baselines matched; no clinical approval is implied.
+
+Only aggregate full-dataset reports and test/package artifacts are uploaded. No restricted original source file or normalized full ontology is published. The follow-up verification-documentation commit changes no implementation and does not repeat this already successful CI run.
