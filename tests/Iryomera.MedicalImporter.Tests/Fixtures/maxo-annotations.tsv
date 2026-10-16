@@ -1,0 +1,2 @@
+disease_id	disease_name	source_id	maxo_id	maxo_name	hpo_id	relation	evidence	extension_id	extension_name	comment	other	author	last_updated	created
+SYNTHETIC:azure	Synthetic azure syndrome	SYNTHETIC:reference	MAXO:9999001	Synthetic amber action	HP:9999001	TREATS	PCS	SYNTHETIC:extension	Synthetic contextual extension	Fictional, not medical evidence		SYNTHETIC:curator	2026-01-02	2026-01-01

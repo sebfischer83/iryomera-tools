@@ -1,0 +1,20 @@
+format-version: 1.2
+data-version: synthetic-1
+ontology: hp
+
+[Term]
+id: HP:9999001
+name: Synthetic amber finding
+alt_id: HP:9999091
+def: "Fictional feature; not medical knowledge." [SYNTHETIC:fixture]
+synonym: "Synthetic amber feature" EXACT []
+is_a: HP:9999002 ! Synthetic parent finding
+
+[Term]
+id: HP:9999002
+name: Synthetic parent finding
+
+[Term]
+id: HP:9999003
+name: Synthetic obsolete finding
+is_obsolete: true

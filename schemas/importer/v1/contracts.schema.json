@@ -1,0 +1,768 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.iryomera.org/importer/v1/contracts.schema.json",
+  "$defs": {
+    "provenance": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "externalId": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "sourceVersion": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "license": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "importedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "reviewStatus": {
+          "enum": [
+            "unreviewed",
+            "inReview",
+            "approved",
+            "rejected"
+          ]
+        },
+        "reviewedBy": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reviewedAt": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/evidenceReference"
+          }
+        }
+      },
+      "required": [
+        "source",
+        "externalId",
+        "sourceVersion",
+        "license",
+        "importedAt"
+      ],
+      "additionalProperties": true,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "reviewStatus": {
+                "enum": [
+                  "approved",
+                  "rejected"
+                ]
+              }
+            },
+            "required": [
+              "reviewStatus"
+            ]
+          },
+          "then": {
+            "required": [
+              "reviewedBy",
+              "reviewedAt"
+            ],
+            "properties": {
+              "reviewedBy": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "reviewedAt": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "evidenceReference": {
+      "type": "object",
+      "properties": {
+        "citation": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "uri": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "uri"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "evidenceCode": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "citation"
+      ],
+      "additionalProperties": true
+    },
+    "matchCandidate": {
+      "type": "object",
+      "properties": {
+        "leftId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "rightId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "language": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "normalizedText": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "leftId",
+        "rightId",
+        "language",
+        "normalizedText"
+      ],
+      "additionalProperties": false
+    },
+    "importDiagnostic": {
+      "type": "object",
+      "properties": {
+        "severity": {
+          "enum": [
+            "information",
+            "warning",
+            "error"
+          ]
+        },
+        "code": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "recordId": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "severity",
+        "code",
+        "recordId",
+        "message"
+      ],
+      "additionalProperties": false
+    },
+    "importOptions": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "enum": [
+            "hpo",
+            "hpo-annotations",
+            "maxo",
+            "maxo-annotations",
+            "icd-10-gm",
+            "loinc",
+            "ops"
+          ]
+        },
+        "sourceVersion": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "sourceUrl": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https?://"
+        },
+        "license": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "licenseText": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "attribution": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "importedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "namespace": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "format": {
+          "enum": [
+            "auto",
+            "json",
+            "obo",
+            "tsv",
+            "csv",
+            "xml"
+          ]
+        },
+        "maxInputBytes": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "source",
+        "sourceVersion",
+        "sourceUrl",
+        "license",
+        "licenseText",
+        "attribution",
+        "importedAt"
+      ],
+      "additionalProperties": false
+    },
+    "importedTerm": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "externalId": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "kind": {
+          "enum": [
+            "disease",
+            "finding",
+            "examination",
+            "medicalProcedure"
+          ]
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "language": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "description": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "synonyms": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "alternateIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          }
+        },
+        "obsolete": {
+          "type": "boolean"
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        },
+        "sourceFields": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "id",
+        "externalId",
+        "kind",
+        "label",
+        "language",
+        "provenance"
+      ],
+      "additionalProperties": false
+    },
+    "sourceAssertion": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "kind": {
+          "enum": [
+            "hpoAssociation",
+            "maxoAnnotation",
+            "ontologyHierarchy",
+            "crossReference"
+          ]
+        },
+        "predicate": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "subjectExternalId": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "objectExternalId": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "diseaseExternalId": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "extensionExternalId": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        },
+        "sourceFields": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "predicate",
+        "subjectExternalId",
+        "objectExternalId",
+        "provenance"
+      ],
+      "additionalProperties": false
+    },
+    "importBatch": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "inputSha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$(?![\\s\\S])"
+        },
+        "inputBytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "options": {
+          "$ref": "#/$defs/importOptions"
+        },
+        "adapterVersion": {
+          "const": "1.0.0"
+        },
+        "detectedFormat": {
+          "enum": [
+            "json",
+            "obo",
+            "tsv",
+            "csv",
+            "xml"
+          ]
+        },
+        "observedSourceVersion": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sourceMetadata": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "terms": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/importedTerm"
+          }
+        },
+        "assertions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/sourceAssertion"
+          }
+        },
+        "diagnostics": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/importDiagnostic"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "inputSha256",
+        "inputBytes",
+        "options",
+        "detectedFormat"
+      ],
+      "additionalProperties": false
+    },
+    "reviewDecision": {
+      "type": "object",
+      "properties": {
+        "batchId": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "recordId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "status": {
+          "enum": [
+            "unreviewed",
+            "inReview",
+            "approved",
+            "rejected"
+          ]
+        },
+        "reviewer": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "note": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "batchId",
+        "recordId",
+        "status",
+        "reviewer",
+        "at",
+        "note"
+      ],
+      "additionalProperties": false
+    },
+    "rightsDecision": {
+      "type": "object",
+      "properties": {
+        "batchId": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "decision": {
+          "enum": [
+            "undecided",
+            "permitted",
+            "blocked"
+          ]
+        },
+        "reviewer": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "note": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "batchId",
+        "decision",
+        "reviewer",
+        "at",
+        "note"
+      ],
+      "additionalProperties": false
+    },
+    "importWorkspace": {
+      "type": "object",
+      "properties": {
+        "schemaVersion": {
+          "const": "1.0.0"
+        },
+        "batches": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/importBatch"
+          }
+        },
+        "reviews": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/reviewDecision"
+          }
+        },
+        "rights": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/rightsDecision"
+          }
+        }
+      },
+      "required": [
+        "schemaVersion"
+      ],
+      "additionalProperties": false
+    },
+    "resolvedSourceAssertion": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "$ref": "#/$defs/sourceAssertion"
+        },
+        "subjectId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "objectId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "diseaseId": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "source",
+        "subjectId",
+        "objectId"
+      ],
+      "additionalProperties": false
+    },
+    "sourceAssertionDocument": {
+      "type": "object",
+      "properties": {
+        "schemaVersion": {
+          "const": "1.0.0"
+        },
+        "assertions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/resolvedSourceAssertion"
+          }
+        }
+      },
+      "required": [
+        "schemaVersion"
+      ],
+      "additionalProperties": false
+    },
+    "releaseImportSummary": {
+      "type": "object",
+      "properties": {
+        "batchId": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "inputSha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$(?![\\s\\S])"
+        },
+        "inputBytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "adapterVersion": {
+          "const": "1.0.0"
+        },
+        "options": {
+          "$ref": "#/$defs/importOptions"
+        },
+        "observedSourceVersion": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "batchId",
+        "inputSha256",
+        "inputBytes",
+        "adapterVersion",
+        "options"
+      ],
+      "additionalProperties": false
+    },
+    "releaseReport": {
+      "type": "object",
+      "properties": {
+        "schemaVersion": {
+          "const": "1.0.0"
+        },
+        "selectedDefinitionIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+          }
+        },
+        "selectedAssertionIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+          }
+        },
+        "omittedUnapprovedRecords": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "imports": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/releaseImportSummary"
+          }
+        },
+        "reviews": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/reviewDecision"
+          }
+        },
+        "rights": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/rightsDecision"
+          }
+        },
+        "diagnosticCounts": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      },
+      "required": [
+        "schemaVersion"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

@@ -33,7 +33,7 @@ The interface has two methods: `TryGetTemplate(key, culture, out template)` perf
 
 ## Formatting contract
 
-Named variables: `{name}`. Numbers: `{amount:N2}`. Dates: `{date:d}`. Plurals: `{count:plural:one item|{count} items}` for en/de. SmartFormat supplies the language-specific plural rules; consult its documentation for the branch counts of additional languages. The portable supported dialect allows explicit plural formatting, standard .NET formats and nested flat variables. No property access, scripts, reflection or arbitrary formatter extensions are supported. Escaping follows SmartFormat (`{{` and `}}` for literal braces).
+Named variables: `{name}`. Numbers: `{amount:N2}`. Dates: `{date:d}`. Plurals: `{count:plural:one item|{count} items}` for en/de. SmartFormat supplies the language-specific plural rules; consult its documentation for the branch counts of additional languages. The portable supported dialect allows explicit plural formatting, standard .NET formats and nested flat variables. No property access, scripts, reflection or arbitrary formatter extensions are supported. Escaping uses the pinned SmartFormat backslash dialect: `\{` and `\}` for literal braces, `\\` for a literal backslash (double these backslashes in JSON).
 
 English/German placeholder *names* must agree, including inside plural branches. Formatting specifiers and word order can differ. Validation parses templates but does not know runtime argument types; incorrect number/date values still raise runtime formatting errors. Missing variables are errors. Missing translation keys return the key after English fallback. Whitespace-only translations are invalid.
 

@@ -11,3 +11,6 @@
 - Add architecture decisions to docs/architecture. Read docs/plans before changing scope. Prefer small comprehensible changes and no unnecessary external services.
 - Future imports must be reproducible, licensed and auditable. Future ZIP handling must enforce traversal/size limits. Never execute mod scripts or DLLs automatically.
 - Consult current official documentation when integrating external APIs. mod.io is optional and requires mock HTTP tests; no live requests without explicit configuration.
+- MedicalImporter staging v1 is strict/versioned independently of the additive SDK format. Preserve original source fields, exact source versions/licenses, review history and redistribution decisions; see docs/medical-importer.md and docs/data-sources/README.md.
+- Never flatten contextual/negative HPO or multi-way MAxO assertions into unconditional medical relations. Keep the full approved source-assertion sidecar. Text/synonym matching proposes candidates only.
+- Import/review/export and rights review are separate operations. Export only approved reference-closed selections; never leak rejected/unreviewed source records through release reports. No real data approval or rights grant follows from synthetic tests.

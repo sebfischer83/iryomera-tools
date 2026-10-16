@@ -1,4 +1,4 @@
-name: Foundation CI
+name: Tools CI
 
 on:
   push:
@@ -8,7 +8,7 @@ permissions:
   contents: read
 
 jobs:
-  foundation:
+  tools:
     strategy:
       fail-fast: false
       matrix:
@@ -25,16 +25,18 @@ jobs:
       - name: Verify generated schemas
         run: |
           python scripts/generate-schemas.py
+          python scripts/generate-importer-schemas.py
           git diff --exit-code -- schemas
       - run: dotnet restore Iryomera.Tools.sln --locked-mode
       - run: dotnet build Iryomera.Tools.sln --configuration Release --no-restore
       - run: dotnet test Iryomera.Tools.sln --configuration Release --no-build --logger trx --results-directory TestResults
       - run: dotnet run --project examples/Iryomera.Foundation.Sample --configuration Release --no-build
+      - run: python scripts/run-importer-example.py
       - run: dotnet pack Iryomera.Tools.sln --configuration Release --no-build --output artifacts
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: foundation-${{ matrix.os }}
+          name: tools-${{ matrix.os }}
           path: |
             TestResults/*.trx
             artifacts/*.nupkg

@@ -1,0 +1,4 @@
+LOINC_NUM,LONG_COMMON_NAME,SHORTNAME,STATUS,COMPONENT,PROPERTY,TIME_ASPCT,SYSTEM,SCALE_TYP,METHOD_TYP,EXTERNAL_COPYRIGHT_NOTICE,DefinitionDescription
+X99991-1,"Synthetic reading, amber",Synthetic amber,ACTIVE,Synthetic component,Arb,Pt,Synthetic sample,Qn,Synthetic method,"MIT synthetic only","A fictional measurement
+with a quoted ""amber"" value."
+X99992-2,Synthetic obsolete reading,Synthetic old,DEPRECATED,Synthetic component,Arb,Pt,Synthetic sample,Qn,Synthetic method,MIT synthetic only,No medical meaning
