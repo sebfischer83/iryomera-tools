@@ -6,7 +6,7 @@ Implementation delivered for the formats listed in [the source scope](../data-so
 
 The Phase 1 remediation adds canonical `MedicalAnnotation` / `AnnotationReference` / `ObservationFrequency` contracts. Future HPO/MAxO adapters must target those lossless SDK contracts (including raw source fields), use ContentDocuments/LocalizationDocuments at raw JSON boundaries and preserve explicit unresolved references. Do not replace this with an unconditional binary projection or a separate incompatible medical assertion schema. See ADR 0003 and ADR 0004 for semantics and game/runtime targets. The .NET 10 CLI should consume the net10.0 asset; the game can consume net8.0.
 
-The unpublished local importer archive is not part of the approved Foundation and must be reconciled with these contracts/validation rules before a later Phase 2 task; this review does not authorize merging or expanding it.
+The Phase 2 external-review task authorized reconciling the published archive with the reviewed Foundation. The importer now emits canonical annotations and uses raw staging-schema validation. See the [review plan](phase-2-review.md) and ADRs 0005/0006. This does not authorize Phase 3.
 
 ## Goal and project boundaries
 

@@ -129,13 +129,14 @@
       "iryomera.content.sdk": {
         "type": "Project",
         "dependencies": {
+          "JsonSchema.Net": "[7.3.4, )",
           "NuGet.Versioning": "[7.0.0, )"
         }
       },
       "iryomera.localization": {
         "type": "Project",
         "dependencies": {
-          "Iryomera.Content.SDK": "[0.1.0, )",
+          "Iryomera.Content.SDK": "[0.3.0, )",
           "Microsoft.Extensions.Localization.Abstractions": "[10.0.0, )",
           "SmartFormat": "[3.6.1, )"
         }
@@ -144,8 +145,14 @@
         "type": "Project",
         "dependencies": {
           "CsvHelper": "[33.1.0, )",
-          "Iryomera.Content.SDK": "[0.1.0, )",
+          "Iryomera.Content.SDK": "[0.3.0, )",
           "System.CommandLine": "[2.0.0, )"
+        }
+      },
+      "iryomera.medicalimporter.integration": {
+        "type": "Project",
+        "dependencies": {
+          "Iryomera.MedicalImporter": "[0.3.0, )"
         }
       },
       "CsvHelper": {

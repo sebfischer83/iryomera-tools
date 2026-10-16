@@ -71,7 +71,7 @@ public static class Program
             Print(workspace.Batches.Select(b => new
             {
                 b.Id, b.Options.Source, b.Options.SourceVersion,
-                Redistribution = workspace.Rights.LastOrDefault(x => x.BatchId == b.Id)?.Decision ?? RedistributionDecision.Undecided,
+                Redistribution = workspace.Rights.LastOrDefault(x => x.BatchId == b.Id && x.RecordId is null)?.Decision ?? RedistributionDecision.Undecided,
                 Terms = b.Terms.Select(t => new { t.Id, t.ExternalId, t.Label, t.Kind, t.Obsolete, Status = Current(b.Id, t.Id) }),
                 Assertions = b.Assertions.Select(a => new { a.Id, a.Kind, a.Predicate, a.SubjectExternalId, a.ObjectExternalId, Status = Current(b.Id, a.Id) })
             })); return 0;
@@ -108,22 +108,49 @@ public static class Program
             }, ct); return 0;
         })); root.Subcommands.Add(review);
 
+        var bulk = new Command("review-bulk", "Preview/apply controlled review; ineligible/excluded records are audited and rejected on approval runs.");
+        var bulkWorkspace = Workspace(bulk);
+        var bulkBatch = Required(bulk, "--batch", "Batch ID.");
+        var bulkStatus = Required(bulk, "--status", "Requested review status.");
+        var bulkReviewer = Required(bulk, "--reviewer", "Reviewer identity.");
+        var bulkAt = Required(bulk, "--at", "ISO-8601 timestamp.");
+        var bulkNote = Required(bulk, "--note", "Basis for this controlled review.");
+        var exclusionsFile = Optional(bulk, "--exclusions", "JSON object mapping excluded record IDs to nonempty reasons.");
+        var apply = new Option<bool>("--apply") { Description = "Commit the preview; omission is read-only." }; bulk.Options.Add(apply);
+        bulk.SetAction((parse, ct) => GuardAsync(async () =>
+        {
+            var exclusions = parse.GetValue(exclusionsFile) is { Length: > 0 } path
+                ? JsonSerializer.Deserialize<Dictionary<string, string>>(await File.ReadAllTextAsync(path, ct), ContentJson.Options)
+                    ?? throw new ArgumentException("Exclusions must be a JSON object.") : null;
+            BulkReviewAudit Run(ImportWorkspace workspace, bool commit) => commit
+                ? BulkReview.Apply(workspace, parse.GetValue(bulkBatch)!, ParseEnum<ReviewStatus>(parse.GetValue(bulkStatus)!), parse.GetValue(bulkReviewer)!, Timestamp(parse.GetValue(bulkAt)!), parse.GetValue(bulkNote)!, exclusions)
+                : BulkReview.Preview(workspace, parse.GetValue(bulkBatch)!, ParseEnum<ReviewStatus>(parse.GetValue(bulkStatus)!), parse.GetValue(bulkReviewer)!, Timestamp(parse.GetValue(bulkAt)!), parse.GetValue(bulkNote)!, exclusions);
+            var store = ExistingStore(parse.GetValue(bulkWorkspace)!);
+            if (parse.GetValue(apply)) await store.UpdateAsync(w => { Print(Run(w, true)); return Task.CompletedTask; }, ct);
+            else Print(Run(await store.ReadAsync(ct), false));
+            return 0;
+        })); root.Subcommands.Add(bulk);
+
         var rights = new Command("rights", "Record a reviewed source-specific redistribution decision; does not change source licenses.");
         var rightsWorkspace = Workspace(rights);
         var rightsBatch = Required(rights, "--batch", "Batch ID.");
         var decision = Required(rights, "--decision", "undecided, permitted or blocked.");
         var rightsReviewer = Required(rights, "--reviewer", "Rights reviewer.");
         var rightsAt = Required(rights, "--at", "ISO-8601 timestamp.");
+        var rightsRecord = Optional(rights, "--id", "Optional record ID; batch decisions never override additional record terms.");
+        var permission = Optional(rights, "--permission-evidence", "Reference to the permission/terms and intended use covering this exact record; avoid confidential documents in public releases.");
         var rightsNote = Required(rights, "--note", "Basis, restrictions and extra permissions for this decision.");
         rights.SetAction((parse, ct) => GuardAsync(async () =>
         {
             await ExistingStore(parse.GetValue(rightsWorkspace)!).UpdateAsync(workspace =>
             {
                 var batch = workspace.Batches.SingleOrDefault(x => x.Id == parse.GetValue(rightsBatch)) ?? throw new ArgumentException("Unknown batch ID.");
-                var at = Timestamp(parse.GetValue(rightsAt)!);
-                if (string.IsNullOrWhiteSpace(parse.GetValue(rightsReviewer)) || string.IsNullOrWhiteSpace(parse.GetValue(rightsNote)) || at < batch.Options.ImportedAt || workspace.Rights.Any(x => x.BatchId == batch.Id && x.At > at))
-                    throw new ArgumentException("Rights review requires reviewer, note and a timestamp no earlier than import/previous rights decisions.");
-                workspace.Rights.Add(new() { BatchId = batch.Id, Decision = ParseEnum<RedistributionDecision>(parse.GetValue(decision)!), Reviewer = parse.GetValue(rightsReviewer)!, At = at, Note = parse.GetValue(rightsNote)! });
+                RecordRights.Decide(workspace, new()
+                {
+                    BatchId = batch.Id, RecordId = parse.GetValue(rightsRecord), PermissionEvidence = parse.GetValue(permission),
+                    Decision = ParseEnum<RedistributionDecision>(parse.GetValue(decision)!), Reviewer = parse.GetValue(rightsReviewer)!,
+                    At = Timestamp(parse.GetValue(rightsAt)!), Note = parse.GetValue(rightsNote)!
+                });
                 return Task.CompletedTask;
             }, ct); return 0;
         })); root.Subcommands.Add(rights);

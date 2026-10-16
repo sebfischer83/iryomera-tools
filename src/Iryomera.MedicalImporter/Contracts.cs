@@ -5,7 +5,7 @@ using Iryomera.Content.SDK;
 
 namespace Iryomera.MedicalImporter;
 
-public enum ImportedTermKind { Disease, Finding, Examination, MedicalProcedure }
+public enum ImportedTermKind { Disease, Finding, Examination, MedicalProcedure, Observation }
 public enum SourceAssertionKind { HpoAssociation, MaxoAnnotation, OntologyHierarchy, CrossReference }
 public enum DiagnosticSeverity { Information, Warning, Error }
 public enum RedistributionDecision { Undecided, Permitted, Blocked }
@@ -90,6 +90,9 @@ public sealed record ReviewDecision
 public sealed record RightsDecision
 {
     public required string BatchId { get; init; }
+    /// <summary>Null applies to the batch baseline; a record decision never grants batch rights.</summary>
+    public string? RecordId { get; init; }
+    public string? PermissionEvidence { get; init; }
     public required RedistributionDecision Decision { get; init; }
     public required string Reviewer { get; init; }
     public required DateTimeOffset At { get; init; }
@@ -100,16 +103,19 @@ public sealed record RightsDecision
 [System.Text.Json.Serialization.JsonUnmappedMemberHandling(System.Text.Json.Serialization.JsonUnmappedMemberHandling.Disallow)]
 public sealed record ImportWorkspace
 {
+    [System.Text.Json.Serialization.JsonRequired]
     public string SchemaVersion { get; init; } = "1.0.0";
     public List<ImportBatch> Batches { get; init; } = [];
     public List<ReviewDecision> Reviews { get; init; } = [];
     public List<RightsDecision> Rights { get; init; } = [];
+    public List<BulkReviewAudit> BulkReviews { get; init; } = [];
 }
 
 [System.Text.Json.Serialization.JsonUnmappedMemberHandling(System.Text.Json.Serialization.JsonUnmappedMemberHandling.Disallow)]
 public sealed record ResolvedSourceAssertion
 {
     public required SourceAssertion Source { get; init; }
+    public List<SourceAssertion> SourceClaims { get; init; } = [];
     public required string SubjectId { get; init; }
     public required string ObjectId { get; init; }
     public string? DiseaseId { get; init; }
@@ -120,8 +126,24 @@ public sealed record ResolvedSourceAssertion
 [System.Text.Json.Serialization.JsonUnmappedMemberHandling(System.Text.Json.Serialization.JsonUnmappedMemberHandling.Disallow)]
 public sealed record SourceAssertionDocument
 {
+    [System.Text.Json.Serialization.JsonRequired]
     public string SchemaVersion { get; init; } = "1.0.0";
     public List<ResolvedSourceAssertion> Assertions { get; init; } = [];
+}
+
+[System.Text.Json.Serialization.JsonUnmappedMemberHandling(System.Text.Json.Serialization.JsonUnmappedMemberHandling.Disallow)]
+public sealed record BulkReviewException(string RecordId, string Reason);
+
+[System.Text.Json.Serialization.JsonUnmappedMemberHandling(System.Text.Json.Serialization.JsonUnmappedMemberHandling.Disallow)]
+public sealed record BulkReviewAudit
+{
+    public required string BatchId { get; init; }
+    public required ReviewStatus Status { get; init; }
+    public required string Reviewer { get; init; }
+    public required DateTimeOffset At { get; init; }
+    public required string Note { get; init; }
+    public List<string> SelectedIds { get; init; } = [];
+    public List<BulkReviewException> Exceptions { get; init; } = [];
 }
 
 public static class ImportIdentity

@@ -37,6 +37,12 @@ public sealed class AdapterContext(ImportBatch batch)
     public void Term(string externalId, string label, ImportedTermKind kind, SortedDictionary<string, JsonElement> fields,
         string language = "en", string? description = null, IEnumerable<string>? synonyms = null, IEnumerable<string>? alternateIds = null, bool obsolete = false)
     {
+        if (obsolete && string.IsNullOrWhiteSpace(label) && !string.IsNullOrWhiteSpace(externalId))
+        {
+            Batch.SourceMetadata["unlabelledObsolete_" + externalId] = ImportIdentity.Json(fields);
+            Diagnostic(DiagnosticSeverity.Warning, "unlabelled-obsolete-term", externalId, "Obsolete node has no source label; original fields retained in metadata, no definition or label invented.");
+            return;
+        }
         if (string.IsNullOrWhiteSpace(externalId) || externalId.Any(char.IsWhiteSpace) || externalId.IndexOf(':') <= 0 || externalId.EndsWith(':') || string.IsNullOrWhiteSpace(label))
         { Diagnostic(DiagnosticSeverity.Error, "term-required", externalId, "Term identifier and label are required."); return; }
         var term = new ImportedTerm

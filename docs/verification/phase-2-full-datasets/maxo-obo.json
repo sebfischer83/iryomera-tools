@@ -1,0 +1,36 @@
+{
+  "source": "maxo",
+  "version": "2026-01-15",
+  "sourceUrl": "https://github.com/monarch-initiative/MAxO/releases/download/v2026-01-15/maxo.obo",
+  "sha256": "005178e62f2b3a3a173bd10f38b4538d4252b9f6c309574113671469826c60d8",
+  "inputBytes": 4180499,
+  "terms": 2003,
+  "assertions": 3507,
+  "errorRecordCount": 815,
+  "assertionKindCounts": {
+    "CrossReference": 585,
+    "OntologyHierarchy": 2922
+  },
+  "obsoleteTerms": 73,
+  "firstImportSeconds": 0.4175015,
+  "repeatImportSeconds": 0.2969892,
+  "validationSeconds": 0.5408377,
+  "peakProcessWorkingSetBytes": 211709952,
+  "allocatedBytes": 273882176,
+  "normalizedSha256": "4b7b8ce4e3aeb21afec8e6f418e3f6eab344dd75a6b385ee21cdf2a546c7c105",
+  "reproducible": true,
+  "expectationsMatch": true,
+  "runtime": ".NET 10.0.13",
+  "operatingSystem": "Debian GNU/Linux 13 (trixie)",
+  "processorCount": 2,
+  "errorCounts": {
+    "unresolved-reference": 815
+  },
+  "diagnosticCounts": {
+    "foreign-ontology-term": 5115,
+    "obsolete-term": 73,
+    "shadowed-alternate-id": 13,
+    "unlabelled-obsolete-term": 2,
+    "unresolved-reference": 815
+  }
+}

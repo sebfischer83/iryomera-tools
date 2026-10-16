@@ -2,15 +2,16 @@
 
 Open-source .NET tools and portable content formats for Iryomera, a planned free hospital management game built with Godot 4/C#. The game remains closed source; these libraries work independently. Own code and synthetic examples are MIT-licensed. Imported data will retain its original licenses.
 
-**Status: Foundation and Phase 2 MedicalImporter implemented for the documented source formats.** ContentStudio, ModKit and ModIo remain planned with no placeholder projects. No real medical datasets or clinically approved content are included. Exact source licenses and unsupported formats are documented explicitly.
+**Status: Foundation and reviewed Phase 2 MedicalImporter (0.3.0) implemented for the documented source formats.** ContentStudio, ModKit and ModIo remain planned with no placeholder projects. No real medical datasets or clinically approved content are included. Exact source licenses and unsupported formats are documented explicitly.
 
 ## Projects
 
 | Project | Purpose |
 | --- | --- |
-| `src/Iryomera.Content.SDK` | Twelve definition types, binary relations plus lossless medical annotations, provenance/review, manifests, balancing and shared schema/semantic validation; net8.0/net10.0 NuGet library |
+| `src/Iryomera.Content.SDK` | Thirteen definition types (including neutral observations), binary relations plus lossless medical annotations, provenance/review, manifests, balancing and shared schema/semantic validation; net8.0/net10.0 NuGet library |
 | `src/Iryomera.Localization` | Separate de/en catalogs, English fallback, variables, plurals, culture formatting, translation diagnostics, engine-independent interface and .NET IStringLocalizer adapter; net8.0/net10.0 NuGet library |
 | `src/Iryomera.MedicalImporter` | Local .NET CLI/tool: seven adapters, reproducible staging, explicit review/rights history, reference validation and approved JSON release export |
+| `tests/Iryomera.MedicalImporter.Integration` | Opt-in pinned full official ontology import/reproducibility/performance runner; no clinical approval or source publication |
 | `tests/Iryomera.MedicalImporter.Tests` | Synthetic adapter, pipeline, CLI, reproducibility, failure and schema integration tests |
 | `tests/Iryomera.Foundation.Tests` | xUnit semantic/error-case tests, async round trips and independent JSON Schema verification |
 | `tests/Iryomera.Godot.Integration` | Standalone real-engine net8.0 smoke test against packed libraries, Godot 4.7.2 .NET, Windows/Linux |
@@ -58,12 +59,13 @@ The key `synthetic.disease.amber_syndrome.name` renders as **Synthetic Amber syn
 - [Lossless medical annotation decision](docs/architecture/0003-medical-annotations.md), [Godot runtime decision](docs/architecture/0004-godot-runtime.md) and [executable integration guide](docs/godot-integration.md).
 - [Review remediation plan](docs/plans/foundation-review.md).
 - [MedicalImporter guide](docs/medical-importer.md), [source field/license review](docs/data-sources/README.md), [Phase 2 architecture](docs/architecture/0003-importer.md) and [verification report](docs/phase-2-verification.md).
+- [Phase 2 review plan](docs/plans/phase-2-review.md), [record-rights decision](docs/architecture/0005-record-rights-and-review.md), [LOINC observation decision](docs/architecture/0006-observation-definitions.md) and [full-dataset tests](docs/full-dataset-tests.md).
 - [Contributing](CONTRIBUTING.md) and [binding agent rules](AGENTS.md).
 
 Technical validation checks IDs, duplicates, references and endpoint types, namespace ownership, dependency versions/cycles, review audit metadata, balance ranges and translation consistency. Validation does not grant medical approval. Keep original data licenses and evidence with every imported assertion. Do not copy proprietary game databases or purchased assets into this repository.
 
 ## Remaining work
 
-The importer supports HPO/MAxO OBO Graph JSON and OBO, HPOA/current MAxO TSV, ICD-10-GM/OPS ClaML categories and LOINC CSV. OWL, legacy MAxO layouts, modifier expansion, clinical reasoning and automatic translation are not implemented. Real-data redistribution still requires exact-release/license/clinical review; technical tests use only synthetic MIT fixtures. Phase 3 adds the bilingual Blazor Interactive Server/EF Core/SQLite editor and review workflow. Phase 4 adds secure data-only mod archives, asset references and examples. Phase 5 adds the optional official mod.io REST integration with mock HTTP tests. These later tools remain unimplemented.
+The importer supports HPO/MAxO OBO Graph JSON and OBO, HPOA/current MAxO TSV, ICD-10-GM/OPS ClaML categories and LOINC CSV. OWL, legacy MAxO layouts, modifier expansion, clinical reasoning and automatic translation are not implemented. Real-data redistribution still requires exact-release/license/clinical review; default CI tests use synthetic MIT fixtures; opt-in full HPO/MAxO ontology tests are documented with measured errors and resource use. Phase 3 adds the bilingual Blazor Interactive Server/EF Core/SQLite editor and review workflow. Phase 4 adds secure data-only mod archives, asset references and examples. Phase 5 adds the optional official mod.io REST integration with mock HTTP tests. These later tools remain unimplemented.
 
 NuGet publication, medical expert review and authenticated approval workflows remain outside this implementation. The CLI records trusted local operator decisions; it does not grant legal permission or medical authority. Verified CI and Godot runs are recorded in the verification reports. The [MIT license](LICENSE) covers our work, not third-party data.

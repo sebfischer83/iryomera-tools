@@ -20,12 +20,18 @@ public sealed class ReleaseExporter
         var assertions = workspace.Batches.SelectMany(b => b.Assertions.Select(a => (Assertion: a, Batch: b)))
             .Where(x => Approved(x.Batch.Id, x.Assertion.Id)).OrderBy(x => x.Assertion.Id, StringComparer.Ordinal).ToArray();
         if (terms.Length == 0) throw new InvalidOperationException("No approved definitions to export. Import is not approval.");
+        if (terms.Any(x => x.Batch.Options.Source == "loinc" && x.Term.SourceFields.TryGetValue("STATUS", out var status) && status.GetString() != "ACTIVE"))
+            throw new InvalidDataException("Approved selection includes non-ACTIVE LOINC records; preserve them in staging.");
         if (terms.Any(x => x.Term.Obsolete)) throw new InvalidDataException("Approved selection contains obsolete terms.");
         var batches = terms.Select(x => x.Batch).Concat(assertions.Select(x => x.Batch)).DistinctBy(x => x.Id).OrderBy(x => x.Id, StringComparer.Ordinal).ToArray();
         if (batches.Select(x => x.Options.Namespace).Distinct(StringComparer.Ordinal).Count() != 1) throw new InvalidDataException("One release package must have exactly one namespace.");
         foreach (var batch in batches)
-            if (workspace.Rights.LastOrDefault(x => x.BatchId == batch.Id)?.Decision != RedistributionDecision.Permitted)
+            if (workspace.Rights.LastOrDefault(x => x.BatchId == batch.Id && x.RecordId is null)?.Decision != RedistributionDecision.Permitted)
                 throw new InvalidOperationException($"Batch {batch.Id} needs an explicit permitted redistribution decision and original notices before export.");
+        var recordBlocks = batches.ToDictionary(b => b.Id, b => RecordRights.BlockReasons(workspace, b), StringComparer.Ordinal);
+        foreach (var selection in terms.Select(x => (x.Batch, Id: x.Term.Id)).Concat(assertions.Select(x => (x.Batch, Id: x.Assertion.Id))))
+            if (recordBlocks[selection.Batch.Id].GetValueOrDefault(selection.Id) is { } reason)
+                throw new InvalidOperationException($"Record {selection.Id} cannot be redistributed: {reason}.");
         var ns = batches[0].Options.Namespace;
         var package = new ContentPackage
         {
@@ -40,6 +46,7 @@ public sealed class ReleaseExporter
             {
                 ImportedTermKind.Disease => new DiseaseDefinition { Id = term.Id, NameKey = ImportIdentity.Key(term.Id), Version = "1.0.0", Provenance = provenance },
                 ImportedTermKind.Finding => new FindingDefinition { Id = term.Id, NameKey = ImportIdentity.Key(term.Id), Version = "1.0.0", Provenance = provenance },
+                ImportedTermKind.Observation => new ObservationDefinition { Id = term.Id, NameKey = ImportIdentity.Key(term.Id), Version = "1.0.0", Provenance = provenance },
                 ImportedTermKind.Examination => new ExaminationDefinition { Id = term.Id, NameKey = ImportIdentity.Key(term.Id), Version = "1.0.0", Provenance = provenance },
                 ImportedTermKind.MedicalProcedure => new MedicalProcedureDefinition { Id = term.Id, NameKey = ImportIdentity.Key(term.Id), Version = "1.0.0", Provenance = provenance },
                 _ => throw new InvalidDataException("Unknown imported term kind.")
@@ -64,8 +71,11 @@ public sealed class ReleaseExporter
         var selectedBatchIds = batches.Select(b => b.Id).ToHashSet(StringComparer.Ordinal);
         var selectedIds = terms.Select(x => x.Term.Id).ToHashSet(StringComparer.Ordinal);
         var sidecar = new SourceAssertionDocument();
-        foreach (var (assertion, batch) in assertions)
+        foreach (var group in assertions.GroupBy(x => x.Assertion.Id, StringComparer.Ordinal))
         {
+            var (assertion, batch) = group.First();
+            var sourceClaims = group.Select(x => x.Assertion with
+            { Provenance = WorkspaceValidation.ReviewedProvenance(workspace, x.Batch, x.Assertion.Id, x.Assertion.Provenance, reviewIndex) }).ToList();
             var resolved = new Dictionary<string, string>(StringComparer.Ordinal);
             foreach (var external in WorkspaceValidation.RequiredReferences(assertion))
             {
@@ -76,15 +86,17 @@ public sealed class ReleaseExporter
             var provenance = WorkspaceValidation.ReviewedProvenance(workspace, batch, assertion.Id, assertion.Provenance, reviewIndex);
             sidecar.Assertions.Add(new()
             {
-                Source = assertion with { Provenance = provenance }, SubjectId = resolved[assertion.SubjectExternalId], ObjectId = resolved[assertion.ObjectExternalId],
+                SourceClaims = sourceClaims, Source = assertion with { Provenance = provenance }, SubjectId = resolved[assertion.SubjectExternalId], ObjectId = resolved[assertion.ObjectExternalId],
                 DiseaseId = assertion.DiseaseExternalId is null ? null : resolved[assertion.DiseaseExternalId]
             });
+            if (assertion.Kind is SourceAssertionKind.HpoAssociation or SourceAssertionKind.MaxoAnnotation)
+                package.MedicalAnnotations.Add(AnnotationProjection.Create(assertion, provenance, resolved, sourceClaims));
             if (IsPositivePhenotypeAssociation(assertion))
                 package.Relations.Add(new()
                 {
                     Id = assertion.Id, Version = "1.0.0", Kind = RelationKind.DiseaseFinding,
                     FromId = resolved[assertion.SubjectExternalId], ToId = resolved[assertion.ObjectExternalId], Provenance = provenance,
-                    Extensions = new() { ["sourceRecord"] = ImportIdentity.Json(assertion.SourceFields) }
+                    Extensions = new() { ["sourceRecord"] = ImportIdentity.Json(assertion.SourceFields), ["sourceClaims"] = ImportIdentity.Json(sourceClaims) }
                 });
         }
         var validation = ContentValidator.Validate(package);
@@ -112,7 +124,7 @@ public sealed class ReleaseExporter
                 await File.WriteAllTextAsync(Path.Combine(temporary, "LICENSES", batch.Id + ".txt"), batch.Options.Attribution + "\n" + batch.Options.SourceUrl + "\nVersion: " + batch.Options.SourceVersion + "\n\n" + batch.Options.LicenseText, ct);
             await WriteAsync(Path.Combine(temporary, "report.json"), new ReleaseReport
             {
-                SelectedDefinitionIds = terms.Select(x => x.Term.Id).Distinct(StringComparer.Ordinal).ToList(), SelectedAssertionIds = assertions.Select(x => x.Assertion.Id).ToList(),
+                SelectedDefinitionIds = terms.Select(x => x.Term.Id).Distinct(StringComparer.Ordinal).ToList(), SelectedAssertionIds = assertions.Select(x => x.Assertion.Id).Distinct(StringComparer.Ordinal).ToList(),
                 OmittedUnapprovedRecords = workspace.Batches.Sum(x => x.Terms.Count + x.Assertions.Count) - terms.Length - assertions.Length,
                 Imports = batches.Select(b => new ReleaseImportSummary
                 {
@@ -120,7 +132,7 @@ public sealed class ReleaseExporter
                     Options = b.Options, ObservedSourceVersion = b.ObservedSourceVersion
                 }).ToList(),
                 Reviews = workspace.Reviews.Where(r => selectedReviewKeys.Contains((r.BatchId, r.RecordId))).ToList(),
-                Rights = workspace.Rights.Where(r => selectedBatchIds.Contains(r.BatchId)).ToList(),
+                Rights = workspace.Rights.Where(r => selectedBatchIds.Contains(r.BatchId) && (r.RecordId is null || selectedReviewKeys.Contains((r.BatchId, r.RecordId)))).ToList(),
                 DiagnosticCounts = new(diagnostics.GroupBy(d => d.Code).ToDictionary(g => g.Key, g => g.Count()), StringComparer.Ordinal)
             }, ct);
             ct.ThrowIfCancellationRequested();
@@ -150,6 +162,7 @@ public sealed class ReleaseExporter
 [System.Text.Json.Serialization.JsonUnmappedMemberHandling(System.Text.Json.Serialization.JsonUnmappedMemberHandling.Disallow)]
 public sealed record ReleaseReport
 {
+    [System.Text.Json.Serialization.JsonRequired]
     public string SchemaVersion { get; init; } = "1.0.0";
     public List<string> SelectedDefinitionIds { get; init; } = [];
     public List<string> SelectedAssertionIds { get; init; } = [];

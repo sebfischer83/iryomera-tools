@@ -100,7 +100,7 @@ public sealed class LoincAdapter : IImportAdapter
         {
             var status = fields.Text("STATUS");
             if (string.IsNullOrWhiteSpace(fields.Text("LOINC_NUM")) || string.IsNullOrWhiteSpace(status)) throw new InvalidDataException("LOINC_NUM and STATUS must be nonempty.");
-            context.Term("LOINC:" + fields.Text("LOINC_NUM"), fields.Text("LONG_COMMON_NAME"), ImportedTermKind.Examination,
+            context.Term("LOINC:" + fields.Text("LOINC_NUM"), fields.Text("LONG_COMMON_NAME"), ImportedTermKind.Observation,
                 fields, description: fields.Text("DefinitionDescription") is { Length: > 0 } description ? description : null,
                 obsolete: status == "DEPRECATED");
             if (status != "ACTIVE") context.Diagnostic(DiagnosticSeverity.Warning, "loinc-status", fields.Text("LOINC_NUM"), $"Original term status is {status}; retained unchanged.");

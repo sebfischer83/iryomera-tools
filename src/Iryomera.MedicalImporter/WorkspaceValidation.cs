@@ -20,16 +20,19 @@ public static class WorkspaceValidation
         var batchIds = new HashSet<string>(StringComparer.Ordinal);
         var globalIds = new HashSet<string>(StringComparer.Ordinal);
         var claims = new Dictionary<string, ImportedTerm>(StringComparer.Ordinal);
+        var assertionClaims = new Dictionary<string, SourceAssertion>(StringComparer.Ordinal);
         foreach (var batch in workspace.Batches)
         {
             if (!batchIds.Add(batch.Id)) Error("duplicate-batch", batch.Id, "Duplicate import batch.");
             try { ImportEngine.ValidateOptions(batch.Options); }
             catch (ArgumentException e) { Error("options", batch.Id, e.Message); }
-            if (batch.Id != ImportEngine.BatchId(batch.InputSha256, batch.Options) || batch.AdapterVersion != "1.0.0" || batch.InputBytes <= 0 ||
+            if (batch.Id != ImportEngine.BatchId(batch.InputSha256, batch.Options, batch.AdapterVersion) || batch.AdapterVersion is not ("1.0.0" or ImportEngine.AdapterVersion) || batch.InputBytes <= 0 ||
                 batch.InputSha256.Length != 64 || batch.InputSha256.Any(c => !char.IsAsciiHexDigitLower(c)))
                 Error("batch-integrity", batch.Id, "Invalid batch metadata, digest or adapter version.");
+            var localIds = new HashSet<string>(StringComparer.Ordinal);
             foreach (var term in batch.Terms)
             {
+                if (!localIds.Add(term.Id)) Error("duplicate-id", term.Id, "Duplicate normalized record inside one batch.");
                 if (!globalIds.Add(term.Id))
                 {
                     if (claims.TryGetValue(term.Id, out var previous) && Equivalent(previous, term))
@@ -45,7 +48,14 @@ public static class WorkspaceValidation
             }
             foreach (var assertion in batch.Assertions)
             {
-                if (!globalIds.Add(assertion.Id)) Error("duplicate-id", assertion.Id, "Multiple imports claim one assertion ID.");
+                if (!localIds.Add(assertion.Id)) Error("duplicate-id", assertion.Id, "Duplicate normalized record inside one batch.");
+                if (!globalIds.Add(assertion.Id))
+                {
+                    if (assertionClaims.TryGetValue(assertion.Id, out var previous) && Equivalent(previous, assertion))
+                        diagnostics.Add(new(DiagnosticSeverity.Warning, "duplicate-assertion-claim", assertion.Id, "Identical assertion in multiple batches; independent provenance, reviews and rights retained."));
+                    else Error("duplicate-id", assertion.Id, "Conflicting claims for one assertion ID.");
+                }
+                assertionClaims.TryAdd(assertion.Id, assertion);
                 if (!Enum.IsDefined(assertion.Kind) || assertion.Id != ImportIdentity.AssertionId(batch.Options.Namespace, batch.Options.Source, assertion.Kind,
                     assertion.SubjectExternalId, assertion.Predicate, assertion.ObjectExternalId, assertion.SourceFields)) Error("assertion", assertion.Id, "Invalid assertion kind or stable ID.");
                 CheckRawProvenance(assertion.Provenance, batch, assertion.Id);
@@ -82,9 +92,21 @@ public static class WorkspaceValidation
                 Error("review-time", review.RecordId, "Review history timestamps are not chronological.");
             previousReviews[(review.BatchId, review.RecordId)] = review.At;
         }
+        var rightsHistory = new ImportWorkspace { Batches = workspace.Batches };
         foreach (var rights in workspace.Rights)
-            if (!batchIds.Contains(rights.BatchId) || !Enum.IsDefined(rights.Decision) || string.IsNullOrWhiteSpace(rights.Reviewer) || rights.At == default || string.IsNullOrWhiteSpace(rights.Note))
-                Error("rights-audit", rights.BatchId, "Rights decision requires an existing batch, reviewer, timestamp and note.");
+        {
+            try { RecordRights.Decide(rightsHistory, rights); }
+            catch (ArgumentException e) { Error("rights-audit", rights.RecordId ?? rights.BatchId, e.Message); }
+        }
+        foreach (var audit in workspace.BulkReviews)
+        {
+            if (!batchIds.Contains(audit.BatchId) || !Enum.IsDefined(audit.Status) || string.IsNullOrWhiteSpace(audit.Reviewer) ||
+                audit.At == default || string.IsNullOrWhiteSpace(audit.Note) ||
+                audit.SelectedIds.Concat(audit.Exceptions.Select(e => e.RecordId)).Any(id => !records.Contains((audit.BatchId, id))) ||
+                audit.SelectedIds.Concat(audit.Exceptions.Select(e => e.RecordId)).Distinct(StringComparer.Ordinal).Count() != audit.SelectedIds.Count + audit.Exceptions.Count ||
+                audit.Exceptions.Any(e => string.IsNullOrWhiteSpace(e.Reason)))
+                Error("bulk-review-audit", audit.BatchId, "Malformed bulk review audit or missing record references.");
+        }
         return diagnostics.OrderBy(x => x.RecordId, StringComparer.Ordinal).ThenBy(x => x.Code, StringComparer.Ordinal).ToArray();
 
         void CheckType(string external, ImportedTermKind expected, string id)
@@ -103,11 +125,25 @@ public static class WorkspaceValidation
     {
         var index = new Dictionary<string, (ImportedTerm, ImportBatch)>(StringComparer.Ordinal);
         var ambiguous = new HashSet<string>(StringComparer.Ordinal);
+        // Primary IDs retain their identity. An active term's alias must not silently replace an obsolete record.
         foreach (var batch in workspace.Batches)
             foreach (var term in batch.Terms)
-                foreach (var external in new[] { term.ExternalId }.Concat(term.AlternateIds))
+                if (!index.TryAdd(term.ExternalId, (term, batch)) && !(index[term.ExternalId].Item1.Id == term.Id && Equivalent(index[term.ExternalId].Item1, term)))
+                {
+                    ambiguous.Add(term.ExternalId);
+                    diagnostics?.Add(new(DiagnosticSeverity.Error, "ambiguous-external-id", term.Id, $"Primary identifier {term.ExternalId} has conflicting owners."));
+                }
+        var primaryIds = index.Keys.ToHashSet(StringComparer.Ordinal);
+        foreach (var batch in workspace.Batches)
+            foreach (var term in batch.Terms)
+                foreach (var external in term.AlternateIds)
                     if (!index.TryAdd(external, (term, batch)) && !(index[external].Item1.Id == term.Id && Equivalent(index[external].Item1, term)))
                     {
+                        if (primaryIds.Contains(external) && index[external].Item1.Obsolete)
+                        {
+                            diagnostics?.Add(new(DiagnosticSeverity.Warning, "shadowed-alternate-id", term.Id, $"Alias {external} is also an obsolete primary ID; primary identity is retained without automatic replacement."));
+                            continue;
+                        }
                         ambiguous.Add(external);
                         diagnostics?.Add(new(DiagnosticSeverity.Error, "ambiguous-external-id", term.Id, $"External identifier {external} has multiple owners."));
                     }
@@ -118,6 +154,12 @@ public static class WorkspaceValidation
     private static bool Equivalent(ImportedTerm left, ImportedTerm right) => left.ExternalId == right.ExternalId && left.Kind == right.Kind &&
         left.Label == right.Label && left.Language == right.Language && left.Description == right.Description && left.Obsolete == right.Obsolete &&
         left.Synonyms.SequenceEqual(right.Synonyms, StringComparer.Ordinal);
+
+    private static bool Equivalent(SourceAssertion left, SourceAssertion right) =>
+        left.Kind == right.Kind && left.Predicate == right.Predicate && left.SubjectExternalId == right.SubjectExternalId &&
+        left.ObjectExternalId == right.ObjectExternalId && left.DiseaseExternalId == right.DiseaseExternalId &&
+        left.ExtensionExternalId == right.ExtensionExternalId &&
+        JsonSerializer.Serialize(left.SourceFields, ContentJson.Options) == JsonSerializer.Serialize(right.SourceFields, ContentJson.Options);
 
     internal static IEnumerable<string> RequiredReferences(SourceAssertion assertion)
     {

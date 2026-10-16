@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup><IsPackable>false</IsPackable><IsTestProject>true</IsTestProject></PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="../Iryomera.MedicalImporter.Integration/Iryomera.MedicalImporter.Integration.csproj" />
     <ProjectReference Include="../../src/Iryomera.MedicalImporter/Iryomera.MedicalImporter.csproj" />
     <ProjectReference Include="../../src/Iryomera.Localization/Iryomera.Localization.csproj" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" />

@@ -58,6 +58,7 @@ public sealed record ExternalIdentifier : ExtensibleRecord
 [JsonDerivedType(typeof(SymptomDefinition), "symptom")]
 [JsonDerivedType(typeof(FindingDefinition), "finding")]
 [JsonDerivedType(typeof(ExaminationDefinition), "examination")]
+[JsonDerivedType(typeof(ObservationDefinition), "observation")]
 [JsonDerivedType(typeof(TreatmentDefinition), "treatment")]
 [JsonDerivedType(typeof(MedicalProcedureDefinition), "medicalProcedure")]
 [JsonDerivedType(typeof(MedicalDepartmentDefinition), "medicalDepartment")]
@@ -81,6 +82,8 @@ public sealed record DiseaseDefinition : ContentDefinition;
 public sealed record SymptomDefinition : ContentDefinition;
 public sealed record FindingDefinition : ContentDefinition;
 public sealed record ExaminationDefinition : ContentDefinition;
+/// <summary>An observation/measurement or panel code; does not declare a playable examination.</summary>
+public sealed record ObservationDefinition : ContentDefinition;
 public sealed record TreatmentDefinition : ContentDefinition;
 public sealed record MedicalProcedureDefinition : ContentDefinition;
 public sealed record MedicalDepartmentDefinition : ContentDefinition;

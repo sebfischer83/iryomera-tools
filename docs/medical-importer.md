@@ -14,7 +14,7 @@ The project also packs as the `iryomera-medical` .NET tool:
 
 ```sh
 dotnet pack src/Iryomera.MedicalImporter -c Release -o artifacts
-dotnet tool install Iryomera.MedicalImporter --version 0.1.0 --add-source ./artifacts --tool-path ./artifacts/tools
+dotnet tool install Iryomera.MedicalImporter --version 0.3.0 --add-source ./artifacts --tool-path ./artifacts/tools
 # Windows: artifacts/tools/iryomera-medical.exe
 # Linux: ./artifacts/tools/iryomera-medical
 ```
@@ -95,6 +95,9 @@ IDs encode the exact external identifier as UTF-8 hex under a configured namespa
 - `ImportEngine.ReadAsync(path, ImportOptions, CancellationToken)` parses/hashes one source file into an immutable-provenance `ImportBatch`. `ImportEngine.Sources` lists registered `IImportAdapter` objects. Implement a new adapter with `ReadAsync(Stream, format, AdapterContext, token)` and register it centrally; test exact source formats.
 - `AdapterContext.Term`, `Assertion`, `Diagnostic`, `HeaderComment` attach lineage and preserve raw source fields. `ImportIdentity.ContentId`/`AssertionId` are deterministic identifiers. Do not use label matching to call these methods with invented clinical claims.
 - `WorkspaceStore.ReadAsync`, `AddAsync`, `UpdateAsync` implement atomic local persistence. Mutations take an exclusive file lock; concurrent writers fail instead of overwriting one another. Update callbacks must only mutate the supplied workspace, not make external side effects.
+- `ImportDocuments.ReadAsync<T>` checks original workspace/report/sidecar JSON against embedded schemas before defaults.
+- `RecordRights.Decide`, `AdditionalTerms`, `BlockReason` keep scoped rights separate from clinical review.
+- `BulkReview.Preview`, `Apply` evaluate controlled selections and audit every exception atomically.
 - `WorkspaceValidation.Validate`, `Status`, `Review`, `ReviewBatch` validate graphs and record explicit review decisions. `EnsureShape` rejects null contract graphs and unsupported versions.
 - `TermMatching.Candidates(workspace, limit)` yields proposed duplicates; it never mutates content.
 - `ReleaseExporter.ExportAsync(workspace, newDirectory, requiredLanguages, token)` validates the complete approved selection before writing and atomically publishes a complete new directory.
@@ -109,3 +112,31 @@ Async operations accept cancellation; storage/parsing failures propagate typed e
 The importer v1 format is intentionally strict: unknown properties are rejected rather than silently discarded by a future editor. Preserve future importer versions using their own readers/migrations. The SDK's separate public content format remains additive/extensible. `SourceFields`/`SourceMetadata` are arbitrary raw JSON containers; original XML is stored as text. JSON Schema enforces shape while semantic validation checks identity, provenance, review audit, duplicates, actual reference closure and endpoint types.
 
 Studio should load the atomic workspace snapshot, show original `SourceFields` and diagnostics next to projected definitions, edit reviewed normalized records in its own application layer, and append review decisions while preserving original source claims. Phase 2 does not implement that UI, database migrations or authentication.
+
+## Reviewed Phase 2 additions (0.3.0 / adapters 1.1.0)
+
+Batch permission is a necessary baseline, never a blanket override. HPOA IEA/OMIM-related terms/annotations, explicit additional source terms and LOINC `EXTERNAL_COPYRIGHT_NOTICE` require separate record-level review. Record rights default to unresolved for those conditions. Scope a decision to one exact record and retain its permission reference:
+
+```sh
+iryomera-medical rights --workspace .iryomera/workspace.json --batch <batch-id> \
+  --id <record-id> --decision permitted --reviewer <rights-reviewer> \
+  --at 2026-10-16T13:00:00Z --note "Exact intended use and notices checked" \
+  --permission-evidence <reference-to-applicable-permission>
+```
+
+Do not use this example to claim OMIM permission you do not have. A nonempty reference is audited, not legally verified. A record-level blocked/undecided decision overrides batch permission. A batch decision never clears record restrictions, even in old workspaces. Every contributing duplicate claim retains its own review/rights gate.
+
+Controlled bulk review previews eligibility by default:
+
+```sh
+iryomera-medical review-bulk --workspace .iryomera/workspace.json --batch <batch-id> \
+  --status approved --reviewer <reviewer> --at 2026-10-16T13:00:00Z \
+  --note "Scope and evidence reviewed" --exclusions ./exclusions.json
+# Repeat the same command with --apply to commit under the workspace lock.
+```
+
+An exclusion file is a JSON object such as `{"medical:id_example":"Outside this release scope"}` using real staged IDs. It is optional. Obsolete/non-ACTIVE terms, unresolved/invalid assertions, missing eligible endpoints and record-specific rights restrictions are automatically excluded. Every exception is persisted in `bulkReviews`; approval runs append rejected decisions for excluded records, including previously approved ones. An invalid exclusion ID/reason fails atomically. Existing strict `review --all` retains its original behavior. Clinical approval does not grant batch redistribution rights.
+
+New LOINC imports are `observation` definitions, not playable examinations. All source columns remain unchanged. Old `examination` imports are not silently rewritten; compare reimports in a separate workspace. Readers still accept adapter 1.0.0 identities; new import normalization uses 1.1.0. JSON schemaVersion remains 1.0.0 with optional additions. Old documents remain readable; old strict readers can reject new optional fields/discriminators.
+
+Identical assertion claims across batches export once, with every approved claim in `sourceClaims` on the sidecar and canonical SDK annotation/relation. The report retains selected provenance and independent permissions. Qualifiers, negation, source frequency and MAxO context also populate SDK MedicalAnnotation. Distinct evidence/context rows remain distinct assertions; no clinical equivalence is inferred. See [ADRs](architecture/0005-record-rights-and-review.md) and [full-dataset tests](full-dataset-tests.md).

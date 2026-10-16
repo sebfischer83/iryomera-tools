@@ -9,6 +9,7 @@ namespace Iryomera.MedicalImporter;
 /// <summary>Local-only adapter orchestration; no network, hidden data acquisition or automatic approval.</summary>
 public sealed class ImportEngine
 {
+    public const string AdapterVersion = "1.1.0";
     private static readonly IImportAdapter[] Adapters =
     [new HpoAdapter(), new MaxoAdapter(), new HpoAnnotationAdapter(), new MaxoAnnotationAdapter(), new Icd10GmAdapter(), new LoincAdapter(), new OpsAdapter()];
     public static IReadOnlyList<IImportAdapter> Sources => Array.AsReadOnly(Adapters);
@@ -26,7 +27,7 @@ public sealed class ImportEngine
         options = options with { Format = format, ImportedAt = options.ImportedAt.ToUniversalTime() };
         var batch = new ImportBatch
         {
-            Id = BatchId(hash, options), InputSha256 = hash, InputBytes = input.Length, Options = options, DetectedFormat = format
+            Id = BatchId(hash, options), AdapterVersion = AdapterVersion, InputSha256 = hash, InputBytes = input.Length, Options = options, DetectedFormat = format
         };
         await adapter.ReadAsync(input, format, new AdapterContext(batch), cancellationToken);
         if (batch.ObservedSourceVersion is { Length: > 0 } observed)
@@ -41,14 +42,14 @@ public sealed class ImportEngine
         input.Position = 0;
         if (hash != Convert.ToHexStringLower(await SHA256.HashDataAsync(input, cancellationToken)))
             throw new IOException("Input changed during import; no batch was saved.");
-        if (batch.Terms.Count == 0 && batch.Assertions.Count == 0) throw new InvalidDataException("Input contained no supported records.");
+        if (batch.Terms.Count == 0 && batch.Assertions.Count == 0 && !batch.SourceMetadata.Keys.Any(k => k.StartsWith("unlabelledObsolete_", StringComparison.Ordinal))) throw new InvalidDataException("Input contained no supported records.");
         batch.Terms.Sort((a, b) => StringComparer.Ordinal.Compare(a.Id, b.Id));
         batch.Assertions.Sort((a, b) => StringComparer.Ordinal.Compare(a.Id, b.Id));
         batch.Diagnostics.Sort((a, b) => StringComparer.Ordinal.Compare(a.RecordId + "/" + a.Code + "/" + a.Message, b.RecordId + "/" + b.Code + "/" + b.Message));
         return batch;
     }
 
-    internal static string BatchId(string hash, ImportOptions options) => "batch_" + ImportIdentity.Hash(JsonSerializer.SerializeToUtf8Bytes(new { hash, options, adapterVersion = "1.0.0" }, ContentJson.Options));
+    internal static string BatchId(string hash, ImportOptions options, string adapterVersion = AdapterVersion) => "batch_" + ImportIdentity.Hash(JsonSerializer.SerializeToUtf8Bytes(new { hash, options, adapterVersion }, ContentJson.Options));
 
     public static void ValidateOptions(ImportOptions options)
     {
@@ -87,7 +88,7 @@ public sealed class WorkspaceStore(string path)
     {
         if (!File.Exists(Path)) return new();
         await using var input = new FileStream(Path, FileMode.Open, FileAccess.Read, FileShare.Read | FileShare.Delete, 65536, FileOptions.Asynchronous);
-        var workspace = await ContentJson.ReadAsync<ImportWorkspace>(input, ct);
+        var workspace = await ImportDocuments.ReadAsync<ImportWorkspace>(input, ct);
         WorkspaceValidation.EnsureShape(workspace);
         return workspace;
     }

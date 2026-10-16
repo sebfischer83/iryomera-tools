@@ -10,6 +10,7 @@
     <PackageReference Include="System.CommandLine" />
     <PackageReference Include="CsvHelper" />
   </ItemGroup>
+  <ItemGroup><EmbeddedResource Include="../../schemas/importer/v1/contracts.schema.json" LogicalName="Iryomera.MedicalImporter.Schemas.v1.json" /></ItemGroup>
   <ItemGroup><None Include="../../schemas/importer/v1/*.json" Pack="true" PackagePath="schemas/importer/v1" /></ItemGroup>
   <ItemGroup>
     <None Include="../../THIRD-PARTY-NOTICES.md" Link="THIRD-PARTY-NOTICES.md" CopyToOutputDirectory="PreserveNewest" Pack="true" PackagePath="/" />

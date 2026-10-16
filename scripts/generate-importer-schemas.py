@@ -28,7 +28,7 @@ defs['importOptions'] = obj({
     'format':{'enum':['auto','json','obo','tsv','csv','xml']},'maxInputBytes':{'type':'integer','minimum':1}
 }, ['source','sourceVersion','sourceUrl','license','licenseText','attribution','importedAt'])
 defs['importedTerm'] = obj({
-    'id':id_schema,'externalId':text,'kind':{'enum':['disease','finding','examination','medicalProcedure']},
+    'id':id_schema,'externalId':text,'kind':{'enum':['disease','finding','examination','medicalProcedure','observation']},
     'label':text,'language':text,'description':nullable({'type':'string'}),'synonyms':array({'type':'string'}),
     'alternateIds':array(text),'obsolete':{'type':'boolean'},'provenance':ref('provenance'),'sourceFields':raw_fields
 }, ['id','externalId','kind','label','language','provenance'])
@@ -39,16 +39,18 @@ defs['sourceAssertion'] = obj({
 }, ['id','kind','predicate','subjectExternalId','objectExternalId','provenance'])
 defs['importBatch'] = obj({
     'id':text,'inputSha256':digest,'inputBytes':{'type':'integer','minimum':1},'options':ref('importOptions'),
-    'adapterVersion':{'const':'1.0.0'},'detectedFormat':{'enum':['json','obo','tsv','csv','xml']},
+    'adapterVersion':{'enum':['1.0.0','1.1.0']},'detectedFormat':{'enum':['json','obo','tsv','csv','xml']},
     'observedSourceVersion':nullable({'type':'string'}),'sourceMetadata':raw_fields,
     'terms':array(ref('importedTerm')),'assertions':array(ref('sourceAssertion')),'diagnostics':array(ref('importDiagnostic'))
 }, ['id','inputSha256','inputBytes','options','detectedFormat'])
 defs['reviewDecision'] = obj({'batchId':text,'recordId':id_schema,'status':{'enum':['unreviewed','inReview','approved','rejected']},'reviewer':text,'at':date,'note':text}, ['batchId','recordId','status','reviewer','at','note'])
-defs['rightsDecision'] = obj({'batchId':text,'decision':{'enum':['undecided','permitted','blocked']},'reviewer':text,'at':date,'note':text}, ['batchId','decision','reviewer','at','note'])
-defs['importWorkspace'] = obj({'schemaVersion':{'const':'1.0.0'},'batches':array(ref('importBatch')),'reviews':array(ref('reviewDecision')),'rights':array(ref('rightsDecision'))}, ['schemaVersion'])
-defs['resolvedSourceAssertion'] = obj({'source':ref('sourceAssertion'),'subjectId':id_schema,'objectId':id_schema,'diseaseId':nullable(id_schema)}, ['source','subjectId','objectId'])
+defs['rightsDecision'] = obj({'batchId':text,'recordId':nullable(id_schema),'permissionEvidence':nullable(text),'decision':{'enum':['undecided','permitted','blocked']},'reviewer':text,'at':date,'note':text}, ['batchId','decision','reviewer','at','note'])
+defs['bulkReviewException'] = obj({'recordId':id_schema,'reason':text}, ['recordId','reason'])
+defs['bulkReviewAudit'] = obj({'batchId':text,'status':{'enum':['unreviewed','inReview','approved','rejected']},'reviewer':text,'at':date,'note':text,'selectedIds':array(id_schema),'exceptions':array(ref('bulkReviewException'))}, ['batchId','status','reviewer','at','note'])
+defs['importWorkspace'] = obj({'schemaVersion':{'const':'1.0.0'},'batches':array(ref('importBatch')),'reviews':array(ref('reviewDecision')),'rights':array(ref('rightsDecision')),'bulkReviews':array(ref('bulkReviewAudit'))}, ['schemaVersion'])
+defs['resolvedSourceAssertion'] = obj({'source':ref('sourceAssertion'),'sourceClaims':array(ref('sourceAssertion')),'subjectId':id_schema,'objectId':id_schema,'diseaseId':nullable(id_schema)}, ['source','subjectId','objectId'])
 defs['sourceAssertionDocument'] = obj({'schemaVersion':{'const':'1.0.0'},'assertions':array(ref('resolvedSourceAssertion'))}, ['schemaVersion'])
-defs['releaseImportSummary'] = obj({'batchId':text,'inputSha256':digest,'inputBytes':{'type':'integer','minimum':1},'adapterVersion':{'const':'1.0.0'},'options':ref('importOptions'),'observedSourceVersion':nullable({'type':'string'})}, ['batchId','inputSha256','inputBytes','adapterVersion','options'])
+defs['releaseImportSummary'] = obj({'batchId':text,'inputSha256':digest,'inputBytes':{'type':'integer','minimum':1},'adapterVersion':{'enum':['1.0.0','1.1.0']},'options':ref('importOptions'),'observedSourceVersion':nullable({'type':'string'})}, ['batchId','inputSha256','inputBytes','adapterVersion','options'])
 defs['releaseReport'] = obj({
     'schemaVersion':{'const':'1.0.0'},'selectedDefinitionIds':array(id_schema),'selectedAssertionIds':array(id_schema),
     'omittedUnapprovedRecords':{'type':'integer','minimum':0},'imports':array(ref('releaseImportSummary')),

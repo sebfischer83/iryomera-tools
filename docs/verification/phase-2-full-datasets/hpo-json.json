@@ -1,0 +1,35 @@
+{
+  "source": "hpo",
+  "version": "2026-09-01",
+  "sourceUrl": "https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2026-09-01/hp.json",
+  "sha256": "a7b3a012e7b4007a35a7cf8da35f2373b54cc16907f80d13d62470d31f833501",
+  "inputBytes": 21915519,
+  "terms": 20482,
+  "assertions": 25087,
+  "errorRecordCount": 651,
+  "assertionKindCounts": {
+    "CrossReference": 651,
+    "OntologyHierarchy": 24436
+  },
+  "obsoleteTerms": 588,
+  "firstImportSeconds": 1.020808,
+  "repeatImportSeconds": 0.5326039,
+  "validationSeconds": 1.926069,
+  "peakProcessWorkingSetBytes": 390643712,
+  "allocatedBytes": 912067480,
+  "normalizedSha256": "fac800d1c0cb76685f806bd4a23088ce86350b36aba9bf6ccdbc868e29027190",
+  "reproducible": true,
+  "expectationsMatch": true,
+  "runtime": ".NET 10.0.13",
+  "operatingSystem": "Debian GNU/Linux 13 (trixie)",
+  "processorCount": 2,
+  "errorCounts": {
+    "unresolved-reference": 651
+  },
+  "diagnosticCounts": {
+    "foreign-ontology-term": 4,
+    "obsolete-term": 588,
+    "shadowed-alternate-id": 529,
+    "unresolved-reference": 651
+  }
+}

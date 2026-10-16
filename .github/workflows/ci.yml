@@ -4,6 +4,11 @@ on:
   push:
   pull_request:
   workflow_dispatch:
+    inputs:
+      full_datasets:
+        description: 'Run pinned public HPO/MAxO ontology tests (no annotation/restricted downloads)'
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -31,12 +36,17 @@ jobs:
           python scripts/generate-schemas.py
           python scripts/generate-importer-schemas.py
           git diff --exit-code -- schemas
+      - name: Test full-dataset acquisition boundaries offline
+        run: python -m unittest discover -s scripts -p "test_*.py"
       - run: dotnet restore Iryomera.Tools.sln --locked-mode
       - run: dotnet build Iryomera.Tools.sln --configuration Release --no-restore
       - name: Test both net8.0 and net10.0
         run: dotnet test Iryomera.Tools.sln --configuration Release --no-build --logger trx --results-directory TestResults
       - run: dotnet run --project examples/Iryomera.Foundation.Sample --configuration Release --no-build
       - run: python scripts/run-importer-example.py
+      - name: Full official ontology imports, twice each
+        if: github.event_name == 'workflow_dispatch' && inputs.full_datasets
+        run: python scripts/run-full-dataset-tests.py --data-dir "${{ runner.temp }}/iryomera-official" --download-open-ontologies
       - run: dotnet pack Iryomera.Tools.sln --configuration Release --no-build --output artifacts
       - name: Test packaged net8.0 binaries inside Godot 4.7.2 .NET
         run: python scripts/run-godot-smoke.py
@@ -47,4 +57,5 @@ jobs:
           path: |
             TestResults/*.trx
             artifacts/*.nupkg
+            artifacts/full-datasets/*.json
           if-no-files-found: ignore

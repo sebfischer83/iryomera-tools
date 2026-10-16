@@ -17,6 +17,8 @@ That revision built net10.0, passed 73 xUnit cases per operating system, ran the
 
 ## Review remediation 0.2.0
 
+This section describes the specific historical Phase 1 review revision. Phase 2 is now integrated separately; its changes/evidence are in [the Phase 2 report](phase-2-verification.md).
+
 Scope: Foundation only, based on the published Phase 1 commit. The previously prepared but unpublished importer was preserved on a separate local `archive/phase-2-local` branch. It is not in this branch, solution, CI or release packages.
 
 Changes under verification:

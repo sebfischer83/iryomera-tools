@@ -1,31 +1,37 @@
 # Phase 2 verification and remaining limits
 
-Verified locally on Linux, 2026-10-16, .NET SDK **10.0.402**, target net10.0, Release.
+Updated 2026-10-16 after the external review. The original successful 124-test revision and reviewed implementation are recorded separately. No technical test grants clinical approval or third-party rights.
 
-| Check | Observed result |
-| --- | --- |
-| Locked restore | Successful; committed per-project lock files include the new importer/test dependencies |
-| Solution build | Successful, **0 warnings / 0 errors** |
-| Foundation tests | **73 passed**, unchanged behavior |
-| Importer tests | **51 passed**, including real CLI invocation and independent staging/release/SDK/catalog schema evaluation |
-| Total tests | **124 passed, 0 failed, 0 skipped** |
-| Synthetic CLI pipeline | Source discovery, four imports, validation, candidate matching, explicit review, explicit rights decision and JSON export succeeded |
-| Tool packaging | `Iryomera.MedicalImporter.0.1.0.nupkg` created alongside the two foundation library packages |
-| Tool installation | Local `dotnet tool install` succeeded; installed `iryomera-medical sources list` listed all seven adapters, and the full synthetic pipeline also succeeded through the installed executable |
-| Package inspection | Contains CLI/runtime dependencies, versioned importer schemas, README and software dependency license notices |
-| Schema generation | Both generators reproduce checked-in candidates byte-for-byte |
+## Original Phase 2: verified Windows and Linux evidence
 
-## Implemented source scope
+Commit [`fb08269910f27ce4d03930bae115130b8b126e36`](https://github.com/sebfischer83/iryomera-tools/commit/fb08269910f27ce4d03930bae115130b8b126e36), published on `archive/phase-2-local`.
 
-- HPO and MAxO: OBO Graph JSON / OBO term/edge subset, original metadata, definitions, synonyms, explicit alternate IDs, deprecated state and source assertions.
-- HPOA: documented twelve-column phenotype.hpoa TSV, minimal disease claims, full annotation context, evidence, unresolved target diagnostics and conservative positive-relation projection.
-- MAxO annotations: independently licensed current fifteen-column TSV; multi-way action/phenotype/disease/extension context stays intact in a versioned sidecar.
-- ICD-10-GM and OPS: ClaML category/preferred-label imports in the original language with full original class XML; no inferred clinical criteria or modifier expansion.
-- LOINC: named-column CSV with quoted/multiline fields, exact original columns and values, original display label and status; no thresholds or disease recommendations.
+[GitHub Actions run 38931861423](https://github.com/sebfischer83/iryomera-tools/actions/runs/38931861423) completed successfully. Job statuses and actual logs were checked, including build/test summaries:
 
-Tests cover reproducible import/output bytes; idempotence; source hashes/version mismatch; changed/malformed/unsupported source shapes; null/unknown staging fields; original provenance/license retention; duplicate/conflicting claims; explicit alternate IDs; synonym candidates without automatic links; reference/type checks; obsolete terms; negations and frequency contexts; review/rights gates; missing translations; CLI failures; canceled/failed atomic writes and exports; competing writers; no unapproved/rejected record leakage in reports; source-string escaping; and XML external-entity rejection.
+| Platform | Build | Tests | Full job |
+| --- | --- | --- | --- |
+| Windows | Release, 0 warnings/errors | 73 Foundation + 51 Importer = **124 passed**, no failures/skips | [117077570474](https://github.com/sebfischer83/iryomera-tools/actions/runs/38931861423/job/117077570474), 16:25:44–16:27:20 UTC |
+| Linux | Release, 0 warnings/errors | 73 Foundation + 51 Importer = **124 passed**, no failures/skips | [117077570795](https://github.com/sebfischer83/iryomera-tools/actions/runs/38931861423/job/117077570795), 16:25:44–16:26:39 UTC |
 
-The synthetic release contains five definitions, one unqualified DiseaseFinding relation and three source assertions. It is fictional software test content, not a medical release. No real medical dataset was committed, redistributed or approved. Source/license research used official metadata/documentation, not a licensed production dataset integration test.
+Both jobs also passed locked restore, schema regeneration, runnable Foundation sample, synthetic CLI pipeline and NuGet tool/library packaging. This supersedes the earlier local-only statement that Windows results had not been observed. That archived revision predates the net8/net10 Foundation review and these Phase 2 corrections; it is not evidence for the new code.
+
+## Reviewed Phase 2 implementation (0.3.0, adapters 1.1.0)
+
+The review branch integrates the previously tested portable Foundation instead of reverting it. All original 51 importer tests and the original Foundation cases remain. The libraries still target net8/net10; the importer and opt-in integration harness target net10. There is no Phase 3 project or placeholder implementation.
+
+Corrections under verification:
+
+- Record-scoped rights decisions with explicit permission evidence; legacy workspaces cannot bypass HPOA IEA/OMIM or explicit per-record additional terms using batch permission. LOINC third-party copyright notices are also gated. Explicit record denial/revocation overrides batch permission.
+- `review-bulk` preview/apply with reasoned manual exclusions, automatic obsolete/non-ACTIVE/rights/validation/endpoint exclusions, atomic decisions and complete exception audit. Exclusions revoke any previous approval on approval runs. Existing strict `review --all` remains available.
+- Identical cross-batch assertions coalesce while preserving every approved provenance and separate rights decision. Conflicting same-ID claims and within-batch duplicates remain errors. Unapproved duplicate claims cannot leak into releases.
+- Neutral SDK ObservationDefinition for new LOINC imports. Existing examination content and adapter 1.0.0 batches remain readable; no automatic migration, medical recommendation or playable examination is generated.
+- Contextual HPO/MAxO claims also export as canonical SDK MedicalAnnotation; the compatible sidecar remains. Frequency/negation/qualifiers/multi-way context survive without inferred values.
+- Original importer JSON passes offline embedded schemas before CLR defaults; missing schemaVersion fails. Additive schema fields, new schemas and ADRs document reader compatibility.
+- Complete official HPO/MAxO JSON and OBO tests pin input/output hashes, counts and errors. Actual full files exposed shadowed obsolete primary IDs and unlabelled obsolete nodes, now handled explicitly without invented replacements/labels.
+
+Local verification uses Debian 13, SDK **10.0.402**, runtimes **8.0.32 / 10.0.13**, Release. Local locked restore and Release build succeeded with **0 warnings/errors**. **106 Foundation tests per framework + 74 Importer tests = 286 xUnit executions**, all passed with no failures/skips, plus **4 Python boundary tests**. The original 124 cases remain in this expanded suite. The synthetic CLI pipeline and bilingual Foundation sample passed. All three 0.3.0 NuGet packages were created and inspected: SDK has both runtime assets and 28 schema files; the tool bundles the schema evaluator and complete runtime license notices. Completed review CI evidence is recorded below once observed. Historical runs above are not described as testing later changes.
+
+The [full-dataset report](full-dataset-tests.md) records all four complete-file runs, measured time/memory and remaining unresolved references. Each full file imported twice with byte-identical normalized output and matching pinned errors. Expected source-reference errors remain staging errors; this is a reproducibility/scope test, not a valid clinical release. ICD-10-GM/OPS/LOINC full-file tests were not run without legitimately acquired local data and terms; their synthetic adapters remain tested. No restricted datasets were downloaded or published.
 
 ## Reproduce
 
@@ -33,22 +39,26 @@ The synthetic release contains five definitions, one unqualified DiseaseFinding 
 dotnet restore Iryomera.Tools.sln --locked-mode
 dotnet build Iryomera.Tools.sln -c Release --no-restore
 dotnet test Iryomera.Tools.sln -c Release --no-build --logger trx
+python -m unittest discover -s scripts -p 'test_*.py'
 python scripts/run-importer-example.py
+dotnet run --project examples/Iryomera.Foundation.Sample -c Release --no-build
 dotnet pack Iryomera.Tools.sln -c Release --no-build -o artifacts
+python scripts/run-godot-smoke.py
+# Explicit additional public ontology-file tests:
+python scripts/run-full-dataset-tests.py --data-dir .iryomera/official --download-open-ontologies
 ```
 
-The managed environment used writable `/tmp` SDK/CLI/NuGet paths and single-node builds with shared compilation disabled. These are local environment accommodations, not tool dependencies. The workflow now exercises both foundation and importer on Windows/Linux, including the executable synthetic pipeline. Windows and GitHub Actions results have **not** been observed locally. No NuGet publication or repository push is claimed.
+The managed environment uses writable `/tmp` SDK/CLI/NuGet locations and single-node builds with shared compilation disabled. Those are local accommodations. Ordinary importer execution stays offline; Godot testing and explicitly enabled full-file acquisition need initial downloads. CI uses current Foundation-reviewed Actions versions and Windows/Linux jobs, with optional complete-file cases through workflow_dispatch.
 
-## Explicit remaining limitations
+## Remaining risks and open work
 
-- Exact-release HPO/annotation/BfArM/LOINC redistribution rights and clinical appropriateness require human review for each real input and intended use. HPO's linked license page failed direct access; authoritative repository/web-page sources and the uncertainty are documented. Some guessed BfArM release-detail links returned soft error pages. Do not treat these as verified download URLs or a blanket license grant.
-- No production-scale full dataset import/performance benchmark was run. Tests use our own synthetic source structures. Local source files are capped by the configured byte limit; ontology JSON/XML are parsed in memory. Ontology reasoning and modifier/coding engines are not implemented.
-- OWL/RDF, legacy MAxO annotation TSV, BfArM positional metadata CSV/FHIR, LOINC supplementary tables and automatic disease-equivalence inference are unsupported and not advertised as implemented.
-- Source-language catalogs are exported honestly. Missing en/de translations block the optional bilingual release gate; translation authoring/import workflow belongs to Studio. No UI exists in this phase.
-- Review labels are local operator audit metadata, not authenticated clinical identity or automated legal verification. No automatic medical approval occurs.
-- Changing source releases with conflicting term semantics remain explicit conflicts; there is no automatic source-version merge policy. Identical approved claims sharing the same explicit external ID retain all approved lineage.
-- Medical action source assertions are exported separately rather than losing their qualifiers in a diseaseTreatment relation. A game consumer must explicitly implement the source predicate/context semantics it chooses to use.
-- Staging JSON is strict/versioned; a future Studio must preserve the source claims and append review decisions, and provide explicit migrations for incompatible staging changes.
-- ContentStudio, SQLite/EF migrations, secure ModKit packages and mod.io remain later phases.
+- Exact-input licensing, third-party permissions and clinical suitability still require competent human decisions. Nonempty permission evidence is recorded, not legally authenticated. Conservative OMIM gates can over-exclude references; no policy claims every identifier requires a license. Unknown additional terms cannot be discovered perfectly by software.
+- Full BfArM and LOINC production integration is unverified without local legitimate inputs. HPOA/OMIM production-file testing is also open. No complete real medical release has been clinically reviewed, translated or published.
+- Foreign ontology/xref definitions remain unresolved unless explicitly supplied. Full files contain expected errors; do not approve the entire raw import blindly. No ontology reasoning, BfArM modifier/coding engine, clinical recommendations or invented equivalences are implemented.
+- JSON/XML staging remains in memory. Reports measure actual process peak and repeated imports, not a bound for all source releases or machines. Very large workspaces, rights histories and approval/export of production-scale selections still need further end-to-end capacity testing.
+- Claims with differing evidence/context keep distinct IDs; semantic equivalence across nonidentical source rows is not inferred. Conflicting releases/types require explicit resolution or separate workspaces.
+- Schema v1 additions preserve old-to-new reading. Old strict importer readers or SDK binaries with closed definition discriminators may reject new fields/types. Adapter 1.1.0 identifies changed normalization; old adapter IDs remain unchanged.
+- Local reviewer identities and permission references are trusted audit labels, not authentication or signatures. Authenticated review, edited translations and SQLite/Blazor workflows belong to later Studio work. Missing requested release languages still block export; no translations are fabricated.
+- NuGet publication, Phase 3, ModKit and mod.io are outside this review.
 
-See [source scope and license review](data-sources/README.md), [architecture](architecture/0003-importer.md) and [CLI/API guide](medical-importer.md).
+See [ADRs](architecture/0005-record-rights-and-review.md), [source/license scope](data-sources/README.md), [LOINC decision](architecture/0006-observation-definitions.md), [CLI/API guide](medical-importer.md) and [implementation plan](plans/phase-2-review.md).

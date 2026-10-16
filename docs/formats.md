@@ -14,10 +14,10 @@ Use `ContentJson.Options` or `ContentJson.ReadAsync<T>` / `WriteAsync<T>`. Seria
 
 | Contract | Fields and rules |
 | --- | --- |
-| ContentPackage | `schemaVersion`, `manifest`, `definitions`, `relations`, `gameplay`; atomic exchange envelope |
+| ContentPackage | `schemaVersion`, `manifest`, `definitions`, `relations`, `medicalAnnotations`, `gameplay`; atomic exchange envelope |
 | ContentPackageManifest | `schemaVersion`, `id`, `namespace`, `version`, `license`, `dependencies` |
 | ContentDefinition | Abstract tagged union with `kind`, `id`, `nameKey`, optional `descriptionKey`, `version`, `provenance`, `classifications`, `synonymKeys` |
-| Definition variants | `disease`, `symptom`, `finding`, `examination`, `treatment`, `medicalProcedure`, `medicalDepartment`, `medicalEquipment`, `staffQualification`, `room`, `furniture`, `staffRole` |
+| Definition variants | `disease`, `symptom`, `finding`, `examination`, `observation`, `treatment`, `medicalProcedure`, `medicalDepartment`, `medicalEquipment`, `staffQualification`, `room`, `furniture`, `staffRole` |
 | ContentRelation | `id`, `version`, `kind`, `fromId`, `toId`, `provenance`; directional assertion |
 | Provenance | `source`, `externalId`, `sourceVersion`, `license`, `importedAt`, `reviewStatus` (default `unreviewed`), optional `reviewedBy`/`reviewedAt`, `evidence` |
 | EvidenceReference | `citation`, optional absolute `uri` and `evidenceCode`; does not invent a grading system |
@@ -47,7 +47,7 @@ Phase 1 does not infer department, room or staffing assignments for diseases. Th
 ## Validation layers
 
 1. Parse via `ContentJson`: syntax, types, required members, duplicate properties and enum discriminators.
-2. Validate JSON against the appropriate schema: structural shape, ID patterns, ranges, timestamps (enable `format` assertions), required audit metadata. The SDK package includes schemas but does not depend on a schema evaluator.
+2. Validate JSON against the appropriate schema: structural shape, ID patterns, ranges, timestamps (enable `format` assertions), required audit metadata. The SDK bundles schemas and JsonSchema.Net; ContentDocuments composes raw schema and semantic validation offline.
 3. Call `ContentValidator.Validate(package, installedPackages)` and `ManifestValidator.Validate(mod, installedPackages)`: global uniqueness, version ranges, namespace ownership, reference existence and endpoint types, dependency graph, review metadata and balance constraints.
 4. Call `LocalizationValidator.Validate(catalogs, usedKeys)` for language completeness, key usage and parsed placeholder parity. `GetContentKeys(package)` provides definition name/description/synonym keys; add mod/UI/dynamic keys separately.
 
@@ -75,3 +75,9 @@ if (!result.IsValid)
 Default semantic rules cover ContentPackage (complete dependency/reference graph), ModManifest and ContentPackageManifest. Standalone leaf contracts receive schema/shape checks; graph reference semantics need the owning ContentPackage or an explicitly supplied validator. The registered CLR contract types are explicitly allowlisted. A supplied `semanticValidator` callback composes domain checks while sharing exactly the same raw schema pipeline.
 
 `LocalizationDocuments.ReadValidatedAsync` composes that pipeline with `LocalizationValidator`, other loaded catalogs, the usage set and required languages. Supply English alongside a German catalog to validate placeholder parity; it never bypasses missing schemaVersion. Raw `ContentJson.ReadAsync` and direct System.Text.Json using ContentJson.Options also enforce JsonRequired members, but do not replace schema/graph validation. C# object-only validation cannot discover whether a caller previously discarded an absent wire field; validate the original bytes at the boundary.
+
+## Phase 2 review additions (library 0.3.0)
+
+`ObservationDefinition` is a neutral observation/panel/document code using the standard definition fields and `kind: "observation"`. Its standalone schema and content union are additive to v1. It does not satisfy examination relation endpoints and does not imply a playable workflow. All original v1 examples still validate. A new observation needs the 0.3.0 reader; unknown discriminators remain errors in older binaries. See [ADR 0006](architecture/0006-observation-definitions.md).
+
+The importer now exports contextual HPO/MAxO claims in `medicalAnnotations` as well as the compatible source sidecar. Raw frequency and fields survive; MAxO disease/extension contexts are explicit and negation stays tri-state. No new medical relation or numeric assumption is inferred. Importer workspaces and reports have their own schemas under `schemas/importer/v1`; their optional rights scope, permission evidence, bulk audits and sourceClaims are documented in [the CLI guide](medical-importer.md).

@@ -392,6 +392,61 @@
       ],
       "additionalProperties": true
     },
+    "observationDefinition": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "observation"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "nameKey": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+        },
+        "descriptionKey": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z.-]+)?(\\+[0-9A-Za-z.-]+)?$(?![\\s\\S])"
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        },
+        "classifications": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/externalIdentifier"
+          }
+        },
+        "synonymKeys": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+          }
+        }
+      },
+      "required": [
+        "kind",
+        "id",
+        "nameKey",
+        "version",
+        "provenance"
+      ],
+      "additionalProperties": true
+    },
     "treatmentDefinition": {
       "type": "object",
       "properties": {
@@ -845,6 +900,9 @@
         },
         {
           "$ref": "#/$defs/examinationDefinition"
+        },
+        {
+          "$ref": "#/$defs/observationDefinition"
         },
         {
           "$ref": "#/$defs/treatmentDefinition"

@@ -32,7 +32,7 @@ public static class ContentDocuments
         typeof(LocalizationDefinition), typeof(ContentRelation), typeof(MedicalAnnotation), typeof(AnnotationReference),
         typeof(ObservationFrequency), typeof(Provenance), typeof(EvidenceReference), typeof(ExternalIdentifier), typeof(GameplayBalance),
         typeof(ContentDefinition), typeof(DiseaseDefinition), typeof(SymptomDefinition), typeof(FindingDefinition),
-        typeof(ExaminationDefinition), typeof(TreatmentDefinition), typeof(MedicalProcedureDefinition),
+        typeof(ExaminationDefinition), typeof(ObservationDefinition), typeof(TreatmentDefinition), typeof(MedicalProcedureDefinition),
         typeof(MedicalDepartmentDefinition), typeof(MedicalEquipmentDefinition), typeof(StaffQualificationDefinition),
         typeof(RoomDefinition), typeof(FurnitureDefinition), typeof(StaffRoleDefinition)
     ];

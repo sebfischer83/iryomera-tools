@@ -299,7 +299,8 @@
             "disease",
             "finding",
             "examination",
-            "medicalProcedure"
+            "medicalProcedure",
+            "observation"
           ]
         },
         "label": {
@@ -449,7 +450,10 @@
           "$ref": "#/$defs/importOptions"
         },
         "adapterVersion": {
-          "const": "1.0.0"
+          "enum": [
+            "1.0.0",
+            "1.1.0"
+          ]
         },
         "detectedFormat": {
           "enum": [
@@ -555,6 +559,29 @@
           "minLength": 1,
           "pattern": "\\S"
         },
+        "recordId": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "permissionEvidence": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
         "decision": {
           "enum": [
             "undecided",
@@ -586,6 +613,78 @@
       ],
       "additionalProperties": false
     },
+    "bulkReviewException": {
+      "type": "object",
+      "properties": {
+        "recordId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "recordId",
+        "reason"
+      ],
+      "additionalProperties": false
+    },
+    "bulkReviewAudit": {
+      "type": "object",
+      "properties": {
+        "batchId": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "status": {
+          "enum": [
+            "unreviewed",
+            "inReview",
+            "approved",
+            "rejected"
+          ]
+        },
+        "reviewer": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "note": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "selectedIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+          }
+        },
+        "exceptions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/bulkReviewException"
+          }
+        }
+      },
+      "required": [
+        "batchId",
+        "status",
+        "reviewer",
+        "at",
+        "note"
+      ],
+      "additionalProperties": false
+    },
     "importWorkspace": {
       "type": "object",
       "properties": {
@@ -609,6 +708,12 @@
           "items": {
             "$ref": "#/$defs/rightsDecision"
           }
+        },
+        "bulkReviews": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/bulkReviewAudit"
+          }
         }
       },
       "required": [
@@ -621,6 +726,12 @@
       "properties": {
         "source": {
           "$ref": "#/$defs/sourceAssertion"
+        },
+        "sourceClaims": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/sourceAssertion"
+          }
         },
         "subjectId": {
           "type": "string",
@@ -684,7 +795,10 @@
           "minimum": 1
         },
         "adapterVersion": {
-          "const": "1.0.0"
+          "enum": [
+            "1.0.0",
+            "1.1.0"
+          ]
         },
         "options": {
           "$ref": "#/$defs/importOptions"
