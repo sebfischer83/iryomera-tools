@@ -29,7 +29,20 @@ Changes under verification:
 
 Local Linux build/validation: .NET SDK 10.0.402 with .NET 8.0.32 runtime; Release compilation has no warnings/errors. **104 tests per framework** (208 executions locally, zero failures/skips), library package contents and the real headless Godot game process are checked. The Godot scene asserts actual .NET 8 execution, net8 package asset selection, schema/semantic loading, annotation round trip and English/German/plural rendering. Editor import is separately checked for errors with the .NET 10 SDK environment.
 
-The new exact-revision Windows/Linux run and final test counts are recorded below once its jobs complete. Do not infer success from workflow configuration alone.
+### Completed review CI evidence
+
+Tested implementation commit: [`43b56a97f5077ca50d6009ae1bfdc9ee10a425d2`](https://github.com/sebfischer83/iryomera-tools/commit/43b56a97f5077ca50d6009ae1bfdc9ee10a425d2), branch `fix/phase-1-review`.
+
+[Foundation CI run 38930859417](https://github.com/sebfischer83/iryomera-tools/actions/runs/38930859417) completed **successfully** on 2026-10-16. Results were checked from both the GitHub jobs API and executed job logs, including the test summaries and Godot success markers.
+
+| Platform | net8.0 tests | net10.0 tests | Real Godot .NET 8 game | Full job |
+| --- | --- | --- | --- | --- |
+| Linux | 104 passed, 0 failed/skipped | 104 passed, 0 failed/skipped | Success | [Job 117074174184](https://github.com/sebfischer83/iryomera-tools/actions/runs/38930859417/job/117074174184), 16:18:10–16:19:11 UTC |
+| Windows | 104 passed, 0 failed/skipped | 104 passed, 0 failed/skipped | Success | [Job 117074174546](https://github.com/sebfischer83/iryomera-tools/actions/runs/38930859417/job/117074174546), 16:18:10–16:20:33 UTC |
+
+**416 xUnit executions** across both frameworks/operating systems succeeded, plus two actual Godot engine integration runs. Both full jobs also passed generated-schema verification, locked restore, solution build, console example, package creation and artifact upload. Build output reports zero warnings/errors. Both 0.2.0 library packages contain net8.0/net10.0 DLL/XML assets; the SDK includes 27 schema files and the embedded bundle.
+
+This report update changes documentation only; the linked implementation commit identifies the tested code without a circular claim that a CI run tested a report containing its own future URL.
 
 ## Reproduce the complete process
 
