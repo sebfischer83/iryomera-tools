@@ -1,0 +1,1223 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.iryomera.org/v1/contracts.schema.json",
+  "title": "Iryomera v1 exchange contracts",
+  "$defs": {
+    "evidenceReference": {
+      "type": "object",
+      "properties": {
+        "citation": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "uri": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "uri"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "evidenceCode": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "citation"
+      ],
+      "additionalProperties": true
+    },
+    "provenance": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "externalId": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "sourceVersion": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "license": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "importedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "reviewStatus": {
+          "enum": [
+            "unreviewed",
+            "inReview",
+            "approved",
+            "rejected"
+          ]
+        },
+        "reviewedBy": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reviewedAt": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/evidenceReference"
+          }
+        }
+      },
+      "required": [
+        "source",
+        "externalId",
+        "sourceVersion",
+        "license",
+        "importedAt"
+      ],
+      "additionalProperties": true,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "reviewStatus": {
+                "enum": [
+                  "approved",
+                  "rejected"
+                ]
+              }
+            },
+            "required": [
+              "reviewStatus"
+            ]
+          },
+          "then": {
+            "required": [
+              "reviewedBy",
+              "reviewedAt"
+            ],
+            "properties": {
+              "reviewedBy": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "reviewedAt": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "externalIdentifier": {
+      "type": "object",
+      "properties": {
+        "system": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "value": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        }
+      },
+      "required": [
+        "system",
+        "value",
+        "provenance"
+      ],
+      "additionalProperties": true
+    },
+    "diseaseDefinition": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "disease"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "nameKey": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+        },
+        "descriptionKey": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z.-]+)?(\\+[0-9A-Za-z.-]+)?$(?![\\s\\S])"
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        },
+        "classifications": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/externalIdentifier"
+          }
+        },
+        "synonymKeys": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+          }
+        }
+      },
+      "required": [
+        "kind",
+        "id",
+        "nameKey",
+        "version",
+        "provenance"
+      ],
+      "additionalProperties": true
+    },
+    "symptomDefinition": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "symptom"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "nameKey": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+        },
+        "descriptionKey": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z.-]+)?(\\+[0-9A-Za-z.-]+)?$(?![\\s\\S])"
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        },
+        "classifications": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/externalIdentifier"
+          }
+        },
+        "synonymKeys": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+          }
+        }
+      },
+      "required": [
+        "kind",
+        "id",
+        "nameKey",
+        "version",
+        "provenance"
+      ],
+      "additionalProperties": true
+    },
+    "findingDefinition": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "finding"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "nameKey": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+        },
+        "descriptionKey": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z.-]+)?(\\+[0-9A-Za-z.-]+)?$(?![\\s\\S])"
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        },
+        "classifications": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/externalIdentifier"
+          }
+        },
+        "synonymKeys": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+          }
+        }
+      },
+      "required": [
+        "kind",
+        "id",
+        "nameKey",
+        "version",
+        "provenance"
+      ],
+      "additionalProperties": true
+    },
+    "examinationDefinition": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "examination"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "nameKey": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+        },
+        "descriptionKey": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z.-]+)?(\\+[0-9A-Za-z.-]+)?$(?![\\s\\S])"
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        },
+        "classifications": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/externalIdentifier"
+          }
+        },
+        "synonymKeys": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+          }
+        }
+      },
+      "required": [
+        "kind",
+        "id",
+        "nameKey",
+        "version",
+        "provenance"
+      ],
+      "additionalProperties": true
+    },
+    "treatmentDefinition": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "treatment"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "nameKey": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+        },
+        "descriptionKey": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z.-]+)?(\\+[0-9A-Za-z.-]+)?$(?![\\s\\S])"
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        },
+        "classifications": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/externalIdentifier"
+          }
+        },
+        "synonymKeys": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+          }
+        }
+      },
+      "required": [
+        "kind",
+        "id",
+        "nameKey",
+        "version",
+        "provenance"
+      ],
+      "additionalProperties": true
+    },
+    "medicalProcedureDefinition": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "medicalProcedure"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "nameKey": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+        },
+        "descriptionKey": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z.-]+)?(\\+[0-9A-Za-z.-]+)?$(?![\\s\\S])"
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        },
+        "classifications": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/externalIdentifier"
+          }
+        },
+        "synonymKeys": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+          }
+        }
+      },
+      "required": [
+        "kind",
+        "id",
+        "nameKey",
+        "version",
+        "provenance"
+      ],
+      "additionalProperties": true
+    },
+    "medicalDepartmentDefinition": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "medicalDepartment"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "nameKey": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+        },
+        "descriptionKey": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z.-]+)?(\\+[0-9A-Za-z.-]+)?$(?![\\s\\S])"
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        },
+        "classifications": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/externalIdentifier"
+          }
+        },
+        "synonymKeys": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+          }
+        }
+      },
+      "required": [
+        "kind",
+        "id",
+        "nameKey",
+        "version",
+        "provenance"
+      ],
+      "additionalProperties": true
+    },
+    "medicalEquipmentDefinition": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "medicalEquipment"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "nameKey": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+        },
+        "descriptionKey": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z.-]+)?(\\+[0-9A-Za-z.-]+)?$(?![\\s\\S])"
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        },
+        "classifications": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/externalIdentifier"
+          }
+        },
+        "synonymKeys": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+          }
+        }
+      },
+      "required": [
+        "kind",
+        "id",
+        "nameKey",
+        "version",
+        "provenance"
+      ],
+      "additionalProperties": true
+    },
+    "staffQualificationDefinition": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "staffQualification"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "nameKey": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+        },
+        "descriptionKey": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z.-]+)?(\\+[0-9A-Za-z.-]+)?$(?![\\s\\S])"
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        },
+        "classifications": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/externalIdentifier"
+          }
+        },
+        "synonymKeys": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+          }
+        }
+      },
+      "required": [
+        "kind",
+        "id",
+        "nameKey",
+        "version",
+        "provenance"
+      ],
+      "additionalProperties": true
+    },
+    "roomDefinition": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "room"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "nameKey": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+        },
+        "descriptionKey": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z.-]+)?(\\+[0-9A-Za-z.-]+)?$(?![\\s\\S])"
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        },
+        "classifications": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/externalIdentifier"
+          }
+        },
+        "synonymKeys": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+          }
+        }
+      },
+      "required": [
+        "kind",
+        "id",
+        "nameKey",
+        "version",
+        "provenance"
+      ],
+      "additionalProperties": true
+    },
+    "furnitureDefinition": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "furniture"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "nameKey": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+        },
+        "descriptionKey": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z.-]+)?(\\+[0-9A-Za-z.-]+)?$(?![\\s\\S])"
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        },
+        "classifications": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/externalIdentifier"
+          }
+        },
+        "synonymKeys": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+          }
+        }
+      },
+      "required": [
+        "kind",
+        "id",
+        "nameKey",
+        "version",
+        "provenance"
+      ],
+      "additionalProperties": true
+    },
+    "staffRoleDefinition": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "staffRole"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "nameKey": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+        },
+        "descriptionKey": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z.-]+)?(\\+[0-9A-Za-z.-]+)?$(?![\\s\\S])"
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        },
+        "classifications": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/externalIdentifier"
+          }
+        },
+        "synonymKeys": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+          }
+        }
+      },
+      "required": [
+        "kind",
+        "id",
+        "nameKey",
+        "version",
+        "provenance"
+      ],
+      "additionalProperties": true
+    },
+    "contentDefinition": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/diseaseDefinition"
+        },
+        {
+          "$ref": "#/$defs/symptomDefinition"
+        },
+        {
+          "$ref": "#/$defs/findingDefinition"
+        },
+        {
+          "$ref": "#/$defs/examinationDefinition"
+        },
+        {
+          "$ref": "#/$defs/treatmentDefinition"
+        },
+        {
+          "$ref": "#/$defs/medicalProcedureDefinition"
+        },
+        {
+          "$ref": "#/$defs/medicalDepartmentDefinition"
+        },
+        {
+          "$ref": "#/$defs/medicalEquipmentDefinition"
+        },
+        {
+          "$ref": "#/$defs/staffQualificationDefinition"
+        },
+        {
+          "$ref": "#/$defs/roomDefinition"
+        },
+        {
+          "$ref": "#/$defs/furnitureDefinition"
+        },
+        {
+          "$ref": "#/$defs/staffRoleDefinition"
+        }
+      ]
+    },
+    "contentRelation": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z.-]+)?(\\+[0-9A-Za-z.-]+)?$(?![\\s\\S])"
+        },
+        "kind": {
+          "enum": [
+            "diseaseSymptom",
+            "diseaseFinding",
+            "examinationFinding",
+            "diseaseExamination",
+            "diseaseTreatment",
+            "examinationEquipment",
+            "treatmentQualification",
+            "roomFurniture"
+          ]
+        },
+        "fromId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "toId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        }
+      },
+      "required": [
+        "id",
+        "version",
+        "kind",
+        "fromId",
+        "toId",
+        "provenance"
+      ],
+      "additionalProperties": true
+    },
+    "contentDependency": {
+      "type": "object",
+      "properties": {
+        "packageId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "versionRange": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "packageId",
+        "versionRange"
+      ],
+      "additionalProperties": true
+    },
+    "contentPackageManifest": {
+      "type": "object",
+      "properties": {
+        "schemaVersion": {
+          "const": "1.0.0"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "namespace": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z.-]+)?(\\+[0-9A-Za-z.-]+)?$(?![\\s\\S])"
+        },
+        "license": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "dependencies": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/contentDependency"
+          }
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "id",
+        "namespace",
+        "version",
+        "license"
+      ],
+      "additionalProperties": true
+    },
+    "modManifest": {
+      "type": "object",
+      "properties": {
+        "schemaVersion": {
+          "const": "1.0.0"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "namespace": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z.-]+)?(\\+[0-9A-Za-z.-]+)?$(?![\\s\\S])"
+        },
+        "license": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "dependencies": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/contentDependency"
+          }
+        },
+        "nameKey": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+        },
+        "author": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "compatibleGameVersions": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "contentFiles": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^(?!/)(?!.*\\\\)(?!.*:)(?!.*(?:^|/)\\.\\.?(/|$)).+$(?![\\s\\S])"
+          }
+        },
+        "supportedLanguages": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z]{2,3}(-[A-Za-z0-9]{2,8})*$(?![\\s\\S])"
+          }
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "id",
+        "namespace",
+        "nameKey",
+        "author",
+        "version",
+        "compatibleGameVersions",
+        "license"
+      ],
+      "additionalProperties": true
+    },
+    "gameplayBalance": {
+      "type": "object",
+      "properties": {
+        "definitionId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "rarity": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "severity": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "diagnosticDifficulty": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "simulatedSuccessProbability": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "treatmentDurationSeconds": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "examinationCost": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "treatmentCost": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "requiredResources": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "additionalProperties": {
+            "type": "number",
+            "minimum": 0
+          }
+        }
+      },
+      "required": [
+        "definitionId"
+      ],
+      "additionalProperties": true
+    },
+    "contentPackage": {
+      "type": "object",
+      "properties": {
+        "schemaVersion": {
+          "const": "1.0.0"
+        },
+        "manifest": {
+          "$ref": "#/$defs/contentPackageManifest"
+        },
+        "definitions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/contentDefinition"
+          }
+        },
+        "relations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/contentRelation"
+          }
+        },
+        "gameplay": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/gameplayBalance"
+          }
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "manifest"
+      ],
+      "additionalProperties": true
+    },
+    "localizationDefinition": {
+      "type": "object",
+      "properties": {
+        "schemaVersion": {
+          "const": "1.0.0"
+        },
+        "namespace": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "language": {
+          "type": "string",
+          "pattern": "^[a-z]{2,3}(-[A-Za-z0-9]{2,8})*$(?![\\s\\S])"
+        },
+        "entries": {
+          "type": "object",
+          "propertyNames": {
+            "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+          },
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          }
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "namespace",
+        "language"
+      ],
+      "additionalProperties": true
+    }
+  }
+}

@@ -1,0 +1,756 @@
+{
+  "schemaVersion": "1.0.0",
+  "manifest": {
+    "schemaVersion": "1.0.0",
+    "id": "synthetic:foundation",
+    "namespace": "synthetic",
+    "version": "1.0.0",
+    "license": "MIT",
+    "dependencies": []
+  },
+  "definitions": [
+    {
+      "kind": "disease",
+      "id": "synthetic:amber_syndrome",
+      "nameKey": "synthetic.disease.amber_syndrome.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera synthetic fixtures — not medical knowledge",
+        "externalId": "amber_syndrome",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      },
+      "classifications": [],
+      "synonymKeys": []
+    },
+    {
+      "kind": "symptom",
+      "id": "synthetic:amber_signal",
+      "nameKey": "synthetic.symptom.amber_signal.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera synthetic fixtures — not medical knowledge",
+        "externalId": "amber_signal",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      },
+      "classifications": [],
+      "synonymKeys": []
+    },
+    {
+      "kind": "finding",
+      "id": "synthetic:amber_reading",
+      "nameKey": "synthetic.finding.amber_reading.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera synthetic fixtures — not medical knowledge",
+        "externalId": "amber_reading",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      },
+      "classifications": [],
+      "synonymKeys": []
+    },
+    {
+      "kind": "examination",
+      "id": "synthetic:amber_scan",
+      "nameKey": "synthetic.examination.amber_scan.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera synthetic fixtures — not medical knowledge",
+        "externalId": "amber_scan",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      },
+      "classifications": [],
+      "synonymKeys": []
+    },
+    {
+      "kind": "treatment",
+      "id": "synthetic:amber_session",
+      "nameKey": "synthetic.treatment.amber_session.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera synthetic fixtures — not medical knowledge",
+        "externalId": "amber_session",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      },
+      "classifications": [],
+      "synonymKeys": []
+    },
+    {
+      "kind": "disease",
+      "id": "synthetic:azure_syndrome",
+      "nameKey": "synthetic.disease.azure_syndrome.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera synthetic fixtures — not medical knowledge",
+        "externalId": "azure_syndrome",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      },
+      "classifications": [],
+      "synonymKeys": []
+    },
+    {
+      "kind": "symptom",
+      "id": "synthetic:azure_signal",
+      "nameKey": "synthetic.symptom.azure_signal.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera synthetic fixtures — not medical knowledge",
+        "externalId": "azure_signal",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      },
+      "classifications": [],
+      "synonymKeys": []
+    },
+    {
+      "kind": "finding",
+      "id": "synthetic:azure_reading",
+      "nameKey": "synthetic.finding.azure_reading.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera synthetic fixtures — not medical knowledge",
+        "externalId": "azure_reading",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      },
+      "classifications": [],
+      "synonymKeys": []
+    },
+    {
+      "kind": "examination",
+      "id": "synthetic:azure_scan",
+      "nameKey": "synthetic.examination.azure_scan.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera synthetic fixtures — not medical knowledge",
+        "externalId": "azure_scan",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      },
+      "classifications": [],
+      "synonymKeys": []
+    },
+    {
+      "kind": "treatment",
+      "id": "synthetic:azure_session",
+      "nameKey": "synthetic.treatment.azure_session.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera synthetic fixtures — not medical knowledge",
+        "externalId": "azure_session",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      },
+      "classifications": [],
+      "synonymKeys": []
+    },
+    {
+      "kind": "disease",
+      "id": "synthetic:copper_syndrome",
+      "nameKey": "synthetic.disease.copper_syndrome.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera synthetic fixtures — not medical knowledge",
+        "externalId": "copper_syndrome",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      },
+      "classifications": [],
+      "synonymKeys": []
+    },
+    {
+      "kind": "symptom",
+      "id": "synthetic:copper_signal",
+      "nameKey": "synthetic.symptom.copper_signal.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera synthetic fixtures — not medical knowledge",
+        "externalId": "copper_signal",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      },
+      "classifications": [],
+      "synonymKeys": []
+    },
+    {
+      "kind": "finding",
+      "id": "synthetic:copper_reading",
+      "nameKey": "synthetic.finding.copper_reading.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera synthetic fixtures — not medical knowledge",
+        "externalId": "copper_reading",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      },
+      "classifications": [],
+      "synonymKeys": []
+    },
+    {
+      "kind": "examination",
+      "id": "synthetic:copper_scan",
+      "nameKey": "synthetic.examination.copper_scan.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera synthetic fixtures — not medical knowledge",
+        "externalId": "copper_scan",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      },
+      "classifications": [],
+      "synonymKeys": []
+    },
+    {
+      "kind": "treatment",
+      "id": "synthetic:copper_session",
+      "nameKey": "synthetic.treatment.copper_session.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera synthetic fixtures — not medical knowledge",
+        "externalId": "copper_session",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      },
+      "classifications": [],
+      "synonymKeys": []
+    },
+    {
+      "kind": "medicalProcedure",
+      "id": "synthetic:demo_procedure",
+      "nameKey": "synthetic.medicalprocedure.demo_procedure.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera synthetic fixtures — not medical knowledge",
+        "externalId": "demo_procedure",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      },
+      "classifications": [],
+      "synonymKeys": []
+    },
+    {
+      "kind": "medicalDepartment",
+      "id": "synthetic:demo_department",
+      "nameKey": "synthetic.medicaldepartment.demo_department.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera synthetic fixtures — not medical knowledge",
+        "externalId": "demo_department",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      },
+      "classifications": [],
+      "synonymKeys": []
+    },
+    {
+      "kind": "medicalEquipment",
+      "id": "synthetic:demo_scanner",
+      "nameKey": "synthetic.medicalequipment.demo_scanner.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera synthetic fixtures — not medical knowledge",
+        "externalId": "demo_scanner",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      },
+      "classifications": [],
+      "synonymKeys": []
+    },
+    {
+      "kind": "staffQualification",
+      "id": "synthetic:demo_qualification",
+      "nameKey": "synthetic.staffqualification.demo_qualification.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera synthetic fixtures — not medical knowledge",
+        "externalId": "demo_qualification",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      },
+      "classifications": [],
+      "synonymKeys": []
+    },
+    {
+      "kind": "room",
+      "id": "synthetic:demo_room",
+      "nameKey": "synthetic.room.demo_room.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera synthetic fixtures — not medical knowledge",
+        "externalId": "demo_room",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      },
+      "classifications": [],
+      "synonymKeys": []
+    },
+    {
+      "kind": "furniture",
+      "id": "synthetic:demo_desk",
+      "nameKey": "synthetic.furniture.demo_desk.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera synthetic fixtures — not medical knowledge",
+        "externalId": "demo_desk",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      },
+      "classifications": [],
+      "synonymKeys": []
+    },
+    {
+      "kind": "staffRole",
+      "id": "synthetic:demo_staff",
+      "nameKey": "synthetic.staffrole.demo_staff.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera synthetic fixtures — not medical knowledge",
+        "externalId": "demo_staff",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      },
+      "classifications": [],
+      "synonymKeys": []
+    }
+  ],
+  "relations": [
+    {
+      "id": "synthetic:diseasesymptom_1",
+      "version": "1.0.0",
+      "kind": "diseaseSymptom",
+      "fromId": "synthetic:amber_syndrome",
+      "toId": "synthetic:amber_signal",
+      "provenance": {
+        "source": "Iryomera synthetic fixtures — not medical knowledge",
+        "externalId": "synthetic:diseasesymptom_1",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      }
+    },
+    {
+      "id": "synthetic:diseasefinding_2",
+      "version": "1.0.0",
+      "kind": "diseaseFinding",
+      "fromId": "synthetic:amber_syndrome",
+      "toId": "synthetic:amber_reading",
+      "provenance": {
+        "source": "Iryomera synthetic fixtures — not medical knowledge",
+        "externalId": "synthetic:diseasefinding_2",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      }
+    },
+    {
+      "id": "synthetic:examinationfinding_3",
+      "version": "1.0.0",
+      "kind": "examinationFinding",
+      "fromId": "synthetic:amber_scan",
+      "toId": "synthetic:amber_reading",
+      "provenance": {
+        "source": "Iryomera synthetic fixtures — not medical knowledge",
+        "externalId": "synthetic:examinationfinding_3",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      }
+    },
+    {
+      "id": "synthetic:diseaseexamination_4",
+      "version": "1.0.0",
+      "kind": "diseaseExamination",
+      "fromId": "synthetic:amber_syndrome",
+      "toId": "synthetic:amber_scan",
+      "provenance": {
+        "source": "Iryomera synthetic fixtures — not medical knowledge",
+        "externalId": "synthetic:diseaseexamination_4",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      }
+    },
+    {
+      "id": "synthetic:diseasetreatment_5",
+      "version": "1.0.0",
+      "kind": "diseaseTreatment",
+      "fromId": "synthetic:amber_syndrome",
+      "toId": "synthetic:amber_session",
+      "provenance": {
+        "source": "Iryomera synthetic fixtures — not medical knowledge",
+        "externalId": "synthetic:diseasetreatment_5",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      }
+    },
+    {
+      "id": "synthetic:examinationequipment_6",
+      "version": "1.0.0",
+      "kind": "examinationEquipment",
+      "fromId": "synthetic:amber_scan",
+      "toId": "synthetic:demo_scanner",
+      "provenance": {
+        "source": "Iryomera synthetic fixtures — not medical knowledge",
+        "externalId": "synthetic:examinationequipment_6",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      }
+    },
+    {
+      "id": "synthetic:treatmentqualification_7",
+      "version": "1.0.0",
+      "kind": "treatmentQualification",
+      "fromId": "synthetic:amber_session",
+      "toId": "synthetic:demo_qualification",
+      "provenance": {
+        "source": "Iryomera synthetic fixtures — not medical knowledge",
+        "externalId": "synthetic:treatmentqualification_7",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      }
+    },
+    {
+      "id": "synthetic:diseasesymptom_8",
+      "version": "1.0.0",
+      "kind": "diseaseSymptom",
+      "fromId": "synthetic:azure_syndrome",
+      "toId": "synthetic:azure_signal",
+      "provenance": {
+        "source": "Iryomera synthetic fixtures — not medical knowledge",
+        "externalId": "synthetic:diseasesymptom_8",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      }
+    },
+    {
+      "id": "synthetic:diseasefinding_9",
+      "version": "1.0.0",
+      "kind": "diseaseFinding",
+      "fromId": "synthetic:azure_syndrome",
+      "toId": "synthetic:azure_reading",
+      "provenance": {
+        "source": "Iryomera synthetic fixtures — not medical knowledge",
+        "externalId": "synthetic:diseasefinding_9",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      }
+    },
+    {
+      "id": "synthetic:examinationfinding_10",
+      "version": "1.0.0",
+      "kind": "examinationFinding",
+      "fromId": "synthetic:azure_scan",
+      "toId": "synthetic:azure_reading",
+      "provenance": {
+        "source": "Iryomera synthetic fixtures — not medical knowledge",
+        "externalId": "synthetic:examinationfinding_10",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      }
+    },
+    {
+      "id": "synthetic:diseaseexamination_11",
+      "version": "1.0.0",
+      "kind": "diseaseExamination",
+      "fromId": "synthetic:azure_syndrome",
+      "toId": "synthetic:azure_scan",
+      "provenance": {
+        "source": "Iryomera synthetic fixtures — not medical knowledge",
+        "externalId": "synthetic:diseaseexamination_11",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      }
+    },
+    {
+      "id": "synthetic:diseasetreatment_12",
+      "version": "1.0.0",
+      "kind": "diseaseTreatment",
+      "fromId": "synthetic:azure_syndrome",
+      "toId": "synthetic:azure_session",
+      "provenance": {
+        "source": "Iryomera synthetic fixtures — not medical knowledge",
+        "externalId": "synthetic:diseasetreatment_12",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      }
+    },
+    {
+      "id": "synthetic:examinationequipment_13",
+      "version": "1.0.0",
+      "kind": "examinationEquipment",
+      "fromId": "synthetic:azure_scan",
+      "toId": "synthetic:demo_scanner",
+      "provenance": {
+        "source": "Iryomera synthetic fixtures — not medical knowledge",
+        "externalId": "synthetic:examinationequipment_13",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      }
+    },
+    {
+      "id": "synthetic:treatmentqualification_14",
+      "version": "1.0.0",
+      "kind": "treatmentQualification",
+      "fromId": "synthetic:azure_session",
+      "toId": "synthetic:demo_qualification",
+      "provenance": {
+        "source": "Iryomera synthetic fixtures — not medical knowledge",
+        "externalId": "synthetic:treatmentqualification_14",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      }
+    },
+    {
+      "id": "synthetic:diseasesymptom_15",
+      "version": "1.0.0",
+      "kind": "diseaseSymptom",
+      "fromId": "synthetic:copper_syndrome",
+      "toId": "synthetic:copper_signal",
+      "provenance": {
+        "source": "Iryomera synthetic fixtures — not medical knowledge",
+        "externalId": "synthetic:diseasesymptom_15",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      }
+    },
+    {
+      "id": "synthetic:diseasefinding_16",
+      "version": "1.0.0",
+      "kind": "diseaseFinding",
+      "fromId": "synthetic:copper_syndrome",
+      "toId": "synthetic:copper_reading",
+      "provenance": {
+        "source": "Iryomera synthetic fixtures — not medical knowledge",
+        "externalId": "synthetic:diseasefinding_16",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      }
+    },
+    {
+      "id": "synthetic:examinationfinding_17",
+      "version": "1.0.0",
+      "kind": "examinationFinding",
+      "fromId": "synthetic:copper_scan",
+      "toId": "synthetic:copper_reading",
+      "provenance": {
+        "source": "Iryomera synthetic fixtures — not medical knowledge",
+        "externalId": "synthetic:examinationfinding_17",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      }
+    },
+    {
+      "id": "synthetic:diseaseexamination_18",
+      "version": "1.0.0",
+      "kind": "diseaseExamination",
+      "fromId": "synthetic:copper_syndrome",
+      "toId": "synthetic:copper_scan",
+      "provenance": {
+        "source": "Iryomera synthetic fixtures — not medical knowledge",
+        "externalId": "synthetic:diseaseexamination_18",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      }
+    },
+    {
+      "id": "synthetic:diseasetreatment_19",
+      "version": "1.0.0",
+      "kind": "diseaseTreatment",
+      "fromId": "synthetic:copper_syndrome",
+      "toId": "synthetic:copper_session",
+      "provenance": {
+        "source": "Iryomera synthetic fixtures — not medical knowledge",
+        "externalId": "synthetic:diseasetreatment_19",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      }
+    },
+    {
+      "id": "synthetic:examinationequipment_20",
+      "version": "1.0.0",
+      "kind": "examinationEquipment",
+      "fromId": "synthetic:copper_scan",
+      "toId": "synthetic:demo_scanner",
+      "provenance": {
+        "source": "Iryomera synthetic fixtures — not medical knowledge",
+        "externalId": "synthetic:examinationequipment_20",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      }
+    },
+    {
+      "id": "synthetic:treatmentqualification_21",
+      "version": "1.0.0",
+      "kind": "treatmentQualification",
+      "fromId": "synthetic:copper_session",
+      "toId": "synthetic:demo_qualification",
+      "provenance": {
+        "source": "Iryomera synthetic fixtures — not medical knowledge",
+        "externalId": "synthetic:treatmentqualification_21",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      }
+    },
+    {
+      "id": "synthetic:roomfurniture_22",
+      "version": "1.0.0",
+      "kind": "roomFurniture",
+      "fromId": "synthetic:demo_room",
+      "toId": "synthetic:demo_desk",
+      "provenance": {
+        "source": "Iryomera synthetic fixtures — not medical knowledge",
+        "externalId": "synthetic:roomfurniture_22",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      }
+    }
+  ],
+  "gameplay": [
+    {
+      "definitionId": "synthetic:amber_syndrome",
+      "rarity": 0.25,
+      "severity": 0.4,
+      "treatmentDurationSeconds": 120,
+      "examinationCost": 20,
+      "treatmentCost": 50,
+      "diagnosticDifficulty": 0.2,
+      "simulatedSuccessProbability": 0.8,
+      "requiredResources": {
+        "demo_supply": 2
+      }
+    }
+  ]
+}

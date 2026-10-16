@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><Description>Offline content localization and .NET localization adapter.</Description></PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../Iryomera.Content.SDK/Iryomera.Content.SDK.csproj" />
+    <PackageReference Include="SmartFormat" />
+    <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" />
+  </ItemGroup>
+</Project>

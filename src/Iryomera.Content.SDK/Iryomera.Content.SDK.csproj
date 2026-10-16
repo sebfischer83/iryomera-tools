@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><Description>Engine-independent Iryomera content contracts, JSON and validation.</Description></PropertyGroup>
+  <ItemGroup><PackageReference Include="NuGet.Versioning" /></ItemGroup>
+  <ItemGroup><None Include="../../schemas/v1/*.json" Pack="true" PackagePath="schemas/v1" /></ItemGroup>
+</Project>

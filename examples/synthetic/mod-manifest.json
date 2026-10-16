@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "synthetic:demo_mod",
+  "namespace": "synthetic",
+  "nameKey": "synthetic.mod.name",
+  "author": "Iryomera contributors",
+  "version": "1.0.0",
+  "compatibleGameVersions": "[0.1.0,1.0.0)",
+  "license": "MIT",
+  "dependencies": [],
+  "contentFiles": [
+    "content.json",
+    "en.json",
+    "de.json"
+  ],
+  "supportedLanguages": [
+    "en",
+    "de"
+  ]
+}
