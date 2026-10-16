@@ -35,6 +35,8 @@ HPO v2026-09-01 (`hp.json`, `hp.obo`) and MAxO v2026-01-15 (`maxo.json`, `maxo.o
 
 The .NET integration executable can also be used directly with two arguments: a case JSON and a new report path. `DatasetCase` contains `input`, `sha256`, full importer `options`, optional `expectedTerms`, `expectedAssertions`, `expectedErrors` and `expectedNormalizedSha256`. It has no source-network or review/export operation. Test configuration/report types are internal-to-tooling fixtures, not game exchange contracts. The normal CLI remains offline.
 
+[Completed full CI run 38936172603](https://github.com/sebfischer83/iryomera-tools/actions/runs/38936172603) passed all four cases on Windows/Linux with the same pinned normalized output hashes. Both platforms also passed the complete unit, sample, packaging and real Godot checks.
+
 CI's `workflow_dispatch` input `full_datasets=true` enables these tests on both Windows and Linux. Standard push/PR CI remains synthetic/offline for medical data and tests the download boundary with mocked network calls. CI artifacts include only aggregate reports and software packages, not source files or normalized medical graphs. See [verification and actual run evidence](phase-2-verification.md).
 
 ## ICD-10-GM / OPS / LOINC and restricted annotations
