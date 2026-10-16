@@ -59,6 +59,7 @@ The additional [diagnostic prototype](docs/diagnostic-content.md) defines three 
 
 ## Formats and architecture
 
+- [Documentation index](docs/README.md) and [German diagnostic model overview](docs/diagnosemodell.md).
 - [JSON format reference and schema catalog](docs/formats.md): draft 2020-12 entry schemas for every public exchange contract, bundled offline in the SDK package; schema version `1.0.0`.
 - [Architecture and boundaries](docs/architecture/0001-foundation.md) and [localization decision](docs/architecture/0002-localization.md).
 - [Phase 1 implementation plan](docs/plans/phase-1.md), [verification report](docs/phase-1-verification.md) and [concrete Phase 2 plan](docs/plans/phase-2.md).

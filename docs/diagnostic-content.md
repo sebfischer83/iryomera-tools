@@ -2,6 +2,8 @@
 
 These contracts describe authored content. They do not execute examinations or diagnose patients. [ADR 0008](architecture/0008-diagnostic-content.md) records the medical/simulation boundary, compatibility decision and private-game runtime plan.
 
+Deutsch: [Modellübersicht mit Beziehungsgrafik und JSON-Beispielen](diagnosemodell.md).
+
 ## Meaning and relationships
 
 | Definition | Meaning | Illustrative distinction |
