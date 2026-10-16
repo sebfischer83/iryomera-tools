@@ -42,3 +42,7 @@ Use `LocalizationValidator.Validate(catalogs, usedKeys)` before release. Missing
 `ContentStringLocalizer` implements `IStringLocalizer` for later Blazor tools. Its argument overload expects positional templates (`{0}`, `{1:N2}`); named game templates use `IContentLocalizer.Format` with a dictionary. Register services in the host's DI container and configure its culture selection. There is no Blazor application in Phase 1.
 
 Use `LocalizationDocuments.ReadValidatedAsync(input, otherCatalogs, usedKeys, requiredLanguages, token)` at JSON boundaries to combine raw schema checks (including mandatory schemaVersion) with the existing catalog/placeholder diagnostics.
+
+## Content package and mod aliases
+
+`ContentLocalizationValidator.Validate(package, catalogs, additionalKeys, requiredLanguages)` composes normal content-key/placeholder checks with language-specific alias maps in `localizedAliasKeys` extensions. The same implementation is used by Studio and ModKit. `Keys(package)` returns language/key pairs for preserving alias entries on export. Alias keys cannot replace shared names/descriptions/category keys or suppress required translations. Extra required keys can include a mod manifest's nameKey; defaults require English and German, while canonical additional cultures are supported.

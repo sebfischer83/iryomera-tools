@@ -76,6 +76,7 @@ public abstract record ContentDefinition : ExtensibleRecord
     public required Provenance Provenance { get; init; }
     public List<ExternalIdentifier> Classifications { get; init; } = [];
     public List<string> SynonymKeys { get; init; } = [];
+    public List<AssetReference>? Assets { get; init; }
 }
 
 public sealed record DiseaseDefinition : ContentDefinition;
@@ -93,7 +94,10 @@ public sealed record MedicalDepartmentDefinition : ContentDefinition;
 public sealed record MedicalEquipmentDefinition : ContentDefinition;
 public sealed record StaffQualificationDefinition : ContentDefinition;
 public sealed record RoomDefinition : ContentDefinition;
-public sealed record FurnitureDefinition : ContentDefinition;
+public sealed record FurnitureDefinition : ContentDefinition
+{
+    public FurniturePlacement? Placement { get; init; }
+}
 public sealed record StaffRoleDefinition : ContentDefinition;
 
 /// <summary>Directed, typed assertions, never inferred from balancing values.</summary>

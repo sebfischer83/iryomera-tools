@@ -48,7 +48,19 @@ public partial class SmokeTest : Node
                 diagnosticCatalogs.Add(await ContentJson.ReadAsync<LocalizationDefinition>(input));
             }
             Assert(LocalizationValidator.Validate(diagnosticCatalogs, LocalizationValidator.GetContentKeys(diagnostic.Value), ["en", "de"]).Count == 0, "Diagnostic DE/EN catalogs do not match.");
-            GD.Print("IRYOMERA_GODOT_SMOKE_OK: net8 package binaries, schema/semantic validation, annotations, diagnostic contracts, en/de localization and plurals.");
+            await using var modSource = File.OpenRead(ProjectSettings.GlobalizePath("res://mod-content.json"));
+            var modContent = await ContentDocuments.ReadValidatedAsync<ContentPackage>(modSource);
+            Assert(modContent.IsValid, string.Join("; ", modContent.Issues));
+            var furniture = modContent.Value!.Definitions.OfType<FurnitureDefinition>().Single();
+            Assert(furniture.Assets!.Count == 3 && furniture.Placement!.Footprint.Width == 2 && furniture.Placement.InteractionPoints.Count == 1, "Portable asset/placement contracts were lost.");
+            var modCatalogs = new List<LocalizationDefinition>();
+            foreach (var language in new[] { "en", "de" })
+            {
+                await using var input = File.OpenRead(ProjectSettings.GlobalizePath("res://mod-" + language + ".json"));
+                modCatalogs.Add(await ContentJson.ReadAsync<LocalizationDefinition>(input));
+            }
+            Assert(ContentLocalizationValidator.Validate(modContent.Value, modCatalogs, ["example_mod.mod.name"]).Count == 0, "Mod localization validation failed.");
+            GD.Print("IRYOMERA_GODOT_SMOKE_OK: net8 package binaries, annotations, diagnostics, mod asset/layout contracts, en/de localization and plurals.");
             GetTree().Quit(0);
         }
         catch (Exception exception)

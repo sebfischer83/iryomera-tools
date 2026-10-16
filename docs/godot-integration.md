@@ -16,7 +16,7 @@ dotnet pack Iryomera.Tools.sln -c Release --no-build -o artifacts
 python scripts/run-godot-smoke.py
 ```
 
-The runner downloads the official pinned Godot .NET desktop archive into a temporary cache, verifies the published SHA-512 checksum, restores an isolated copy of `tests/Iryomera.Godot.Integration` using the locally packed 0.4.0 libraries, builds it with Godot.NET.Sdk/4.7.2 and runs the editor import/scene headlessly. Use `--godot <executable>` to supply an existing compatible .NET-enabled engine, or `--dotnet <executable>` for a custom SDK installation. Setup needs network access for packages/engine; loaded content, schema validation and localization run offline.
+The runner downloads the official pinned Godot .NET desktop archive into a temporary cache, verifies the published SHA-512 checksum, restores an isolated copy of `tests/Iryomera.Godot.Integration` using the locally packed 0.5.0 libraries, builds it with Godot.NET.Sdk/4.7.2 and runs the editor import/scene headlessly. Use `--godot <executable>` to supply an existing compatible .NET-enabled engine, or `--dotnet <executable>` for a custom SDK installation. Setup needs network access for packages/engine; loaded content, schema validation and localization run offline.
 
 The test requires a .NET 8 runtime and sets `DOTNET_ROLL_FORWARD=Minor` in the game process environment. Godot's normal LatestMajor roll-forward could otherwise run a net8 game on .NET 10 and hide a minimum-runtime issue. The editor/MSBuild step retains its normal SDK environment and is checked for engine error output. The game scene asserts the actual CLR major and both assemblies' TargetFrameworkAttribute values.
 
@@ -26,13 +26,14 @@ Success requires `IRYOMERA_GODOT_SMOKE_OK` and exit 0. The scene proves:
 - Bundled JSON Schema and semantic validation load a content package without external schema requests.
 - HPO-/MAxO-shaped synthetic annotations, negation, source frequency and context survive JSON round trips.
 - The diagnostic prototype loads five shared examinations, all four observation result kinds, separate simulation configuration and complete DE/EN category/rationale/text keys.
+- Mod furniture asset references, footprints and interaction-point contracts load from the synthetic mod package; no model is executed or rendered by the smoke test.
 - English/German labels and plural formatting render correctly.
 
 The two libraries contain no Godot, Blazor, database or distribution dependency. A game should reference both NuGet packages normally so the matching System.Text.Json/schema/formatting dependencies are included; copying a single DLL manually does not reproduce the tested setup.
 
 ## Consumer usage
 
-In a Godot net8.0 C# project, reference `Iryomera.Content.SDK` and `Iryomera.Localization` 0.4.0 from your chosen package feed. These packages are built locally/CI; publication to nuget.org is not implied.
+In a Godot net8.0 C# project, reference `Iryomera.Content.SDK` and `Iryomera.Localization` 0.5.0 from your chosen package feed. These packages are built locally/CI; publication to nuget.org is not implied.
 
 ```csharp
 await using var input = File.OpenRead(ProjectSettings.GlobalizePath("res://content.json"));
