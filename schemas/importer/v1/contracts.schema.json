@@ -220,7 +220,8 @@
             "maxo-annotations",
             "icd-10-gm",
             "loinc",
-            "ops"
+            "ops",
+            "wikidata"
           ]
         },
         "sourceVersion": {
@@ -252,6 +253,17 @@
           "type": "string",
           "format": "date-time"
         },
+        "retrievedAt": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
         "namespace": {
           "type": "string",
           "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
@@ -282,6 +294,105 @@
       ],
       "additionalProperties": false
     },
+    "externalIdentifier": {
+      "type": "object",
+      "properties": {
+        "system": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "value": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        }
+      },
+      "required": [
+        "system",
+        "value",
+        "provenance"
+      ],
+      "additionalProperties": true
+    },
+    "importedTranslation": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "description": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          }
+        }
+      },
+      "required": [
+        "label"
+      ],
+      "additionalProperties": false
+    },
+    "identifierMatchCandidate": {
+      "type": "object",
+      "properties": {
+        "leftId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "rightId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "system": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "value": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "kind": {
+          "enum": [
+            "explicitIdentifier",
+            "classificationFamily"
+          ]
+        },
+        "note": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "leftId",
+        "rightId",
+        "system",
+        "value",
+        "kind",
+        "note"
+      ],
+      "additionalProperties": false
+    },
     "importedTerm": {
       "type": "object",
       "properties": {
@@ -300,7 +411,9 @@
             "finding",
             "examination",
             "medicalProcedure",
-            "observation"
+            "observation",
+            "symptom",
+            "treatment"
           ]
         },
         "label": {
@@ -328,6 +441,38 @@
           "items": {
             "type": "string"
           }
+        },
+        "translations": {
+          "anyOf": [
+            {
+              "type": "object",
+              "propertyNames": {
+                "enum": [
+                  "en",
+                  "de"
+                ]
+              },
+              "additionalProperties": {
+                "$ref": "#/$defs/importedTranslation"
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "externalIdentifiers": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/externalIdentifier"
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "alternateIds": {
           "type": "array",
@@ -370,7 +515,8 @@
             "hpoAssociation",
             "maxoAnnotation",
             "ontologyHierarchy",
-            "crossReference"
+            "crossReference",
+            "wikidataStatement"
           ]
         },
         "predicate": {
@@ -452,7 +598,8 @@
         "adapterVersion": {
           "enum": [
             "1.0.0",
-            "1.1.0"
+            "1.1.0",
+            "1.2.0"
           ]
         },
         "detectedFormat": {
@@ -797,7 +944,8 @@
         "adapterVersion": {
           "enum": [
             "1.0.0",
-            "1.1.0"
+            "1.1.0",
+            "1.2.0"
           ]
         },
         "options": {

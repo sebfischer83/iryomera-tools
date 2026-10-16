@@ -14,7 +14,7 @@ The project also packs as the `iryomera-medical` .NET tool:
 
 ```sh
 dotnet pack src/Iryomera.MedicalImporter -c Release -o artifacts
-dotnet tool install Iryomera.MedicalImporter --version 0.3.0 --add-source ./artifacts --tool-path ./artifacts/tools
+dotnet tool install Iryomera.MedicalImporter --version 0.4.0 --add-source ./artifacts --tool-path ./artifacts/tools
 # Windows: artifacts/tools/iryomera-medical.exe
 # Linux: ./artifacts/tools/iryomera-medical
 ```
@@ -82,7 +82,7 @@ new-release/
 
 No rejected/unreviewed source records are copied into the report. The report contains only selected import metadata and review history plus diagnostic counts. Definition `sourceClaims` extensions retain every approved matching claim's source fields and provenance. Identical claims sharing an explicit external ID can coalesce without losing lineage; conflicting labels/types/descriptions remain errors for explicit resolution. Explicit alternate IDs are authoritative aliases; xrefs and text matches never silently merge terms.
 
-Source-language catalogs are content for review. An ICD/OPS-only import may have `de` but no English translation; English HPO may have `en` but no German. The exporter never fabricates translations. `--require-languages en,de` blocks incomplete releases. This phase has no UI; the later editor must author/validate genuine translations before publishing a bilingual game-content package. Literal braces/backslashes in original text are escaped for the established SmartFormat dialect; original source fields remain unchanged.
+Source-language catalogs are content for review. An ICD/OPS-only import may have `de` but no English translation; English HPO may have `en` but no German. The exporter never fabricates translations. `--require-languages en,de` blocks incomplete releases. The [local Studio](content-studio.md) authors/validates genuine translations before publishing a bilingual game-content package. Literal braces/backslashes in original text are escaped for the established SmartFormat dialect; original source fields remain unchanged.
 
 ## Normalization and matching
 
@@ -111,7 +111,7 @@ Async operations accept cancellation; storage/parsing failures propagate typed e
 
 The importer v1 format is intentionally strict: unknown properties are rejected rather than silently discarded by a future editor. Preserve future importer versions using their own readers/migrations. The SDK's separate public content format remains additive/extensible. `SourceFields`/`SourceMetadata` are arbitrary raw JSON containers; original XML is stored as text. JSON Schema enforces shape while semantic validation checks identity, provenance, review audit, duplicates, actual reference closure and endpoint types.
 
-Studio should load the atomic workspace snapshot, show original `SourceFields` and diagnostics next to projected definitions, edit reviewed normalized records in its own application layer, and append review decisions while preserving original source claims. Phase 2 does not implement that UI, database migrations or authentication.
+Studio loads the atomic workspace snapshot, show original `SourceFields` and diagnostics next to projected definitions, edit reviewed normalized records in its own application layer, and append review decisions while preserving original source claims. The separate [Phase 3 Studio](content-studio.md) implements local UI and migrations; authentication remains outside this local tool.
 
 ## Reviewed Phase 2 additions (0.3.0 / adapters 1.1.0)
 
@@ -140,3 +140,7 @@ An exclusion file is a JSON object such as `{"medical:id_example":"Outside this 
 New LOINC imports are `observation` definitions, not playable examinations. All source columns remain unchanged. Old `examination` imports are not silently rewritten; compare reimports in a separate workspace. Readers still accept adapter 1.0.0 identities; new import normalization uses 1.1.0. JSON schemaVersion remains 1.0.0 with optional additions. Old documents remain readable; old strict readers can reject new optional fields/discriminators.
 
 Identical assertion claims across batches export once, with every approved claim in `sourceClaims` on the sidecar and canonical SDK annotation/relation. The report retains selected provenance and independent permissions. Qualifiers, negation, source frequency and MAxO context also populate SDK MedicalAnnotation. Distinct evidence/context rows remain distinct assertions; no clinical equivalence is inferred. See [ADRs](architecture/0005-record-rights-and-review.md) and [full-dataset tests](full-dataset-tests.md).
+
+## Wikidata (library 0.4.0 / adapter 1.2.0)
+
+The eighth adapter reads saved SPARQL SELECT JSON/CSV with stable Q IDs, actual en/de labels/descriptions/aliases, P780/P923/P924/P828 statement context and explicit external identifiers. Retrieval time and CC0 metadata are mandatory. Medical approval and scoped rights remain separate. `matches --identifiers` offers explicit-identifier candidates only. Deprecated/incomplete/unreferenced statements are excluded from controlled bulk approval. Statements retain ranks, qualifiers and references in the approved source sidecar rather than becoming unconditional clinical relations. See [the complete profile and offline CLI examples](wikidata-import.md) and [ADR 0009](architecture/0009-wikidata.md). Existing adapters retain 1.1.0 normalization and pinned full-dataset identities.

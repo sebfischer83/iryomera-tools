@@ -11,7 +11,7 @@ public sealed class ImportEngine
 {
     public const string AdapterVersion = "1.1.0";
     private static readonly IImportAdapter[] Adapters =
-    [new HpoAdapter(), new MaxoAdapter(), new HpoAnnotationAdapter(), new MaxoAnnotationAdapter(), new Icd10GmAdapter(), new LoincAdapter(), new OpsAdapter()];
+    [new HpoAdapter(), new MaxoAdapter(), new HpoAnnotationAdapter(), new MaxoAnnotationAdapter(), new Icd10GmAdapter(), new LoincAdapter(), new OpsAdapter(), new WikidataAdapter()];
     public static IReadOnlyList<IImportAdapter> Sources => Array.AsReadOnly(Adapters);
 
     public async Task<ImportBatch> ReadAsync(string inputPath, ImportOptions options, CancellationToken cancellationToken = default)
@@ -27,7 +27,7 @@ public sealed class ImportEngine
         options = options with { Format = format, ImportedAt = options.ImportedAt.ToUniversalTime() };
         var batch = new ImportBatch
         {
-            Id = BatchId(hash, options), AdapterVersion = AdapterVersion, InputSha256 = hash, InputBytes = input.Length, Options = options, DetectedFormat = format
+            Id = BatchId(hash, options, options.Source == "wikidata" ? WikidataAdapter.Version : AdapterVersion), AdapterVersion = options.Source == "wikidata" ? WikidataAdapter.Version : AdapterVersion, InputSha256 = hash, InputBytes = input.Length, Options = options, DetectedFormat = format
         };
         await adapter.ReadAsync(input, format, new AdapterContext(batch), cancellationToken);
         if (batch.ObservedSourceVersion is { Length: > 0 } observed)
@@ -54,6 +54,7 @@ public sealed class ImportEngine
     public static void ValidateOptions(ImportOptions options)
     {
         if (ContractShape.Validate(options).Count > 0) throw new ArgumentException("Import options contain null required values.");
+        if (options.Source == "wikidata" && (options.RetrievedAt is null || options.RetrievedAt == default(DateTimeOffset))) throw new ArgumentException("Wikidata requires the actual snapshot retrieval timestamp (--retrieved-at).");
         if (!ContentFormat.IsValidNamespace(options.Namespace)) throw new ArgumentException("Invalid namespace.");
         if (new[] { options.Source, options.SourceVersion, options.SourceUrl, options.License, options.LicenseText, options.Attribution }.Any(string.IsNullOrWhiteSpace))
             throw new ArgumentException("Source, version, URL, license, full license text and attribution are required.");

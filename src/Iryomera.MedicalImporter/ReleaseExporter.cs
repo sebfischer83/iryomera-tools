@@ -23,6 +23,7 @@ public sealed class ReleaseExporter
         if (terms.Any(x => x.Batch.Options.Source == "loinc" && x.Term.SourceFields.TryGetValue("STATUS", out var status) && status.GetString() != "ACTIVE"))
             throw new InvalidDataException("Approved selection includes non-ACTIVE LOINC records; preserve them in staging.");
         if (terms.Any(x => x.Term.Obsolete)) throw new InvalidDataException("Approved selection contains obsolete terms.");
+        if (assertions.Any(x => x.Assertion.Kind == SourceAssertionKind.WikidataStatement && Adapters.WikidataAdapter.Deprecated(x.Assertion))) throw new InvalidDataException("Deprecated Wikidata statements cannot enter a release.");
         var batches = terms.Select(x => x.Batch).Concat(assertions.Select(x => x.Batch)).DistinctBy(x => x.Id).OrderBy(x => x.Id, StringComparer.Ordinal).ToArray();
         if (batches.Select(x => x.Options.Namespace).Distinct(StringComparer.Ordinal).Count() != 1) throw new InvalidDataException("One release package must have exactly one namespace.");
         foreach (var batch in batches)
@@ -45,6 +46,8 @@ public sealed class ReleaseExporter
             ContentDefinition definition = term.Kind switch
             {
                 ImportedTermKind.Disease => new DiseaseDefinition { Id = term.Id, NameKey = ImportIdentity.Key(term.Id), Version = "1.0.0", Provenance = provenance },
+                ImportedTermKind.Symptom => new SymptomDefinition { Id = term.Id, NameKey = ImportIdentity.Key(term.Id), Version = "1.0.0", Provenance = provenance },
+                ImportedTermKind.Treatment => new TreatmentDefinition { Id = term.Id, NameKey = ImportIdentity.Key(term.Id), Version = "1.0.0", Provenance = provenance },
                 ImportedTermKind.Finding => new FindingDefinition { Id = term.Id, NameKey = ImportIdentity.Key(term.Id), Version = "1.0.0", Provenance = provenance },
                 ImportedTermKind.Observation => new ObservationDefinition { Id = term.Id, NameKey = ImportIdentity.Key(term.Id), Version = "1.0.0", Provenance = provenance },
                 ImportedTermKind.Examination => new ExaminationDefinition { Id = term.Id, NameKey = ImportIdentity.Key(term.Id), Version = "1.0.0", Provenance = provenance },
@@ -53,14 +56,34 @@ public sealed class ReleaseExporter
             };
             definition = definition with
             {
-                DescriptionKey = string.IsNullOrWhiteSpace(term.Description) ? null : ImportIdentity.Key(term.Id) + ".description",
-                SynonymKeys = term.Synonyms.Select((_, i) => ImportIdentity.Key(term.Id) + ".synonym.s" + i.ToString(CultureInfo.InvariantCulture)).ToList(),
+                DescriptionKey = string.IsNullOrWhiteSpace(term.Description) && !(term.Translations?.Values.Any(t => !string.IsNullOrWhiteSpace(t.Description)) ?? false) ? null : ImportIdentity.Key(term.Id) + ".description",
+                SynonymKeys = (term.Translations is null ? term.Synonyms : []).Select((_, i) => ImportIdentity.Key(term.Id) + ".synonym.s" + i.ToString(CultureInfo.InvariantCulture)).ToList(),
                 Classifications = group.Select(claim => new ExternalIdentifier { System = claim.Term.ExternalId.Split(':')[0], Value = claim.Term.ExternalId,
-                    Provenance = WorkspaceValidation.ReviewedProvenance(workspace, claim.Batch, claim.Term.Id, claim.Term.Provenance, reviewIndex) }).ToList(),
+                    Provenance = WorkspaceValidation.ReviewedProvenance(workspace, claim.Batch, claim.Term.Id, claim.Term.Provenance, reviewIndex) })
+                    .Concat(group.SelectMany(claim => (claim.Term.ExternalIdentifiers ?? []).Select(identifier => identifier with
+                    { Provenance = WorkspaceValidation.ReviewedProvenance(workspace, claim.Batch, claim.Term.Id, identifier.Provenance, reviewIndex) }))).ToList(),
                 Extensions = new() { ["sourceRecord"] = ImportIdentity.Json(term.SourceFields), ["alternateExternalIds"] = ImportIdentity.Json(group.SelectMany(x => x.Term.AlternateIds).Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal)),
                     ["sourceClaims"] = ImportIdentity.Json(group.Select(x => x.Term with { Provenance = WorkspaceValidation.ReviewedProvenance(workspace, x.Batch, x.Term.Id, x.Term.Provenance, reviewIndex) })) }
             };
             package.Definitions.Add(definition);
+            if (term.Translations is { } translations)
+            {
+                var aliasKeys = new SortedDictionary<string, List<string>>(StringComparer.Ordinal);
+                foreach (var (language, translation) in translations)
+                {
+                    if (!catalogs.TryGetValue(language, out var translatedCatalog)) catalogs[language] = translatedCatalog = new() { Namespace = ns, Language = language };
+                    translatedCatalog.Entries.Add(definition.NameKey, EscapeTemplate(translation.Label));
+                    if (definition.DescriptionKey is not null && translation.Description is not null) translatedCatalog.Entries.Add(definition.DescriptionKey, EscapeTemplate(translation.Description));
+                    aliasKeys[language] = [];
+                    foreach (var alias in translation.Aliases)
+                    {
+                        var aliasKey = ImportIdentity.Key(term.Id) + ".alias." + language + ".a" + ImportIdentity.Hash(System.Text.Encoding.UTF8.GetBytes(alias));
+                        translatedCatalog.Entries.Add(aliasKey, EscapeTemplate(alias)); aliasKeys[language].Add(aliasKey);
+                    }
+                }
+                definition.Extensions!["localizedAliasKeys"] = ImportIdentity.Json(aliasKeys);
+                continue;
+            }
             if (!catalogs.TryGetValue(term.Language, out var catalog)) catalogs[term.Language] = catalog = new() { Namespace = ns, Language = term.Language };
             catalog.Entries.Add(definition.NameKey, EscapeTemplate(term.Label));
             if (definition.DescriptionKey is not null) catalog.Entries.Add(definition.DescriptionKey, EscapeTemplate(term.Description!));

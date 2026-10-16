@@ -28,6 +28,7 @@ public sealed class AdapterContext(ImportBatch batch)
     {
         Source = Options.SourceUrl, ExternalId = externalId, SourceVersion = Options.SourceVersion,
         License = Options.License, ImportedAt = Options.ImportedAt,
+        Extensions = Options.RetrievedAt is null ? null : new() { ["retrievedAt"] = ImportIdentity.Json(Options.RetrievedAt) },
         Evidence = string.IsNullOrWhiteSpace(reference) ? [] : [new() { Citation = reference, EvidenceCode = evidence }]
     };
 

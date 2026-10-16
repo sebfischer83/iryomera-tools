@@ -5,8 +5,8 @@ using Iryomera.Content.SDK;
 
 namespace Iryomera.MedicalImporter;
 
-public enum ImportedTermKind { Disease, Finding, Examination, MedicalProcedure, Observation }
-public enum SourceAssertionKind { HpoAssociation, MaxoAnnotation, OntologyHierarchy, CrossReference }
+public enum ImportedTermKind { Disease, Finding, Examination, MedicalProcedure, Observation, Symptom, Treatment }
+public enum SourceAssertionKind { HpoAssociation, MaxoAnnotation, OntologyHierarchy, CrossReference, WikidataStatement }
 public enum DiagnosticSeverity { Information, Warning, Error }
 public enum RedistributionDecision { Undecided, Permitted, Blocked }
 
@@ -24,7 +24,17 @@ public sealed record ImportedTerm
     public List<string> AlternateIds { get; init; } = [];
     public bool Obsolete { get; init; }
     public required Provenance Provenance { get; init; }
+    public SortedDictionary<string, ImportedTranslation>? Translations { get; init; }
+    public List<ExternalIdentifier>? ExternalIdentifiers { get; init; }
     public SortedDictionary<string, JsonElement> SourceFields { get; init; } = new(StringComparer.Ordinal);
+}
+
+[System.Text.Json.Serialization.JsonUnmappedMemberHandling(System.Text.Json.Serialization.JsonUnmappedMemberHandling.Disallow)]
+public sealed record ImportedTranslation
+{
+    public required string Label { get; init; }
+    public string? Description { get; init; }
+    public List<string> Aliases { get; init; } = [];
 }
 
 [System.Text.Json.Serialization.JsonUnmappedMemberHandling(System.Text.Json.Serialization.JsonUnmappedMemberHandling.Disallow)]
@@ -54,6 +64,7 @@ public sealed record ImportOptions
     public required string LicenseText { get; init; }
     public required string Attribution { get; init; }
     public required DateTimeOffset ImportedAt { get; init; }
+    public DateTimeOffset? RetrievedAt { get; init; }
     public string Namespace { get; init; } = "medical";
     public string Format { get; init; } = "auto";
     public long MaxInputBytes { get; init; } = 512 * 1024 * 1024;

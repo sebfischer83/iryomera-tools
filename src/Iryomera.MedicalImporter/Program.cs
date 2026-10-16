@@ -31,6 +31,7 @@ public static class Program
         var licenseFile = Required(import, "--license-file", "Local file containing full original license terms/notices.");
         var attribution = Required(import, "--attribution", "Required source attribution/citation notice.");
         var importedAt = Optional(import, "--imported-at", "ISO-8601 UTC timestamp; supply for reproducible re-runs.");
+        var retrievedAt = Optional(import, "--retrieved-at", "Actual source snapshot retrieval timestamp; required for Wikidata.");
         var ns = Optional(import, "--namespace", "Package namespace.", "medical");
         var format = Optional(import, "--format", "auto, json, obo, tsv, csv or xml.", "auto");
         var max = new Option<long>("--max-input-bytes") { DefaultValueFactory = _ => 512 * 1024 * 1024 }; import.Options.Add(max);
@@ -42,6 +43,7 @@ public static class Program
                 Source = parse.GetValue(source)!, SourceVersion = parse.GetValue(version)!, SourceUrl = parse.GetValue(url)!,
                 License = parse.GetValue(license)!, LicenseText = await File.ReadAllTextAsync(parse.GetValue(licenseFile)!, ct),
                 Attribution = parse.GetValue(attribution)!, Namespace = parse.GetValue(ns)!, Format = parse.GetValue(format)!,
+                RetrievedAt = parse.GetValue(retrievedAt) is { Length: > 0 } retrieval ? Timestamp(retrieval) : null,
                 ImportedAt = parse.GetValue(importedAt) is { Length: > 0 } timestamp ? Timestamp(timestamp) : DateTimeOffset.UtcNow,
                 MaxInputBytes = parse.GetValue(max)
             }, ct);
@@ -79,11 +81,13 @@ public static class Program
 
         var matches = new Command("matches", "Find label/synonym candidates for human review; does not merge or infer relationships.");
         var matchWorkspace = Workspace(matches);
+        var identifiersOnly = new Option<bool>("--identifiers") { Description = "Compare explicit external identifiers only; never merges or infers equivalence." }; matches.Options.Add(identifiersOnly);
         var limit = new Option<int>("--limit") { DefaultValueFactory = _ => 1000 }; matches.Options.Add(limit);
         matches.SetAction((parse, ct) => GuardAsync(async () =>
         {
             var workspace = await ExistingStore(parse.GetValue(matchWorkspace)!).ReadAsync(ct);
-            Print(TermMatching.Candidates(workspace, parse.GetValue(limit))); return 0;
+            if (parse.GetValue(identifiersOnly)) Print(IdentifierMatching.Candidates(workspace, parse.GetValue(limit)));
+            else Print(TermMatching.Candidates(workspace, parse.GetValue(limit))); return 0;
         })); root.Subcommands.Add(matches);
 
         var review = new Command("review", "Record an explicit operator review; import itself never approves records.");

@@ -1,0 +1,45 @@
+# Saved-result profile iryomera-wikidata-select-v1. Run manually in WDQS if desired.
+# Use a bounded VALUES set or a deliberate LIMIT, and record actual retrieval date/query version.
+# No request is made by the importer. Do not interpret property presence as clinical approval.
+PREFIX wd: <http://www.wikidata.org/entity/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX p: <http://www.wikidata.org/prop/>
+PREFIX ps: <http://www.wikidata.org/prop/statement/>
+PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX schema: <http://schema.org/>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+SELECT DISTINCT ?item ?itemLabelEn ?itemLabelDe ?itemDescriptionEn ?itemDescriptionDe
+ ?itemAliasEn ?itemAliasDe ?property ?statement ?value ?valueLabelEn ?valueLabelDe
+ ?valueDescriptionEn ?valueDescriptionDe ?valueAliasEn ?valueAliasDe ?rank
+ ?reference ?referenceProperty ?referenceValue ?qualifierProperty ?qualifierValue
+ ?hpoId ?valueHpoId ?icd10 ?icd9 ?icd10cm ?icd11Foundation
+WHERE {
+  ?item wdt:P31/wdt:P279* wd:Q12136 .
+  OPTIONAL { ?item rdfs:label ?itemLabelEn FILTER(LANG(?itemLabelEn) = "en") }
+  OPTIONAL { ?item rdfs:label ?itemLabelDe FILTER(LANG(?itemLabelDe) = "de") }
+  OPTIONAL { ?item schema:description ?itemDescriptionEn FILTER(LANG(?itemDescriptionEn) = "en") }
+  OPTIONAL { ?item schema:description ?itemDescriptionDe FILTER(LANG(?itemDescriptionDe) = "de") }
+  OPTIONAL { ?item skos:altLabel ?itemAliasEn FILTER(LANG(?itemAliasEn) = "en") }
+  OPTIONAL { ?item skos:altLabel ?itemAliasDe FILTER(LANG(?itemAliasDe) = "de") }
+  OPTIONAL {
+    VALUES (?claim ?main ?property) { (p:P780 ps:P780 wd:P780) (p:P923 ps:P923 wd:P923) (p:P924 ps:P924 wd:P924) (p:P828 ps:P828 wd:P828) }
+    ?item ?claim ?statement . ?statement ?main ?value ; wikibase:rank ?rank .
+    OPTIONAL { ?value rdfs:label ?valueLabelEn FILTER(LANG(?valueLabelEn) = "en") }
+    OPTIONAL { ?value rdfs:label ?valueLabelDe FILTER(LANG(?valueLabelDe) = "de") }
+    OPTIONAL { ?value schema:description ?valueDescriptionEn FILTER(LANG(?valueDescriptionEn) = "en") }
+    OPTIONAL { ?value schema:description ?valueDescriptionDe FILTER(LANG(?valueDescriptionDe) = "de") }
+    OPTIONAL { ?value skos:altLabel ?valueAliasEn FILTER(LANG(?valueAliasEn) = "en") }
+    OPTIONAL { ?value skos:altLabel ?valueAliasDe FILTER(LANG(?valueAliasDe) = "de") }
+    OPTIONAL { ?value wdt:P3841 ?valueHpoId }
+    OPTIONAL { ?statement prov:wasDerivedFrom ?reference . ?reference ?referencePredicate ?referenceValue . ?referenceProperty wikibase:reference ?referencePredicate }
+    OPTIONAL { ?statement ?qualifierPredicate ?qualifierValue . ?qualifierProperty wikibase:qualifier ?qualifierPredicate }
+  }
+  OPTIONAL { ?item wdt:P3841 ?hpoId }
+  OPTIONAL { ?item wdt:P494 ?icd10 }
+  OPTIONAL { ?item wdt:P493 ?icd9 }
+  OPTIONAL { ?item wdt:P4229 ?icd10cm }
+  OPTIONAL { ?item wdt:P7807 ?icd11Foundation }
+}
+LIMIT 1000

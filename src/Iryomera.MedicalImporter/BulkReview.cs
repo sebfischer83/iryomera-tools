@@ -23,10 +23,12 @@ public static class BulkReview
             .ToDictionary(g => g.Key, g => string.Join(",", g.Select(d => d.Code).Distinct().Order(StringComparer.Ordinal)), StringComparer.Ordinal);
         var rights = workspace.Batches.ToDictionary(b => b.Id, b => RecordRights.BlockReasons(workspace, b), StringComparer.Ordinal);
         var terms = batch.Terms.ToDictionary(t => t.Id, StringComparer.Ordinal);
+        var assertions = batch.Assertions.ToDictionary(a => a.Id, StringComparer.Ordinal);
         var audit = new BulkReviewAudit { BatchId = batchId, Status = status, Reviewer = reviewer, At = at, Note = note };
         foreach (var id in ids.Order(StringComparer.Ordinal))
         {
             var reason = exclusions?.GetValueOrDefault(id);
+            if (status == ReviewStatus.Approved && reason is null && assertions.GetValueOrDefault(id) is { Kind: SourceAssertionKind.WikidataStatement } wiki) reason = Adapters.WikidataAdapter.ReviewConcern(wiki);
             if (status == ReviewStatus.Approved)
                 reason ??= EligibilityReason(terms.GetValueOrDefault(id), id, blocked, rights[batchId]);
             if (reason is null) audit.SelectedIds.Add(id);

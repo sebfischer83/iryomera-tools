@@ -28,7 +28,7 @@ public static class WorkspaceValidation
             catch (ArgumentException e) { Error("options", batch.Id, e.Message); }
             var validBatchId = batch.Id == ImportEngine.BatchId(batch.InputSha256, batch.Options, batch.AdapterVersion) ||
                 (batch.AdapterVersion == "1.0.0" && batch.Id == ImportEngine.BatchId(batch.InputSha256, batch.Options, batch.AdapterVersion, "\r\n"));
-            if (!validBatchId || batch.AdapterVersion is not ("1.0.0" or ImportEngine.AdapterVersion) || batch.InputBytes <= 0 ||
+            if (!validBatchId || batch.AdapterVersion is not ("1.0.0" or ImportEngine.AdapterVersion or Adapters.WikidataAdapter.Version) || batch.InputBytes <= 0 ||
                 batch.InputSha256.Length != 64 || batch.InputSha256.Any(c => !char.IsAsciiHexDigitLower(c)))
                 Error("batch-integrity", batch.Id, "Invalid batch metadata, digest or adapter version.");
             var localIds = new HashSet<string>(StringComparer.Ordinal);
@@ -71,6 +71,17 @@ public static class WorkspaceValidation
         {
             foreach (var external in RequiredReferences(assertion))
                 if (!index.ContainsKey(external)) Error("unresolved-reference", assertion.Id, $"No unique staged definition for {external}.");
+            if (assertion.Kind == SourceAssertionKind.WikidataStatement)
+            {
+                CheckType(assertion.SubjectExternalId, ImportedTermKind.Disease, assertion.Id);
+                if (index.TryGetValue(assertion.ObjectExternalId, out var endpoint))
+                {
+                    var valid = assertion.Predicate switch
+                    { "P780" => endpoint.Term.Kind is ImportedTermKind.Symptom or ImportedTermKind.Finding, "P923" => endpoint.Term.Kind == ImportedTermKind.Examination,
+                        "P924" => endpoint.Term.Kind is ImportedTermKind.Treatment or ImportedTermKind.MedicalProcedure, "P828" => true, _ => false };
+                    if (!valid) Error("assertion-type", assertion.Id, "Wikidata property and explicit target kind are inconsistent.");
+                }
+            }
             if (assertion.Kind == SourceAssertionKind.MaxoAnnotation)
             {
                 CheckType(assertion.SubjectExternalId, ImportedTermKind.MedicalProcedure, assertion.Id);
@@ -158,7 +169,8 @@ public static class WorkspaceValidation
 
     private static bool Equivalent(ImportedTerm left, ImportedTerm right) => left.ExternalId == right.ExternalId && left.Kind == right.Kind &&
         left.Label == right.Label && left.Language == right.Language && left.Description == right.Description && left.Obsolete == right.Obsolete &&
-        left.Synonyms.SequenceEqual(right.Synonyms, StringComparer.Ordinal);
+        left.Synonyms.SequenceEqual(right.Synonyms, StringComparer.Ordinal) &&
+        JsonSerializer.Serialize(left.Translations, ContentJson.Options) == JsonSerializer.Serialize(right.Translations, ContentJson.Options);
 
     private static bool Equivalent(SourceAssertion left, SourceAssertion right) =>
         left.Kind == right.Kind && left.Predicate == right.Predicate && left.SubjectExternalId == right.SubjectExternalId &&
@@ -185,6 +197,7 @@ public static class WorkspaceValidation
         if (!Enum.IsDefined(status) || string.IsNullOrWhiteSpace(reviewer) || at == default || string.IsNullOrWhiteSpace(note)) throw new ArgumentException("Status, reviewer, timestamp and note are required.");
         if (at < batch.Options.ImportedAt || workspace.Reviews.Any(x => x.BatchId == batchId && x.RecordId == recordId && x.At > at))
             throw new ArgumentException("Review timestamps must not precede import or a previous decision.");
+        if (status == ReviewStatus.Approved && batch.Assertions.FirstOrDefault(a => a.Id == recordId) is { Kind: SourceAssertionKind.WikidataStatement } wiki && Adapters.WikidataAdapter.Deprecated(wiki)) throw new InvalidOperationException("Deprecated Wikidata statements cannot be approved.");
         if (status == ReviewStatus.Approved && term?.Obsolete == true) throw new InvalidOperationException("Obsolete terms cannot be approved for release.");
         workspace.Reviews.Add(new() { BatchId = batchId, RecordId = recordId, Status = status, Reviewer = reviewer, At = at, Note = note });
     }
@@ -196,6 +209,7 @@ public static class WorkspaceValidation
         if (!Enum.IsDefined(status) || string.IsNullOrWhiteSpace(reviewer) || string.IsNullOrWhiteSpace(note) || at == default ||
             at < batch.Options.ImportedAt || workspace.Reviews.Any(x => x.BatchId == batchId && x.At > at))
             throw new ArgumentException("Review requires status, identity, note and a chronological timestamp.");
+        if (status == ReviewStatus.Approved && batch.Assertions.Any(a => a.Kind == SourceAssertionKind.WikidataStatement && Adapters.WikidataAdapter.ReviewConcern(a) is not null)) throw new InvalidOperationException("Bulk approval contains Wikidata statements needing individual review; use controlled review exclusions.");
         if (status == ReviewStatus.Approved && batch.Terms.Any(x => x.Obsolete)) throw new InvalidOperationException("Bulk approval includes obsolete terms; review eligible records individually.");
         var decisions = batch.Terms.Select(x => x.Id).Concat(batch.Assertions.Select(x => x.Id)).Select(id => new ReviewDecision
         { BatchId = batch.Id, RecordId = id, Status = status, Reviewer = reviewer, At = at, Note = note }).ToArray();

@@ -22,24 +22,27 @@ defs = {'provenance': sdk['provenance'], 'evidenceReference': sdk['evidenceRefer
 defs['matchCandidate'] = obj({'leftId':id_schema,'rightId':id_schema,'language':text,'normalizedText':text}, ['leftId','rightId','language','normalizedText'])
 defs['importDiagnostic'] = obj({'severity': {'enum': ['information','warning','error']}, 'code': text, 'recordId': {'type':'string'}, 'message': text}, ['severity','code','recordId','message'])
 defs['importOptions'] = obj({
-    'source': {'enum':['hpo','hpo-annotations','maxo','maxo-annotations','icd-10-gm','loinc','ops']},
+    'source': {'enum':['hpo','hpo-annotations','maxo','maxo-annotations','icd-10-gm','loinc','ops','wikidata']},
     'sourceVersion':text, 'sourceUrl':{'type':'string','format':'uri','pattern':r'^https?://'},
-    'license':text,'licenseText':text,'attribution':text,'importedAt':date,'namespace':namespace_schema,
+    'license':text,'licenseText':text,'attribution':text,'importedAt':date,'retrievedAt':nullable(date),'namespace':namespace_schema,
     'format':{'enum':['auto','json','obo','tsv','csv','xml']},'maxInputBytes':{'type':'integer','minimum':1}
 }, ['source','sourceVersion','sourceUrl','license','licenseText','attribution','importedAt'])
+defs['externalIdentifier'] = sdk['externalIdentifier']
+defs['importedTranslation'] = obj({'label':text,'description':nullable({'type':'string'}),'aliases':array(text)}, ['label'])
+defs['identifierMatchCandidate'] = obj({'leftId':id_schema,'rightId':id_schema,'system':text,'value':text,'kind':{'enum':['explicitIdentifier','classificationFamily']},'note':text}, ['leftId','rightId','system','value','kind','note'])
 defs['importedTerm'] = obj({
-    'id':id_schema,'externalId':text,'kind':{'enum':['disease','finding','examination','medicalProcedure','observation']},
+    'id':id_schema,'externalId':text,'kind':{'enum':['disease','finding','examination','medicalProcedure','observation','symptom','treatment']},
     'label':text,'language':text,'description':nullable({'type':'string'}),'synonyms':array({'type':'string'}),
-    'alternateIds':array(text),'obsolete':{'type':'boolean'},'provenance':ref('provenance'),'sourceFields':raw_fields
+    'translations':nullable({'type':'object','propertyNames':{'enum':['en','de']},'additionalProperties':ref('importedTranslation')}),'externalIdentifiers':nullable(array(ref('externalIdentifier'))),'alternateIds':array(text),'obsolete':{'type':'boolean'},'provenance':ref('provenance'),'sourceFields':raw_fields
 }, ['id','externalId','kind','label','language','provenance'])
 defs['sourceAssertion'] = obj({
-    'id':id_schema,'kind':{'enum':['hpoAssociation','maxoAnnotation','ontologyHierarchy','crossReference']},
+    'id':id_schema,'kind':{'enum':['hpoAssociation','maxoAnnotation','ontologyHierarchy','crossReference','wikidataStatement']},
     'predicate':text,'subjectExternalId':text,'objectExternalId':text,'diseaseExternalId':nullable(text),
     'extensionExternalId':nullable(text),'provenance':ref('provenance'),'sourceFields':raw_fields
 }, ['id','kind','predicate','subjectExternalId','objectExternalId','provenance'])
 defs['importBatch'] = obj({
     'id':text,'inputSha256':digest,'inputBytes':{'type':'integer','minimum':1},'options':ref('importOptions'),
-    'adapterVersion':{'enum':['1.0.0','1.1.0']},'detectedFormat':{'enum':['json','obo','tsv','csv','xml']},
+    'adapterVersion':{'enum':['1.0.0','1.1.0','1.2.0']},'detectedFormat':{'enum':['json','obo','tsv','csv','xml']},
     'observedSourceVersion':nullable({'type':'string'}),'sourceMetadata':raw_fields,
     'terms':array(ref('importedTerm')),'assertions':array(ref('sourceAssertion')),'diagnostics':array(ref('importDiagnostic'))
 }, ['id','inputSha256','inputBytes','options','detectedFormat'])
@@ -50,7 +53,7 @@ defs['bulkReviewAudit'] = obj({'batchId':text,'status':{'enum':['unreviewed','in
 defs['importWorkspace'] = obj({'schemaVersion':{'const':'1.0.0'},'batches':array(ref('importBatch')),'reviews':array(ref('reviewDecision')),'rights':array(ref('rightsDecision')),'bulkReviews':array(ref('bulkReviewAudit'))}, ['schemaVersion'])
 defs['resolvedSourceAssertion'] = obj({'source':ref('sourceAssertion'),'sourceClaims':array(ref('sourceAssertion')),'subjectId':id_schema,'objectId':id_schema,'diseaseId':nullable(id_schema)}, ['source','subjectId','objectId'])
 defs['sourceAssertionDocument'] = obj({'schemaVersion':{'const':'1.0.0'},'assertions':array(ref('resolvedSourceAssertion'))}, ['schemaVersion'])
-defs['releaseImportSummary'] = obj({'batchId':text,'inputSha256':digest,'inputBytes':{'type':'integer','minimum':1},'adapterVersion':{'enum':['1.0.0','1.1.0']},'options':ref('importOptions'),'observedSourceVersion':nullable({'type':'string'})}, ['batchId','inputSha256','inputBytes','adapterVersion','options'])
+defs['releaseImportSummary'] = obj({'batchId':text,'inputSha256':digest,'inputBytes':{'type':'integer','minimum':1},'adapterVersion':{'enum':['1.0.0','1.1.0','1.2.0']},'options':ref('importOptions'),'observedSourceVersion':nullable({'type':'string'})}, ['batchId','inputSha256','inputBytes','adapterVersion','options'])
 defs['releaseReport'] = obj({
     'schemaVersion':{'const':'1.0.0'},'selectedDefinitionIds':array(id_schema),'selectedAssertionIds':array(id_schema),
     'omittedUnapprovedRecords':{'type':'integer','minimum':0},'imports':array(ref('releaseImportSummary')),
