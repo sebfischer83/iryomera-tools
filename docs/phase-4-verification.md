@@ -31,7 +31,9 @@ Host: Debian 13, .NET SDK 10.0.402, runtimes 10.0.13 / 8.0.32.
 
 New failure cases include traversal/absolute/Windows-device paths, case collisions, file/parent conflicts, malicious ZIP links/special/reparse entries, tampered hashes/sizes, missing/extra entries, invalid indexes, configured size/count/ratio ceilings, source symlinks, linked destination parents, canceled operations, disguised model/image payloads and rehashed GLB references to external URIs. Tests confirm no partial target is published and invalid edits retain original bytes. Actual filesystem symlink creation is exercised on Linux; Windows ZIP link/reparse metadata attacks are exercised without requiring elevated symlink privileges.
 
-NuGet SDK/Localization/importer/ModKit packages were produced, and the packed ModKit installed and served its real command tree locally. The packed net8 SDK/Localization binaries passed Godot 4.7.2 with annotations, diagnostics, asset/layout contracts and en/de catalogs. Windows/Linux branch CI results will be recorded below after completion. A local Linux run does not establish a Windows pass.
+NuGet SDK/Localization/importer/ModKit packages were produced. A fresh local installation of the packed ModKit 0.5.0 successfully created, validated, packed and unpacked its embedded example, independently of the source project. The packed net8 SDK/Localization binaries passed Godot 4.7.2 with annotations, diagnostics, asset/layout contracts and en/de catalogs. Windows/Linux branch CI results are recorded separately below; a local Linux run does not establish a Windows pass.
+
+The four pinned full HPO/MAxO ontology cases were also imported twice locally. Reproducibility checks and their existing expected diagnostic baselines passed unchanged. These baselines include unresolved/external-reference errors; passing the regression is not a clean content validation or medical approval. No restricted ICD/OPS/LOINC files were downloaded.
 
 ## Limits and remaining work
 
@@ -44,4 +46,13 @@ NuGet SDK/Localization/importer/ModKit packages were produced, and the packed Mo
 
 ## GitHub Actions
 
-Pending final branch push and observed Windows/Linux completion. CI regenerates schemas/example assets, runs all suites and the real CLI example, published Studio browser flow, packs libraries/tools and exercises net8 packages in real Godot.
+Both runs tested implementation commit `9ecba8927474a2900cf58f3f26dfec262420c7ad` on `feature/phase-4-modkit` and completed successfully on 2026-10-16:
+
+| Run | Linux | Windows | Scope |
+| --- | --- | --- | --- |
+| [Push CI 38955571744](https://github.com/sebfischer83/iryomera-tools/actions/runs/38955571744) | Passed | Passed | Complete standard Release matrix |
+| [Full-dataset CI 38955696441](https://github.com/sebfischer83/iryomera-tools/actions/runs/38955696441) | Passed | Passed | Complete Release matrix plus four pinned official HPO/MAxO ontology cases, each imported twice |
+
+Each job regenerated schemas/example assets without differences, passed locked restore, Release build, all 430 .NET test executions and four Python tests, ran Foundation/importer/ModKit CLI examples, exercised the published Studio in a real bilingual offline browser session, packed NuGet libraries/tools and loaded the portable net8 packages in Godot 4.7.2. The optional full-dataset step was deliberately skipped in the regular push run and explicitly enabled in the second run. Test/package artifacts and aggregate ontology reports are attached to the corresponding jobs; source datasets are excluded.
+
+The final report-only commit does not change the tested implementation. Phase 4 remains on its feature branch; main contains the completed Phase 3 merge described above.
