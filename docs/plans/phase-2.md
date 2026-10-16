@@ -1,4 +1,6 @@
-# Phase 2 — MedicalImporter implementation plan (not implemented)
+# Phase 2 — MedicalImporter implementation plan
+
+Implementation delivered for the formats listed in [the source scope](../data-sources/README.md). See [verification and explicit remaining limits](../phase-2-verification.md). The work packages below remain the architectural acceptance record; unsupported source formats are not claimed as implemented.
 
 ## Foundation review prerequisites
 

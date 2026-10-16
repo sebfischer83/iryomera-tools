@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ClaML version="2.0.0">
+  <Title name="OPS" version="synthetic-1">Synthetic test classification</Title>
+  <Class kind="category" code="9-999.0"><Rubric kind="preferred"><Label xml:lang="de">Synthetische Prozedur</Label></Rubric></Class>
+</ClaML>

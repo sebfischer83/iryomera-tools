@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ClaML SYSTEM "never-fetch-this.dtd">
+<ClaML version="2.0.0">
+  <Title name="ICD-10-GM" version="synthetic-1" date="2026-01-01">Synthetic test classification, not medical data</Title>
+  <Class kind="chapter" code="TEST"><Rubric kind="preferred"><Label xml:lang="de">Synthetische Gruppe</Label></Rubric></Class>
+  <Class kind="category" code="X99.0"><Rubric kind="preferred"><Label xml:lang="de">Synthetische Diagnose Ä</Label></Rubric><Rubric kind="inclusion"><Label xml:lang="de">Kein medizinischer Inhalt</Label></Rubric></Class>
+</ClaML>
