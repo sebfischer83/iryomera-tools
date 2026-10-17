@@ -103,6 +103,15 @@ public static class ContentValidator
             }
             foreach (var range in item.ReferenceRanges) { Register(range.Id, manifest.Namespace, range.Id); CheckSchema(range.SchemaVersion, range.Id); CheckVersion(range.Version, range.Id); CheckProvenance(range.Provenance, range.Id); }
             foreach (var recommendation in item.DiagnosticRecommendations) { Register(recommendation.Id, manifest.Namespace, recommendation.Id); CheckSchema(recommendation.SchemaVersion, recommendation.Id); CheckVersion(recommendation.Version, recommendation.Id); CheckProvenance(recommendation.Provenance, recommendation.Id); }
+            foreach (var pool in item.NamePools ?? [])
+            {
+                Register(pool.Id, manifest.Namespace, pool.Id); CheckSchema(pool.SchemaVersion, pool.Id); CheckVersion(pool.Version, pool.Id);
+                CheckKey(pool.NameKey, pool.Id + ".nameKey"); CheckProvenance(pool.Provenance, pool.Id);
+                foreach (var source in pool.Sources) CheckProvenance(source.Provenance, pool.Id + ".sources[" + source.Key + "]");
+            }
+            foreach (var format in item.NameFormats ?? [])
+            { Register(format.Id, manifest.Namespace, format.Id); CheckSchema(format.SchemaVersion, format.Id); CheckVersion(format.Version, format.Id); CheckProvenance(format.Provenance, format.Id); }
+            errors.AddRange(NameValidator.Validate(item));
             if (item.DiagnosticSimulation is { } simulation)
             {
                 foreach (var record in simulation.ObservationDistributions.Select(d => (d.Id, d.Version, d.SchemaVersion)).Concat(simulation.Manifestations.Select(m => (m.Id, m.Version, m.SchemaVersion))).Concat(simulation.ExaminationPolicies.Select(p => (p.Id, p.Version, p.SchemaVersion))))
@@ -207,6 +216,7 @@ public static class ContentValidator
                     if (string.IsNullOrWhiteSpace(resource)) Error("resource-key", balance.DefinitionId, "Resource keys must be nonempty.");
             }
         }
+        errors.AddRange(NameValidator.ValidateFormatConflicts(packages));
         return errors;
 
         void CheckSchema(string version, string path)

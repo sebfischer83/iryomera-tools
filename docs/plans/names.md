@@ -1,11 +1,11 @@
 # Phase 5 — name importer plan
 
-Status: Phase 5, owner decisions recorded 2026-10-17 in ADR 0011. Nothing is implemented. ModIo moves to Phase 6. Scope and contracts are defined in [ADR 0011](../architecture/0011-name-pools.md); sources in [name source candidates](../data-sources/names.md).
+Status: Phase 5, owner decisions recorded 2026-10-17 in ADR 0011. Step 2 (SDK contracts) is implemented; the importer tool is not. ModIo moves to Phase 6. Scope and contracts are defined in [ADR 0011](../architecture/0011-name-pools.md); sources in [name source candidates](../data-sources/names.md).
 
 Initial countries: DE, US, JP (family-first order, non-Latin script) and ES (two surnames). More sources are used for variety.
 
 1. Owner decisions are recorded in ADR 0011. Re-confirm the final schema with the game before publishing it.
-2. Extend the SDK additively with `namePool` and `nameFormat`, hand-written schemas in `scripts/generate-schemas.py`, docs in `docs/formats.md`, net8/net10 tests, and a synthetic bilingual example (invented names only, labeled synthetic).
+2. Done on `feature/phase-5-name-pools`: extend the SDK additively with `namePools` and `nameFormats`, hand-written schemas in `scripts/generate-schemas.py`, docs in `docs/formats.md`, net8/net10 tests, and a synthetic bilingual example (invented names only, labeled synthetic).
 3. Add `src/Iryomera.NameImporter` and its xUnit project: strict versioned staging workspace with file lock and atomic replace, `sources`, `import`, `validate`, `review`/`rights`, `export`. Import is never approval; restricted batches stay undecided.
 4. Adapters in order, each after re-verifying its terms: Wikidata name items, US SSA, US Census surnames (race columns dropped), INE Spain, Statistik Austria, sigpwned fallback. City open data DE only after per-dataset license confirmation. BFS only as user-supplied input.
 5. Merge identical strings across batches with all provenance retained; keep per-source statistics. Unicode normalization rules are explicit and part of the adapter identity; original bytes stay in staging.

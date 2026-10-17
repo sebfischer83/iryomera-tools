@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "1.0.0",
+  "namespace": "name_demo",
+  "language": "de",
+  "entries": {
+    "name_demo.pool.de_given.name": "Synthetische deutsche Vornamen",
+    "name_demo.pool.de_family.name": "Synthetische deutsche Nachnamen",
+    "name_demo.pool.de_by_family.name": "Synthetische bayerische Nachnamen",
+    "name_demo.pool.jp_given.name": "Synthetische japanische Vornamen",
+    "name_demo.pool.jp_family.name": "Synthetische japanische Nachnamen"
+  }
+}

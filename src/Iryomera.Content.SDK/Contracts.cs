@@ -179,6 +179,9 @@ public sealed record ContentPackage : ExtensibleRecord
     public List<DiagnosticRecommendation> DiagnosticRecommendations { get; init; } = [];
     public DiagnosticSimulationSettings? DiagnosticSimulation { get; init; }
     public List<GameplayBalance> Gameplay { get; init; } = [];
+    /// <summary>Optional, omitted when null to keep the legacy wire shape and digests.</summary>
+    public List<NamePool>? NamePools { get; init; }
+    public List<NameFormat>? NameFormats { get; init; }
 }
 
 /// <summary>A separately stored language catalog, owned by a package namespace.</summary>

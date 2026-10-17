@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "1.0.0",
+  "namespace": "name_demo",
+  "language": "en",
+  "entries": {
+    "name_demo.pool.de_given.name": "Synthetic German given names",
+    "name_demo.pool.de_family.name": "Synthetic German family names",
+    "name_demo.pool.de_by_family.name": "Synthetic Bavarian family names",
+    "name_demo.pool.jp_given.name": "Synthetic Japanese given names",
+    "name_demo.pool.jp_family.name": "Synthetic Japanese family names"
+  }
+}

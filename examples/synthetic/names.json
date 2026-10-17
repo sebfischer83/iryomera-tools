@@ -1,0 +1,344 @@
+{
+  "schemaVersion": "1.0.0",
+  "manifest": {
+    "schemaVersion": "1.0.0",
+    "id": "name_demo:names",
+    "namespace": "name_demo",
+    "version": "1.0.0",
+    "license": "MIT",
+    "dependencies": []
+  },
+  "definitions": [],
+  "relations": [],
+  "medicalAnnotations": [],
+  "referenceRanges": [],
+  "diagnosticRecommendations": [],
+  "gameplay": [],
+  "namePools": [
+    {
+      "schemaVersion": "1.0.0",
+      "id": "name_demo:de.given",
+      "version": "1.0.0",
+      "nameKey": "name_demo.pool.de_given.name",
+      "country": "DE",
+      "part": "given",
+      "provenance": {
+        "source": "Iryomera synthetic name fixtures — invented names, not population data",
+        "externalId": "pool.de.given",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      },
+      "sources": [
+        {
+          "key": "synthetic",
+          "provenance": {
+            "source": "Iryomera synthetic name fixtures — invented names, not population data",
+            "externalId": "name_sources.synthetic",
+            "sourceVersion": "1.0.0",
+            "license": "MIT",
+            "importedAt": "2026-01-01T00:00:00+00:00",
+            "reviewStatus": "unreviewed",
+            "evidence": []
+          }
+        }
+      ],
+      "entries": [
+        {
+          "key": "talvine",
+          "localized": "Talvine",
+          "gender": "female",
+          "attestations": [
+            {
+              "sourceKey": "synthetic",
+              "rank": 1,
+              "count": 120,
+              "birthYearFrom": 1950,
+              "birthYearTo": 1959
+            }
+          ]
+        },
+        {
+          "key": "orwin",
+          "localized": "Orwin",
+          "gender": "male",
+          "attestations": [
+            {
+              "sourceKey": "synthetic",
+              "rank": 2,
+              "count": 95,
+              "birthYearFrom": 1950,
+              "birthYearTo": 1959
+            }
+          ]
+        },
+        {
+          "key": "kaelo",
+          "localized": "Kaelo",
+          "gender": "unisex",
+          "attestations": [
+            {
+              "sourceKey": "synthetic",
+              "rank": 1,
+              "count": 40,
+              "birthYearFrom": 2020,
+              "birthYearTo": 2020
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "name_demo:de.family",
+      "version": "1.0.0",
+      "nameKey": "name_demo.pool.de_family.name",
+      "country": "DE",
+      "part": "family",
+      "provenance": {
+        "source": "Iryomera synthetic name fixtures — invented names, not population data",
+        "externalId": "pool.de.family",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      },
+      "sources": [
+        {
+          "key": "synthetic",
+          "provenance": {
+            "source": "Iryomera synthetic name fixtures — invented names, not population data",
+            "externalId": "name_sources.synthetic",
+            "sourceVersion": "1.0.0",
+            "license": "MIT",
+            "importedAt": "2026-01-01T00:00:00+00:00",
+            "reviewStatus": "unreviewed",
+            "evidence": []
+          }
+        }
+      ],
+      "entries": [
+        {
+          "key": "brennwald",
+          "localized": "Brennwald",
+          "attestations": [
+            {
+              "sourceKey": "synthetic",
+              "rank": 1,
+              "proportion": 0.004
+            }
+          ]
+        },
+        {
+          "key": "quellmar",
+          "localized": "Quellmar",
+          "attestations": [
+            {
+              "sourceKey": "synthetic"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "name_demo:de_by.family",
+      "version": "1.0.0",
+      "nameKey": "name_demo.pool.de_by_family.name",
+      "country": "DE",
+      "region": "DE-BY",
+      "part": "family",
+      "provenance": {
+        "source": "Iryomera synthetic name fixtures — invented names, not population data",
+        "externalId": "pool.de_by.family",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      },
+      "sources": [
+        {
+          "key": "synthetic",
+          "provenance": {
+            "source": "Iryomera synthetic name fixtures — invented names, not population data",
+            "externalId": "name_sources.synthetic",
+            "sourceVersion": "1.0.0",
+            "license": "MIT",
+            "importedAt": "2026-01-01T00:00:00+00:00",
+            "reviewStatus": "unreviewed",
+            "evidence": []
+          }
+        }
+      ],
+      "entries": [
+        {
+          "key": "almbrunner",
+          "localized": "Almbrunner",
+          "attestations": [
+            {
+              "sourceKey": "synthetic"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "name_demo:jp.given",
+      "version": "1.0.0",
+      "nameKey": "name_demo.pool.jp_given.name",
+      "country": "JP",
+      "part": "given",
+      "provenance": {
+        "source": "Iryomera synthetic name fixtures — invented names, not population data",
+        "externalId": "pool.jp.given",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      },
+      "sources": [
+        {
+          "key": "synthetic",
+          "provenance": {
+            "source": "Iryomera synthetic name fixtures — invented names, not population data",
+            "externalId": "name_sources.synthetic",
+            "sourceVersion": "1.0.0",
+            "license": "MIT",
+            "importedAt": "2026-01-01T00:00:00+00:00",
+            "reviewStatus": "unreviewed",
+            "evidence": []
+          }
+        }
+      ],
+      "entries": [
+        {
+          "key": "sumine",
+          "localized": "澄音",
+          "romanized": "Sumine",
+          "romanizationSourceKey": "synthetic",
+          "gender": "female",
+          "attestations": [
+            {
+              "sourceKey": "synthetic"
+            }
+          ]
+        },
+        {
+          "key": "haruto_demo",
+          "localized": "晴燈",
+          "romanized": "Harutō",
+          "romanizationSourceKey": "synthetic",
+          "gender": "male",
+          "attestations": [
+            {
+              "sourceKey": "synthetic"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "name_demo:jp.family",
+      "version": "1.0.0",
+      "nameKey": "name_demo.pool.jp_family.name",
+      "country": "JP",
+      "part": "family",
+      "provenance": {
+        "source": "Iryomera synthetic name fixtures — invented names, not population data",
+        "externalId": "pool.jp.family",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      },
+      "sources": [
+        {
+          "key": "synthetic",
+          "provenance": {
+            "source": "Iryomera synthetic name fixtures — invented names, not population data",
+            "externalId": "name_sources.synthetic",
+            "sourceVersion": "1.0.0",
+            "license": "MIT",
+            "importedAt": "2026-01-01T00:00:00+00:00",
+            "reviewStatus": "unreviewed",
+            "evidence": []
+          }
+        }
+      ],
+      "entries": [
+        {
+          "key": "kasumori",
+          "localized": "霞森",
+          "romanized": "Kasumori",
+          "romanizationSourceKey": "synthetic",
+          "attestations": [
+            {
+              "sourceKey": "synthetic",
+              "rank": 1
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "nameFormats": [
+    {
+      "schemaVersion": "1.0.0",
+      "id": "name_demo:format.de",
+      "version": "1.0.0",
+      "country": "DE",
+      "order": "givenFamily",
+      "provenance": {
+        "source": "Iryomera synthetic name fixtures — invented names, not population data",
+        "externalId": "format.de",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      }
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "name_demo:format.jp",
+      "version": "1.0.0",
+      "country": "JP",
+      "order": "familyGiven",
+      "localizedSeparator": "",
+      "provenance": {
+        "source": "Iryomera synthetic name fixtures — invented names, not population data",
+        "externalId": "format.jp",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      }
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "name_demo:format.es",
+      "version": "1.0.0",
+      "country": "ES",
+      "order": "givenFamily",
+      "familyNameParts": 2,
+      "provenance": {
+        "source": "Iryomera synthetic name fixtures — invented names, not population data",
+        "externalId": "format.es",
+        "sourceVersion": "1.0.0",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00+00:00",
+        "reviewStatus": "unreviewed",
+        "evidence": []
+      }
+    }
+  ]
+}
