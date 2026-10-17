@@ -2,7 +2,7 @@
 
 Open-source .NET tools and portable content formats for Iryomera, a planned free hospital management game built with Godot 4/C#. The game remains closed source; these libraries work independently. Own code and synthetic examples are MIT-licensed. Imported data will retain its original licenses.
 
-**Status: Foundation, MedicalImporter, local bilingual ContentStudio and data-only ModKit (0.5.0).** Reusable diagnostic content contracts are implemented; patient simulation belongs to the private game. ModIo remains planned with no placeholder project. No real medical datasets or clinically approved content are included. Exact source licenses and unsupported formats are documented explicitly.
+**Status: Foundation, MedicalImporter, local bilingual ContentStudio and data-only ModKit; name pool contracts for the planned NameImporter (0.6.0).** Released packages are published to [GitHub Packages](docs/releases.md). Reusable diagnostic content contracts are implemented; patient simulation belongs to the private game. ModIo remains planned with no placeholder project. No real medical datasets or clinically approved content are included. Exact source licenses and unsupported formats are documented explicitly.
 
 ## Projects
 

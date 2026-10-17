@@ -98,7 +98,7 @@ ContentDefinition has optional `assets` (AssetReference list: path/kind/license/
 
 ModKit authoring (`mod.json`) and archive integrity (`checksums.json`) have separate schemas in `schemas/modkit/v1`. No executable/script/plugin payload kind is defined. The archive is not a Godot PCK or game save format. The runtime game remains responsible for asset rendering and interaction behavior.
 
-## Name pools and formats
+## Name pools and formats (library 0.6.0)
 
 ContentPackage has optional `namePools` and `nameFormats` lists, omitted when null. Older readers keep them as unknown additive properties instead of rejecting the package. They are package-level records like reference ranges, not definition kinds: they have no relations, gameplay balance or medical review semantics. See [ADR 0011](architecture/0011-name-pools.md).
 
