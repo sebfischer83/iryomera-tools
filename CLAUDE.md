@@ -74,4 +74,4 @@ MedicalImporter (CLI) <- ContentStudio (Blazor Server + SQLite)
 
 JSON Schemas are **not** generated from C#. They are hand-written in the Python generators, so a public contract change means editing the C# model and the matching generator, then the docs (docs/formats.md etc.), examples and tests together.
 
-Read docs/plans and the ADRs in docs/architecture before changing scope. The docs index is docs/README.md. ModIo (Phase 5) is planned but has no project yet.
+Read docs/plans and the ADRs in docs/architecture before changing scope. The docs index is docs/README.md. NameImporter (Phase 5, see docs/plans/names.md and ADR 0011) and ModIo (Phase 6) are planned but have no project yet.
