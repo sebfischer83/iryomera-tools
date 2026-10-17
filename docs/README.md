@@ -17,6 +17,6 @@ English is the authoritative language for repository documentation, public API d
 - [Medical Importer](medical-importer.md), [Wikidata](wikidata-import.md) and [source formats/licenses](data-sources/README.md).
 - [Localization](localization.md) and [Godot integration](godot-integration.md).
 - Planned Phase 5 name importer (not implemented): [plan](plans/names.md), [ADR 0011](architecture/0011-name-pools.md) and [name source candidates](data-sources/names.md).
-- Draft, not implemented: [furniture asset catalog references and mounting](plans/furniture-assets.md).
+- Planned, not implemented: [furniture asset catalog references and mounting](plans/furniture-assets.md) and [ADR 0013](architecture/0013-catalog-assets-and-mounting.md).
 - [Releases and package feed](releases.md) and [ADR 0012](architecture/0012-github-packages-feed.md).
 - [Architecture foundations](architecture/0001-foundation.md) and [binding development rules](../AGENTS.md).

@@ -1,6 +1,6 @@
-# Furniture asset catalog references and mounting — plan (draft)
+# Furniture asset catalog references and mounting — plan
 
-Status: draft for owner review, 2026-10-17. Nothing is implemented. This is an SDK/ModKit extension outside the Phase 5 name importer; it starts only after the owner accepts it. Inputs come from the game session (game ADR 0013, which records them as undecided on the game side). A tools ADR is written when the plan is accepted.
+Status: accepted by the owner on 2026-10-17, see [ADR 0013](../architecture/0013-catalog-assets-and-mounting.md) (a tools ADR, distinct from game ADR 0013). Nothing is implemented. This SDK/ModKit extension is implemented before step 3 (the name importer tool) of Phase 5. Inputs come from the game session.
 
 ## Context
 
@@ -17,7 +17,7 @@ Status: draft for owner review, 2026-10-17. Nothing is implemented. This is an S
    - No license, path or inventory entry: nothing is shipped. The SDK checks only the ID format, a known kind and uniqueness per definition; it never resolves IDs. The game resolves them and falls back procedurally.
    - Mods may reference base-game catalog IDs to reuse models without shipping them.
    - A separate list instead of an optional `path` on `AssetReference` keeps `AssetReference.Path` required for existing C# consumers. Older readers keep `catalogAssets` as an unknown additive property instead of rejecting the package.
-2. **Mounting.** New optional `FurniturePlacement.mount` (`floor` | `wall` | `ceiling`; absent means floor) and optional `mountHeightMeters` (only with `wall`, nonnegative). Both are omitted when null so legacy hashes stay unchanged.
+2. **Mounting.** New optional `FurniturePlacement.mount` (`floor` | `wall` | `ceiling`; absent means floor) and optional `mountHeightMeters` (only with `wall`, nonnegative; the SDK sets no upper bound). Both are omitted when null so legacy hashes stay unchanged.
    - `floor`: unchanged; origin at the footprint's lower X/Z corner on the floor, Y up.
    - `wall`: X along the wall, Z is the depth from the wall surface into the room (+Z); origin on the wall surface. `mountHeightMeters` is measured from the storey floor to the origin; when absent the game applies a per-object default.
    - `ceiling`: origin at the ceiling, the model hangs towards −Y; Y stays up.
@@ -30,16 +30,16 @@ Meters, Y up, front facing +Z (glTF default), scale 1:1, origin at the footprint
 
 ## Work packages
 
-1. Owner decision on the open points below; write the tools ADR (next free number, distinct from game ADR 0013).
+1. Owner decisions recorded below and in ADR 0013.
 2. SDK: `CatalogAssetReference`, `ContentDefinition.CatalogAssets`, `FurnitureMount`, `FurniturePlacement.Mount`/`MountHeightMeters`; validation codes `catalog-asset`, `duplicate-catalog-asset`, `furniture-mount`; schemas in `scripts/generate-schemas.py`; docs in `docs/formats.md`; net8/net10 tests including legacy wire-shape/hash preservation and older-reader behavior.
 3. ModKit: catalog references need no inventory entry and are reported by `inspect` as unresolved external references; path assets keep the current inventory binding. Extend `docs/modkit.md` with the GLB conventions and the synthetic example with one catalog reference and one wall-mounted item.
 4. Godot smoke: load the new fields from the packed net8 package.
 5. Release as 0.7.0 through the tag-based feed ([releases](../releases.md)), then re-confirm with the game session.
 
-## Open owner decisions
+## Owner decisions (2026-10-17)
 
-1. Accept a separate `catalogAssets` list (recommended) or an optional `path` with `catalogId` on `AssetReference` (simpler JSON, but a source-breaking C# change and older readers fail on missing `path`).
-2. Should the SDK cap `mountHeightMeters` (for example at the 3 m storey) or leave all height limits to the game (recommended: game)?
-3. When: before the name importer tool (Phase 5, step 3), interleaved, or after it.
+1. Catalog references use the separate `catalogAssets` list; `AssetReference` stays unchanged.
+2. The SDK only requires `mountHeightMeters` to be nonnegative; storey height and other limits are game rules.
+3. Implemented before the name importer tool (Phase 5, step 3).
 
 Out of scope: catalog file format, model import/splitting, purchased assets, decorative per-room fixtures, a node selector, and any runtime placement logic.
