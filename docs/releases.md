@@ -21,7 +21,7 @@ All four share the single `<Version>` in `Directory.Build.props`.
    git push origin v0.6.0
    ```
 
-3. The tag runs the full Tools CI on Windows and Linux. Only if both pass, the `publish` job takes the four `.nupkg` files built and tested by the Ubuntu job, checks that they carry exactly the tag version, and pushes them with the workflow's `GITHUB_TOKEN`. A tag that does not match `<Version>` fails without publishing.
+3. The tag runs the full Tools CI on Windows and Linux. Only if both pass, the `publish` job takes the four `.nupkg` files built and tested by the Ubuntu job, checks that they carry exactly the tag version, and pushes them with the workflow's `GITHUB_TOKEN`. A tag that does not match `<Version>` fails without publishing. ContentStudio is not published; on tag runs its browser smoke test is reported but does not block publishing, while pull requests and branch pushes still require it to pass.
 
 A published version is immutable. Fix mistakes with a new version; never move or reuse a release tag. Re-running the workflow for the same tag skips packages that already exist.
 
