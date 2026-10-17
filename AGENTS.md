@@ -1,6 +1,6 @@
 # Iryomera Tools — binding development rules
 
-- Scope and sequence: Foundation → MedicalImporter → ContentStudio → ModKit → ModIo. Only implement the requested phase. Planned tools must not be represented by dummy implementations.
+- Scope and sequence: Foundation → MedicalImporter → ContentStudio → ModKit → NameImporter → ModIo. Only implement the requested phase. Planned tools must not be represented by dummy implementations.
 - Target .NET 10, C#, Windows and Linux. Keep Content.SDK independent of Godot, Blazor, EF/SQLite and mod.io. UI, persistence and distribution depend inward on the SDK.
 - MIT covers our code and synthetic examples only. Preserve upstream data licenses and per-record provenance. Never commit restricted datasets, proprietary game data, credentials or purchased assets.
 - Do not invent medical facts, associations, criteria or recommendations. Import does not imply approval. Keep medical provenance/review separate from simulation balancing; label synthetic examples.
