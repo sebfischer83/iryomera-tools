@@ -74,3 +74,35 @@ jobs:
             artifacts/*.nupkg
             artifacts/full-datasets/*.json
           if-no-files-found: ignore
+
+  # Releases only: a v* tag publishes exactly the packages the Ubuntu job built and tested, after both OS jobs pass.
+  publish:
+    needs: tools
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/download-artifact@v8.0.1
+        with:
+          name: tools-ubuntu-latest
+          path: release
+      - uses: actions/setup-dotnet@v6.0.0
+        with:
+          dotnet-version: 10.0.x
+      - name: Require exactly the four packages at the tag version
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          # The artifact keeps paths relative to the common ancestor of its files; locate packages by name.
+          find release -name '*.nupkg' | sort > packages.txt
+          for id in Iryomera.Content.SDK Iryomera.Localization Iryomera.MedicalImporter Iryomera.ModKit; do
+            grep -q "/$id\.$version\.nupkg$" packages.txt || { echo "::error::Missing $id.$version.nupkg; <Version> in Directory.Build.props must match tag $GITHUB_REF_NAME."; exit 1; }
+          done
+          test "$(wc -l < packages.txt)" -eq 4 || { echo "::error::Expected exactly 4 packages."; cat packages.txt; exit 1; }
+      - name: Push to GitHub Packages
+        run: |
+          while read -r package; do
+            dotnet nuget push "$package" --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" --api-key "${{ secrets.GITHUB_TOKEN }}" --skip-duplicate
+          done < packages.txt

@@ -10,11 +10,11 @@ dotnet build Iryomera.Tools.sln -c Release --no-restore
 dotnet run --project src/Iryomera.ModKit -c Release --no-build -- --help
 ```
 
-Replace `iryomera-mod` below with `dotnet run --project src/Iryomera.ModKit -c Release --no-build --`, or install the locally packed tool:
+Replace `iryomera-mod` below with `dotnet run --project src/Iryomera.ModKit -c Release --no-build --`, or install the locally packed tool (released versions can also be installed from the [GitHub Packages feed](releases.md)):
 
 ```sh
 dotnet pack src/Iryomera.ModKit -c Release --no-build -o artifacts
-dotnet tool install Iryomera.ModKit --version 0.5.0 --add-source ./artifacts --tool-path ./artifacts/mod-tools
+dotnet tool install Iryomera.ModKit --version 0.6.0 --add-source ./artifacts --tool-path ./artifacts/mod-tools
 # Windows: artifacts/mod-tools/iryomera-mod.exe
 # Linux: ./artifacts/mod-tools/iryomera-mod
 ```
