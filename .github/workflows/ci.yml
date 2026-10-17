@@ -56,6 +56,9 @@ jobs:
           python -m pip install -r scripts/requirements-browser.txt
           python -m playwright install --with-deps chromium
       - name: Test local Studio in a real bilingual offline browser session
+        # Studio is not a published package. On release tags a Studio smoke failure is reported but does not block
+        # publishing the SDK/tool packages; pull requests and branch pushes still require it.
+        continue-on-error: ${{ startsWith(github.ref, 'refs/tags/v') }}
         run: |
           dotnet publish src/Iryomera.ContentStudio --configuration Release --no-build --output artifacts/studio
           python scripts/run-studio-smoke.py --published-directory artifacts/studio

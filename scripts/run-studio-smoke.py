@@ -45,19 +45,27 @@ with tempfile.TemporaryDirectory(prefix='iryomera-studio-browser-') as temporary
                 else: external_requests.append(route.request.url); route.abort()
             context.route('**/*', offline)
             page = context.new_page()
+            # Slow CI runners need longer than the 30 s default for a fresh interactive circuit.
+            page.set_default_timeout(60000)
+            def settle(url_pattern):
+                # Navigation can reload the document: wait for the target URL, then for the new interactive circuit,
+                # so clicks never hit prerendered static markup that is about to be replaced.
+                page.wait_for_url(url_pattern)
+                page.locator('main[data-studio-ready="true"]').wait_for()
             errors = []
             page.on('pageerror', lambda error: errors.append(str(error)))
             page.goto(base); page.get_by_role('heading', name='Projects', exact=True).wait_for()
             page.locator('main[data-studio-ready="true"]').wait_for()
             page.get_by_label('Operator / reviewer', exact=True).fill('Synthetic browser test operator')
             page.get_by_role('button', name='Load synthetic examples', exact=True).click()
-            page.wait_for_url('**/projects/*'); project_url = page.url
+            settle('**/projects/*'); project_url = page.url
             page.get_by_role('link', name='Synthetic Amber syndrome', exact=True).wait_for()
             # Actual language switch, including the interactive circuit after reload.
             page.get_by_role('link', name='Deutsch', exact=True).click()
             page.locator('main[data-studio-ready="true"]').wait_for()
             page.get_by_role('link', name='Synthetisches Bernsteinsyndrom', exact=True).wait_for()
             page.get_by_role('link', name='Synthetisches Bernsteinsyndrom', exact=True).click()
+            settle('**/definitions/**')
             page.get_by_label('Name', exact=True).nth(0).fill('Synthetic browser-edited condition')
             page.get_by_label('Bearbeiter / Prüfer', exact=True).fill('Synthetic browser test operator')
             page.get_by_label('Begründung und Nachweise', exact=True).fill('Own fictional fixture editing test')
@@ -68,10 +76,12 @@ with tempfile.TemporaryDirectory(prefix='iryomera-studio-browser-') as temporary
             page.get_by_role('heading', name='Synthetic browser-edited condition', exact=True).wait_for()
             # Open the graph and prove existing links render as SVG and can be selected.
             page.get_by_role('link', name='Relationships', exact=True).click()
+            settle('**/relations')
             page.locator('svg.graph g').first.wait_for(); page.locator('svg.graph g').first.click()
             page.get_by_role('heading', name='Medical review status', exact=True).wait_for()
             # Explicit selection and rights decisions; nothing is automatically approved.
             page.get_by_role('link', name='Review & export', exact=True).click()
+            settle('**/release')
             page.get_by_role('button', name='Select all records', exact=True).click()
             page.get_by_label('Operator / reviewer', exact=True).fill('Synthetic browser review')
             page.get_by_label('Reason and evidence', exact=True).fill('Own fictional MIT software fixture only')
