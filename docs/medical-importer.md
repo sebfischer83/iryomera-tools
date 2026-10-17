@@ -10,11 +10,11 @@ dotnet build Iryomera.Tools.sln -c Release --no-restore
 dotnet run --project src/Iryomera.MedicalImporter -c Release --no-build -- sources list
 ```
 
-The project also packs as the `iryomera-medical` .NET tool:
+The project also packs as the `iryomera-medical` .NET tool (released versions are also in the [GitHub Packages feed](releases.md)):
 
 ```sh
 dotnet pack src/Iryomera.MedicalImporter -c Release -o artifacts
-dotnet tool install Iryomera.MedicalImporter --version 0.5.0 --add-source ./artifacts --tool-path ./artifacts/tools
+dotnet tool install Iryomera.MedicalImporter --version 0.6.0 --add-source ./artifacts --tool-path ./artifacts/tools
 # Windows: artifacts/tools/iryomera-medical.exe
 # Linux: ./artifacts/tools/iryomera-medical
 ```
