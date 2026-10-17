@@ -28,6 +28,9 @@ public static class Program
         var importedAt = Optional(import, "--imported-at", "ISO-8601 timestamp with offset; supply for reproducible re-runs.");
         var ns = Optional(import, "--namespace", "Package namespace.", "names");
         var birthYear = new Option<int?>("--birth-year") { Description = "Birth year of a single-year newborn file (us-ssa)." }; import.Options.Add(birthYear);
+        var retrievedAt = Optional(import, "--retrieved-at", "Actual retrieval timestamp of a saved query result; required for wikidata-names.");
+        var languageCountry = new Option<string[]>("--language-country") { Description = "Your explicit mapping of a label language to a country, e.g. ja=JP; repeatable (wikidata-names).", AllowMultipleArgumentsPerToken = true };
+        import.Options.Add(languageCountry);
         var max = new Option<long>("--max-input-bytes") { DefaultValueFactory = _ => 256L * 1024 * 1024 }; import.Options.Add(max);
         var importWorkspace = Workspace(import);
         import.SetAction((parse, ct) => GuardAsync(async () =>
@@ -37,6 +40,8 @@ public static class Program
                 Source = parse.GetValue(source)!, SourceVersion = parse.GetValue(version)!, SourceUrl = parse.GetValue(url)!,
                 License = parse.GetValue(license)!, LicenseText = await File.ReadAllTextAsync(parse.GetValue(licenseFile)!, ct),
                 Attribution = parse.GetValue(attribution)!, Namespace = parse.GetValue(ns)!, BirthYear = parse.GetValue(birthYear),
+                RetrievedAt = parse.GetValue(retrievedAt) is { Length: > 0 } retrieval ? Timestamp(retrieval) : null,
+                LanguageCountries = parse.GetValue(languageCountry) is { Length: > 0 } pairs ? LanguageCountries(pairs) : null,
                 ImportedAt = parse.GetValue(importedAt) is { Length: > 0 } timestamp ? Timestamp(timestamp) : DateTimeOffset.UtcNow, MaxInputBytes = parse.GetValue(max)
             }, ct);
             await new NameWorkspaceStore(parse.GetValue(importWorkspace)!).AddAsync(batch, ct);
@@ -138,6 +143,16 @@ public static class Program
         ? timestamp : throw new ArgumentException("Use a nonzero ISO-8601 timestamp with an explicit UTC offset.");
     private static T ParseEnum<T>(string value) where T : struct, Enum => Enum.TryParse<T>(value, true, out var parsed) && Enum.IsDefined(parsed) && !int.TryParse(value, out _)
         ? parsed : throw new ArgumentException($"Unknown {typeof(T).Name}: {value}.");
+    private static SortedDictionary<string, string> LanguageCountries(IEnumerable<string> pairs)
+    {
+        var map = new SortedDictionary<string, string>(StringComparer.Ordinal);
+        foreach (var pair in pairs)
+        {
+            var parts = pair.Split('=');
+            if (parts.Length != 2 || !map.TryAdd(parts[0], parts[1])) throw new ArgumentException($"Use unique language=COUNTRY pairs; got '{pair}'.");
+        }
+        return map;
+    }
     private static void Print<T>(T value) => Console.WriteLine(JsonSerializer.Serialize(value, ContentJson.Options));
     private static async Task<int> GuardAsync(Func<Task<int>> action)
     {

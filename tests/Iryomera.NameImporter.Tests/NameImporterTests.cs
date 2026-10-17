@@ -214,6 +214,42 @@ public sealed class NameImporterTests : IDisposable
         Assert.Equal(NameGender.Female, batch.Records.Single(r => r.Localized == "Talvina").Gender);
     }
 
+    private static string Binding(string item, string type, string rank, string name, string lang, string? romanized = null, bool withRank = true) =>
+        "{\"item\":{\"type\":\"uri\",\"value\":\"http://www.wikidata.org/entity/" + item + "\"},\"type\":{\"type\":\"uri\",\"value\":\"http://www.wikidata.org/entity/" + type + "\"}," +
+        "\"statement\":{\"type\":\"uri\",\"value\":\"http://www.wikidata.org/entity/statement/" + item + "-1\"}," +
+        (withRank ? "\"rank\":{\"type\":\"uri\",\"value\":\"http://wikiba.se/ontology#" + rank + "\"}," : "") +
+        "\"name\":{\"type\":\"literal\",\"xml:lang\":\"" + lang + "\",\"value\":\"" + name + "\"}" +
+        (romanized is null ? "" : ",\"romanized\":{\"type\":\"literal\",\"xml:lang\":\"en\",\"value\":\"" + romanized + "\"}") + "}";
+
+    [Fact]
+    public async Task WikidataNamesUseOnlyTheOperatorLanguageMapping()
+    {
+        // Invented Q IDs and names; no real Wikidata content.
+        var json = "{\"head\":{\"vars\":[\"item\",\"type\",\"statement\",\"rank\",\"name\",\"romanized\"]},\"results\":{\"bindings\":[" + string.Join(",",
+            Binding("Q90000001", "Q11879590", "NormalRank", "澄音", "ja", "Sumine"), Binding("Q90000002", "Q101352", "PreferredRank", "霞森", "ja", "Kasumori"),
+            Binding("Q90000003", "Q202444", "NormalRank", "晴灯", "zh"), Binding("Q90000004", "Q12308941", "DeprecatedRank", "晴燈", "ja"),
+            Binding("Q90000005", "Q5", "NormalRank", "某", "ja"), Binding("Q90000006", "Q12308941", "NormalRank", "灯真", "ja", withRank: false)) + "]}}";
+        var input = File("wikidata.json", json);
+        var options = Options("wikidata-names") with { RetrievedAt = At, LanguageCountries = new(StringComparer.Ordinal) { ["ja"] = "JP" } };
+        var batch = await new NameImportEngine().ReadAsync(input, options);
+        Assert.Equal("json", batch.DetectedFormat);
+        Assert.Equal(["Q90000001", "Q90000002"], batch.Records.Select(r => r.ExternalId!).Order(StringComparer.Ordinal));
+        var sumine = batch.Records.Single(r => r.ExternalId == "Q90000001");
+        Assert.Equal(("JP", NamePart.Given, NameGender.Female, "Sumine", (long?)null), (sumine.Country, sumine.Part, sumine.Gender!.Value, sumine.Romanized!, sumine.Count));
+        Assert.True(sumine.SourceFields.ContainsKey("statement"));
+        Assert.Equal(["binding-missing", "deprecated-statement", "language-not-mapped", "name-type"], batch.Diagnostics.Select(d => d.Code).Order());
+        await Assert.ThrowsAsync<ArgumentException>(() => new NameImportEngine().ReadAsync(input, options with { RetrievedAt = null }));
+        await Assert.ThrowsAsync<ArgumentException>(() => new NameImportEngine().ReadAsync(input, options with { LanguageCountries = null }));
+        await Assert.ThrowsAsync<ArgumentException>(() => new NameImportEngine().ReadAsync(input, options with { License = "CC-BY-4.0" }));
+        Assert.NotEqual(batch.Id, (await new NameImportEngine().ReadAsync(input, options with { LanguageCountries = new(StringComparer.Ordinal) { ["ja"] = "JP", ["zh"] = "CN" } })).Id);
+        await new NameExporter().ExportAsync(await Approved(batch), PathFor("wikidata-release"), "1.0.0");
+        await using var content = System.IO.File.OpenRead(Path.Combine(PathFor("wikidata-release"), "content.json"));
+        var package = (await ContentDocuments.ReadValidatedAsync<ContentPackage>(content)).Value!;
+        var entry = package.NamePools!.Single(p => p.Id == "names:jp.given").Entries.Single();
+        Assert.Equal(("澄音", "Sumine"), (entry.Localized, entry.Romanized!));
+        Assert.Equal("Q90000001", entry.Attestations.Single().ExternalId);
+    }
+
     [Fact]
     public async Task CommandLineRunsImportReviewRightsAndExport()
     {

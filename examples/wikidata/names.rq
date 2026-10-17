@@ -1,0 +1,13 @@
+# Iryomera wikidata-names query profile v1 (own work, MIT). Run manually; save the exact JSON result and this query.
+# Name items only: given names (generic, female, male, unisex) and family names with their native label (P1705).
+# Never query people (Q5). Adjust the language filter to the languages you map with --language-country.
+SELECT ?item ?type ?statement ?rank ?name ?romanized WHERE {
+  VALUES ?type { wd:Q202444 wd:Q11879590 wd:Q12308941 wd:Q3409032 wd:Q101352 }
+  ?item wdt:P31 ?type ;
+        p:P1705 ?statement .
+  ?statement ps:P1705 ?name ;
+             wikibase:rank ?rank .
+  FILTER(LANG(?name) IN ("ja"))
+  OPTIONAL { ?item rdfs:label ?romanized . FILTER(LANG(?romanized) = "en") }
+}
+ORDER BY ?item ?type ?statement

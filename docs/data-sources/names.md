@@ -38,7 +38,7 @@ Common rules for every source:
 - Query items that are instances of given name (Q202444, including subclasses such as male/female/unisex given name) or family name (Q101352), with native label, writing system, language and transliteration statements. Retain Q/P/statement identities and references as in ADR 0009.
 - No frequency information; useful for variety and script coverage, not weighting.
 
-**Decision:** candidate primary variety source. Never derive weights from counts of human items using a name. Deferred 2026-10-17: name items have a language but no country, and pools are per country; mapping languages to countries would be invented.
+**Decision:** candidate primary variety source. Never derive weights from counts of human items using a name. Implemented as adapter `wikidata-names` 1.0.0: name items have a language but no country, so the operator supplies an explicit language-to-country mapping per batch (owner decision 2026-10-17); the tool never derives it.
 
 ## US SSA baby names (`names-us-ssa`)
 

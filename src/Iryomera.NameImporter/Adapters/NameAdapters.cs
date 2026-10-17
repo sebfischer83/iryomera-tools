@@ -13,6 +13,8 @@ public interface INameAdapter
     /// <summary>Bump whenever normalized output rules change; it is part of the batch identity.</summary>
     string Version { get; }
     string Description { get; }
+    /// <summary>Input format recorded in the batch: csv or json.</summary>
+    string Format => "csv";
     /// <summary>False for sources whose license is not safe enough to ship; their batches can never be permitted or exported.</summary>
     bool Redistributable { get; }
     void ValidateOptions(NameImportOptions options);

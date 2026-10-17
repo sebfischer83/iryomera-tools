@@ -25,9 +25,11 @@ def obj(properties, required):
 
 defs = {}
 defs['nameImportOptions'] = obj({
-    'source': {'enum': ['us-ssa', 'us-census-surnames', 'at-statistik', 'names-sigpwned']}, 'sourceVersion': text, 'sourceUrl': {'type': 'string', 'format': 'uri', 'pattern': r'^https?://'},
+    'source': {'enum': ['us-ssa', 'us-census-surnames', 'at-statistik', 'wikidata-names', 'names-sigpwned']}, 'sourceVersion': text, 'sourceUrl': {'type': 'string', 'format': 'uri', 'pattern': r'^https?://'},
     'license': text, 'licenseText': text, 'attribution': text, 'importedAt': date, 'namespace': namespace_schema,
-    'birthYear': year, 'maxInputBytes': {'type': 'integer', 'minimum': 1}
+    'birthYear': year, 'retrievedAt': nullable(date),
+    'languageCountries': nullable({'type': 'object', 'propertyNames': {'pattern': r'^[a-z]{2,3}(-[A-Za-z0-9]{2,8})*$(?![\s\S])'}, 'additionalProperties': country}),
+    'maxInputBytes': {'type': 'integer', 'minimum': 1}
 }, ['source', 'sourceVersion', 'sourceUrl', 'license', 'licenseText', 'attribution', 'importedAt'])
 defs['nameRecord'] = obj({
     'id': id_schema, 'country': country, 'region': region, 'part': {'enum': ['given', 'family']}, 'localized': name_text,
@@ -39,7 +41,7 @@ defs['nameRecord'] = obj({
 defs['nameDiagnostic'] = obj({'severity': {'enum': ['information', 'warning', 'error']}, 'code': text, 'recordId': {'type': 'string'}, 'message': text}, ['severity', 'code', 'recordId', 'message'])
 defs['nameBatch'] = obj({
     'id': batch_id, 'inputSha256': digest, 'inputBytes': {'type': 'integer', 'minimum': 1}, 'options': ref('nameImportOptions'),
-    'adapterVersion': version_schema, 'detectedFormat': {'enum': ['csv']}, 'records': array(ref('nameRecord')), 'diagnostics': array(ref('nameDiagnostic'))
+    'adapterVersion': version_schema, 'detectedFormat': {'enum': ['csv', 'json']}, 'records': array(ref('nameRecord')), 'diagnostics': array(ref('nameDiagnostic'))
 }, ['id', 'inputSha256', 'inputBytes', 'options', 'adapterVersion', 'detectedFormat'])
 defs['nameReviewDecision'] = obj({
     'batchId': batch_id, 'recordId': nullable(id_schema), 'status': {'enum': ['unreviewed', 'inReview', 'approved', 'rejected']},

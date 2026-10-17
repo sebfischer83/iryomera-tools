@@ -11,6 +11,7 @@
             "us-ssa",
             "us-census-surnames",
             "at-statistik",
+            "wikidata-names",
             "names-sigpwned"
           ]
         },
@@ -53,6 +54,34 @@
               "type": "integer",
               "minimum": 1000,
               "maximum": 9999
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "retrievedAt": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "languageCountries": {
+          "anyOf": [
+            {
+              "type": "object",
+              "propertyNames": {
+                "pattern": "^[a-z]{2,3}(-[A-Za-z0-9]{2,8})*$(?![\\s\\S])"
+              },
+              "additionalProperties": {
+                "type": "string",
+                "pattern": "^[A-Z]{2}$(?![\\s\\S])"
+              }
             },
             {
               "type": "null"
@@ -288,7 +317,8 @@
         },
         "detectedFormat": {
           "enum": [
-            "csv"
+            "csv",
+            "json"
           ]
         },
         "records": {

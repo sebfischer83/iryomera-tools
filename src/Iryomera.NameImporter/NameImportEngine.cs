@@ -9,7 +9,7 @@ namespace Iryomera.NameImporter;
 /// <summary>Local-only adapter orchestration; no network, hidden data acquisition or automatic approval.</summary>
 public sealed class NameImportEngine
 {
-    private static readonly INameAdapter[] Adapters = [new UsSsaAdapter(), new UsCensusSurnamesAdapter(), new AtStatistikAdapter(), new SigpwnedAdapter()];
+    private static readonly INameAdapter[] Adapters = [new UsSsaAdapter(), new UsCensusSurnamesAdapter(), new AtStatistikAdapter(), new WikidataNamesAdapter(), new SigpwnedAdapter()];
     public static IReadOnlyList<INameAdapter> Sources => Array.AsReadOnly(Adapters);
 
     public async Task<NameBatch> ReadAsync(string inputPath, NameImportOptions options, CancellationToken cancellationToken = default)
@@ -21,14 +21,15 @@ public sealed class NameImportEngine
         if (input.Length == 0 || input.Length > options.MaxInputBytes) throw new InvalidDataException("Input is empty or exceeds max-input-bytes.");
         var hash = Convert.ToHexStringLower(await SHA256.HashDataAsync(input, cancellationToken));
         input.Position = 0;
-        options = options with { ImportedAt = options.ImportedAt.ToUniversalTime() };
+        options = options with { ImportedAt = options.ImportedAt.ToUniversalTime(), RetrievedAt = options.RetrievedAt?.ToUniversalTime() };
         var batch = new NameBatch
         {
             Id = "batch_" + NameIdentity.HashJson(new { hash, options, adapter = adapter.SourceId, adapterVersion = adapter.Version }),
-            InputSha256 = hash, InputBytes = input.Length, Options = options, AdapterVersion = adapter.Version, DetectedFormat = "csv"
+            InputSha256 = hash, InputBytes = input.Length, Options = options, AdapterVersion = adapter.Version, DetectedFormat = adapter.Format
         };
         try { await adapter.ReadAsync(input, new NameAdapterContext(batch), cancellationToken); }
         catch (DecoderFallbackException e) { throw new InvalidDataException("Input is not valid UTF-8; no batch was saved.", e); }
+        catch (JsonException e) { throw new InvalidDataException("Input is not valid JSON; no batch was saved.", e); }
         cancellationToken.ThrowIfCancellationRequested();
         input.Position = 0;
         if (hash != Convert.ToHexStringLower(await SHA256.HashDataAsync(input, cancellationToken)))

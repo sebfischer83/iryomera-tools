@@ -23,6 +23,13 @@ public sealed record NameImportOptions
     public string Namespace { get; init; } = "names";
     /// <summary>Birth year of a single-year newborn file (US SSA yobYYYY.txt).</summary>
     public int? BirthYear { get; init; }
+    /// <summary>Actual retrieval time of a saved query result (wikidata-names).</summary>
+    public DateTimeOffset? RetrievedAt { get; init; }
+    /// <summary>
+    /// Operator decision mapping name-label language tags to ISO 3166-1 countries (wikidata-names); recorded in the
+    /// batch identity. Labels in unmapped languages are not staged. The tool never derives countries from languages itself.
+    /// </summary>
+    public SortedDictionary<string, string>? LanguageCountries { get; init; }
     public long MaxInputBytes { get; init; } = 256L * 1024 * 1024;
 }
 
