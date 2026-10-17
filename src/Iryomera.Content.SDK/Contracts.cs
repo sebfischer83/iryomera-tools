@@ -77,6 +77,8 @@ public abstract record ContentDefinition : ExtensibleRecord
     public List<ExternalIdentifier> Classifications { get; init; } = [];
     public List<string> SynonymKeys { get; init; } = [];
     public List<AssetReference>? Assets { get; init; }
+    /// <summary>Optional, omitted when null; assets resolved by the game catalog and never shipped.</summary>
+    public List<CatalogAssetReference>? CatalogAssets { get; init; }
 }
 
 public sealed record DiseaseDefinition : ContentDefinition;

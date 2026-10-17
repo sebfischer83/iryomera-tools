@@ -41,7 +41,9 @@ public static class Program
                     case "edit": await new ModProjects().EditAsync(source, p.GetValue(path!)!, p.GetValue(replacement!)!, dependencies, version, ct: ct); break;
                     case "pack": await archives.PackAsync(source, p.GetValue(output!)!, dependencies, version, ct: ct); break;
                     case "inspect":
-                        var inspected = await archives.InspectAsync(source, dependencies, version, ct: ct); Print(new { inspected.Project.Manifest, Files = inspected.Project.Files.Count, Definitions = inspected.Content.Definitions.Count }); break;
+                        var inspected = await archives.InspectAsync(source, dependencies, version, ct: ct); // Catalog references are reported, never fetched or packaged; the game resolves them.
+                        var catalogAssets = inspected.Content.Definitions.SelectMany(d => d.CatalogAssets ?? []).Select(c => c.CatalogId).Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).ToArray();
+                        Print(new { inspected.Project.Manifest, Files = inspected.Project.Files.Count, Definitions = inspected.Content.Definitions.Count, UnresolvedCatalogAssets = catalogAssets }); break;
                     case "unpack": await archives.UnpackAsync(source, p.GetValue(output!)!, dependencies, version, ct: ct); break;
                 }
                 return 0;

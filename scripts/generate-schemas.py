@@ -30,11 +30,14 @@ defs['provenance']=obj({'source':text,'externalId':text,'sourceVersion':text,'li
 defs['provenance']['allOf']=[{'if':{'properties':{'reviewStatus':{'enum':['approved','rejected']}},'required':['reviewStatus']},'then':{'required':['reviewedBy','reviewedAt'],'properties':{'reviewedBy':text,'reviewedAt':{'type':'string','format':'date-time'}}}}]
 defs['externalIdentifier']=obj({'system':text,'value':text,'provenance':ref('provenance')},['system','value','provenance'])
 defs['assetReference']=obj({'path':text,'kind':{'enum':['modelGlb','texture','icon']},'license':text,'attribution':nullable(text)},['path','kind','license'])
+# Opaque catalog IDs: nothing is shipped, so there is no path, license or inventory entry. See ADR 0013.
+defs['catalogAssetReference']=obj({'catalogId':id,'kind':{'enum':['modelGlb','texture','icon']}},['catalogId','kind'])
 defs['footprintCell']=obj({'x':{'type':'integer','minimum':0},'z':{'type':'integer','minimum':0}},['x','z'])
 defs['furnitureFootprint']=obj({'width':{'type':'integer','minimum':1},'depth':{'type':'integer','minimum':1},'cellSizeMeters':{'type':'number','exclusiveMinimum':0},'occupiedCells':array(ref('footprintCell'))},['width','depth'])
 defs['interactionPoint']=obj({'key':ns,'x':{'type':'number'},'y':{'type':'number'},'z':{'type':'number'},'headingDegrees':nullable({'type':'number','minimum':0,'exclusiveMaximum':360}),'requiredQualificationId':nullable(id)},['key','x','y','z'])
-defs['furniturePlacement']=obj({'footprint':ref('furnitureFootprint'),'interactionPoints':array(ref('interactionPoint'))},['footprint'])
-base={'id':id,'nameKey':key,'descriptionKey':nullable(key),'version':version,'provenance':ref('provenance'),'classifications':array(ref('externalIdentifier')),'synonymKeys':array(key),'assets':nullable(array(ref('assetReference')))}
+defs['furniturePlacement']=obj({'footprint':ref('furnitureFootprint'),'interactionPoints':array(ref('interactionPoint')),'mount':nullable({'enum':['floor','wall','ceiling']}),'mountHeightMeters':nullable({'type':'number','minimum':0})},['footprint'])
+defs['furniturePlacement']['allOf']=[{'if':{'required':['mountHeightMeters'],'properties':{'mountHeightMeters':{'type':'number'}}},'then':{'required':['mount'],'properties':{'mount':{'const':'wall'}}}}]
+base={'id':id,'nameKey':key,'descriptionKey':nullable(key),'version':version,'provenance':ref('provenance'),'classifications':array(ref('externalIdentifier')),'synonymKeys':array(key),'assets':nullable(array(ref('assetReference'))),'catalogAssets':nullable(array(ref('catalogAssetReference')))}
 for kind in kinds:defs[kind+'Definition']=obj({'kind':{'const':kind},**base},['kind','id','nameKey','version','provenance'])
 defs['furnitureDefinition']['properties']['placement']=nullable(ref('furniturePlacement'))
 defs['observationCategory']=obj({'key':ns,'nameKey':key,'findingId':nullable(id)},['key','nameKey'])

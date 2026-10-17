@@ -11,7 +11,7 @@ public sealed class ProjectTests
     public async Task SyntheticScaffoldActuallySupportsAllDefinitionKindsAssetsAndBilingualContent()
     {
         using var data = new TestMod(); await data.Create(); var result = await new ModValidator().ValidateAsync(data.Project, gameVersion: "0.2.0");
-        Assert.Empty(result.Issues); Assert.Equal(13, result.Content.Definitions.Count); Assert.Equal(2, result.Catalogs.Count);
+        Assert.Empty(result.Issues); Assert.Equal(14, result.Content.Definitions.Count); Assert.Equal(2, result.Catalogs.Count);
         Assert.All(result.Content.Definitions, d => Assert.Equal(ReviewStatus.Unreviewed, d.Provenance.ReviewStatus));
         var furniture = result.Content.Definitions.OfType<FurnitureDefinition>().Single(); Assert.Equal(3, furniture.Assets!.Count); Assert.Single(furniture.Placement!.InteractionPoints);
         Assert.Contains(result.Content.Relations, r => r.Kind == RelationKind.RoomFurniture);

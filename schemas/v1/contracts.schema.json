@@ -212,6 +212,27 @@
       ],
       "additionalProperties": true
     },
+    "catalogAssetReference": {
+      "type": "object",
+      "properties": {
+        "catalogId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "kind": {
+          "enum": [
+            "modelGlb",
+            "texture",
+            "icon"
+          ]
+        }
+      },
+      "required": [
+        "catalogId",
+        "kind"
+      ],
+      "additionalProperties": true
+    },
     "footprintCell": {
       "type": "object",
       "properties": {
@@ -317,12 +338,61 @@
           "items": {
             "$ref": "#/$defs/interactionPoint"
           }
+        },
+        "mount": {
+          "anyOf": [
+            {
+              "enum": [
+                "floor",
+                "wall",
+                "ceiling"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "mountHeightMeters": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
         "footprint"
       ],
-      "additionalProperties": true
+      "additionalProperties": true,
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "mountHeightMeters"
+            ],
+            "properties": {
+              "mountHeightMeters": {
+                "type": "number"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "mount"
+            ],
+            "properties": {
+              "mount": {
+                "const": "wall"
+              }
+            }
+          }
+        }
+      ]
     },
     "diseaseDefinition": {
       "type": "object",
@@ -375,6 +445,19 @@
               "type": "array",
               "items": {
                 "$ref": "#/$defs/assetReference"
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "catalogAssets": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/catalogAssetReference"
               }
             },
             {
@@ -449,6 +532,19 @@
               "type": "null"
             }
           ]
+        },
+        "catalogAssets": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/catalogAssetReference"
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
@@ -511,6 +607,19 @@
               "type": "array",
               "items": {
                 "$ref": "#/$defs/assetReference"
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "catalogAssets": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/catalogAssetReference"
               }
             },
             {
@@ -585,6 +694,19 @@
               "type": "null"
             }
           ]
+        },
+        "catalogAssets": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/catalogAssetReference"
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
@@ -647,6 +769,19 @@
               "type": "array",
               "items": {
                 "$ref": "#/$defs/assetReference"
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "catalogAssets": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/catalogAssetReference"
               }
             },
             {
@@ -731,6 +866,19 @@
               "type": "null"
             }
           ]
+        },
+        "catalogAssets": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/catalogAssetReference"
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
@@ -793,6 +941,19 @@
               "type": "array",
               "items": {
                 "$ref": "#/$defs/assetReference"
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "catalogAssets": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/catalogAssetReference"
               }
             },
             {
@@ -867,6 +1028,19 @@
               "type": "null"
             }
           ]
+        },
+        "catalogAssets": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/catalogAssetReference"
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
@@ -929,6 +1103,19 @@
               "type": "array",
               "items": {
                 "$ref": "#/$defs/assetReference"
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "catalogAssets": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/catalogAssetReference"
               }
             },
             {
@@ -1003,6 +1190,19 @@
               "type": "null"
             }
           ]
+        },
+        "catalogAssets": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/catalogAssetReference"
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
@@ -1071,6 +1271,19 @@
               "type": "null"
             }
           ]
+        },
+        "catalogAssets": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/catalogAssetReference"
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
@@ -1133,6 +1346,19 @@
               "type": "array",
               "items": {
                 "$ref": "#/$defs/assetReference"
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "catalogAssets": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/catalogAssetReference"
               }
             },
             {
@@ -1211,6 +1437,19 @@
               "type": "array",
               "items": {
                 "$ref": "#/$defs/assetReference"
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "catalogAssets": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/catalogAssetReference"
               }
             },
             {

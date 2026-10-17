@@ -96,6 +96,12 @@ Studio release audit files have their own versioned `schemas/studio/v1` bundle a
 
 ContentDefinition has optional `assets` (AssetReference list: path/kind/license/attribution); FurnitureDefinition has optional `placement` with FurnitureFootprint and InteractionPoint data. Null fields are omitted to preserve legacy wire shape/digests. Explicit occupied cells are unique X/Z cells inside a positive rectangle; default occupancy fills it. Interaction qualifications use normal dependency-aware definition references. The ModKit profile additionally resolves resource keys containing a colon as content IDs; legacy SDK resource vocabularies stay opaque, and unqualified symbolic resource names remain valid. Standalone v1 schemas cover all five new contracts. See [the ModKit guide](modkit.md) and [ADR 0010](architecture/0010-data-only-mod-packages.md).
 
+## Catalog asset references and mounting (library 0.7.0)
+
+ContentDefinition has optional `catalogAssets`, omitted when null: CatalogAssetReference entries with `catalogId` (content ID syntax, for example `iryomera.assets:wall.notice_board`) and `kind` (`modelGlb`, `texture`, `icon`). They name assets that are never shipped, such as purchased base-game models; the game resolves them from its private catalog and falls back procedurally. They have no path, license or ModKit inventory entry, and the SDK never resolves them. Codes: `catalog-asset` (ID or kind), `duplicate-catalog-asset` (same ID and kind twice in one definition). `AssetReference` is unchanged; older readers keep `catalogAssets` as an additive property.
+
+FurniturePlacement has optional `mount` (`floor`, `wall`, `ceiling`; absent means floor) and `mountHeightMeters`, both omitted when null. Wall: X along the wall, Z into the room (+Z), origin on the wall surface; the height is measured from the storey floor to the origin, requires `mount: wall`, must be nonnegative and has no SDK upper bound. Ceiling: origin at the ceiling, the model hangs towards −Y. Code: `furniture-mount`. Wall edges, doors, storey height and whether wall/ceiling footprints block floor cells are game rules. See [ADR 0013](architecture/0013-catalog-assets-and-mounting.md).
+
 ModKit authoring (`mod.json`) and archive integrity (`checksums.json`) have separate schemas in `schemas/modkit/v1`. No executable/script/plugin payload kind is defined. The archive is not a Godot PCK or game save format. The runtime game remains responsible for asset rendering and interaction behavior.
 
 ## Name pools and formats (library 0.6.0)

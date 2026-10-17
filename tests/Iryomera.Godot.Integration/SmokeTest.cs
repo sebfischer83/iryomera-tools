@@ -51,8 +51,16 @@ public partial class SmokeTest : Node
             await using var modSource = File.OpenRead(ProjectSettings.GlobalizePath("res://mod-content.json"));
             var modContent = await ContentDocuments.ReadValidatedAsync<ContentPackage>(modSource);
             Assert(modContent.IsValid, string.Join("; ", modContent.Issues));
-            var furniture = modContent.Value!.Definitions.OfType<FurnitureDefinition>().Single();
+            var furniture = modContent.Value!.Definitions.OfType<FurnitureDefinition>().Single(f => f.Assets is not null);
             Assert(furniture.Assets!.Count == 3 && furniture.Placement!.Footprint.Width == 2 && furniture.Placement.InteractionPoints.Count == 1, "Portable asset/placement contracts were lost.");
+            var wallItem = modContent.Value.Definitions.OfType<FurnitureDefinition>().Single(f => f.CatalogAssets is not null);
+            Assert(wallItem.CatalogAssets![0].CatalogId == "iryomera.assets:wall.notice_board_example" && wallItem.Placement!.Mount == FurnitureMount.Wall && wallItem.Placement.MountHeightMeters == 1.5m, "Catalog asset/mount contracts were lost.");
+            await using var namesSource = File.OpenRead(ProjectSettings.GlobalizePath("res://names.json"));
+            var names = await ContentDocuments.ReadValidatedAsync<ContentPackage>(namesSource);
+            Assert(names.IsValid, string.Join("; ", names.Issues));
+            var family = NamePools.Select([names.Value!], "DE", NamePart.Family, "DE-BY");
+            Assert(string.Join(",", family.Select(e => e.Entry.Localized)) == "Brennwald,Quellmar,Almbrunner", "Name pool selection order changed.");
+            Assert(NamePools.ResolveFormat([names.Value!], "JP")!.Order == NameOrder.FamilyGiven, "Name format contract was lost.");
             var modCatalogs = new List<LocalizationDefinition>();
             foreach (var language in new[] { "en", "de" })
             {

@@ -61,7 +61,7 @@ else:
 with tempfile.TemporaryDirectory(prefix='iryomera-godot-smoke-') as temporary:
     project = Path(temporary)/'project'
     shutil.copytree(root/'tests/Iryomera.Godot.Integration', project, ignore=shutil.ignore_patterns('bin','obj','.godot'))
-    for name in ['annotations','en','de','diagnostics','diagnostics.en','diagnostics.de']:
+    for name in ['annotations','en','de','diagnostics','diagnostics.en','diagnostics.de','names']:
         shutil.copyfile(root/'examples/synthetic'/(name+'.json'), project/(name+'.json'))
     shutil.copyfile(root/'examples/modkit/example-mod/content.json', project/'mod-content.json')
     for language in ['en','de']:

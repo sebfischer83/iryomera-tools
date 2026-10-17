@@ -241,6 +241,35 @@
         "importedAt": "2026-01-01T00:00:00Z",
         "reviewStatus": "unreviewed"
       }
+    },
+    {
+      "kind": "furniture",
+      "id": "example_mod:demo_notice_board",
+      "nameKey": "example_mod.demo_notice_board.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Own fictional ModKit software fixture, not medical knowledge",
+        "externalId": "synthetic-demo",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed"
+      },
+      "catalogAssets": [
+        {
+          "catalogId": "iryomera.assets:wall.notice_board_example",
+          "kind": "modelGlb"
+        }
+      ],
+      "placement": {
+        "footprint": {
+          "width": 1,
+          "depth": 1,
+          "cellSizeMeters": 1
+        },
+        "mount": "wall",
+        "mountHeightMeters": 1.5
+      }
     }
   ],
   "relations": [

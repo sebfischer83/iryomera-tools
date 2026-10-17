@@ -2,7 +2,7 @@
 
 Everything under `example-mod` is own MIT software test content, including the generated cube GLB and 1×1 PNG images. All medical-looking records are fictional and unreviewed. There are no real medical claims, third-party datasets or purchased assets.
 
-The mod demonstrates all thirteen definition kinds, shared examination/observation references, room/furniture and personnel/equipment requirements, a 2×1 footprint and service interaction point, original asset licenses, en/de catalogs and separate simulation balancing. Edit text with any JSON editor or use the validated `edit` CLI. See [the full guide](../../docs/modkit.md).
+The mod demonstrates all thirteen definition kinds, shared examination/observation references, room/furniture and personnel/equipment requirements, a 2×1 footprint and service interaction point, a wall-mounted notice board with an example catalog asset ID, original asset licenses, en/de catalogs and separate simulation balancing. Edit text with any JSON editor or use the validated `edit` CLI. See [the full guide](../../docs/modkit.md).
 
 From the repository root after a Release build:
 

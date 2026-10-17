@@ -7,7 +7,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <IsPackable>false</IsPackable>
-    <FoundationPackageVersion Condition="'$(FoundationPackageVersion)' == ''">0.6.0</FoundationPackageVersion>
+    <FoundationPackageVersion Condition="'$(FoundationPackageVersion)' == ''">0.7.0</FoundationPackageVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Iryomera.Content.SDK" Version="$(FoundationPackageVersion)" />
