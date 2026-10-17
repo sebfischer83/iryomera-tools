@@ -14,7 +14,7 @@ Replace `iryomera-mod` below with `dotnet run --project src/Iryomera.ModKit -c R
 
 ```sh
 dotnet pack src/Iryomera.ModKit -c Release --no-build -o artifacts
-dotnet tool install Iryomera.ModKit --version 0.6.0 --add-source ./artifacts --tool-path ./artifacts/mod-tools
+dotnet tool install Iryomera.ModKit --version 0.7.0 --add-source ./artifacts --tool-path ./artifacts/mod-tools
 # Windows: artifacts/mod-tools/iryomera-mod.exe
 # Linux: ./artifacts/mod-tools/iryomera-mod
 ```
@@ -59,6 +59,10 @@ An asset reference has `path`, `kind` (`modelGlb`, `texture`, `icon`), original 
 Furniture placement includes a footprint with positive integer `width`/`depth`, positive `cellSizeMeters` (default 1), and optional `occupiedCells`. An empty cell list fills the rectangle; explicit X/Z cells must be unique and within bounds. Interaction points have stable unique keys, local X/Y/Z meters, optional heading `[0,360)` and an optional staff qualification ID. Origin is the footprint's lower X/Z corner, Y up; points can stand outside occupied cells. Runtime orientation, placement and interaction execution belong to the game.
 
 Use the existing `roomFurniture` relation for required furniture, and examination room/equipment/qualification relations for diagnostic resources. These are independent sourced records; no duplicated room requirement list or arbitrary mod callback is introduced. The example includes all thirteen definition kinds, a numeric observation, ten relationships, a 2×1 furniture footprint, service point and separate simulation balancing.
+
+A definition may also list `catalogAssets` (`catalogId` + `kind`) to reuse a model from the game's private catalog without shipping it. Catalog references need no inventory entry, are never fetched or packaged, and `inspect` lists them as `unresolvedCatalogAssets`. The game decides whether an ID exists; unknown IDs fall back to a procedural model. Never put purchased files, vendor names, file names or node names into a mod or a catalog ID.
+
+GLB conventions for shipped mod models: meters, Y up, front facing +Z (glTF default), scale 1:1, one file is one model (the game uses the scene root). The origin is the footprint's lower X/Z corner on the floor; for `mount: wall` it lies on the wall surface with the model extending into the room along +Z, and `mountHeightMeters` gives its height above the storey floor; for `mount: ceiling` it lies at the ceiling with the model hanging towards −Y. There are no pivot, rotation or scale correction fields. The example adds a wall-mounted notice board that uses an example catalog ID.
 
 GLB checks cover v2 framing, bounded JSON, chunk lengths and embedded-only resource policy. URI-bearing resources (including data URIs) are deliberately rejected in this v1 profile. The tool does not claim exhaustive glTF mesh/material/extension validation or rendering compatibility. Images are signature-checked, not decoded. The private game's asset loader must enforce its own supported-format/runtime limits; no asset is rendered or loaded as code by this tool.
 

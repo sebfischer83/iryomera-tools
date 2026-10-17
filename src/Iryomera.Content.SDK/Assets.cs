@@ -1,6 +1,7 @@
 namespace Iryomera.Content.SDK;
 
 public enum AssetKind { ModelGlb, Texture, Icon }
+public enum FurnitureMount { Floor, Wall, Ceiling }
 
 /// <summary>A package-relative data asset. Licensing is independent of the tool's MIT license.</summary>
 public sealed record AssetReference : ExtensibleRecord
@@ -9,6 +10,15 @@ public sealed record AssetReference : ExtensibleRecord
     public required AssetKind Kind { get; init; }
     public required string License { get; init; }
     public string? Attribution { get; init; }
+}
+/// <summary>
+/// An opaque asset ID resolved by the game's private catalog, for assets that are never shipped in a package.
+/// Has no path, license or inventory entry; the SDK validates its format only and never resolves it. See ADR 0013.
+/// </summary>
+public sealed record CatalogAssetReference : ExtensibleRecord
+{
+    public required string CatalogId { get; init; }
+    public required AssetKind Kind { get; init; }
 }
 public sealed record FootprintCell : ExtensibleRecord
 {
@@ -33,10 +43,16 @@ public sealed record InteractionPoint : ExtensibleRecord
     public decimal? HeadingDegrees { get; init; }
     public string? RequiredQualificationId { get; init; }
 }
+/// <summary>
+/// Absent mount means floor. Wall: X along the wall, Z into the room (+Z), origin on the wall surface, height from the storey
+/// floor to the origin. Ceiling: origin at the ceiling, the model hangs towards -Y. Placement legality is game logic.
+/// </summary>
 public sealed record FurniturePlacement : ExtensibleRecord
 {
     public required FurnitureFootprint Footprint { get; init; }
     public List<InteractionPoint> InteractionPoints { get; init; } = [];
+    public FurnitureMount? Mount { get; init; }
+    public decimal? MountHeightMeters { get; init; }
 }
 
 internal static class AssetValidator
@@ -53,7 +69,18 @@ internal static class AssetValidator
                     issues.Add(new("asset", definition.Id, "Use a known asset kind, original license and safe relative path."));
                 if (!assets.Add(asset.Path)) issues.Add(new("duplicate-asset", definition.Id, "Asset paths must be unique within a definition."));
             }
+            var catalog = new HashSet<(string, AssetKind)>();
+            foreach (var asset in definition.CatalogAssets ?? [])
+            {
+                if (!ContentFormat.IsValidId(asset.CatalogId) || !Enum.IsDefined(asset.Kind))
+                    issues.Add(new("catalog-asset", definition.Id, "Use a namespace-based catalog ID and a known asset kind."));
+                if (!catalog.Add((asset.CatalogId, asset.Kind))) issues.Add(new("duplicate-catalog-asset", definition.Id, "Catalog asset references must be unique within a definition."));
+            }
             if (definition is not FurnitureDefinition { Placement: { } placement }) continue;
+            if (placement.Mount is { } mount && !Enum.IsDefined(mount))
+                issues.Add(new("furniture-mount", definition.Id, "Unknown furniture mount."));
+            if (placement.MountHeightMeters is { } height && (placement.Mount != FurnitureMount.Wall || height < 0))
+                issues.Add(new("furniture-mount", definition.Id, "A mount height requires a wall mount and must be nonnegative."));
             var footprint = placement.Footprint;
             if (footprint.Width <= 0 || footprint.Depth <= 0 || footprint.CellSizeMeters <= 0)
                 issues.Add(new("footprint", definition.Id, "Footprint dimensions and cell size must be positive."));

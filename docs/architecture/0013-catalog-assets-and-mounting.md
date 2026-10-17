@@ -1,6 +1,6 @@
 # ADR 0013 — catalog asset references and furniture mounting
 
-Status: accepted on 2026-10-17, not implemented. Tools ADR; the game's own ADR 0013 covers its side of the same interface. Plan: [furniture asset catalog references and mounting](../plans/furniture-assets.md).
+Status: accepted on 2026-10-17, implemented for library 0.7.0. Tools ADR; the game's own ADR 0013 covers its side of the same interface. Plan: [furniture asset catalog references and mounting](../plans/furniture-assets.md).
 
 ## Context
 

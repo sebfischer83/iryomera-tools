@@ -1,6 +1,6 @@
 # Furniture asset catalog references and mounting — plan
 
-Status: accepted by the owner on 2026-10-17, see [ADR 0013](../architecture/0013-catalog-assets-and-mounting.md) (a tools ADR, distinct from game ADR 0013). Nothing is implemented. This SDK/ModKit extension is implemented before step 3 (the name importer tool) of Phase 5. Inputs come from the game session.
+Status: accepted by the owner on 2026-10-17, see [ADR 0013](../architecture/0013-catalog-assets-and-mounting.md) (a tools ADR, distinct from game ADR 0013). Implemented on `feature/catalog-assets-mounting` for 0.7.0. This SDK/ModKit extension is implemented before step 3 (the name importer tool) of Phase 5. Inputs come from the game session.
 
 ## Context
 
