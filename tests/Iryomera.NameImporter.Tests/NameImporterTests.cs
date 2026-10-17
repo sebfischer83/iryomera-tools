@@ -1,0 +1,198 @@
+using System.Text;
+using System.Text.Json;
+using Iryomera.Content.SDK;
+using Xunit;
+
+namespace Iryomera.NameImporter.Tests;
+
+/// <summary>All names and statistics below are invented test values; no real dataset is included.</summary>
+public sealed class NameImporterTests : IDisposable
+{
+    private static readonly DateTimeOffset At = new(2026, 10, 17, 12, 0, 0, TimeSpan.Zero);
+    private readonly string _root = Path.Combine(Path.GetTempPath(), "iryomera-names-tests-" + Guid.NewGuid().ToString("N"));
+    public NameImporterTests() => Directory.CreateDirectory(_root);
+    public void Dispose() { if (Directory.Exists(_root)) Directory.Delete(_root, true); }
+    private string PathFor(string name) => Path.Combine(_root, name);
+
+    private string File(string name, string content) { var path = PathFor(name); System.IO.File.WriteAllText(path, content, new UTF8Encoding(false)); return path; }
+    private static NameImportOptions Options(string source, int? year = null, string version = "synthetic-1") => new()
+    {
+        Source = source, SourceVersion = version, SourceUrl = "https://example.org/iryomera/synthetic-names/" + source, License = "CC0-1.0",
+        LicenseText = "Synthetic test license text.", Attribution = "Iryomera synthetic name fixture", ImportedAt = At, BirthYear = year
+    };
+    private Task<NameBatch> Ssa(string content, int year = 2020, string file = "yob.txt") => new NameImportEngine().ReadAsync(File(file, content), Options("us-ssa", year));
+    private const string Forenames = "Country,Country Group,Region,Population,Note,Year,Romanization,Index,Name Group,Gender,Localized Name,Romanized Name\n";
+    private const string Surnames = "Country,Rank,Index,Name Group,Localized Name,Romanized Name,Count,Percent\n";
+
+    [Fact]
+    public async Task SsaImportIsDeterministicAndKeepsOriginalFields()
+    {
+        const string input = "Talvina,F,120\nOrwen,M,95\nKaelo,F,7\nKaelo,M,6\n";
+        var first = await Ssa(input); var second = await Ssa(input, file: "copy.txt");
+        Assert.Equal(first.Id, second.Id);
+        Assert.Equal(JsonSerializer.Serialize(first, ContentJson.Options), JsonSerializer.Serialize(second, ContentJson.Options));
+        Assert.Equal(4, first.Records.Count); Assert.Empty(first.Diagnostics);
+        var kaelo = first.Records.Where(r => r.Localized == "Kaelo").OrderBy(r => r.Gender).ToArray();
+        Assert.Equal([NameGender.Female, NameGender.Male], kaelo.Select(r => r.Gender!.Value));
+        Assert.All(first.Records, r => Assert.Equal(("US", NamePart.Given, 2020, 2020), (r.Country, r.Part, r.BirthYearFrom!.Value, r.BirthYearTo!.Value)));
+        Assert.Equal("120", first.Records.Single(r => r.Localized == "Talvina").SourceFields["count"].GetString());
+        Assert.NotEqual(first.Id, (await Ssa(input, 2021)).Id);
+    }
+
+    [Fact]
+    public async Task SsaRequiresABirthYearAndReportsBadRows()
+    {
+        await Assert.ThrowsAsync<ArgumentException>(() => new NameImportEngine().ReadAsync(File("x.txt", "Talvina,F,5\n"), Options("us-ssa")));
+        var batch = await Ssa("Bad,X,5\nGood,F,abc\nShort,F\nOkay,F,5\nTal‮vine,F,5\n");
+        Assert.Equal(["Okay"], batch.Records.Select(r => r.Localized));
+        Assert.Equal(["count", "gender", "name-text", "row-shape"], batch.Diagnostics.Where(d => d.Severity == NameDiagnosticSeverity.Error).Select(d => d.Code).Order());
+    }
+
+    [Fact]
+    public async Task NormalizationIsReportedAndOriginalBytesStayInSourceFields()
+    {
+        var batch = await Ssa("José,M,5\n Spaced,F,6\n");
+        Assert.Equal(["José", "Spaced"], batch.Records.Select(r => r.Localized).Order(StringComparer.Ordinal));
+        Assert.Equal("José", batch.Records.Single(r => r.Localized == "José").SourceFields["name"].GetString());
+        Assert.Contains(batch.Diagnostics, d => d.Code == "name-normalized"); Assert.Contains(batch.Diagnostics, d => d.Code == "name-trimmed");
+    }
+
+    [Fact]
+    public async Task InvalidUtf8IsRejectedWithoutABatch()
+    {
+        var path = PathFor("invalid.txt"); await System.IO.File.WriteAllBytesAsync(path, [0x41, 0xFF, 0x2C, 0x46, 0x2C, 0x35, 0x0A]);
+        await Assert.ThrowsAsync<InvalidDataException>(() => new NameImportEngine().ReadAsync(path, Options("us-ssa", 2020)));
+    }
+
+    [Fact]
+    public async Task SigpwnedForenamesAndSurnamesKeepScriptsRanksAndCohorts()
+    {
+        var given = await new NameImportEngine().ReadAsync(File("given.csv", "﻿" + Forenames +
+            "JP,1,,,,2022,Y,1,N-JP-1-F-1,F,澄音,Sumine\nDE,1,Nord,,,2022,N,2,N-DE-1-M-2,M,Orwen,Orwen\nES,1,,,,2021,N,3,N-ES-1-U-3,U,Ariel,Ариэль\n"), Options("names-sigpwned"));
+        var sumine = given.Records.Single(r => r.Country == "JP");
+        Assert.Equal(("澄音", "Sumine", NameGender.Female, 1, 2022), (sumine.Localized, sumine.Romanized!, sumine.Gender!.Value, sumine.Rank!.Value, sumine.BirthYearFrom!.Value));
+        Assert.NotNull(sumine.RomanizationOrigin);
+        Assert.Null(given.Records.Single(r => r.Country == "DE").Romanized);
+        var ariel = given.Records.Single(r => r.Country == "ES");
+        Assert.Equal((NameGender.Unknown, (string?)null), (ariel.Gender!.Value, ariel.Romanized));
+        Assert.Equal(["gender-unknown", "region-not-mapped", "romanized-dropped"], given.Diagnostics.Select(d => d.Code).Order());
+        var family = await new NameImportEngine().ReadAsync(File("family.csv", Surnames + "JP,1,1,JP-1,霞森,Kasumori,1000,0.0100\nES,2,2,ES-2,Brenal,Brenal,500,3.5\n"), Options("names-sigpwned"));
+        var kasumori = family.Records.Single(r => r.Country == "JP");
+        Assert.Equal((NamePart.Family, (NameGender?)null, 1, 1000L, 0.0100m), (kasumori.Part, kasumori.Gender, kasumori.Rank!.Value, kasumori.Count!.Value, kasumori.Proportion!.Value));
+        Assert.Contains(family.Diagnostics, d => d.Code == "proportion");
+        await Assert.ThrowsAsync<InvalidDataException>(() => new NameImportEngine().ReadAsync(File("other.csv", "a,b\n1,2\n"), Options("names-sigpwned")));
+    }
+
+    [Fact]
+    public async Task WorkspaceIsStrictAndRightsNeedEvidence()
+    {
+        var store = new NameWorkspaceStore(PathFor("ws.json"));
+        var batch = await Ssa("Talvina,F,5\n"); await store.AddAsync(batch); await store.AddAsync(batch);
+        Assert.Single((await store.ReadAsync()).Batches);
+        await Assert.ThrowsAsync<InvalidDataException>(() => store.UpdateAsync(w => w.Rights.Add(new() { BatchId = batch.Id, Decision = RedistributionDecision.Permitted, Reviewer = "Test", At = At, Note = "No evidence" })));
+        await Assert.ThrowsAsync<InvalidDataException>(() => store.UpdateAsync(w => w.Reviews.Add(new() { BatchId = batch.Id, RecordId = "names:name_missing", Status = ReviewStatus.Approved, Reviewer = "Test", At = At, Note = "Unknown" })));
+        var json = System.IO.File.ReadAllText(store.Path).Replace("\"reviews\"", "\"unexpected\": 1, \"reviews\"");
+        System.IO.File.WriteAllText(store.Path, json);
+        await Assert.ThrowsAsync<InvalidDataException>(() => store.ReadAsync());
+    }
+
+    private async Task<NameWorkspace> Approved(params NameBatch[] batches)
+    {
+        var store = new NameWorkspaceStore(PathFor("approved-" + Guid.NewGuid().ToString("N") + ".json"));
+        foreach (var batch in batches) await store.AddAsync(batch);
+        await store.UpdateAsync(w =>
+        {
+            foreach (var batch in batches)
+            {
+                w.Reviews.Add(new() { BatchId = batch.Id, Status = ReviewStatus.Approved, Reviewer = "Synthetic reviewer", At = At, Note = "Synthetic test approval" });
+                w.Rights.Add(new() { BatchId = batch.Id, Decision = RedistributionDecision.Permitted, PermissionEvidence = "Synthetic CC0 test terms", Reviewer = "Synthetic reviewer", At = At, Note = "Synthetic test rights" });
+            }
+        });
+        return await store.ReadAsync();
+    }
+
+    [Fact]
+    public async Task ExportMergesBatchesIntoAValidSdkPackageWithPerSourceStatistics()
+    {
+        var recent = await Ssa("Talvina,F,120\nOrwen,M,95\n", 2020); var older = await Ssa("Talvina,F,40\nBrannoc,M,30\n", 1950, "old.txt");
+        var workspace = await Approved(recent, older);
+        var output = PathFor("release");
+        var report = await new NameExporter().ExportAsync(workspace, output, "1.0.0");
+        await using (var content = System.IO.File.OpenRead(Path.Combine(output, "content.json")))
+        {
+            var result = await ContentDocuments.ReadValidatedAsync<ContentPackage>(content);
+            Assert.True(result.IsValid, string.Join(';', result.Issues));
+            var pool = Assert.Single(result.Value!.NamePools!);
+            Assert.Equal(("names:us.given", "US", NamePart.Given, "names.pool.us_given.name"), (pool.Id, pool.Country, pool.Part, pool.NameKey));
+            var talvina = pool.Entries.Single(e => e.Localized == "Talvina");
+            Assert.Equal(NameIdentity.EntryKey("Talvina", NameGender.Female), talvina.Key);
+            Assert.Equal([1950, 2020], talvina.Attestations.Select(a => a.BirthYearFrom!.Value).Order());
+            Assert.Equal([40L, 120L], talvina.Attestations.Select(a => a.Count!.Value).Order());
+            Assert.Equal(2, pool.Sources.Count); Assert.All(pool.Sources, s => Assert.Equal(ReviewStatus.Approved, s.Provenance.ReviewStatus));
+            Assert.Equal(pool.Entries.Select(e => e.Key).Order(StringComparer.Ordinal), pool.Entries.Select(e => e.Key));
+        }
+        foreach (var language in new[] { "en", "de" })
+            Assert.Contains("names.pool.us_given.name", System.IO.File.ReadAllText(Path.Combine(output, "localization", language + ".json")));
+        Assert.Contains("Synthetic test license text.", System.IO.File.ReadAllText(Path.Combine(output, "NOTICE.md")));
+        await using (var stored = System.IO.File.OpenRead(Path.Combine(output, "release-report.json")))
+            Assert.Equal(report.Pools[0].Entries, (await NameDocuments.ReadAsync<NameReleaseReport>(stored)).Pools[0].Entries);
+        Assert.Equal(3, report.Pools[0].Entries);
+        await Assert.ThrowsAsync<IOException>(() => new NameExporter().ExportAsync(workspace, output, "1.0.0"));
+    }
+
+    [Fact]
+    public async Task OnlyApprovedRecordsOfPermittedBatchesAreExported()
+    {
+        var batch = await Ssa("Talvina,F,120\nOrwen,M,95\n"); var blocked = await Ssa("Brannoc,M,30\n", 1950, "blocked.txt");
+        var store = new NameWorkspaceStore(PathFor("gate.json"));
+        await store.AddAsync(batch); await store.AddAsync(blocked);
+        var orwen = batch.Records.Single(r => r.Localized == "Orwen").Id;
+        await store.UpdateAsync(w =>
+        {
+            foreach (var b in new[] { batch, blocked }) w.Reviews.Add(new() { BatchId = b.Id, Status = ReviewStatus.Approved, Reviewer = "Test", At = At, Note = "Approve batch" });
+            w.Reviews.Add(new() { BatchId = batch.Id, RecordId = orwen, Status = ReviewStatus.Rejected, Reviewer = "Test", At = At, Note = "Reject one record" });
+            w.Rights.Add(new() { BatchId = batch.Id, Decision = RedistributionDecision.Permitted, PermissionEvidence = "Synthetic terms", Reviewer = "Test", At = At, Note = "Permit" });
+            w.Rights.Add(new() { BatchId = blocked.Id, Decision = RedistributionDecision.Blocked, Reviewer = "Test", At = At, Note = "Block" });
+        });
+        var workspace = await store.ReadAsync();
+        Assert.Equal(ReviewStatus.Rejected, NameWorkspaceValidation.Status(workspace, batch.Id, orwen));
+        var output = PathFor("gated");
+        var report = await new NameExporter().ExportAsync(workspace, output, "1.0.0");
+        var exported = string.Concat(Directory.GetFiles(output, "*", SearchOption.AllDirectories).Select(System.IO.File.ReadAllText));
+        Assert.Contains("Talvina", exported); Assert.DoesNotContain("Orwen", exported); Assert.DoesNotContain("Brannoc", exported);
+        Assert.Equal(1, Assert.Single(report.Batches).ExportedRecords);
+        await store.UpdateAsync(w => w.Reviews.Add(new() { BatchId = batch.Id, Status = ReviewStatus.Rejected, Reviewer = "Test", At = At, Note = "Reject batch" }));
+        await Assert.ThrowsAsync<InvalidOperationException>(async () => await new NameExporter().ExportAsync(await store.ReadAsync(), PathFor("empty"), "1.0.0"));
+    }
+
+    [Fact]
+    public async Task DifferingRomanizationsBlockTheExport()
+    {
+        var a = await new NameImportEngine().ReadAsync(File("a.csv", Surnames + "JP,1,1,JP-1,霞森,Kasumori,1000,0.01\n"), Options("names-sigpwned", version: "a"));
+        var b = await new NameImportEngine().ReadAsync(File("b.csv", Surnames + "JP,1,1,JP-1,霞森,Kasumory,1000,0.01\n"), Options("names-sigpwned", version: "b"));
+        var error = await Assert.ThrowsAsync<InvalidOperationException>(async () => await new NameExporter().ExportAsync(await Approved(a, b), PathFor("conflict"), "1.0.0"));
+        Assert.Contains("romanization", error.Message, StringComparison.OrdinalIgnoreCase);
+        Assert.False(Directory.Exists(PathFor("conflict")));
+    }
+
+    [Fact]
+    public async Task CommandLineRunsImportReviewRightsAndExport()
+    {
+        var input = File("yob2020.txt", "Talvina,F,120\nOrwen,M,95\n"); var license = File("license.txt", "Synthetic test license text.");
+        var workspace = PathFor("cli.json");
+        async Task<int> Run(params string[] args) => await Program.CreateCommand().Parse(args).InvokeAsync();
+        Assert.Equal(0, await Run("import", "us-ssa", "--input", input, "--source-version", "synthetic-1", "--source-url", "https://example.org/iryomera/synthetic-names",
+            "--license", "CC0-1.0", "--license-file", license, "--attribution", "Synthetic fixture", "--imported-at", "2026-10-17T12:00:00Z", "--birth-year", "2020", "--workspace", workspace));
+        var batch = (await new NameWorkspaceStore(workspace).ReadAsync()).Batches.Single().Id;
+        Assert.Equal(1, await Run("review", "--workspace", workspace, "--batch", batch, "--status", "approved", "--reviewer", "Test", "--at", "2026-10-17T12:00:00Z", "--note", "Missing scope"));
+        Assert.Equal(0, await Run("review", "--workspace", workspace, "--batch", batch, "--all", "--status", "approved", "--reviewer", "Test", "--at", "2026-10-17T12:00:00Z", "--note", "Synthetic"));
+        Assert.Equal(1, await Run("rights", "--workspace", workspace, "--batch", batch, "--decision", "permitted", "--reviewer", "Test", "--at", "2026-10-17T12:00:00Z", "--note", "No evidence"));
+        Assert.Equal(0, await Run("rights", "--workspace", workspace, "--batch", batch, "--decision", "permitted", "--permission-evidence", "Synthetic CC0 terms",
+            "--reviewer", "Test", "--at", "2026-10-17T12:00:00Z", "--note", "Synthetic"));
+        Assert.Equal(0, await Run("validate", "--workspace", workspace));
+        Assert.Equal(0, await Run("status", "--workspace", workspace, "--records"));
+        Assert.Equal(0, await Run("export", "--workspace", workspace, "--output", PathFor("cli-release"), "--version", "1.0.0"));
+        Assert.True(System.IO.File.Exists(Path.Combine(PathFor("cli-release"), "content.json")));
+        Assert.Equal(0, await Run("sources"));
+    }
+}

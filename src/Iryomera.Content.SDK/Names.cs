@@ -105,6 +105,16 @@ public static class NamePools
     }
 }
 
+/// <summary>The name text rules used by validation, for importers and editors that check values before building pools.</summary>
+public static class NameText
+{
+    public const int MaxLength = NameValidator.MaxNameLength;
+    /// <summary>NFC, at most 100 UTF-16 units, no control/bidi/non-space whitespace and no surrounding or repeated spaces.</summary>
+    public static bool IsValid(string value) => NameValidator.IsValidNameText(value);
+    /// <summary>Latin letters, combining diacritics and name punctuation only.</summary>
+    public static bool IsLatin(string value) => NameValidator.IsLatin(value);
+}
+
 internal static class NameValidator
 {
     internal const int MaxNameLength = 100;
@@ -193,7 +203,7 @@ internal static class NameValidator
     private static bool IsBidiControl(char c) => c is '؜' or '‎' or '‏' or >= '‪' and <= '‮' or >= '⁦' and <= '⁩';
 
     // Basic Latin letters, Latin-1 Supplement and Latin Extended letters, combining diacritics, okina/apostrophe modifiers and name punctuation.
-    private static bool IsLatin(string value) => value.All(c =>
+    internal static bool IsLatin(string value) => value.All(c =>
         c is >= 'A' and <= 'Z' or >= 'a' and <= 'z' or ' ' or '-' or '\'' or '.' or '’' or 'ʻ' or 'ʼ' ||
         c is >= 'À' and <= 'ɏ' && c is not '×' and not '÷' ||
         c is >= '̀' and <= 'ͯ' or >= 'Ḁ' and <= 'ỿ');

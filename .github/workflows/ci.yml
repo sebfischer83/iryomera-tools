@@ -37,6 +37,7 @@ jobs:
           python scripts/generate-importer-schemas.py
           python scripts/generate-studio-schemas.py
           python scripts/generate-modkit-schemas.py
+          python scripts/generate-name-importer-schemas.py
           python scripts/generate-diagnostic-example.py
           python scripts/generate-modkit-example.py
           git diff --exit-code -- schemas
@@ -95,15 +96,15 @@ jobs:
       - uses: actions/setup-dotnet@v6.0.0
         with:
           dotnet-version: 10.0.x
-      - name: Require exactly the four packages at the tag version
+      - name: Require exactly the five packages at the tag version
         run: |
           version="${GITHUB_REF_NAME#v}"
           # The artifact keeps paths relative to the common ancestor of its files; locate packages by name.
           find release -name '*.nupkg' | sort > packages.txt
-          for id in Iryomera.Content.SDK Iryomera.Localization Iryomera.MedicalImporter Iryomera.ModKit; do
+          for id in Iryomera.Content.SDK Iryomera.Localization Iryomera.MedicalImporter Iryomera.ModKit Iryomera.NameImporter; do
             grep -q "/$id\.$version\.nupkg$" packages.txt || { echo "::error::Missing $id.$version.nupkg; <Version> in Directory.Build.props must match tag $GITHUB_REF_NAME."; exit 1; }
           done
-          test "$(wc -l < packages.txt)" -eq 4 || { echo "::error::Expected exactly 4 packages."; cat packages.txt; exit 1; }
+          test "$(wc -l < packages.txt)" -eq 5 || { echo "::error::Expected exactly 5 packages."; cat packages.txt; exit 1; }
       - name: Push to GitHub Packages
         run: |
           while read -r package; do
