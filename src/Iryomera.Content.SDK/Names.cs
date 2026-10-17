@@ -56,7 +56,11 @@ public sealed record NamePool : ExtensibleRecord
     public List<NameEntry> Entries { get; init; } = [];
 }
 
-/// <summary>How parts combine for a country or region. Professional titles are localization keys, not name data.</summary>
+/// <summary>
+/// How parts combine for a country or region. LocalizedSeparator applies only to Localized values; romanized parts are
+/// always joined with a single space. Display order for romanized names is the game's choice. Professional titles are
+/// localization keys, not name data.
+/// </summary>
 public sealed record NameFormat : ExtensibleRecord
 {
     [JsonRequired]
@@ -79,6 +83,7 @@ public static class NamePools
     /// <summary>
     /// Pools of the country without a region, plus pools of the requested region. The order is part of the contract and
     /// independent of package, file or culture order: pool ID, then entry key, both ordinal.
+    /// Country and region are compared ordinally; pass uppercase codes such as "DE" and "DE-BY".
     /// </summary>
     public static IReadOnlyList<SelectedNameEntry> Select(IEnumerable<ContentPackage> packages, string country, NamePart part, string? region = null) =>
         packages.SelectMany(p => (p.NamePools ?? []).Select(pool => (p.Manifest.Id, pool)))
@@ -87,7 +92,10 @@ public static class NamePools
             .SelectMany(x => x.pool.Entries.OrderBy(e => e.Key, StringComparer.Ordinal).Select(e => new SelectedNameEntry(x.Id, x.pool, e)))
             .ToArray();
 
-    /// <summary>The regional format if present, otherwise the country format, otherwise null.</summary>
+    /// <summary>
+    /// The regional format if present, otherwise the country format, otherwise null.
+    /// Country and region are compared ordinally; pass uppercase codes such as "DE" and "DE-BY".
+    /// </summary>
     public static NameFormat? ResolveFormat(IEnumerable<ContentPackage> packages, string country, string? region = null)
     {
         var formats = packages.SelectMany(p => p.NameFormats ?? []).Where(f => f.Country == country).ToArray();
