@@ -12,6 +12,9 @@ public sealed class SchemaTests
     [InlineData("localizationDefinition", "en")]
     [InlineData("localizationDefinition", "de")]
     [InlineData("modManifest", "mod-manifest")]
+    [InlineData("contentPackage", "names")]
+    [InlineData("localizationDefinition", "names.en")]
+    [InlineData("localizationDefinition", "names.de")]
     public void ExamplesConformToPublishedSchemas(string contract, string example) =>
         Assert.True(Fixtures.Evaluate(contract, JsonNode.Parse(File.ReadAllText(Fixtures.Example(example)))).IsValid);
 

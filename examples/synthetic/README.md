@@ -29,3 +29,7 @@ The HPO-shaped fixture retains negation, exact `0/5` source frequency, qualifier
 ## Diagnostic definition prototype
 
 `diagnostics.json`, `diagnostics.en.json` and `diagnostics.de.json` form a separate referentially consistent package: three fictional diseases, five reusable examinations, numeric/boolean/text/categorical observation definitions, resource/prerequisite links, a fictional interval/recommendation and explicitly separate simulation parameters. No patient simulation or medical facts are included. Regenerate with `python scripts/generate-diagnostic-example.py`. See [the contract guide](../../docs/diagnostic-content.md).
+
+## Synthetic name pools
+
+`names.json`, `names.en.json` and `names.de.json` form a separate package in namespace `name_demo` with invented given and family names for DE (including one DE-BY regional pool) and JP, plus formats for DE, JP (family first, no separator in the original script) and ES (two family names). The names, ranks, counts and cohorts are made up to exercise the format; they are not population data and describe no real person. See [ADR 0011](../../docs/architecture/0011-name-pools.md).

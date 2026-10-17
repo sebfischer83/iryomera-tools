@@ -118,5 +118,7 @@ public static class LocalizationValidator
         new[] { d.NameKey }.Concat(d.DescriptionKey is null ? [] : new[] { d.DescriptionKey }).Concat(d.SynonymKeys))
         .Concat(package.Definitions.OfType<ObservationDefinition>().Where(o => o.Result is not null).SelectMany(o => o.Result!.Categories.Select(c => c.NameKey)))
         .Concat(package.DiagnosticRecommendations.Where(r => r.RationaleKey is not null).Select(r => r.RationaleKey!))
-        .Concat(package.DiagnosticSimulation?.ObservationDistributions.Where(d => d.TextKey is not null).Select(d => d.TextKey!) ?? []);
+        .Concat(package.DiagnosticSimulation?.ObservationDistributions.Where(d => d.TextKey is not null).Select(d => d.TextKey!) ?? [])
+        // Name pools have a translated display name; the name strings themselves are data and have no keys.
+        .Concat(package.NamePools?.Select(p => p.NameKey) ?? []);
 }
