@@ -13,7 +13,10 @@ public sealed class ProjectTests
         using var data = new TestMod(); await data.Create(); var result = await new ModValidator().ValidateAsync(data.Project, gameVersion: "0.2.0");
         Assert.Empty(result.Issues); Assert.Equal(14, result.Content.Definitions.Count); Assert.Equal(2, result.Catalogs.Count);
         Assert.All(result.Content.Definitions, d => Assert.Equal(ReviewStatus.Unreviewed, d.Provenance.ReviewStatus));
-        var furniture = result.Content.Definitions.OfType<FurnitureDefinition>().Single(); Assert.Equal(3, furniture.Assets!.Count); Assert.Single(furniture.Placement!.InteractionPoints);
+        var furniture = result.Content.Definitions.OfType<FurnitureDefinition>().Single(f => f.Assets is not null); Assert.Equal(3, furniture.Assets!.Count); Assert.Single(furniture.Placement!.InteractionPoints);
+        var wallItem = result.Content.Definitions.OfType<FurnitureDefinition>().Single(f => f.CatalogAssets is not null);
+        Assert.Null(wallItem.Assets); Assert.Equal(FurnitureMount.Wall, wallItem.Placement!.Mount);
+        Assert.DoesNotContain(result.Project.Files, f => f.Path.Contains("notice_board", StringComparison.Ordinal));
         Assert.Contains(result.Content.Relations, r => r.Kind == RelationKind.RoomFurniture);
         Assert.Contains((await new ModValidator().ValidateAsync(data.Project, gameVersion: "2.0.0")).Issues, i => i.Code == "game-version");
     }
@@ -65,7 +68,7 @@ public sealed class ProjectTests
         {
             var p = await data.Read<ContentPackage>("content.json");
             if (change == "identity") p = p with { Manifest = p.Manifest with { Version = "2.0.0" } };
-            else p.Definitions.OfType<FurnitureDefinition>().Single().Assets![0] = p.Definitions.OfType<FurnitureDefinition>().Single().Assets![0] with { License = "Wrong" };
+            else p.Definitions.OfType<FurnitureDefinition>().Single(f => f.Assets is not null).Assets![0] = p.Definitions.OfType<FurnitureDefinition>().Single(f => f.Assets is not null).Assets![0] with { License = "Wrong" };
             await data.Write("content.json", p);
         }
         Assert.Contains((await new ModValidator().ValidateAsync(data.Project)).Issues, i => i.Code == code);
