@@ -8,7 +8,7 @@ The binding development rules are in AGENTS.md and apply in full:
 
 ## Commands
 
-Requires a .NET 10 SDK (pinned via `global.json`) plus a .NET 8 runtime, because the SDK, Localization and Foundation tests multi-target `net8.0;net10.0`. Python 3 is used for the generators and scripted smoke tests.
+Requires exactly .NET SDK 10.0.402 (`global.json`, `rollForward: disable`; other SDKs change the implicit `Microsoft.AspNetCore.App.Internal.Assets` version and break `--locked-mode`) plus a .NET 8 runtime, because the SDK, Localization and Foundation tests multi-target `net8.0;net10.0`. Python 3 is used for the generators and scripted smoke tests.
 
 ```sh
 dotnet restore Iryomera.Tools.sln --locked-mode      # lock files are committed; update them when packages change
