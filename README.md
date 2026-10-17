@@ -38,7 +38,7 @@ dotnet pack Iryomera.Tools.sln -c Release --no-build -o artifacts
 python scripts/run-godot-smoke.py
 ```
 
-`global.json` selects stable .NET 10 SDK feature bands. The initial restore needs NuGet access; execution is fully local and offline afterward. Ordinary content/library use needs no database, Godot installation, cloud account or credentials. The dedicated integration runner provisions Godot only for its test. CI performs build, both framework test targets, sample, pack and real Godot integration on Windows/Linux. Packages are created locally and as CI artifacts; nothing is automatically published to NuGet.
+`global.json` pins the exact .NET SDK 10.0.402 (`rollForward: disable`) because the SDK contributes implicit ASP.NET package versions to the committed lock files; install that SDK, and update `global.json`, CI and lock files together when moving to a newer one. The initial restore needs NuGet access; execution is fully local and offline afterward. Ordinary content/library use needs no database, Godot installation, cloud account or credentials. The dedicated integration runner provisions Godot only for its test. CI performs build, both framework test targets, sample, pack and real Godot integration on Windows/Linux. Packages are created locally and as CI artifacts; nothing is automatically published to NuGet.
 
 Start the [local editor](docs/content-studio.md) with `dotnet run --project src/Iryomera.ContentStudio -c Release --no-build` and open `http://127.0.0.1:5180`. Enter an operator label and explicitly load synthetic examples. All authoring runs locally after restore.
 
