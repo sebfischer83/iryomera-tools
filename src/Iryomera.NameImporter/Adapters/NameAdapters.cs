@@ -13,6 +13,8 @@ public interface INameAdapter
     /// <summary>Bump whenever normalized output rules change; it is part of the batch identity.</summary>
     string Version { get; }
     string Description { get; }
+    /// <summary>False for sources whose license is not safe enough to ship; their batches can never be permitted or exported.</summary>
+    bool Redistributable { get; }
     void ValidateOptions(NameImportOptions options);
     Task ReadAsync(Stream input, NameAdapterContext context, CancellationToken cancellationToken);
 }
@@ -33,6 +35,7 @@ public sealed class UsSsaAdapter : INameAdapter
     public string SourceId => "us-ssa";
     public string Version => "1.0.0";
     public string Description => "US SSA national baby names yobYYYY.txt (Name,Sex,Count); requires --birth-year.";
+    public bool Redistributable => true;
 
     public void ValidateOptions(NameImportOptions options)
     {
@@ -60,6 +63,7 @@ public sealed class UsSsaAdapter : INameAdapter
 }
 
 /// <summary>
+/// Local analysis only: batches from this source can never be permitted or exported (see Redistributable).
 /// sigpwned popular-names-by-country CSV (common-forenames-by-country.csv or common-surnames-by-country.csv). The source
 /// derives from Wikipedia lists; romanizations may be machine translations and are marked unverified. Regional lists use
 /// free-text regions, which are kept in the source fields but not mapped to ISO 3166-2.
@@ -69,7 +73,9 @@ public sealed class SigpwnedAdapter : INameAdapter
     private const string RomanizationOrigin = "sigpwned popular-names-by-country (source list or machine translation; unverified)";
     public string SourceId => "names-sigpwned";
     public string Version => "1.0.0";
-    public string Description => "sigpwned common-forenames-by-country.csv or common-surnames-by-country.csv.";
+    public string Description => "sigpwned common-forenames-by-country.csv or common-surnames-by-country.csv; local analysis only, never released.";
+    /// <summary>Declared CC0 but derived from Wikipedia lists (CC BY-SA) with partly machine-translated romanizations. Owner decision 2026-10-17.</summary>
+    public bool Redistributable => false;
     public void ValidateOptions(NameImportOptions options) { }
 
     public async Task ReadAsync(Stream input, NameAdapterContext context, CancellationToken ct)

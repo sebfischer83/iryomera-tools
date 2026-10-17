@@ -101,6 +101,8 @@ public static class NameWorkspaceValidation
             if (string.IsNullOrWhiteSpace(rights.Reviewer) || string.IsNullOrWhiteSpace(rights.Note) || rights.At == default) throw new InvalidDataException("Rights decisions require reviewer, note and timestamp.");
             if (rights.Decision == RedistributionDecision.Permitted && string.IsNullOrWhiteSpace(rights.PermissionEvidence))
                 throw new InvalidDataException("A permitted redistribution decision requires permission evidence.");
+            if (rights.Decision == RedistributionDecision.Permitted && !Redistributable(workspace.Batches.Single(b => b.Id == rights.BatchId)))
+                throw new InvalidDataException("This source is not redistributable; its batches stay local and can never be permitted.");
         }
     }
 
@@ -108,6 +110,8 @@ public static class NameWorkspaceValidation
     public static ReviewStatus Status(NameWorkspace workspace, string batchId, string recordId) =>
         (workspace.Reviews.LastOrDefault(r => r.BatchId == batchId && r.RecordId == recordId)
          ?? workspace.Reviews.LastOrDefault(r => r.BatchId == batchId && r.RecordId is null))?.Status ?? ReviewStatus.Unreviewed;
+
+    public static bool Redistributable(NameBatch batch) => NameImportEngine.Sources.Any(a => a.SourceId == batch.Options.Source && a.Redistributable);
 
     public static RedistributionDecision Rights(NameWorkspace workspace, string batchId) =>
         workspace.Rights.LastOrDefault(r => r.BatchId == batchId)?.Decision ?? RedistributionDecision.Undecided;

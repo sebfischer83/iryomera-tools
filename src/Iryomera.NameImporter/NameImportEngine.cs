@@ -9,7 +9,7 @@ namespace Iryomera.NameImporter;
 /// <summary>Local-only adapter orchestration; no network, hidden data acquisition or automatic approval.</summary>
 public sealed class NameImportEngine
 {
-    private static readonly INameAdapter[] Adapters = [new UsSsaAdapter(), new SigpwnedAdapter()];
+    private static readonly INameAdapter[] Adapters = [new UsSsaAdapter(), new UsCensusSurnamesAdapter(), new AtStatistikAdapter(), new SigpwnedAdapter()];
     public static IReadOnlyList<INameAdapter> Sources => Array.AsReadOnly(Adapters);
 
     public async Task<NameBatch> ReadAsync(string inputPath, NameImportOptions options, CancellationToken cancellationToken = default)

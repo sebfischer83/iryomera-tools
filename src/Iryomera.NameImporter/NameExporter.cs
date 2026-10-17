@@ -19,7 +19,7 @@ public sealed class NameExporter
         output = Path.GetFullPath(output);
         if (Directory.Exists(output) || File.Exists(output)) throw new IOException("Output already exists; releases are never overwritten.");
         var selected = workspace.Batches
-            .Where(b => NameWorkspaceValidation.Rights(workspace, b.Id) == RedistributionDecision.Permitted)
+            .Where(b => NameWorkspaceValidation.Redistributable(b) && NameWorkspaceValidation.Rights(workspace, b.Id) == RedistributionDecision.Permitted)
             .SelectMany(b => b.Records.Where(r => NameWorkspaceValidation.Status(workspace, b.Id, r.Id) == ReviewStatus.Approved).Select(r => (Batch: b, Record: r)))
             .ToList();
         if (selected.Count == 0) throw new InvalidOperationException("No approved records in batches with permitted redistribution.");

@@ -168,11 +168,50 @@ public sealed class NameImporterTests : IDisposable
     [Fact]
     public async Task DifferingRomanizationsBlockTheExport()
     {
-        var a = await new NameImportEngine().ReadAsync(File("a.csv", Surnames + "JP,1,1,JP-1,霞森,Kasumori,1000,0.01\n"), Options("names-sigpwned", version: "a"));
-        var b = await new NameImportEngine().ReadAsync(File("b.csv", Surnames + "JP,1,1,JP-1,霞森,Kasumory,1000,0.01\n"), Options("names-sigpwned", version: "b"));
+        // No safe adapter produces romanizations yet; build two staged batches with differing values directly.
+        NameBatch Romanized(NameBatch batch, string romanized) => batch with { Records = [batch.Records[0] with { Localized = "霞森", Romanized = romanized, RomanizationOrigin = "Synthetic" }] };
+        var a = Romanized(await Ssa("Kasumori,F,5\n", 2020), "Kasumori"); var b = Romanized(await Ssa("Kasumori,F,6\n", 1950, "b.txt"), "Kasumory");
         var error = await Assert.ThrowsAsync<InvalidOperationException>(async () => await new NameExporter().ExportAsync(await Approved(a, b), PathFor("conflict"), "1.0.0"));
         Assert.Contains("romanization", error.Message, StringComparison.OrdinalIgnoreCase);
         Assert.False(Directory.Exists(PathFor("conflict")));
+    }
+
+    [Fact]
+    public async Task UnsafeSourcesStayLocalAndCanNeverBePermitted()
+    {
+        var batch = await new NameImportEngine().ReadAsync(File("s.csv", Surnames + "JP,1,1,JP-1,霞森,Kasumori,1000,0.01\n"), Options("names-sigpwned"));
+        Assert.False(NameWorkspaceValidation.Redistributable(batch));
+        await Assert.ThrowsAsync<InvalidDataException>(() => Approved(batch));
+        Assert.All(NameImportEngine.Sources.Where(a => a.SourceId != "names-sigpwned"), a => Assert.True(a.Redistributable));
+    }
+
+    [Fact]
+    public async Task CensusSurnamesDropEthnicityColumnsAndCapitalizeNames()
+    {
+        var batch = await new NameImportEngine().ReadAsync(File("census.csv",
+            "name,rank,count,prop100k,cum_prop100k,pctwhite,pctblack,pctapi,pctaian,pct2prace,pcthispanic\n" +
+            "BRENNWALD,1,2000,828.19,828.19,70.9,23.11,0.5,0.89,2.19,2.4\nO'QUELLAN,2,150,50.5,878.69,(S),(S),1,1,1,1\nALL OTHER NAMES,0,10,1,1,1,1,1,1,1,1\n"), Options("us-census-surnames"));
+        Assert.Equal(["Brennwald", "O'Quellan"], batch.Records.Select(r => r.Localized).Order(StringComparer.Ordinal));
+        var first = batch.Records.Single(r => r.Localized == "Brennwald");
+        Assert.Equal(("US", NamePart.Family, 1, 2000L, 0.0082819m), (first.Country, first.Part, first.Rank!.Value, first.Count!.Value, first.Proportion!.Value));
+        Assert.Equal(["count", "name", "prop100k", "rank"], first.SourceFields.Keys);
+        Assert.Equal("BRENNWALD", first.SourceFields["name"].GetString());
+        Assert.Contains(batch.Diagnostics, d => d.Code == "case-normalized"); Assert.Contains(batch.Diagnostics, d => d.Code == "aggregate-row");
+        Assert.DoesNotContain("pctwhite", JsonSerializer.Serialize(batch, ContentJson.Options));
+    }
+
+    [Fact]
+    public async Task StatistikAustriaRowsAreSummedPerYearSexAndName()
+    {
+        var batch = await new NameImportEngine().ReadAsync(File("at.csv",
+            "C-JAHR-0;C-WOHNBEZIRK-0;C-GESCHLECHT-0;F-VORNAME_NORMALISIERT;F-ANZAHL_LGEB\r\n1984;101;1;Orwen;4\r\n1984;102;1;Orwen;3\r\n1984;101;1;Orwen;9\r\n" +
+            "1985;101;1;Orwen;2\r\n1984;0;2;Talvina;2\r\n1984;101;3;Kaelo;1\r\n"), Options("at-statistik"));
+        var orwen = batch.Records.Single(r => r.Localized == "Orwen" && r.BirthYearFrom == 1984);
+        Assert.Equal(("AT", NameGender.Male, 7L), (orwen.Country, orwen.Gender!.Value, orwen.Count!.Value));
+        Assert.Equal(2, orwen.SourceFields["districtRows"].GetArrayLength());
+        Assert.Equal(3, batch.Records.Count);
+        Assert.Equal(["duplicate-row", "gender"], batch.Diagnostics.Select(d => d.Code).Order());
+        Assert.Equal(NameGender.Female, batch.Records.Single(r => r.Localized == "Talvina").Gender);
     }
 
     [Fact]

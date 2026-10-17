@@ -30,7 +30,7 @@ Common rules for every source:
 - Observed coverage (2026-10-17): DE 20 given names (2022 newborns) and 10 surnames; US 40 given names (1990 and 2022) and 100 surnames; JP 39 given and 112 surnames; ES 60 given (2021) and 40 surnames. Counts present for some surname rows only.
 - The repository declares CC0 1.0. The underlying Wikipedia pages are CC BY-SA and themselves cite national statistics of varying terms; some romanizations are stated to come from Google Translate.
 
-**Decision:** usable as a low-priority fallback for broad country coverage. Record the CC0 declaration *and* the Wikipedia derivation in provenance. Romanizations from this source are marked unverified. Given names are newborn rankings and must carry their year, never be presented as population-wide. Implemented as adapter `names-sigpwned` 1.0.0 ([guide](../name-importer.md)).
+**Decision:** usable as a low-priority fallback for broad country coverage. Record the CC0 declaration *and* the Wikipedia derivation in provenance. Romanizations from this source are marked unverified. Given names are newborn rankings and must carry their year, never be presented as population-wide. Implemented as adapter `names-sigpwned` 1.0.0 for local analysis only. Owner decision 2026-10-17: only license-safe sources are released, so this adapter is marked not redistributable and its batches can never be permitted or exported ([guide](../name-importer.md)).
 
 ## Wikidata name items (`names-wikidata`)
 
@@ -38,7 +38,7 @@ Common rules for every source:
 - Query items that are instances of given name (Q202444, including subclasses such as male/female/unisex given name) or family name (Q101352), with native label, writing system, language and transliteration statements. Retain Q/P/statement identities and references as in ADR 0009.
 - No frequency information; useful for variety and script coverage, not weighting.
 
-**Decision:** candidate primary variety source. Never derive weights from counts of human items using a name.
+**Decision:** candidate primary variety source. Never derive weights from counts of human items using a name. Deferred 2026-10-17: name items have a language but no country, and pools are per country; mapping languages to countries would be invented.
 
 ## US SSA baby names (`names-us-ssa`)
 
@@ -53,7 +53,7 @@ Common rules for every source:
 - [data.gov catalog entry](https://catalog.data.gov/dataset/2010-decennial-census-of-population-and-housing-surnames) lists CC0 1.0.
 - The file contains race/Hispanic-origin percentage columns.
 
-**Decision:** candidate. Import only name, rank, count and proportion; drop all race/ethnicity columns at adapter level and record that in the adapter identity.
+**Decision:** candidate. Import only name, rank, count and proportion; drop all race/ethnicity columns at adapter level and record that in the adapter identity. Implemented as adapter `us-census-surnames` 1.0.0.
 
 ## INE Spain (`names-es-ine`)
 
@@ -68,7 +68,7 @@ Common rules for every source:
 - [Open data portal](https://data.statistik.gv.at/web/meta.jsp?dataset=OGDEXT_VORNAMEN_1), dataset `OGDEXT_VORNAMEN_1`: given names of live births by year, sex and district since 1984 (1984–2009 Austrian citizens only, all births since 2010). Rare names only as national yearly counts.
 - License shown on the dataset page: CC BY 4.0.
 
-**Decision:** candidate. Best openly licensed cohort source for German-language given names found so far (birth years from 1984). District data is not needed.
+**Decision:** candidate. Best openly licensed cohort source for German-language given names found so far (birth years from 1984). District data is not needed. Implemented as adapter `at-statistik` 1.0.0 (rows summed per year, sex and name across districts).
 
 ## German city open data (`names-de-city`)
 

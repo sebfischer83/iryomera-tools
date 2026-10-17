@@ -25,7 +25,7 @@ def obj(properties, required):
 
 defs = {}
 defs['nameImportOptions'] = obj({
-    'source': {'enum': ['us-ssa', 'names-sigpwned']}, 'sourceVersion': text, 'sourceUrl': {'type': 'string', 'format': 'uri', 'pattern': r'^https?://'},
+    'source': {'enum': ['us-ssa', 'us-census-surnames', 'at-statistik', 'names-sigpwned']}, 'sourceVersion': text, 'sourceUrl': {'type': 'string', 'format': 'uri', 'pattern': r'^https?://'},
     'license': text, 'licenseText': text, 'attribution': text, 'importedAt': date, 'namespace': namespace_schema,
     'birthYear': year, 'maxInputBytes': {'type': 'integer', 'minimum': 1}
 }, ['source', 'sourceVersion', 'sourceUrl', 'license', 'licenseText', 'attribution', 'importedAt'])

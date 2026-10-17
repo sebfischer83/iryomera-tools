@@ -9,6 +9,8 @@
         "source": {
           "enum": [
             "us-ssa",
+            "us-census-surnames",
+            "at-statistik",
             "names-sigpwned"
           ]
         },
