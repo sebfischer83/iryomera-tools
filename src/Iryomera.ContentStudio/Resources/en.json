@@ -253,6 +253,8 @@
     "studio.relation.furnitureequipment": "Furniture → equipment",
     "studio.priority": "Priority (1 = first choice)",
     "studio.capacity": "Capacity (patients at once)",
+    "studio.purchasecost": "Purchase cost (game currency)",
+    "studio.wageperhour": "Wage per game hour",
     "studio.roomrules": "Room rules",
     "studio.roomruleshint": "Layout rules for this room type, checked by the game when the player builds a room.",
     "studio.minimumcells": "Minimum area (cells)",

@@ -253,6 +253,8 @@
     "studio.relation.furnitureequipment": "Möbel → Gerät",
     "studio.priority": "Priorität (1 = erste Wahl)",
     "studio.capacity": "Kapazität (Patienten gleichzeitig)",
+    "studio.purchasecost": "Kaufpreis (Spielwährung)",
+    "studio.wageperhour": "Lohn pro Spielstunde",
     "studio.roomrules": "Raumregeln",
     "studio.roomruleshint": "Bauregeln für diese Raumart; das Spiel prüft sie, wenn der Spieler einen Raum baut.",
     "studio.minimumcells": "Mindestfläche (Zellen)",

@@ -63,6 +63,55 @@ public sealed class ClinicContentTests
     }
 
     [Fact]
+    public async Task PricesAndWagesRoundTripOverrideAndReportConflicts()
+    {
+        var base_ = Fixtures.Package(); var furniture = Id<FurnitureDefinition>(base_); var role = Id<StaffRoleDefinition>(base_);
+        base_.Gameplay.Add(new() { DefinitionId = furniture, PurchaseCost = 1200 });
+        base_.Gameplay.Add(new() { DefinitionId = role, WagePerHour = 30 });
+        Assert.Empty(ContentValidator.Validate(base_));
+        Assert.True(Fixtures.Evaluate("gameplayBalance", JsonSerializer.SerializeToNode(base_.Gameplay[^1], ContentJson.Options)).IsValid);
+        await using var bytes = new MemoryStream(); await ContentJson.WriteAsync(bytes, base_); bytes.Position = 0;
+        var read = await ContentDocuments.ReadValidatedAsync<ContentPackage>(bytes);
+        Assert.True(read.IsValid, string.Join(';', read.Issues));
+        ContentPackage Mod(string ns, decimal purchase) => new()
+        {
+            Manifest = new() { Id = ns + ":mod", Namespace = ns, Version = "1.0.0", License = "MIT", Dependencies = [new() { PackageId = base_.Manifest.Id, VersionRange = "[1.0.0,2.0.0)" }] },
+            GameplayOverrides = [new() { Id = ns + ":prices", Version = "1.0.0", TargetDefinitionId = furniture, PurchaseCost = purchase, WagePerHour = null }]
+        };
+        var (a, b) = (Mod("mod_a", 900), Mod("mod_b", 1500));
+        b.GameplayOverrides!.Add(new() { Id = "mod_b:wages", Version = "1.0.0", TargetDefinitionId = role, WagePerHour = 45 });
+        Assert.Empty(ContentValidator.Validate(a, [read.Value!]));
+        var resolved = GameplayResolver.Resolve([read.Value!, a, b]);
+        Assert.Equal((1500m, 45m), (resolved.Balances.Single(x => x.DefinitionId == furniture).PurchaseCost!.Value, resolved.Balances.Single(x => x.DefinitionId == role).WagePerHour!.Value));
+        var conflict = Assert.Single(resolved.Conflicts);
+        Assert.Equal((furniture, "purchaseCost", "mod_b:mod"), (conflict.TargetDefinitionId, conflict.Field, conflict.WinnerPackageId));
+        Assert.True(Fixtures.Evaluate("gameplayOverride", JsonSerializer.SerializeToNode(b.GameplayOverrides[1], ContentJson.Options)).IsValid);
+        var legacy = JsonSerializer.Serialize(Fixtures.Package(), ContentJson.Options);
+        Assert.DoesNotContain("purchaseCost", legacy); Assert.DoesNotContain("wagePerHour", legacy);
+    }
+
+    [Theory]
+    [InlineData("purchase")]
+    [InlineData("wage")]
+    [InlineData("override")]
+    public void NegativePricesAndWagesAreRejected(string change)
+    {
+        var base_ = Fixtures.Package(); var target = Id<FurnitureDefinition>(base_);
+        if (change == "override")
+        {
+            var mod = new ContentPackage
+            {
+                Manifest = new() { Id = "mod_a:mod", Namespace = "mod_a", Version = "1.0.0", License = "MIT", Dependencies = [new() { PackageId = base_.Manifest.Id, VersionRange = "[1.0.0,2.0.0)" }] },
+                GameplayOverrides = [new() { Id = "mod_a:cheap", Version = "1.0.0", TargetDefinitionId = target, PurchaseCost = -1 }]
+            };
+            Assert.Contains(ContentValidator.Validate(mod, [base_]), i => i.Code == "balance-range");
+            return;
+        }
+        base_.Gameplay.Add(change == "purchase" ? new() { DefinitionId = target, PurchaseCost = -5 } : new() { DefinitionId = Id<StaffRoleDefinition>(base_), WagePerHour = -1 });
+        Assert.Contains(ContentValidator.Validate(base_), i => i.Code == "balance-range");
+    }
+
+    [Fact]
     public void CapacityCanBeOverriddenByAMod()
     {
         var base_ = Fixtures.Package(); var department = Id<MedicalDepartmentDefinition>(base_);

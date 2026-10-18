@@ -2547,43 +2547,161 @@
       "requiredResources": {}
     },
     {
+      "definitionId": "demo_clinic:role_physician",
+      "wagePerHour": 60,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:role_nurse",
+      "wagePerHour": 30,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:role_technician",
+      "wagePerHour": 35,
+      "requiredResources": {}
+    },
+    {
       "definitionId": "demo_clinic:interview",
       "examinationDurationSeconds": 300,
+      "examinationCost": 80,
       "requiredResources": {}
     },
     {
       "definitionId": "demo_clinic:temperature",
       "examinationDurationSeconds": 120,
+      "examinationCost": 30,
       "requiredResources": {}
     },
     {
       "definitionId": "demo_clinic:pulse",
       "examinationDurationSeconds": 120,
+      "examinationCost": 30,
       "requiredResources": {}
     },
     {
       "definitionId": "demo_clinic:blood_pressure",
       "examinationDurationSeconds": 180,
+      "examinationCost": 40,
       "requiredResources": {}
     },
     {
       "definitionId": "demo_clinic:blood_count",
       "examinationDurationSeconds": 900,
+      "examinationCost": 120,
       "requiredResources": {}
     },
     {
       "definitionId": "demo_clinic:inflammation",
       "examinationDurationSeconds": 1200,
+      "examinationCost": 150,
       "requiredResources": {}
     },
     {
       "definitionId": "demo_clinic:urine",
       "examinationDurationSeconds": 480,
+      "examinationCost": 90,
       "requiredResources": {}
     },
     {
       "definitionId": "demo_clinic:imaging",
       "examinationDurationSeconds": 1500,
+      "examinationCost": 600,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:amber",
+      "treatmentCost": 900,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:blue",
+      "treatmentCost": 700,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:green",
+      "treatmentCost": 1200,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:violet",
+      "treatmentCost": 1000,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:silver",
+      "treatmentCost": 1100,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:equipment_imaging_ring",
+      "purchaseCost": 60000,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:equipment_imaging_stand",
+      "purchaseCost": 4000,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:equipment_lab_analyser",
+      "purchaseCost": 9000,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:equipment_microscope",
+      "purchaseCost": 2500,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:furniture_ceiling_lamp",
+      "purchaseCost": 300,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:furniture_disinfectant_dispenser",
+      "purchaseCost": 80,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:furniture_exam_chair",
+      "purchaseCost": 600,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:furniture_exam_couch",
+      "purchaseCost": 1200,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:furniture_lab_bench",
+      "purchaseCost": 1500,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:furniture_lab_cabinet",
+      "purchaseCost": 800,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:furniture_office_chair",
+      "purchaseCost": 250,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:furniture_stretcher",
+      "purchaseCost": 1800,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:furniture_wall_picture",
+      "purchaseCost": 120,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:furniture_wheelchair",
+      "purchaseCost": 400,
       "requiredResources": {}
     }
   ],
@@ -3333,5 +3451,5 @@
       ]
     }
   ],
-  "examplePurpose": "Fictional demo clinic generated from game fixtures; not clinical facts"
+  "examplePurpose": "Fictional demo clinic generated from game fixtures; not clinical facts. Prices and wages are synthetic game currency, not real costs"
 }

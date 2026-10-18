@@ -51,6 +51,11 @@ public sealed class DemoClinicTests
         Assert.Equal(10m, gameplay.Balances.Single(b => b.DefinitionId == Ns + "department_emergency").Capacity);
         Assert.Equal(0m, gameplay.Balances.Single(b => b.DefinitionId == Ns + "department_diagnostics").Capacity);
         Assert.Equal(1500m, gameplay.Balances.Single(b => b.DefinitionId == Ns + "imaging").ExaminationDurationSeconds);
+        decimal? Field(string id, Func<GameplayBalance, decimal?> field) => field(gameplay.Balances.Single(b => b.DefinitionId == Ns + id));
+        Assert.Equal((600m, 1200m, 60000m, 80m, 60m, 35m), (Field("imaging", b => b.ExaminationCost)!.Value, Field("green", b => b.TreatmentCost)!.Value,
+            Field("equipment_imaging_ring", b => b.PurchaseCost)!.Value, Field("furniture_disinfectant_dispenser", b => b.PurchaseCost)!.Value,
+            Field("role_physician", b => b.WagePerHour)!.Value, Field("role_technician", b => b.WagePerHour)!.Value));
+        Assert.Equal(14, gameplay.Balances.Count(b => b.PurchaseCost is not null));
 
         string[] Targets(string from, RelationKind kind) => package.Relations.Where(r => r.FromId == Ns + from && r.Kind == kind).Select(r => r.ToId).ToArray();
         Assert.Equal([Ns + "role_technician"], Targets("imaging", RelationKind.ExaminationStaffRole));

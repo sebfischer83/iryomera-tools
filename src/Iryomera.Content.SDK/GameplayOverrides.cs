@@ -24,6 +24,8 @@ public sealed record GameplayOverride : ExtensibleRecord
     public decimal? DiagnosticDifficulty { get; init; }
     public decimal? SimulatedSuccessProbability { get; init; }
     public decimal? Capacity { get; init; }
+    public decimal? PurchaseCost { get; init; }
+    public decimal? WagePerHour { get; init; }
     public Dictionary<string, decimal>? RequiredResources { get; init; }
 
     internal IEnumerable<(string Field, decimal Value)> Values()
@@ -37,6 +39,8 @@ public sealed record GameplayOverride : ExtensibleRecord
         if (DiagnosticDifficulty is { } g) yield return ("diagnosticDifficulty", g);
         if (SimulatedSuccessProbability is { } h) yield return ("simulatedSuccessProbability", h);
         if (Capacity is { } i) yield return ("capacity", i);
+        if (PurchaseCost is { } j) yield return ("purchaseCost", j);
+        if (WagePerHour is { } k) yield return ("wagePerHour", k);
         foreach (var (key, value) in RequiredResources ?? []) yield return ("requiredResources." + key, value);
     }
 }
@@ -90,7 +94,8 @@ public static class GameplayResolver
     {
         Id = "legacy:" + b.DefinitionId, Version = "1.0.0", TargetDefinitionId = b.DefinitionId, Rarity = b.Rarity, Severity = b.Severity,
         TreatmentDurationSeconds = b.TreatmentDurationSeconds, ExaminationDurationSeconds = b.ExaminationDurationSeconds, ExaminationCost = b.ExaminationCost,
-        TreatmentCost = b.TreatmentCost, DiagnosticDifficulty = b.DiagnosticDifficulty, SimulatedSuccessProbability = b.SimulatedSuccessProbability, Capacity = b.Capacity, RequiredResources = b.RequiredResources
+        TreatmentCost = b.TreatmentCost, DiagnosticDifficulty = b.DiagnosticDifficulty, SimulatedSuccessProbability = b.SimulatedSuccessProbability, Capacity = b.Capacity,
+        PurchaseCost = b.PurchaseCost, WagePerHour = b.WagePerHour, RequiredResources = b.RequiredResources
     };
 
     private static GameplayBalance ToBalance(string target, SortedDictionary<string, decimal> v)
@@ -101,6 +106,7 @@ public static class GameplayResolver
             DefinitionId = target, Rarity = Get("rarity"), Severity = Get("severity"), TreatmentDurationSeconds = Get("treatmentDurationSeconds"),
             ExaminationDurationSeconds = Get("examinationDurationSeconds"), ExaminationCost = Get("examinationCost"), TreatmentCost = Get("treatmentCost"),
             DiagnosticDifficulty = Get("diagnosticDifficulty"), SimulatedSuccessProbability = Get("simulatedSuccessProbability"), Capacity = Get("capacity"),
+            PurchaseCost = Get("purchaseCost"), WagePerHour = Get("wagePerHour"),
             RequiredResources = v.Where(p => p.Key.StartsWith("requiredResources.", StringComparison.Ordinal))
                 .ToDictionary(p => p.Key["requiredResources.".Length..], p => p.Value, StringComparer.Ordinal)
         };

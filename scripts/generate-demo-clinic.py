@@ -51,7 +51,7 @@ def text(key, en, de):
 package = {'schemaVersion':'1.0.0', 'manifest':{'schemaVersion':'1.0.0', 'id':ident('content'), 'namespace':NS, 'version':'1.0.0', 'license':'MIT', 'dependencies':[]},
            'definitions':[], 'relations':[], 'medicalAnnotations':[], 'referenceRanges':[], 'diagnosticRecommendations':[], 'gameplay':[],
            'diagnosticSimulation':{'simulationOnly':True, 'observationDistributions':[], 'manifestations':[], 'examinationPolicies':[]},
-           'namePools':[], 'examplePurpose':'Fictional demo clinic generated from game fixtures; not clinical facts'}
+           'namePools':[], 'examplePurpose':'Fictional demo clinic generated from game fixtures; not clinical facts. Prices and wages are synthetic game currency, not real costs'}
 
 def definition(kind, name, external_id, en, de, **extra):
     value = {'kind':kind, 'id':ident(name), 'nameKey':text(name + '.name', en, de), 'version':'1.0.0', 'provenance':source(external_id), **extra}
@@ -64,12 +64,18 @@ def relation(kind, left, right, external_id, **extra):
 
 def balance(definition_id, **values): package['gameplay'].append({'definitionId':definition_id, **values, 'requiredResources':{}})
 
+# Synthetic prices and wages in game currency (M8), keyed by game key; simulation balancing, never real prices.
+PRICES = fixtures.get('balancing', {})
+def price(field, game_key): return {field:PRICES[field][game_key]} if game_key in PRICES.get(field, {}) else {}
+
 rooms = {r['key']:definition('room', local(r['key']), r['key'], r['nameEn'], r['nameDe'], minimumCells=r['MinimumCells'], requiresDoor=r['RequiresDoor']) for r in fixtures['roomTypes']}
 departments = {}
 for d in fixtures['departments']:
     departments[d['key']] = definition('medicalDepartment', local(d['key']), d['key'], d['NameEn'], d['NameDe'])
     balance(departments[d['key']], capacity=d['Capacity'])
 roles = {role:definition('staffRole', 'role_' + role.lower(), 'staffRole:' + role, *names) for role, names in ROLES.items()}
+for role, role_id in roles.items():
+    if price('wagePerHour', role): balance(role_id, **price('wagePerHour', role))
 qualifications = {key:definition('staffQualification', local(key), key, *names) for key, names in QUALIFICATIONS.items()}
 equipment = {key:definition('medicalEquipment', local(key), key, *names) for key, names in EQUIPMENT.items()}
 
@@ -96,11 +102,12 @@ for exam in fixtures['examinations']:
     relation('examinationStaffRole', exam_id, roles[exam['staffRole']], exam['key'])
     for item in exam['equipment']: relation('examinationEquipment', exam_id, equipment[item], exam['key'])
     for item in exam['qualifications']: relation('examinationQualification', exam_id, qualifications[item], exam['key'])
-    balance(exam_id, examinationDurationSeconds=exam['durationMinutes'] * 60)
+    balance(exam_id, examinationDurationSeconds=exam['durationMinutes'] * 60, **price('examinationCost', exam['key']))
 
 diseases = {}
 for case in fixtures['cases']:
     disease = diseases[case['key']] = definition('disease', local(case['key']), case['key'], case['NameEn'], case['NameDe'])
+    if price('treatmentCost', case['key']): balance(disease, **price('treatmentCost', case['key']))
     for reading in case['readings']:
         distribution = {'schemaVersion':'1.0.0', 'simulationOnly':True, 'id':ident('reading_' + local(case['key']) + '_' + local(reading['ObservationId'])), 'version':'1.0.0',
                         'diseaseId':disease, 'observationId':observations[reading['ObservationId']], 'categoryWeights':{}}
@@ -129,6 +136,7 @@ for item in fixtures['furniture']:
     if item['transport']:
         extra.update(mobility='pushable', transport={'patientCapacity':1, 'posture':item['transport'].lower()})
     furniture[item['key']] = definition('furniture', local(item['key']), item['key'], item['NameEn'], item['NameDe'], **extra)
+    if price('purchaseCost', item['key']): balance(furniture[item['key']], **price('purchaseCost', item['key']))
     for capability in item['capabilities']: relation('furnitureEquipment', furniture[item['key']], equipment[capability], item['key'])
 for link in fixtures['roomFurniture']:
     relation('roomFurniture', rooms[link['room']], furniture[link['item']], link['room'], requirement=link['requirement'].lower())
