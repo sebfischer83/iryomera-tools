@@ -1,6 +1,6 @@
 # ADR 0015 — mods overriding gameplay balancing
 
-Status: **proposed** (draft for owner decision, 2026-10-18). Not implemented. Number 0014 is taken by the equipment relations ADR on its own branch.
+Status: **proposed** (draft for owner decision, 2026-10-18). Not implemented.
 
 ## Context
 

@@ -53,6 +53,8 @@ public partial class SmokeTest : Node
             Assert(modContent.IsValid, string.Join("; ", modContent.Issues));
             var furniture = modContent.Value!.Definitions.OfType<FurnitureDefinition>().Single(f => f.Assets is not null);
             Assert(furniture.Assets!.Count == 3 && furniture.Placement!.Footprint.Width == 2 && furniture.Placement.InteractionPoints.Count == 1, "Portable asset/placement contracts were lost.");
+            Assert(furniture.Placement.Surfaces!.Single().Key == "top" && modContent.Value.Relations.Single(r => r.Kind == RelationKind.RoomEquipment).Requirement == RelationRequirement.Required
+                && modContent.Value.Relations.Any(r => r.Kind == RelationKind.TreatmentEquipment), "Surface or equipment relation contracts were lost.");
             var wallItem = modContent.Value.Definitions.OfType<FurnitureDefinition>().Single(f => f.CatalogAssets is not null);
             Assert(wallItem.CatalogAssets![0].CatalogId == "iryomera.assets:wall.notice_board_example" && wallItem.Placement!.Mount == FurnitureMount.Wall && wallItem.Placement.MountHeightMeters == 1.5m, "Catalog asset/mount contracts were lost.");
             await using var namesSource = File.OpenRead(ProjectSettings.GlobalizePath("res://names.json"));

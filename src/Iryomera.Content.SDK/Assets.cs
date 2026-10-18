@@ -1,7 +1,7 @@
 namespace Iryomera.Content.SDK;
 
 public enum AssetKind { ModelGlb, Texture, Icon }
-public enum FurnitureMount { Floor, Wall, Ceiling }
+public enum FurnitureMount { Floor, Wall, Ceiling, Surface }
 
 /// <summary>A package-relative data asset. Licensing is independent of the tool's MIT license.</summary>
 public sealed record AssetReference : ExtensibleRecord
@@ -43,9 +43,20 @@ public sealed record InteractionPoint : ExtensibleRecord
     public decimal? HeadingDegrees { get; init; }
     public string? RequiredQualificationId { get; init; }
 }
+/// <summary>A horizontal area other items can stand on; local meters from the footprint's lower X/Z corner, Y up.</summary>
+public sealed record FurnitureSurface : ExtensibleRecord
+{
+    public required string Key { get; init; }
+    public required decimal HeightMeters { get; init; }
+    public required decimal X { get; init; }
+    public required decimal Z { get; init; }
+    public required decimal Width { get; init; }
+    public required decimal Depth { get; init; }
+}
 /// <summary>
 /// Absent mount means floor. Wall: X along the wall, Z into the room (+Z), origin on the wall surface, height from the storey
-/// floor to the origin. Ceiling: origin at the ceiling, the model hangs towards -Y. Placement legality is game logic.
+/// floor to the origin. Ceiling: origin at the ceiling, the model hangs towards -Y. Surface: origin on another item's surface plane, the model stands
+/// towards +Y; the height comes from that surface. Placement legality (fit, stacking, clearance) is game logic.
 /// </summary>
 public sealed record FurniturePlacement : ExtensibleRecord
 {
@@ -53,6 +64,8 @@ public sealed record FurniturePlacement : ExtensibleRecord
     public List<InteractionPoint> InteractionPoints { get; init; } = [];
     public FurnitureMount? Mount { get; init; }
     public decimal? MountHeightMeters { get; init; }
+    /// <summary>Optional, omitted when null; surfaces lie inside the footprint rectangle, which covers the whole projection.</summary>
+    public List<FurnitureSurface>? Surfaces { get; init; }
 }
 
 internal static class AssetValidator
@@ -82,6 +95,11 @@ internal static class AssetValidator
             if (placement.MountHeightMeters is { } height && (placement.Mount != FurnitureMount.Wall || height < 0))
                 issues.Add(new("furniture-mount", definition.Id, "A mount height requires a wall mount and must be nonnegative."));
             var footprint = placement.Footprint;
+            var surfaces = new HashSet<string>(StringComparer.Ordinal);
+            foreach (var surface in placement.Surfaces ?? [])
+                if (!ContentFormat.IsValidNamespace(surface.Key) || !surfaces.Add(surface.Key) || surface.HeightMeters <= 0 || surface.Width <= 0 || surface.Depth <= 0 ||
+                    surface.X < 0 || surface.Z < 0 || surface.X + surface.Width > footprint.Width * footprint.CellSizeMeters || surface.Z + surface.Depth > footprint.Depth * footprint.CellSizeMeters)
+                    issues.Add(new("furniture-surface", definition.Id, "Surfaces need unique stable keys, positive height and size, and must lie inside the footprint rectangle."));
             if (footprint.Width <= 0 || footprint.Depth <= 0 || footprint.CellSizeMeters <= 0)
                 issues.Add(new("footprint", definition.Id, "Footprint dimensions and cell size must be positive."));
             var cells = new HashSet<(int, int)>();

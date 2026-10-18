@@ -86,6 +86,60 @@ public sealed class CatalogAssetTests
         Assert.False(Fixtures.Evaluate("furnitureDefinition", node).IsValid);
     }
 
+    private static (ContentPackage Package, FurnitureDefinition Furniture) Table(params FurnitureSurface[] surfaces)
+    {
+        var package = Fixtures.Package(); var old = package.Definitions.OfType<FurnitureDefinition>().First();
+        var table = old with { Placement = new() { Footprint = new() { Width = 2, Depth = 1, CellSizeMeters = 0.5m }, Surfaces = [.. surfaces] } };
+        package.Definitions[package.Definitions.IndexOf(old)] = table; return (package, table);
+    }
+
+    [Fact]
+    public async Task SurfacesAndSurfaceMountsRoundTripAndMatchSchemas()
+    {
+        var (package, table) = Table(new() { Key = "top", HeightMeters = 0.75m, X = 0, Z = 0, Width = 1, Depth = 0.5m }, new() { Key = "shelf", HeightMeters = 0.3m, X = 0.1m, Z = 0.1m, Width = 0.8m, Depth = 0.3m });
+        Assert.Empty(ContentValidator.Validate(package));
+        Assert.True(Fixtures.Evaluate("furnitureDefinition", JsonSerializer.SerializeToNode<ContentDefinition>(table, ContentJson.Options)).IsValid);
+        Assert.True(Fixtures.Evaluate("furnitureSurface", JsonSerializer.SerializeToNode(table.Placement!.Surfaces![0], ContentJson.Options)).IsValid);
+        var small = new FurniturePlacement { Footprint = new() { Width = 1, Depth = 1, CellSizeMeters = 0.25m }, Mount = FurnitureMount.Surface };
+        Assert.True(Fixtures.Evaluate("furniturePlacement", JsonSerializer.SerializeToNode(small, ContentJson.Options)).IsValid);
+        await using var bytes = new MemoryStream(); await ContentJson.WriteAsync(bytes, package); bytes.Position = 0;
+        var result = await ContentDocuments.ReadValidatedAsync<ContentPackage>(bytes);
+        Assert.True(result.IsValid, string.Join(';', result.Issues));
+        Assert.Equal(["top", "shelf"], result.Value!.Definitions.OfType<FurnitureDefinition>().Single(d => d.Id == table.Id).Placement!.Surfaces!.Select(s => s.Key));
+    }
+
+    [Theory]
+    [InlineData("duplicate")]
+    [InlineData("height")]
+    [InlineData("width")]
+    [InlineData("outside-x")]
+    [InlineData("outside-z")]
+    [InlineData("negative")]
+    [InlineData("key")]
+    public void InvalidSurfacesAreRejected(string change)
+    {
+        var top = new FurnitureSurface { Key = "top", HeightMeters = 0.75m, X = 0, Z = 0, Width = 1, Depth = 0.5m };
+        FurnitureSurface[] surfaces = change switch
+        {
+            "duplicate" => [top, top with { HeightMeters = 0.3m }],
+            "height" => [top with { HeightMeters = 0 }],
+            "width" => [top with { Width = 0 }],
+            "outside-x" => [top with { X = 0.5m }],
+            "outside-z" => [top with { Depth = 0.6m }],
+            "negative" => [top with { X = -0.1m, Width = 0.5m }],
+            _ => [top with { Key = "Top Shelf" }]
+        };
+        Assert.Contains(ContentValidator.Validate(Table(surfaces).Package), i => i.Code == "furniture-surface");
+    }
+
+    [Fact]
+    public void SurfaceMountsDoNotTakeAMountHeight()
+    {
+        var (package, furniture) = Example();
+        package.Definitions[package.Definitions.IndexOf(furniture)] = furniture with { Placement = furniture.Placement! with { Mount = FurnitureMount.Surface } };
+        Assert.Contains(ContentValidator.Validate(package), i => i.Code == "furniture-mount");
+    }
+
     [Fact]
     public void CeilingAndFloorMountsWithoutHeightAreValid()
     {
