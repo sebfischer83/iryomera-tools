@@ -33,6 +33,71 @@ Normalization is explicit and part of the adapter version: surrounding whitespac
 
 `validate` lists import errors and staged text that no longer satisfies the SDK rules; `status [--records]` summarizes review and rights per batch.
 
+## Worked example (PowerShell)
+
+The tool never downloads anything. Download each file yourself from the official source, keep it outside the repository, and re-check the terms on the day you import. All paths below are examples; nothing here may be committed (AGENTS.md).
+
+Setup: install the tool from the feed ([releases](releases.md)) and prepare license files with the full terms you accepted, for example the CC0 legal code (`https://creativecommons.org/publicdomain/zero/1.0/legalcode.txt`) and the CC BY 4.0 legal code (`https://creativecommons.org/licenses/by/4.0/legalcode.txt`), each followed by a line recording where the dataset states its license and when you checked it.
+
+```powershell
+dotnet tool install Iryomera.NameImporter --version 0.8.0 --tool-path .\tools
+$names = ".\tools\iryomera-names.exe"
+$ws = "D:\iryomera-data\names-workspace.json"
+$now = "2026-10-18T10:00:00Z"   # fixed timestamps make re-runs reproducible
+```
+
+**US SSA given names** — download `https://www.ssa.gov/oact/babynames/names.zip` (data.gov lists CC0-1.0), extract it, then import one file per birth year:
+
+```powershell
+foreach ($year in 1940..2025) {
+  & $names import us-ssa --input "D:\iryomera-data\ssa\yob$year.txt" --birth-year $year `
+    --source-version "<SSA release date>" --source-url "https://www.ssa.gov/oact/babynames/limits.html" `
+    --license CC0-1.0 --license-file "D:\iryomera-data\licenses\cc0-ssa.txt" `
+    --attribution "U.S. Social Security Administration, national baby names" --imported-at $now --workspace $ws
+}
+```
+
+**US Census 2010 surnames** — download the full surname file (zipped CSV) linked on `https://www.census.gov/topics/population/genealogy/data/2010_surnames.html` (data.gov lists CC0-1.0) and extract `Names_2010Census.csv`:
+
+```powershell
+& $names import us-census-surnames --input "D:\iryomera-data\census\Names_2010Census.csv" `
+  --source-version "2010 Census surnames" --source-url "https://www.census.gov/topics/population/genealogy/data/2010_surnames.html" `
+  --license CC0-1.0 --license-file "D:\iryomera-data\licenses\cc0-census.txt" `
+  --attribution "U.S. Census Bureau, Frequently Occurring Surnames from the 2010 Census" --imported-at $now --workspace $ws
+```
+
+**Statistik Austria given names** — download `https://data.statistik.gv.at/data/OGDEXT_VORNAMEN_1.csv` (CC BY 4.0, see the dataset page `https://data.statistik.gv.at/web/meta.jsp?dataset=OGDEXT_VORNAMEN_1`):
+
+```powershell
+& $names import at-statistik --input "D:\iryomera-data\at\OGDEXT_VORNAMEN_1.csv" `
+  --source-version "<dataset update date>" --source-url "https://data.statistik.gv.at/web/meta.jsp?dataset=OGDEXT_VORNAMEN_1" `
+  --license CC-BY-4.0 --license-file "D:\iryomera-data\licenses\cc-by-4.0-statistik-austria.txt" `
+  --attribution "Statistik Austria, Vornamen (OGDEXT_VORNAMEN_1), CC BY 4.0" --imported-at $now --workspace $ws
+```
+
+**Wikidata name items** — run [`examples/wikidata/names.rq`](../examples/wikidata/names.rq) on `https://query.wikidata.org/`, adjusting the language filter, and save the result as SPARQL JSON. Record the actual retrieval time and your language-to-country decision:
+
+```powershell
+& $names import wikidata-names --input "D:\iryomera-data\wikidata\names-ja.json" `
+  --language-country ja=JP --retrieved-at "2026-10-18T09:30:00Z" `
+  --source-version "names.rq v1, 2026-10-18" --source-url "https://query.wikidata.org/" `
+  --license CC0-1.0 --license-file "D:\iryomera-data\licenses\cc0-wikidata.txt" `
+  --attribution "Wikidata contributors" --imported-at $now --workspace $ws
+```
+
+**Review, rights and export** — check errors and counts, then decide per batch. Take the batch IDs from the `id` field of each import output or from `status`:
+
+```powershell
+& $names validate --workspace $ws
+& $names status --workspace $ws
+& $names review --workspace $ws --batch <batch-id> --all --status approved --reviewer "<your name>" --at $now --note "Checked sample and diagnostics"
+& $names review --workspace $ws --batch <batch-id> --id <record-id> --status rejected --reviewer "<your name>" --at $now --note "Unsuitable entry"
+& $names rights --workspace $ws --batch <batch-id> --decision permitted --permission-evidence "<license URL and date checked>" --reviewer "<your name>" --at $now --note "CC0 / CC BY 4.0 verified"
+& $names export --workspace $ws --output "D:\iryomera-data\release\names-1.0.0" --version 1.0.0
+```
+
+The export directory can then be packed with ModKit or shipped as SDK content. Keep `NOTICE.md` with it; CC BY 4.0 sources require the attribution to stay visible to players.
+
 ## Formats and limits
 
 The workspace format is `schemas/names/v1` and rejects unknown properties, unlike the additive SDK format. Writes take a `.lock` file and replace the workspace atomically. Name formats (`nameFormats`) are not produced by the importer; author them as content. INE, German city data and BFS are not used until their terms are clear. Exported names describe no real person; combinations are made by the game.
