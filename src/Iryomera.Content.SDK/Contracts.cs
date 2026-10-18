@@ -155,6 +155,10 @@ public sealed record GameplayBalance : ExtensibleRecord
     public decimal? SimulatedSuccessProbability { get; init; }
     /// <summary>Simulation only: patients a department or room handles at the same time.</summary>
     public decimal? Capacity { get; init; }
+    /// <summary>Simulation only: game currency to buy one item, typically furniture or equipment; not a real price.</summary>
+    public decimal? PurchaseCost { get; init; }
+    /// <summary>Simulation only: game currency per game hour, typically for a staff role; not a real wage.</summary>
+    public decimal? WagePerHour { get; init; }
     public Dictionary<string, decimal> RequiredResources { get; init; } = [];
 }
 

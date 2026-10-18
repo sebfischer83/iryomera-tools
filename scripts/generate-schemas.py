@@ -88,7 +88,7 @@ defs['contentPackageManifest']=obj(manifest,['schemaVersion','id','namespace','v
 defs['modManifest']=obj({**manifest,'nameKey':key,'author':text,'compatibleGameVersions':text,'contentFiles':array({'type':'string','minLength':1,'pattern':r'^(?!/)(?!.*\\)(?!.*:)(?!.*(?:^|/)\.\.?(/|$)).+$'}),'supportedLanguages':array({'type':'string','pattern':r'^[a-z]{2,3}(-[A-Za-z0-9]{2,8})*$'})},['schemaVersion','id','namespace','nameKey','author','version','compatibleGameVersions','license'])
 bal={'definitionId':id}
 for name in ['rarity','severity','diagnosticDifficulty','simulatedSuccessProbability']:bal[name]=nullable({'type':'number','minimum':0,'maximum':1})
-for name in ['treatmentDurationSeconds','examinationDurationSeconds','examinationCost','treatmentCost','capacity']:bal[name]=nullable({'type':'number','minimum':0})
+for name in ['treatmentDurationSeconds','examinationDurationSeconds','examinationCost','treatmentCost','capacity','purchaseCost','wagePerHour']:bal[name]=nullable({'type':'number','minimum':0})
 bal['requiredResources']={'type':'object','propertyNames':text,'additionalProperties':{'type':'number','minimum':0}}
 defs['gameplayBalance']=obj(bal,['definitionId'])
 # Simulation-only overrides of declared dependencies' balancing (ADR 0015); only set fields replace earlier values.

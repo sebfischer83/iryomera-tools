@@ -140,6 +140,10 @@ GameplayBalance and GameplayOverride have an optional `capacity` (nonnegative, s
 
 New relation kind `furnitureEquipment` (furniture → medical equipment): placing the item gives its room that equipment capability, so an examination's `examinationEquipment` can be met by placed furniture. One item may provide several capabilities and several items may provide the same one. `RoomContents.ProvidedEquipment(packages, furnitureIds)` lists the capabilities of placed items; whether a room then satisfies an examination is game logic. Older readers reject the new kind. See [ADR 0018](architecture/0018-demo-clinic.md).
 
+## Purchase prices and wages (library 0.15.0)
+
+GameplayBalance and GameplayOverride have optional `purchaseCost` (game currency to buy one item, typically furniture or equipment) and `wagePerHour` (game currency per game hour, typically for a staff role). Both are nonnegative (`balance-range`), simulation only and omitted when null. Mods override them field by field like the other balancing values, and competing overrides are reported as `gameplay-override-conflict` warnings (ADR 0015). They are game economy values, never real prices or wages. Construction costs for floors, walls and doors are a game setting, not content. See [ADR 0019](architecture/0019-price-balancing.md).
+
 ModKit authoring (`mod.json`) and archive integrity (`checksums.json`) have separate schemas in `schemas/modkit/v1`. No executable/script/plugin payload kind is defined. The archive is not a Godot PCK or game save format. The runtime game remains responsible for asset rendering and interaction behavior.
 
 ## Name pools and formats (library 0.6.0)

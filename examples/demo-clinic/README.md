@@ -34,6 +34,7 @@ python scripts/generate-demo-clinic.py
 | `interactionPoints` | Points supplied by the game, used as given; `placeholder: false` (measured) drops the marker. Lying headings point from feet to head. |
 | Room furniture requirement | `roomFurniture` with `requirement`. |
 | Patient names | Name pools `demo_clinic:patients.given` and `demo_clinic:patients.family` (country `DE`, gender unknown); no name format, so installed formats are not contested. |
+| `balancing` | Synthetic game currency (M8): `examinationCost` per examination, `treatmentCost` per case, `purchaseCost` per furniture item, `wagePerHour` per staff role, all as gameplay balancing. Not real prices or wages. |
 | Patient mobility | Not content; stays in the game. |
 
 Units: `demo:C` → `Cel`, `demo:beats-per-minute` → `/min`, `demo:fictional-pressure` → `{fictional_pressure}`, `demo:fictional-count` → `{fictional_count}`, `demo:fictional-marker` → `{fictional_marker}`.

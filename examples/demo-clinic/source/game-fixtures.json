@@ -884,5 +884,46 @@
       "index": 6,
       "mobility": "Lying"
     }
-  ]
+  ],
+  "balancing": {
+    "note": "Synthetic game balancing suggested by the game (M8); game currency, not real prices or wages",
+    "examinationCost": {
+      "demo:interview": 80,
+      "demo:temperature": 30,
+      "demo:pulse": 30,
+      "demo:blood-pressure": 40,
+      "demo:blood-count": 120,
+      "demo:inflammation": 150,
+      "demo:urine": 90,
+      "demo:imaging": 600
+    },
+    "treatmentCost": {
+      "demo:amber": 900,
+      "demo:blue": 700,
+      "demo:green": 1200,
+      "demo:violet": 1000,
+      "demo:silver": 1100
+    },
+    "purchaseCost": {
+      "demo:furniture_exam_couch": 1200,
+      "demo:furniture_exam_chair": 600,
+      "demo:furniture_office_chair": 250,
+      "demo:furniture_lab_bench": 1500,
+      "demo:furniture_lab_cabinet": 800,
+      "demo:equipment_lab_analyser": 9000,
+      "demo:equipment_imaging_ring": 60000,
+      "demo:equipment_imaging_stand": 4000,
+      "demo:furniture_wheelchair": 400,
+      "demo:furniture_stretcher": 1800,
+      "demo:furniture_ceiling_lamp": 300,
+      "demo:furniture_wall_picture": 120,
+      "demo:furniture_disinfectant_dispenser": 80,
+      "demo:equipment_microscope": 2500
+    },
+    "wagePerHour": {
+      "Physician": 60,
+      "Nurse": 30,
+      "Technician": 35
+    }
+  }
 }

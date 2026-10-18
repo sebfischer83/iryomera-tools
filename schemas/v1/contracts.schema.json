@@ -2843,6 +2843,28 @@
             }
           ]
         },
+        "purchaseCost": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "wagePerHour": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
         "requiredResources": {
           "type": "object",
           "propertyNames": {
@@ -2975,6 +2997,28 @@
           ]
         },
         "capacity": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "purchaseCost": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "wagePerHour": {
           "anyOf": [
             {
               "type": "number",
