@@ -286,6 +286,17 @@
           "type": "string",
           "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
         },
+        "kind": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
         "x": {
           "type": "number"
         },
@@ -1479,6 +1490,30 @@
               "type": "null"
             }
           ]
+        },
+        "mobility": {
+          "anyOf": [
+            {
+              "enum": [
+                "fixed",
+                "movable",
+                "pushable"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "transport": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/furnitureTransport"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
@@ -1568,6 +1603,37 @@
         "nameKey",
         "version",
         "provenance"
+      ],
+      "additionalProperties": true
+    },
+    "furnitureTransport": {
+      "type": "object",
+      "properties": {
+        "patientCapacity": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "posture": {
+          "enum": [
+            "seated",
+            "lying"
+          ]
+        },
+        "requiredQualificationId": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "patientCapacity",
+        "posture"
       ],
       "additionalProperties": true
     },

@@ -53,19 +53,19 @@ public sealed partial class ProjectService
         }, ct: ct);
 
     /// <summary>
-    /// Replaces catalog asset references and, for furniture, the placement. Like other definition edits this resets the
-    /// definition's review; relations are unaffected because assets and placement carry no medical meaning.
+    /// Replaces catalog asset references and, for furniture, placement, mobility and transport. Like other definition edits this
+    /// resets the definition's review; relations are unaffected because these values carry no medical meaning.
     /// </summary>
     public Task SaveAssetsAsync(Guid project, long revision, string definitionId, IReadOnlyList<CatalogAssetReference> catalogAssets, FurniturePlacement? placement,
-        string actor, string note, CancellationToken ct = default) =>
+        string actor, string note, FurnitureMobility? mobility = null, FurnitureTransport? transport = null, CancellationToken ct = default) =>
         MutateAsync(project, revision, "asset-edit", definitionId, actor, note, state =>
         {
             var index = state.Package.Definitions.FindIndex(d => d.Id == definitionId);
             if (index < 0) throw new ArgumentException("Unknown definition.");
             var definition = state.Package.Definitions[index];
-            if (placement is not null && definition is not FurnitureDefinition) throw new ArgumentException("Only furniture has a placement.");
+            if ((placement is not null || mobility is not null || transport is not null) && definition is not FurnitureDefinition) throw new ArgumentException("Only furniture has a placement, mobility or transport.");
             definition = definition with { CatalogAssets = catalogAssets.Count == 0 ? null : catalogAssets.ToList(), Provenance = StudioContent.Draft(definition.Provenance) };
-            if (definition is FurnitureDefinition furniture) definition = furniture with { Placement = placement };
+            if (definition is FurnitureDefinition furniture) definition = furniture with { Placement = placement, Mobility = mobility, Transport = transport };
             state.Package.Definitions[index] = definition;
         }, ct: ct);
 

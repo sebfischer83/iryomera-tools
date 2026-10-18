@@ -309,6 +309,35 @@
               "type": "null"
             }
           ]
+        },
+        "mobility": {
+          "anyOf": [
+            {
+              "enum": [
+                "fixed",
+                "movable",
+                "pushable"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "interactionPointKinds": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+              },
+              "uniqueItems": true
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [

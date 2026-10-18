@@ -33,6 +33,16 @@ public sealed class AssetStudioTests
         Assert.All(state.Package.Relations, r => Assert.Equal(ReviewStatus.Approved, r.Provenance.ReviewStatus));
         Assert.Contains(await data.Projects.AuditAsync(id), a => a.Action == "asset-edit");
 
+        var wheelchair = new FurniturePlacement { Footprint = new() { Width = 1, Depth = 1 }, InteractionPoints = [new() { Key = "seat", Kind = "seat", X = 0.5m, Y = 0.45m, Z = 0.5m }, new() { Key = "handle", Kind = "handle", X = 0.5m, Y = 0, Z = 0 }] };
+        await data.Projects.SaveAssetsAsync(id, state.Project.Revision, "synthetic:demo_desk", [], wheelchair, "Synthetic editor", "Movable",
+            FurnitureMobility.Pushable, new() { PatientCapacity = 1, Posture = TransportPosture.Seated });
+        state = await data.Projects.GetAsync(id);
+        desk = state.Package.Definitions.OfType<FurnitureDefinition>().Single(d => d.Id == "synthetic:demo_desk");
+        Assert.Equal((FurnitureMobility.Pushable, 1, 2), (desk.Mobility!.Value, desk.Transport!.PatientCapacity, desk.Placement!.InteractionPoints.Count));
+        await Assert.ThrowsAsync<StudioValidationException>(() => data.Projects.SaveAssetsAsync(id, state.Project.Revision, "synthetic:demo_desk", [], wheelchair with { InteractionPoints = [] },
+            "Synthetic editor", "No handle", FurnitureMobility.Pushable));
+        await Assert.ThrowsAsync<ArgumentException>(() => data.Projects.SaveAssetsAsync(id, state.Project.Revision, "synthetic:demo_scanner", [], null, "Synthetic editor", "Mobility on equipment", FurnitureMobility.Movable));
+
         await data.Projects.SaveAssetsAsync(id, state.Project.Revision, "synthetic:demo_desk", [], null, "Synthetic editor", "Remove assets");
         desk = (await data.Projects.GetAsync(id)).Package.Definitions.OfType<FurnitureDefinition>().Single(d => d.Id == "synthetic:demo_desk");
         Assert.Null(desk.CatalogAssets); Assert.Null(desk.Placement);
@@ -79,6 +89,11 @@ public sealed class AssetStudioTests
         Assert.Null(valid.Error);
         Assert.Equal(["iryomera.assets:furniture.desk", "iryomera.assets:wall.notice_board"], valid.Entries.Select(e => e.Id));
         Assert.Equal((FurnitureMount.Wall, 1, 1), (valid.Entries[1].Mount!.Value, valid.Entries[1].FootprintWidth!.Value, valid.Entries[1].FootprintDepth!.Value));
+        var movable = Parse("{\"schemaVersion\":\"1.0.0\",\"assets\":[{\"id\":\"iryomera.assets:furniture.wheelchair\",\"kind\":\"modelGlb\",\"category\":\"furniture\",\"mobility\":\"pushable\",\"interactionPointKinds\":[\"seat\",\"handle\"]}]}");
+        Assert.Null(movable.Error);
+        Assert.Equal(FurnitureMobility.Pushable, movable.Entries[0].Mobility);
+        Assert.Equal(["seat", "handle"], movable.Entries[0].InteractionPointKinds!);
+        Assert.NotNull(Parse("{\"schemaVersion\":\"1.0.0\",\"assets\":[{\"id\":\"iryomera.assets:a\",\"kind\":\"modelGlb\",\"category\":\"x\",\"interactionPointKinds\":[\"seat\",\"seat\"]}]}").Error);
         Assert.NotNull(Parse("{\"schemaVersion\":\"1.0.0\",\"assets\":[{\"id\":\"not an id\",\"kind\":\"modelGlb\",\"category\":\"wall\"}]}").Error);
         Assert.NotNull(Parse("{\"schemaVersion\":\"2.0.0\",\"assets\":[]}").Error);
         Assert.NotNull(Parse("{\"schemaVersion\":\"1.0.0\",\"assets\":[{\"id\":\"iryomera.assets:a\",\"kind\":\"modelGlb\",\"category\":\"x\"},{\"id\":\"iryomera.assets:a\",\"kind\":\"modelGlb\",\"category\":\"x\"}]}").Error);

@@ -4,7 +4,8 @@ using Json.Schema;
 
 namespace Iryomera.ContentStudio.Services;
 
-public sealed record CatalogAssetIndexEntry(string Id, AssetKind Kind, string Category, FurnitureMount? Mount, int? FootprintWidth, int? FootprintDepth);
+public sealed record CatalogAssetIndexEntry(string Id, AssetKind Kind, string Category, FurnitureMount? Mount, int? FootprintWidth, int? FootprintDepth,
+    FurnitureMobility? Mobility = null, IReadOnlyList<string>? InteractionPointKinds = null);
 
 /// <summary>
 /// Optional local, unversioned folder written by the game's private asset plugin (Studio:CatalogPreviewDirectory):
@@ -73,7 +74,9 @@ public sealed class StudioCatalog(IConfiguration configuration)
             FurnitureMount? mount = asset.TryGetProperty("mount", out var m) && m.ValueKind == JsonValueKind.String ? JsonSerializer.Deserialize<FurnitureMount>(m.GetRawText(), ContentJson.Options) : null;
             int? width = null, depth = null;
             if (asset.TryGetProperty("footprint", out var f) && f.ValueKind == JsonValueKind.Object) { width = f.GetProperty("width").GetInt32(); depth = f.GetProperty("depth").GetInt32(); }
-            entries.Add(new(id, kind, asset.GetProperty("category").GetString()!, mount, width, depth));
+            FurnitureMobility? mobility = asset.TryGetProperty("mobility", out var mo) && mo.ValueKind == JsonValueKind.String ? JsonSerializer.Deserialize<FurnitureMobility>(mo.GetRawText(), ContentJson.Options) : null;
+            IReadOnlyList<string>? kinds = asset.TryGetProperty("interactionPointKinds", out var k) && k.ValueKind == JsonValueKind.Array ? k.EnumerateArray().Select(x => x.GetString()!).ToArray() : null;
+            entries.Add(new(id, kind, asset.GetProperty("category").GetString()!, mount, width, depth, mobility, kinds));
         }
         return (entries.OrderBy(e => e.Id, StringComparer.Ordinal).ThenBy(e => e.Kind).ToArray(), null);
     }

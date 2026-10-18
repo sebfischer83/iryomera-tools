@@ -219,6 +219,7 @@
         "interactionPoints": [
           {
             "key": "service",
+            "kind": "operator",
             "x": 1,
             "y": 0,
             "z": -0.5,
@@ -282,6 +283,58 @@
         },
         "mount": "wall",
         "mountHeightMeters": 1.5
+      }
+    },
+    {
+      "kind": "furniture",
+      "id": "example_mod:demo_wheelchair",
+      "nameKey": "example_mod.demo_wheelchair.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Own fictional ModKit software fixture, not medical knowledge",
+        "externalId": "synthetic-demo",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed"
+      },
+      "mobility": "pushable",
+      "transport": {
+        "patientCapacity": 1,
+        "posture": "seated"
+      },
+      "placement": {
+        "footprint": {
+          "width": 1,
+          "depth": 1,
+          "cellSizeMeters": 1
+        },
+        "interactionPoints": [
+          {
+            "key": "seat",
+            "kind": "seat",
+            "x": 0.5,
+            "y": 0.45,
+            "z": 0.5,
+            "headingDegrees": 0
+          },
+          {
+            "key": "handle",
+            "kind": "handle",
+            "x": 0.5,
+            "y": 0,
+            "z": 0,
+            "headingDegrees": 0
+          },
+          {
+            "key": "entry",
+            "kind": "entry",
+            "x": 0.5,
+            "y": 0,
+            "z": 1.2,
+            "headingDegrees": 180
+          }
+        ]
       }
     }
   ],

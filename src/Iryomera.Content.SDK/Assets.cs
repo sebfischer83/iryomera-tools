@@ -2,6 +2,22 @@ namespace Iryomera.Content.SDK;
 
 public enum AssetKind { ModelGlb, Texture, Icon }
 public enum FurnitureMount { Floor, Wall, Ceiling, Surface }
+public enum FurnitureMobility { Fixed, Movable, Pushable }
+public enum TransportPosture { Seated, Lying }
+
+/// <summary>Standard interaction point kinds (ADR 0016). Other stable keys are allowed for mods.</summary>
+public static class InteractionPointKinds
+{
+    public const string Seat = "seat", Lying = "lying", Handle = "handle", Operator = "operator", Entry = "entry";
+}
+
+/// <summary>Simulation and game rules for furniture that carries patients; no medical statement.</summary>
+public sealed record FurnitureTransport : ExtensibleRecord
+{
+    public required int PatientCapacity { get; init; }
+    public required TransportPosture Posture { get; init; }
+    public string? RequiredQualificationId { get; init; }
+}
 
 /// <summary>A package-relative data asset. Licensing is independent of the tool's MIT license.</summary>
 public sealed record AssetReference : ExtensibleRecord
@@ -33,10 +49,16 @@ public sealed record FurnitureFootprint : ExtensibleRecord
     public decimal CellSizeMeters { get; init; } = 1;
     public List<FootprintCell> OccupiedCells { get; init; } = [];
 }
-/// <summary>Local meters relative to the footprint's lower X/Z corner, Y up. Points may lie outside occupied cells.</summary>
+/// <summary>
+/// Local meters relative to the footprint's lower X/Z corner, Y up. Points may lie outside occupied cells. HeadingDegrees is
+/// the facing of the person at the point: 0° looks along local +Z, increasing counterclockwise seen from above, so 90° looks
+/// along +X, 180° along -Z and 270° along -X (a right-handed rotation about +Y). Kind is optional: seat, lying, handle,
+/// operator, entry or another stable key.
+/// </summary>
 public sealed record InteractionPoint : ExtensibleRecord
 {
     public required string Key { get; init; }
+    public string? Kind { get; init; }
     public required decimal X { get; init; }
     public required decimal Y { get; init; }
     public required decimal Z { get; init; }
@@ -93,6 +115,7 @@ internal static class AssetValidator
                     issues.Add(new("catalog-asset", definition.Id, "Use a namespace-based catalog ID and a known asset kind."));
                 if (!catalog.Add((asset.CatalogId, asset.Kind))) issues.Add(new("duplicate-catalog-asset", definition.Id, "Catalog asset references must be unique within a definition."));
             }
+            if (definition is FurnitureDefinition furniture) ValidateMobility(furniture, resolve, issues);
             if (definition is not FurnitureDefinition { Placement: { } placement }) continue;
             if (placement.Mount is { } mount && !Enum.IsDefined(mount))
                 issues.Add(new("furniture-mount", definition.Id, "Unknown furniture mount."));
@@ -118,13 +141,31 @@ internal static class AssetValidator
             var points = new HashSet<string>(StringComparer.Ordinal);
             foreach (var point in placement.InteractionPoints)
             {
-                if (!ContentFormat.IsValidNamespace(point.Key) || !points.Add(point.Key) || point.HeadingDegrees is < 0 or >= 360)
-                    issues.Add(new("interaction-point", definition.Id, "Use unique stable point keys and headings in [0,360)."));
+                if (!ContentFormat.IsValidNamespace(point.Key) || !points.Add(point.Key) || point.HeadingDegrees is < 0 or >= 360 || point.Kind is { } kind && !ContentFormat.IsValidNamespace(kind))
+                    issues.Add(new("interaction-point", definition.Id, "Use unique stable point keys, stable kind keys and headings in [0,360)."));
                 if (point.RequiredQualificationId is { } id && resolve(id) is { } target && target is not StaffQualificationDefinition)
                     issues.Add(new("interaction-qualification", definition.Id, "An interaction point requires a staff qualification reference."));
             }
         }
         return issues;
+    }
+
+    /// <summary>Transport needs a movable or pushable item with enough seat or lying points; pushable items need a handle.</summary>
+    private static void ValidateMobility(FurnitureDefinition furniture, Func<string, ContentDefinition?> resolve, List<ValidationIssue> issues)
+    {
+        void Error(string message) => issues.Add(new("furniture-transport", furniture.Id, message));
+        if (furniture.Mobility is { } mobility && !Enum.IsDefined(mobility)) Error("Unknown furniture mobility.");
+        var points = furniture.Placement?.InteractionPoints ?? [];
+        int Count(string kind) => points.Count(p => p.Kind == kind);
+        if (furniture.Mobility == FurnitureMobility.Pushable && Count(InteractionPointKinds.Handle) == 0) Error("A pushable item needs at least one handle interaction point.");
+        if (furniture.Transport is not { } transport) return;
+        if (furniture.Mobility is not (FurnitureMobility.Movable or FurnitureMobility.Pushable)) Error("Transport requires mobility movable or pushable.");
+        if (transport.PatientCapacity < 1) Error("Patient capacity must be at least 1.");
+        if (!Enum.IsDefined(transport.Posture)) Error("Unknown transport posture.");
+        var required = transport.Posture == TransportPosture.Lying ? InteractionPointKinds.Lying : InteractionPointKinds.Seat;
+        if (Count(required) < transport.PatientCapacity) Error($"Transport needs at least {transport.PatientCapacity} {required} interaction point(s).");
+        if (transport.RequiredQualificationId is { } id && resolve(id) is { } target && target is not StaffQualificationDefinition)
+            issues.Add(new("interaction-qualification", furniture.Id, "Transport staff requires a staff qualification reference."));
     }
 
     private static bool SafePath(string path) => !string.IsNullOrWhiteSpace(path) && !path.StartsWith('/') && !path.Contains('\\') && !path.Contains(':') &&

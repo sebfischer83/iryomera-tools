@@ -37,7 +37,7 @@ For the definition-only diagnostic prototype, upload `examples/synthetic/diagnos
 
 ## Assets, placement and equipment
 
-The **Assets** tab of a definition edits catalog asset references (`catalogAssets`: asset kind and a neutral catalog ID such as `iryomera.assets:wall.notice_board`) and, for furniture, the placement: footprint size and cell size, mount (floor, wall with height, ceiling, surface) and surfaces other items can stand on. Occupied cells and interaction points are kept unchanged. Saving resets the review of that definition only; its relationships keep their review status. The SDK validates the result as usual ([ADR 0013](architecture/0013-catalog-assets-and-mounting.md)).
+The **Assets** tab of a definition edits catalog asset references (`catalogAssets`: asset kind and a neutral catalog ID such as `iryomera.assets:wall.notice_board`) and, for furniture, mobility (fixed, movable, pushable), patient transport (capacity, seated or lying, staff qualification) and the placement: footprint size and cell size, mount (floor, wall with height, ceiling, surface), surfaces other items can stand on, and interaction points with kind, position, heading and qualification. Occupied cells are kept unchanged. Saving resets the review of that definition only; its relationships keep their review status. The SDK validates the result as usual ([ADR 0013](architecture/0013-catalog-assets-and-mounting.md)).
 
 Optionally point Studio at the local folder written by the game's private asset plugin:
 
@@ -46,6 +46,7 @@ dotnet run --project src/Iryomera.ContentStudio -c Release --no-build -- --Studi
 ```
 
 - `catalog-assets.json` in that folder fills the catalog ID selection list. It must match the `catalogAssetIndex` schema in [schemas/studio/v1](../schemas/studio/v1/) (`schemaVersion`, `assets[]` with `id`, `kind`, `category`, optional `mount` and `footprint`; unknown fields are tolerated). The **Use catalog footprint and mount** button copies those suggestions into the placement form. An invalid file is reported and ignored; IDs can always be typed by hand, for example for mods.
+- Optional `mobility` and `interactionPointKinds` per entry let Studio warn when a pushable or transport item points to a model that is fixed or lacks the needed point kinds. The game rules come from the content definition; the catalog values only drive this warning.
 - `<namespace>/<local_name>.png` previews (for example `iryomera.assets/wall.notice_board.png`) are shown next to an ID. Studio serves them read-only through `/catalog-preview?id=…`, builds the path only from a validated ID, stays inside the folder, refuses links, files over 2 MiB and non-PNG content, and shows a placeholder when no preview exists.
 - Nothing from the folder is stored in the database, audit history, release ZIPs or ModKit packages. Keep it outside the repository; it may contain renders of purchased assets.
 

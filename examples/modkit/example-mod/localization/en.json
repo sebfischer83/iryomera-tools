@@ -17,6 +17,7 @@
     "example_mod.demo_room.name": "Synthetic examination room",
     "example_mod.demo_furniture.name": "Synthetic unit cube furniture",
     "example_mod.demo_role.name": "Synthetic staff role",
-    "example_mod.demo_notice_board.name": "Synthetic wall notice board"
+    "example_mod.demo_notice_board.name": "Synthetic wall notice board",
+    "example_mod.demo_wheelchair.name": "Synthetic wheelchair"
   }
 }

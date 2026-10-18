@@ -120,6 +120,14 @@ ContentPackage has optional `gameplayOverrides`, omitted when null; older reader
 
 `GameplayResolver.Resolve(loadOrder)` returns the effective balance per definition and the conflicts. The caller (the game's mod settings) passes the load order; each definition starts from the gameplay record of its own package, then gameplay records for other packages' definitions and overrides apply field by field in load order, the last package winning. When two or more packages set the same field of the same target, a `gameplay-override-conflict` (target, field, packages, winner) is reported as a warning, separate from validation errors. ModKit `validate` prints these conflicts for the supplied dependencies and the mod; `inspect` lists override targets. Medical content, relations, name pools and formats are never overridden. See [ADR 0015](architecture/0015-gameplay-overrides.md).
 
+## Movable furniture (library 0.12.0)
+
+InteractionPoint has an optional `kind` (stable key). Standard kinds: `seat` (a seated person or patient), `lying` (bed, stretcher, couch), `handle` (where the pushing person stands), `operator` (where staff operates a device or treats at the item, also for fixed items) and `entry` (the side to approach before taking a seat or lying point; the game picks one when absent). Mods may add other keys. Keys stay unique per item, so two handles are `handle_left` and `handle_right` with kind `handle`.
+
+`headingDegrees` is the facing of the person at the point: 0° looks along local +Z, increasing counterclockwise seen from above, so 90° is +X, 180° is −Z and 270° is −X (a right-handed rotation about +Y). Coordinates stay local meters from the footprint's lower X/Z corner, Y up; the game converts to its engine axes.
+
+FurnitureDefinition has optional `mobility` (`fixed` default, `movable`: the player relocates it, `pushable`: one person pushes it) and optional `transport` (`patientCapacity` ≥ 1, `posture` `seated` or `lying`, optional `requiredQualificationId` for the pushing staff), both omitted when null. Rules (`furniture-transport`): transport requires `movable` or `pushable`; it needs at least `patientCapacity` points of kind `seat` or `lying` matching the posture; `pushable` needs at least one `handle`. These are game and simulation rules, not medical statements. See [ADR 0016](architecture/0016-movable-furniture.md).
+
 ModKit authoring (`mod.json`) and archive integrity (`checksums.json`) have separate schemas in `schemas/modkit/v1`. No executable/script/plugin payload kind is defined. The archive is not a Godot PCK or game save format. The runtime game remains responsible for asset rendering and interaction behavior.
 
 ## Name pools and formats (library 0.6.0)

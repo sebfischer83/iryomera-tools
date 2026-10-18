@@ -17,6 +17,7 @@
     "example_mod.demo_room.name": "Synthetischer Untersuchungsraum",
     "example_mod.demo_furniture.name": "Synthetisches Würfelmöbel",
     "example_mod.demo_role.name": "Synthetische Personalrolle",
-    "example_mod.demo_notice_board.name": "Synthetische Wand-Infotafel"
+    "example_mod.demo_notice_board.name": "Synthetische Wand-Infotafel",
+    "example_mod.demo_wheelchair.name": "Synthetischer Rollstuhl"
   }
 }
