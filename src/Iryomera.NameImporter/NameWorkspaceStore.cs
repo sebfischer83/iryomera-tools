@@ -18,6 +18,7 @@ public static class NameDocuments
 
     public static async Task<T> ReadAsync<T>(Stream input, CancellationToken ct = default) where T : class
     {
+        TimeoutTolerantFormat.Install(Formats.DateTime);
         var name = typeof(T) == typeof(NameWorkspace) ? "nameWorkspace" : typeof(T) == typeof(NameReleaseReport) ? "nameReleaseReport"
             : throw new NotSupportedException("Unsupported name importer document type.");
         using var document = await JsonDocument.ParseAsync(input, new JsonDocumentOptions { AllowDuplicateProperties = false }, ct);

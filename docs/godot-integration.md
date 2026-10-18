@@ -33,7 +33,7 @@ The two libraries contain no Godot, Blazor, database or distribution dependency.
 
 ## Consumer usage
 
-In a Godot net8.0 C# project, reference `Iryomera.Content.SDK` and `Iryomera.Localization` 0.15.0 from the GitHub Packages feed or a local pack folder; see [releases and package feed](releases.md). Nothing is published to nuget.org.
+In a Godot net8.0 C# project, reference `Iryomera.Content.SDK` and `Iryomera.Localization` 0.15.1 from the GitHub Packages feed or a local pack folder; see [releases and package feed](releases.md). Nothing is published to nuget.org.
 
 ```csharp
 await using var input = File.OpenRead(ProjectSettings.GlobalizePath("res://content.json"));

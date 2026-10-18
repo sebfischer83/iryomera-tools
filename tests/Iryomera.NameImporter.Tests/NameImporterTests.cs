@@ -96,6 +96,39 @@ public sealed class NameImporterTests : IDisposable
         await Assert.ThrowsAsync<InvalidDataException>(() => store.ReadAsync());
     }
 
+    [Fact]
+    public async Task DateTimeFormatToleratesRegexTimeoutsButStaysStrict()
+    {
+        var store = new NameWorkspaceStore(PathFor("dates.json"));
+        await store.AddAsync(await Ssa("Talvina,F,5\n"));
+        Assert.IsType<TimeoutTolerantFormat>(Json.Schema.Formats.Get("date-time"));
+        foreach (var value in new[] { "2026-10-18T19:00:00+00:00", "2026-10-18T19:00:00Z", "2026-10-18T19:00Z", "not-a-date" })
+            Assert.Equal(Json.Schema.Formats.DateTime.Validate(System.Text.Json.Nodes.JsonValue.Create(value), out _),
+                Json.Schema.Formats.Get("date-time").Validate(System.Text.Json.Nodes.JsonValue.Create(value), out _));
+        var json = System.IO.File.ReadAllText(store.Path);
+        System.IO.File.WriteAllText(store.Path, json.Replace("\"importedAt\": \"2026-10-17T12:00:00+00:00\"", "\"importedAt\": \"2026-10-17\"", StringComparison.Ordinal));
+        Assert.NotEqual(json, System.IO.File.ReadAllText(store.Path));
+        await Assert.ThrowsAsync<InvalidDataException>(() => store.ReadAsync());
+
+        var flaky = new FlakyFormat(failures: 2);
+        Assert.True(new TimeoutTolerantFormat(flaky).Validate(System.Text.Json.Nodes.JsonValue.Create("x"), out _));
+        Assert.Equal(3, flaky.Calls);
+        var broken = new FlakyFormat(failures: int.MaxValue);
+        Assert.Throws<System.Text.RegularExpressions.RegexMatchTimeoutException>(() => new TimeoutTolerantFormat(broken).Validate(System.Text.Json.Nodes.JsonValue.Create("x"), out _));
+        Assert.Equal(5, broken.Calls);
+    }
+
+    private sealed class FlakyFormat(int failures) : Json.Schema.Format("test-flaky")
+    {
+        public int Calls { get; private set; }
+        public override bool Validate(System.Text.Json.Nodes.JsonNode? node, out string? errorMessage)
+        {
+            errorMessage = null;
+            if (++Calls <= failures) throw new System.Text.RegularExpressions.RegexMatchTimeoutException("x", "y", TimeSpan.FromMilliseconds(250));
+            return true;
+        }
+    }
+
     private async Task<NameWorkspace> Approved(params NameBatch[] batches)
     {
         var store = new NameWorkspaceStore(PathFor("approved-" + Guid.NewGuid().ToString("N") + ".json"));
