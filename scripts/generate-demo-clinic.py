@@ -1,7 +1,7 @@
 """Demo clinic content package generated from the private game's demo fixture values (ADR 0018).
 
 Everything is fictional game content for a playable demo, not medical knowledge. Readings are deterministic
-simulation-only distributions; interaction points of transport items are placeholders until the game supplies geometry.
+simulation-only distributions; interaction points of transport items and surface heights are placeholders until the game supplies geometry.
 """
 import json
 from pathlib import Path
@@ -24,6 +24,8 @@ CATEGORIES = {'clear':('Clear','Unauffällig'), 'marked':('Marked','Auffällig')
 POINTS = {
     'Seated':[{'key':'seat','kind':'seat','x':0.5,'y':0.5,'z':0.5,'headingDegrees':0}, {'key':'handle','kind':'handle','x':0.5,'y':0,'z':0,'headingDegrees':0}],
     'Lying':[{'key':'lying','kind':'lying','x':0.5,'y':0.8,'z':1.0,'headingDegrees':0}, {'key':'handle','kind':'handle','x':0.5,'y':0,'z':0,'headingDegrees':0}]}
+# The game takes surface heights from the model; the SDK requires one, so this is a placeholder as well.
+SURFACE_HEIGHT = 0.9
 
 fixtures = json.loads((ROOT/'source/game-fixtures.json').read_text(encoding='utf-8'))
 
@@ -113,6 +115,10 @@ for route in fixtures['diseaseDepartments']:
 furniture = {}
 for item in fixtures['furniture']:
     placement = {'footprint':{'width':item['Width'], 'depth':item['Depth'], 'cellSizeMeters':1, 'occupiedCells':[]}, 'interactionPoints':[]}
+    if item.get('mount', 'Floor') != 'Floor': placement['mount'] = item['mount'].lower()
+    if item.get('surfaceAccepts') is not None:
+        placement['surfaces'] = [{'key':'top', 'heightMeters':SURFACE_HEIGHT, 'x':0, 'z':0, 'width':item['Width'], 'depth':item['Depth'], 'accepts':item['surfaceAccepts'], 'placeholder':True}]
+    if item.get('surfaceCategories') is not None: placement['surfaceCategories'] = item['surfaceCategories']
     extra = {'catalogAssets':[{'catalogId':item['asset'], 'kind':'modelGlb'}], 'placement':placement}
     if item['transport']:
         placement['interactionPoints'] = [{**point, 'placeholder':True} for point in POINTS[item['transport']]]

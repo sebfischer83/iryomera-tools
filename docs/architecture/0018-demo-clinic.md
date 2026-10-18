@@ -13,6 +13,7 @@ For milestone M7 the game replaces its local demo fixtures with SDK content. The
 - Every record is MIT, unreviewed and labelled as fictional demo content; each keeps its original game key in `provenance.externalId`. IDs use namespace `demo_clinic`; hyphens become underscores and observations get the prefix `observation_` because examinations and observations share local keys in the game.
 - Case readings are deterministic simulation-only distributions (numeric minimum equal to maximum, one category weight, or a text key). No reference ranges, recommendations or medical relations are generated.
 - Wheelchair and stretcher are `pushable` with transport. Their seat, lying and handle points are placeholders (extension field `placeholder: true`) until the game supplies geometry (owner decision).
+- Since 0.14.1 the input carries mounts and surfaces (game asset stage 2b, 14 items). Surface heights are placeholders (`placeholder: true`) because the game takes them from the model.
 - Fixture values without an SDK contract stay in the game: `serviceOnly` departments and per-patient mobility.
 
 ## Consequences

@@ -30,7 +30,7 @@ public sealed class DemoClinicTests
             catalogs.Add(catalog.Value!);
         }
         Assert.Empty(ContentLocalizationValidator.Validate(package, catalogs));
-        Assert.Equal((3, 4, 3, 1, 2, 8, 8, 5, 10), (Count<RoomDefinition>(), Count<MedicalDepartmentDefinition>(), Count<StaffRoleDefinition>(), Count<StaffQualificationDefinition>(),
+        Assert.Equal((3, 4, 3, 1, 2, 8, 8, 5, 14), (Count<RoomDefinition>(), Count<MedicalDepartmentDefinition>(), Count<StaffRoleDefinition>(), Count<StaffQualificationDefinition>(),
             Count<MedicalEquipmentDefinition>(), Count<ObservationDefinition>(), Count<ExaminationDefinition>(), Count<DiseaseDefinition>(), Count<FurnitureDefinition>()));
         Assert.All(package.Definitions.Select(d => d.Provenance).Concat(package.Relations.Select(r => r.Provenance)), p =>
             Assert.True(p is { License: "MIT", ReviewStatus: ReviewStatus.Unreviewed } && p.Source.Contains("fictional", StringComparison.Ordinal)));
@@ -76,7 +76,17 @@ public sealed class DemoClinicTests
         Assert.Equal((FurnitureMobility.Pushable, TransportPosture.Seated, 1), (wheelchair.Mobility!.Value, wheelchair.Transport!.Posture, wheelchair.Placement!.Footprint.Width));
         Assert.Equal("iryomera.assets:transport.wheelchair_basic", wheelchair.CatalogAssets!.Single().CatalogId);
         Assert.All(wheelchair.Placement.InteractionPoints, p => Assert.True(p.Extensions!["placeholder"].GetBoolean()));
+        FurniturePlacement Placement(string id) => package.Definitions.OfType<FurnitureDefinition>().Single(f => f.Id == Ns + id).Placement!;
+        var bench = Placement("furniture_lab_bench"); var microscope = Placement("equipment_microscope");
         Assert.Null(package.Definitions.OfType<FurnitureDefinition>().Single(f => f.Id == Ns + "furniture_lab_bench").Mobility);
+        Assert.Null(bench.Mount);
+        Assert.Equal((2m, 1m, "lab_device"), (bench.Surfaces!.Single().Width, bench.Surfaces![0].Depth, bench.Surfaces![0].Accepts!.Single()));
+        Assert.True(bench.Surfaces![0].Extensions!["placeholder"].GetBoolean());
+        Assert.True(FurnitureSurfaces.Accepts(bench.Surfaces![0], microscope));
+        Assert.False(FurnitureSurfaces.Accepts(bench.Surfaces![0], Placement("furniture_ceiling_lamp")));
+        Assert.Equal((FurnitureMount.Ceiling, FurnitureMount.Wall, FurnitureMount.Wall), (Placement("furniture_ceiling_lamp").Mount!.Value, Placement("furniture_wall_picture").Mount!.Value, Placement("furniture_disinfectant_dispenser").Mount!.Value));
+        Assert.DoesNotContain(package.Relations, r => r.FromId == Ns + "equipment_microscope" && r.Kind == RelationKind.FurnitureEquipment);
+        Assert.Equal(8, RoomContents.Placeable(set, lab.Id).Count);
 
         Assert.Equal(["Alex", "Mika", "Robin", "Jona", "Kim", "Toni", "Sam", "Luca", "Nico", "Chris"], package.NamePools!.Single(p => p.Part == NamePart.Given).Entries.Select(e => e.Localized));
         Assert.Equal("krueger", package.NamePools!.Single(p => p.Part == NamePart.Family).Entries.Single(e => e.Localized == "Krüger").Key);

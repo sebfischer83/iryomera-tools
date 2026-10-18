@@ -530,7 +530,10 @@
       "capabilities": [
         "demo:equipment_scanner"
       ],
-      "transport": null
+      "transport": null,
+      "mount": "Floor",
+      "surfaceAccepts": null,
+      "surfaceCategories": null
     },
     {
       "key": "demo:equipment_imaging_stand",
@@ -540,7 +543,10 @@
       "Depth": 2,
       "asset": "iryomera.assets:equipment.imaging_stand_basic",
       "capabilities": [],
-      "transport": null
+      "transport": null,
+      "mount": "Floor",
+      "surfaceAccepts": null,
+      "surfaceCategories": null
     },
     {
       "key": "demo:equipment_lab_analyser",
@@ -552,7 +558,51 @@
       "capabilities": [
         "demo:equipment_analyzer"
       ],
-      "transport": null
+      "transport": null,
+      "mount": "Floor",
+      "surfaceAccepts": null,
+      "surfaceCategories": null
+    },
+    {
+      "key": "demo:equipment_microscope",
+      "NameDe": "Mikroskop",
+      "NameEn": "Microscope",
+      "Width": 1,
+      "Depth": 1,
+      "asset": "iryomera.assets:equipment.microscope_basic",
+      "capabilities": [],
+      "transport": null,
+      "mount": "Surface",
+      "surfaceAccepts": null,
+      "surfaceCategories": [
+        "lab_device"
+      ]
+    },
+    {
+      "key": "demo:furniture_ceiling_lamp",
+      "NameDe": "Deckenlampe",
+      "NameEn": "Ceiling lamp",
+      "Width": 1,
+      "Depth": 1,
+      "asset": "iryomera.assets:lamp_ceiling.lamp_ceiling_001",
+      "capabilities": [],
+      "transport": null,
+      "mount": "Ceiling",
+      "surfaceAccepts": null,
+      "surfaceCategories": null
+    },
+    {
+      "key": "demo:furniture_disinfectant_dispenser",
+      "NameDe": "Desinfektionsspender",
+      "NameEn": "Disinfectant dispenser",
+      "Width": 1,
+      "Depth": 1,
+      "asset": "iryomera.assets:equipment.disinfectant_dispenser_basic",
+      "capabilities": [],
+      "transport": null,
+      "mount": "Wall",
+      "surfaceAccepts": null,
+      "surfaceCategories": null
     },
     {
       "key": "demo:furniture_exam_chair",
@@ -562,7 +612,10 @@
       "Depth": 1,
       "asset": "iryomera.assets:furniture.exam_chair_basic",
       "capabilities": [],
-      "transport": null
+      "transport": null,
+      "mount": "Floor",
+      "surfaceAccepts": null,
+      "surfaceCategories": null
     },
     {
       "key": "demo:furniture_exam_couch",
@@ -572,7 +625,10 @@
       "Depth": 2,
       "asset": "iryomera.assets:furniture.exam_couch_basic",
       "capabilities": [],
-      "transport": null
+      "transport": null,
+      "mount": "Floor",
+      "surfaceAccepts": null,
+      "surfaceCategories": null
     },
     {
       "key": "demo:furniture_lab_bench",
@@ -582,7 +638,12 @@
       "Depth": 1,
       "asset": "iryomera.assets:equipment.lab_bench_basic",
       "capabilities": [],
-      "transport": null
+      "transport": null,
+      "mount": "Floor",
+      "surfaceAccepts": [
+        "lab_device"
+      ],
+      "surfaceCategories": null
     },
     {
       "key": "demo:furniture_lab_cabinet",
@@ -592,7 +653,10 @@
       "Depth": 1,
       "asset": "iryomera.assets:equipment.lab_cabinet_basic",
       "capabilities": [],
-      "transport": null
+      "transport": null,
+      "mount": "Floor",
+      "surfaceAccepts": null,
+      "surfaceCategories": null
     },
     {
       "key": "demo:furniture_office_chair",
@@ -602,7 +666,10 @@
       "Depth": 1,
       "asset": "iryomera.assets:furniture.office_chair_basic",
       "capabilities": [],
-      "transport": null
+      "transport": null,
+      "mount": "Floor",
+      "surfaceAccepts": null,
+      "surfaceCategories": null
     },
     {
       "key": "demo:furniture_stretcher",
@@ -612,7 +679,23 @@
       "Depth": 2,
       "asset": "iryomera.assets:transport.stretcher_basic",
       "capabilities": [],
-      "transport": "Lying"
+      "transport": "Lying",
+      "mount": "Floor",
+      "surfaceAccepts": null,
+      "surfaceCategories": null
+    },
+    {
+      "key": "demo:furniture_wall_picture",
+      "NameDe": "Wandbild",
+      "NameEn": "Wall picture",
+      "Width": 1,
+      "Depth": 1,
+      "asset": "iryomera.assets:decor.wall_picture_basic",
+      "capabilities": [],
+      "transport": null,
+      "mount": "Wall",
+      "surfaceAccepts": null,
+      "surfaceCategories": null
     },
     {
       "key": "demo:furniture_wheelchair",
@@ -622,10 +705,23 @@
       "Depth": 1,
       "asset": "iryomera.assets:transport.wheelchair_basic",
       "capabilities": [],
-      "transport": "Seated"
+      "transport": "Seated",
+      "mount": "Floor",
+      "surfaceAccepts": null,
+      "surfaceCategories": null
     }
   ],
   "roomFurniture": [
+    {
+      "room": "demo:room_type_consultation",
+      "item": "demo:furniture_ceiling_lamp",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo:room_type_consultation",
+      "item": "demo:furniture_disinfectant_dispenser",
+      "requirement": "Optional"
+    },
     {
       "room": "demo:room_type_consultation",
       "item": "demo:furniture_exam_chair",
@@ -648,6 +744,11 @@
     },
     {
       "room": "demo:room_type_consultation",
+      "item": "demo:furniture_wall_picture",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo:room_type_consultation",
       "item": "demo:furniture_wheelchair",
       "requirement": "Optional"
     },
@@ -655,6 +756,21 @@
       "room": "demo:room_type_laboratory",
       "item": "demo:equipment_lab_analyser",
       "requirement": "Required"
+    },
+    {
+      "room": "demo:room_type_laboratory",
+      "item": "demo:equipment_microscope",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo:room_type_laboratory",
+      "item": "demo:furniture_ceiling_lamp",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo:room_type_laboratory",
+      "item": "demo:furniture_disinfectant_dispenser",
+      "requirement": "Optional"
     },
     {
       "room": "demo:room_type_laboratory",
@@ -672,6 +788,11 @@
       "requirement": "Optional"
     },
     {
+      "room": "demo:room_type_laboratory",
+      "item": "demo:furniture_wall_picture",
+      "requirement": "Optional"
+    },
+    {
       "room": "demo:room_type_imaging",
       "item": "demo:equipment_imaging_ring",
       "requirement": "Required"
@@ -683,7 +804,22 @@
     },
     {
       "room": "demo:room_type_imaging",
+      "item": "demo:furniture_ceiling_lamp",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo:room_type_imaging",
+      "item": "demo:furniture_disinfectant_dispenser",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo:room_type_imaging",
       "item": "demo:furniture_office_chair",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo:room_type_imaging",
+      "item": "demo:furniture_wall_picture",
       "requirement": "Optional"
     }
   ],
