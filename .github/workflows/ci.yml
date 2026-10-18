@@ -56,12 +56,20 @@ jobs:
           python -m pip install -r scripts/requirements-browser.txt
           python -m playwright install --with-deps chromium
       - name: Test local Studio in a real bilingual offline browser session
+        id: studio
         # Studio is not a published package. On release tags a Studio smoke failure is reported but does not block
         # publishing the SDK/tool packages; pull requests and branch pushes still require it.
         continue-on-error: ${{ startsWith(github.ref, 'refs/tags/v') }}
         run: |
           dotnet publish src/Iryomera.ContentStudio --configuration Release --no-build --output artifacts/studio
-          python scripts/run-studio-smoke.py --published-directory artifacts/studio
+          python scripts/run-studio-smoke.py --published-directory artifacts/studio --diagnostics-directory artifacts/studio-smoke
+      - name: Keep Studio smoke diagnostics
+        if: failure() || steps.studio.outcome == 'failure'
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: studio-smoke-${{ matrix.os }}
+          path: artifacts/studio-smoke
+          if-no-files-found: ignore
       - name: Full official ontology imports, twice each
         if: github.event_name == 'workflow_dispatch' && inputs.full_datasets
         run: python scripts/run-full-dataset-tests.py --data-dir "${{ runner.temp }}/iryomera-official" --download-open-ontologies
