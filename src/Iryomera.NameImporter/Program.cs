@@ -124,9 +124,12 @@ public static class Program
         var exportWorkspace = Workspace(export);
         var output = Required(export, "--output", "New output directory; existing paths are never overwritten.");
         var packageVersion = Required(export, "--version", "Package version (SemVer).");
+        var maxEntries = new Option<int?>("--max-entries-per-pool") { Description = "Keep at most this many entries per pool: the most frequent within one dataset, otherwise a stable hash order." };
+        export.Options.Add(maxEntries);
         export.SetAction((parse, ct) => GuardAsync(async () =>
         {
-            var report = await new NameExporter().ExportAsync(await ExistingStore(parse.GetValue(exportWorkspace)!).ReadAsync(ct), parse.GetValue(output)!, parse.GetValue(packageVersion)!, ct);
+            var report = await new NameExporter().ExportAsync(await ExistingStore(parse.GetValue(exportWorkspace)!).ReadAsync(ct), parse.GetValue(output)!, parse.GetValue(packageVersion)!,
+                parse.GetValue(maxEntries), ct);
             Print(report); return 0;
         })); root.Subcommands.Add(export);
         return root;
