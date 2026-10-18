@@ -832,6 +832,114 @@
     },
     {
       "kind": "furniture",
+      "id": "demo_clinic:equipment_microscope",
+      "nameKey": "demo_clinic.equipment_microscope.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:equipment_microscope",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "catalogAssets": [
+        {
+          "catalogId": "iryomera.assets:equipment.microscope_basic",
+          "kind": "modelGlb"
+        }
+      ],
+      "placement": {
+        "footprint": {
+          "width": 1,
+          "depth": 1,
+          "cellSizeMeters": 1,
+          "occupiedCells": []
+        },
+        "interactionPoints": [],
+        "mount": "surface",
+        "surfaceCategories": [
+          "lab_device"
+        ]
+      }
+    },
+    {
+      "kind": "furniture",
+      "id": "demo_clinic:furniture_ceiling_lamp",
+      "nameKey": "demo_clinic.furniture_ceiling_lamp.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:furniture_ceiling_lamp",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "catalogAssets": [
+        {
+          "catalogId": "iryomera.assets:lamp_ceiling.lamp_ceiling_001",
+          "kind": "modelGlb"
+        }
+      ],
+      "placement": {
+        "footprint": {
+          "width": 1,
+          "depth": 1,
+          "cellSizeMeters": 1,
+          "occupiedCells": []
+        },
+        "interactionPoints": [],
+        "mount": "ceiling"
+      }
+    },
+    {
+      "kind": "furniture",
+      "id": "demo_clinic:furniture_disinfectant_dispenser",
+      "nameKey": "demo_clinic.furniture_disinfectant_dispenser.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:furniture_disinfectant_dispenser",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "catalogAssets": [
+        {
+          "catalogId": "iryomera.assets:equipment.disinfectant_dispenser_basic",
+          "kind": "modelGlb"
+        }
+      ],
+      "placement": {
+        "footprint": {
+          "width": 1,
+          "depth": 1,
+          "cellSizeMeters": 1,
+          "occupiedCells": []
+        },
+        "interactionPoints": [],
+        "mount": "wall"
+      }
+    },
+    {
+      "kind": "furniture",
       "id": "demo_clinic:furniture_exam_chair",
       "nameKey": "demo_clinic.furniture_exam_chair.name",
       "version": "1.0.0",
@@ -929,7 +1037,21 @@
           "cellSizeMeters": 1,
           "occupiedCells": []
         },
-        "interactionPoints": []
+        "interactionPoints": [],
+        "surfaces": [
+          {
+            "key": "top",
+            "heightMeters": 0.9,
+            "x": 0,
+            "z": 0,
+            "width": 2,
+            "depth": 1,
+            "accepts": [
+              "lab_device"
+            ],
+            "placeholder": true
+          }
+        ]
       }
     },
     {
@@ -1056,6 +1178,41 @@
       "transport": {
         "patientCapacity": 1,
         "posture": "lying"
+      }
+    },
+    {
+      "kind": "furniture",
+      "id": "demo_clinic:furniture_wall_picture",
+      "nameKey": "demo_clinic.furniture_wall_picture.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:furniture_wall_picture",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "catalogAssets": [
+        {
+          "catalogId": "iryomera.assets:decor.wall_picture_basic",
+          "kind": "modelGlb"
+        }
+      ],
+      "placement": {
+        "footprint": {
+          "width": 1,
+          "depth": 1,
+          "cellSizeMeters": 1,
+          "occupiedCells": []
+        },
+        "interactionPoints": [],
+        "mount": "wall"
       }
     },
     {
@@ -1886,6 +2043,48 @@
       }
     },
     {
+      "id": "demo_clinic:link_roomfurniture_room_type_consultation_furniture_ceiling_lamp",
+      "version": "1.0.0",
+      "kind": "roomFurniture",
+      "fromId": "demo_clinic:room_type_consultation",
+      "toId": "demo_clinic:furniture_ceiling_lamp",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:room_type_consultation",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "requirement": "optional"
+    },
+    {
+      "id": "demo_clinic:link_roomfurniture_room_type_consultation_furniture_disinfectant_dispenser",
+      "version": "1.0.0",
+      "kind": "roomFurniture",
+      "fromId": "demo_clinic:room_type_consultation",
+      "toId": "demo_clinic:furniture_disinfectant_dispenser",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:room_type_consultation",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "requirement": "optional"
+    },
+    {
       "id": "demo_clinic:link_roomfurniture_room_type_consultation_furniture_exam_chair",
       "version": "1.0.0",
       "kind": "roomFurniture",
@@ -1970,6 +2169,27 @@
       "requirement": "optional"
     },
     {
+      "id": "demo_clinic:link_roomfurniture_room_type_consultation_furniture_wall_picture",
+      "version": "1.0.0",
+      "kind": "roomFurniture",
+      "fromId": "demo_clinic:room_type_consultation",
+      "toId": "demo_clinic:furniture_wall_picture",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:room_type_consultation",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "requirement": "optional"
+    },
+    {
       "id": "demo_clinic:link_roomfurniture_room_type_consultation_furniture_wheelchair",
       "version": "1.0.0",
       "kind": "roomFurniture",
@@ -2010,6 +2230,69 @@
         ]
       },
       "requirement": "required"
+    },
+    {
+      "id": "demo_clinic:link_roomfurniture_room_type_laboratory_equipment_microscope",
+      "version": "1.0.0",
+      "kind": "roomFurniture",
+      "fromId": "demo_clinic:room_type_laboratory",
+      "toId": "demo_clinic:equipment_microscope",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:room_type_laboratory",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "requirement": "optional"
+    },
+    {
+      "id": "demo_clinic:link_roomfurniture_room_type_laboratory_furniture_ceiling_lamp",
+      "version": "1.0.0",
+      "kind": "roomFurniture",
+      "fromId": "demo_clinic:room_type_laboratory",
+      "toId": "demo_clinic:furniture_ceiling_lamp",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:room_type_laboratory",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "requirement": "optional"
+    },
+    {
+      "id": "demo_clinic:link_roomfurniture_room_type_laboratory_furniture_disinfectant_dispenser",
+      "version": "1.0.0",
+      "kind": "roomFurniture",
+      "fromId": "demo_clinic:room_type_laboratory",
+      "toId": "demo_clinic:furniture_disinfectant_dispenser",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:room_type_laboratory",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "requirement": "optional"
     },
     {
       "id": "demo_clinic:link_roomfurniture_room_type_laboratory_furniture_lab_bench",
@@ -2075,6 +2358,27 @@
       "requirement": "optional"
     },
     {
+      "id": "demo_clinic:link_roomfurniture_room_type_laboratory_furniture_wall_picture",
+      "version": "1.0.0",
+      "kind": "roomFurniture",
+      "fromId": "demo_clinic:room_type_laboratory",
+      "toId": "demo_clinic:furniture_wall_picture",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:room_type_laboratory",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "requirement": "optional"
+    },
+    {
       "id": "demo_clinic:link_roomfurniture_room_type_imaging_equipment_imaging_ring",
       "version": "1.0.0",
       "kind": "roomFurniture",
@@ -2117,11 +2421,74 @@
       "requirement": "optional"
     },
     {
+      "id": "demo_clinic:link_roomfurniture_room_type_imaging_furniture_ceiling_lamp",
+      "version": "1.0.0",
+      "kind": "roomFurniture",
+      "fromId": "demo_clinic:room_type_imaging",
+      "toId": "demo_clinic:furniture_ceiling_lamp",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:room_type_imaging",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "requirement": "optional"
+    },
+    {
+      "id": "demo_clinic:link_roomfurniture_room_type_imaging_furniture_disinfectant_dispenser",
+      "version": "1.0.0",
+      "kind": "roomFurniture",
+      "fromId": "demo_clinic:room_type_imaging",
+      "toId": "demo_clinic:furniture_disinfectant_dispenser",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:room_type_imaging",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "requirement": "optional"
+    },
+    {
       "id": "demo_clinic:link_roomfurniture_room_type_imaging_furniture_office_chair",
       "version": "1.0.0",
       "kind": "roomFurniture",
       "fromId": "demo_clinic:room_type_imaging",
       "toId": "demo_clinic:furniture_office_chair",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:room_type_imaging",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "requirement": "optional"
+    },
+    {
+      "id": "demo_clinic:link_roomfurniture_room_type_imaging_furniture_wall_picture",
+      "version": "1.0.0",
+      "kind": "roomFurniture",
+      "fromId": "demo_clinic:room_type_imaging",
+      "toId": "demo_clinic:furniture_wall_picture",
       "provenance": {
         "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
         "externalId": "demo:room_type_imaging",

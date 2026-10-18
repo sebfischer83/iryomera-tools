@@ -26,7 +26,9 @@ python scripts/generate-demo-clinic.py
 | Observation `demo:<key>` | `observation` `observation_<key>`: numeric, categorical (`clear`, `marked`, `cloudy`) or text (complaint). |
 | Case | `disease` with simulation-only readings in `diagnosticSimulation.observationDistributions` (`reading_<case>_<observation>`). |
 | Preferred and allowed departments | `diseaseDepartment` with `priority` 1 for the preferred department and 2, 3 … for the others in fixture order. |
-| Furniture | `furniture` with footprint and a `modelGlb` catalog asset. |
+| Furniture | `furniture` with footprint and a `modelGlb` catalog asset. `mount` `Wall`, `Ceiling` or `Surface` becomes `placement.mount` (floor stays absent). |
+| `surfaceAccepts` | One surface `top` over the whole footprint with these `accepts` and a placeholder height of 0.9 m (`placeholder: true`); the game takes the height from the model and offers one spot per cell. |
+| `surfaceCategories` | `placement.surfaceCategories`. |
 | Furniture capabilities | `furnitureEquipment` to `medicalEquipment` `equipment_analyzer` or `equipment_scanner`. |
 | Transport `Seated`, `Lying` | `mobility: pushable`, `transport` for one patient, placeholder `seat`/`lying` and `handle` points marked `placeholder: true`. |
 | Room furniture requirement | `roomFurniture` with `requirement`. |
