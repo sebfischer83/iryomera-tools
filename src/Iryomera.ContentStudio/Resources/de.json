@@ -250,6 +250,7 @@
     "studio.qualification": "Benötigte Qualifikation",
     "studio.relation.examinationstaffrole": "Untersuchung → Personalrolle",
     "studio.relation.diseasedepartment": "Krankheit → Abteilung",
+    "studio.relation.furnitureequipment": "Möbel → Gerät",
     "studio.priority": "Priorität (1 = erste Wahl)",
     "studio.capacity": "Kapazität (Patienten gleichzeitig)",
     "studio.roomrules": "Raumregeln",

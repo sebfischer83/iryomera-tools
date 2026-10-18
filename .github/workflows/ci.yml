@@ -40,6 +40,7 @@ jobs:
           python scripts/generate-name-importer-schemas.py
           python scripts/generate-diagnostic-example.py
           python scripts/generate-modkit-example.py
+          python scripts/generate-demo-clinic.py
           git diff --exit-code -- schemas
           git diff --exit-code -- examples
       - name: Test full-dataset acquisition boundaries offline

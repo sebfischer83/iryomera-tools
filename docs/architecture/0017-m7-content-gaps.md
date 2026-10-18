@@ -15,4 +15,4 @@ For milestone M7 the game replaces its local demo fixtures with SDK content. A d
 
 ## Consequences
 
-Additive fields are omitted when null; the new relation kinds need a 0.13.0 reader. Routing and capacity are game and simulation rules for synthetic or reviewed content; they are not clinical guidance. A synthetic demo clinic package will be generated in this repository from the game's fixture values.
+Additive fields are omitted when null; the new relation kinds need a 0.13.0 reader. Routing and capacity are game and simulation rules for synthetic or reviewed content; they are not clinical guidance. A synthetic demo clinic package is generated in this repository from the game's fixture values ([ADR 0018](0018-demo-clinic.md)).

@@ -33,6 +33,18 @@ public static class RoomContents
                 g.Select(r => r.Id).Order(StringComparer.Ordinal).ToArray()))
             .OrderBy(i => i.DefinitionId, StringComparer.Ordinal).ThenBy(i => i.Kind)
             .ToArray();
+
+    /// <summary>
+    /// Equipment capabilities the given placed furniture provides through furnitureEquipment relations (ADR 0018), ordered
+    /// by ID (ordinal) and listed once. Whether a room then satisfies examinationEquipment is game logic.
+    /// </summary>
+    public static IReadOnlyList<string> ProvidedEquipment(IEnumerable<ContentPackage> packages, IEnumerable<string> furnitureIds)
+    {
+        var placed = furnitureIds.ToHashSet(StringComparer.Ordinal);
+        return packages.SelectMany(p => p.Relations)
+            .Where(r => r.Kind == RelationKind.FurnitureEquipment && placed.Contains(r.FromId))
+            .Select(r => r.ToId).Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).ToArray();
+    }
 }
 
 /// <summary>Which items may stand on which surface (ADR 0013). Whether an item fits, stacking and clearance are game logic.</summary>

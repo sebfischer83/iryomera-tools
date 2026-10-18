@@ -1,0 +1,712 @@
+{
+  "roomTypes": [
+    {
+      "key": "demo:room_type_consultation",
+      "nameDe": "Untersuchungsraum",
+      "nameEn": "Examination room",
+      "MinimumCells": 4,
+      "RequiresDoor": true
+    },
+    {
+      "key": "demo:room_type_laboratory",
+      "nameDe": "Labor",
+      "nameEn": "Laboratory",
+      "MinimumCells": 6,
+      "RequiresDoor": true
+    },
+    {
+      "key": "demo:room_type_imaging",
+      "nameDe": "Bildgebung",
+      "nameEn": "Imaging",
+      "MinimumCells": 9,
+      "RequiresDoor": true
+    }
+  ],
+  "departments": [
+    {
+      "key": "demo:department_emergency",
+      "NameDe": "Notaufnahme",
+      "NameEn": "Emergency",
+      "Capacity": 10,
+      "ServiceOnly": false
+    },
+    {
+      "key": "demo:department_internal",
+      "NameDe": "Innere Medizin",
+      "NameEn": "Internal medicine",
+      "Capacity": 2,
+      "ServiceOnly": false
+    },
+    {
+      "key": "demo:department_surgery",
+      "NameDe": "Chirurgie",
+      "NameEn": "Surgery",
+      "Capacity": 2,
+      "ServiceOnly": false
+    },
+    {
+      "key": "demo:department_diagnostics",
+      "NameDe": "Diagnostik",
+      "NameEn": "Diagnostics",
+      "Capacity": 0,
+      "ServiceOnly": true
+    }
+  ],
+  "diseaseDepartments": [
+    {
+      "disease": "demo:amber",
+      "preferred": "demo:department_internal",
+      "allowed": [
+        "demo:department_internal"
+      ]
+    },
+    {
+      "disease": "demo:blue",
+      "preferred": "demo:department_internal",
+      "allowed": [
+        "demo:department_internal",
+        "demo:department_surgery"
+      ]
+    },
+    {
+      "disease": "demo:green",
+      "preferred": "demo:department_surgery",
+      "allowed": [
+        "demo:department_surgery"
+      ]
+    },
+    {
+      "disease": "demo:violet",
+      "preferred": "demo:department_internal",
+      "allowed": [
+        "demo:department_internal"
+      ]
+    },
+    {
+      "disease": "demo:silver",
+      "preferred": "demo:department_surgery",
+      "allowed": [
+        "demo:department_surgery",
+        "demo:department_internal"
+      ]
+    }
+  ],
+  "examinations": [
+    {
+      "key": "demo:interview",
+      "NameDe": "Anamnese",
+      "NameEn": "Interview",
+      "observation": "demo:complaint",
+      "durationMinutes": 5,
+      "roomTypes": [
+        "demo:room_type_consultation"
+      ],
+      "staffRole": "Physician",
+      "equipment": [],
+      "qualifications": []
+    },
+    {
+      "key": "demo:temperature",
+      "NameDe": "Temperatur",
+      "NameEn": "Temperature",
+      "observation": "demo:temperature",
+      "durationMinutes": 2,
+      "roomTypes": [
+        "demo:room_type_consultation"
+      ],
+      "staffRole": "Nurse",
+      "equipment": [],
+      "qualifications": []
+    },
+    {
+      "key": "demo:pulse",
+      "NameDe": "Puls",
+      "NameEn": "Pulse",
+      "observation": "demo:pulse",
+      "durationMinutes": 2,
+      "roomTypes": [
+        "demo:room_type_consultation"
+      ],
+      "staffRole": "Nurse",
+      "equipment": [],
+      "qualifications": []
+    },
+    {
+      "key": "demo:blood-pressure",
+      "NameDe": "Blutdruck",
+      "NameEn": "Blood pressure",
+      "observation": "demo:pressure",
+      "durationMinutes": 3,
+      "roomTypes": [
+        "demo:room_type_consultation"
+      ],
+      "staffRole": "Nurse",
+      "equipment": [],
+      "qualifications": []
+    },
+    {
+      "key": "demo:blood-count",
+      "NameDe": "Blutbild",
+      "NameEn": "Blood count",
+      "observation": "demo:count",
+      "durationMinutes": 15,
+      "roomTypes": [
+        "demo:room_type_laboratory"
+      ],
+      "staffRole": "Technician",
+      "equipment": [
+        "demo:equipment_analyzer"
+      ],
+      "qualifications": []
+    },
+    {
+      "key": "demo:inflammation",
+      "NameDe": "Entz\u00FCndungswert",
+      "NameEn": "Inflammation marker",
+      "observation": "demo:marker",
+      "durationMinutes": 20,
+      "roomTypes": [
+        "demo:room_type_laboratory"
+      ],
+      "staffRole": "Technician",
+      "equipment": [
+        "demo:equipment_analyzer"
+      ],
+      "qualifications": []
+    },
+    {
+      "key": "demo:urine",
+      "NameDe": "Urin-Test",
+      "NameEn": "Urine test",
+      "observation": "demo:urine",
+      "durationMinutes": 8,
+      "roomTypes": [
+        "demo:room_type_laboratory"
+      ],
+      "staffRole": "Technician",
+      "equipment": [
+        "demo:equipment_analyzer"
+      ],
+      "qualifications": []
+    },
+    {
+      "key": "demo:imaging",
+      "NameDe": "Bildgebung",
+      "NameEn": "Imaging",
+      "observation": "demo:image",
+      "durationMinutes": 25,
+      "roomTypes": [
+        "demo:room_type_imaging"
+      ],
+      "staffRole": "Technician",
+      "equipment": [
+        "demo:equipment_scanner"
+      ],
+      "qualifications": [
+        "demo:qualification_imaging"
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "key": "demo:amber",
+      "NameDe": "Bernstein-Fall",
+      "NameEn": "Amber case",
+      "ComplaintDe": "M\u00FCdigkeit und Fr\u00F6steln",
+      "ComplaintEn": "Fatigue and chills",
+      "readings": [
+        {
+          "ObservationId": "demo:complaint",
+          "Number": null,
+          "Qualitative": "demo:amber:complaint",
+          "Unit": null
+        },
+        {
+          "ObservationId": "demo:temperature",
+          "Number": 38.4,
+          "Qualitative": null,
+          "Unit": "demo:C"
+        },
+        {
+          "ObservationId": "demo:pulse",
+          "Number": 108,
+          "Qualitative": null,
+          "Unit": "demo:beats-per-minute"
+        },
+        {
+          "ObservationId": "demo:pressure",
+          "Number": 119,
+          "Qualitative": null,
+          "Unit": "demo:fictional-pressure"
+        },
+        {
+          "ObservationId": "demo:count",
+          "Number": 8.2,
+          "Qualitative": null,
+          "Unit": "demo:fictional-count"
+        },
+        {
+          "ObservationId": "demo:marker",
+          "Number": 42,
+          "Qualitative": null,
+          "Unit": "demo:fictional-marker"
+        },
+        {
+          "ObservationId": "demo:urine",
+          "Number": null,
+          "Qualitative": "demo:urine-clear",
+          "Unit": null
+        },
+        {
+          "ObservationId": "demo:image",
+          "Number": null,
+          "Qualitative": "demo:image-cloudy",
+          "Unit": null
+        }
+      ]
+    },
+    {
+      "key": "demo:blue",
+      "NameDe": "Blauer Fall",
+      "NameEn": "Blue case",
+      "ComplaintDe": "Schwindel und Kopfschmerz",
+      "ComplaintEn": "Dizziness and headache",
+      "readings": [
+        {
+          "ObservationId": "demo:complaint",
+          "Number": null,
+          "Qualitative": "demo:blue:complaint",
+          "Unit": null
+        },
+        {
+          "ObservationId": "demo:temperature",
+          "Number": 36.8,
+          "Qualitative": null,
+          "Unit": "demo:C"
+        },
+        {
+          "ObservationId": "demo:pulse",
+          "Number": 79,
+          "Qualitative": null,
+          "Unit": "demo:beats-per-minute"
+        },
+        {
+          "ObservationId": "demo:pressure",
+          "Number": 142,
+          "Qualitative": null,
+          "Unit": "demo:fictional-pressure"
+        },
+        {
+          "ObservationId": "demo:count",
+          "Number": 5.3,
+          "Qualitative": null,
+          "Unit": "demo:fictional-count"
+        },
+        {
+          "ObservationId": "demo:marker",
+          "Number": 8,
+          "Qualitative": null,
+          "Unit": "demo:fictional-marker"
+        },
+        {
+          "ObservationId": "demo:urine",
+          "Number": null,
+          "Qualitative": "demo:urine-clear",
+          "Unit": null
+        },
+        {
+          "ObservationId": "demo:image",
+          "Number": null,
+          "Qualitative": "demo:image-clear",
+          "Unit": null
+        }
+      ]
+    },
+    {
+      "key": "demo:green",
+      "NameDe": "Gr\u00FCner Fall",
+      "NameEn": "Green case",
+      "ComplaintDe": "Bauchbeschwerden",
+      "ComplaintEn": "Abdominal discomfort",
+      "readings": [
+        {
+          "ObservationId": "demo:complaint",
+          "Number": null,
+          "Qualitative": "demo:green:complaint",
+          "Unit": null
+        },
+        {
+          "ObservationId": "demo:temperature",
+          "Number": 37.1,
+          "Qualitative": null,
+          "Unit": "demo:C"
+        },
+        {
+          "ObservationId": "demo:pulse",
+          "Number": 90,
+          "Qualitative": null,
+          "Unit": "demo:beats-per-minute"
+        },
+        {
+          "ObservationId": "demo:pressure",
+          "Number": 124,
+          "Qualitative": null,
+          "Unit": "demo:fictional-pressure"
+        },
+        {
+          "ObservationId": "demo:count",
+          "Number": 7,
+          "Qualitative": null,
+          "Unit": "demo:fictional-count"
+        },
+        {
+          "ObservationId": "demo:marker",
+          "Number": 14,
+          "Qualitative": null,
+          "Unit": "demo:fictional-marker"
+        },
+        {
+          "ObservationId": "demo:urine",
+          "Number": null,
+          "Qualitative": "demo:urine-marked",
+          "Unit": null
+        },
+        {
+          "ObservationId": "demo:image",
+          "Number": null,
+          "Qualitative": "demo:image-clear",
+          "Unit": null
+        }
+      ]
+    },
+    {
+      "key": "demo:violet",
+      "NameDe": "Violetter Fall",
+      "NameEn": "Violet case",
+      "ComplaintDe": "Husten und Schw\u00E4che",
+      "ComplaintEn": "Cough and weakness",
+      "readings": [
+        {
+          "ObservationId": "demo:complaint",
+          "Number": null,
+          "Qualitative": "demo:violet:complaint",
+          "Unit": null
+        },
+        {
+          "ObservationId": "demo:temperature",
+          "Number": 38,
+          "Qualitative": null,
+          "Unit": "demo:C"
+        },
+        {
+          "ObservationId": "demo:pulse",
+          "Number": 101,
+          "Qualitative": null,
+          "Unit": "demo:beats-per-minute"
+        },
+        {
+          "ObservationId": "demo:pressure",
+          "Number": 127,
+          "Qualitative": null,
+          "Unit": "demo:fictional-pressure"
+        },
+        {
+          "ObservationId": "demo:count",
+          "Number": 9.8,
+          "Qualitative": null,
+          "Unit": "demo:fictional-count"
+        },
+        {
+          "ObservationId": "demo:marker",
+          "Number": 32,
+          "Qualitative": null,
+          "Unit": "demo:fictional-marker"
+        },
+        {
+          "ObservationId": "demo:urine",
+          "Number": null,
+          "Qualitative": "demo:urine-clear",
+          "Unit": null
+        },
+        {
+          "ObservationId": "demo:image",
+          "Number": null,
+          "Qualitative": "demo:image-marked",
+          "Unit": null
+        }
+      ]
+    },
+    {
+      "key": "demo:silver",
+      "NameDe": "Silberner Fall",
+      "NameEn": "Silver case",
+      "ComplaintDe": "Unwohlsein und Zittern",
+      "ComplaintEn": "Discomfort and shaking",
+      "readings": [
+        {
+          "ObservationId": "demo:complaint",
+          "Number": null,
+          "Qualitative": "demo:silver:complaint",
+          "Unit": null
+        },
+        {
+          "ObservationId": "demo:temperature",
+          "Number": 37,
+          "Qualitative": null,
+          "Unit": "demo:C"
+        },
+        {
+          "ObservationId": "demo:pulse",
+          "Number": 86,
+          "Qualitative": null,
+          "Unit": "demo:beats-per-minute"
+        },
+        {
+          "ObservationId": "demo:pressure",
+          "Number": 130,
+          "Qualitative": null,
+          "Unit": "demo:fictional-pressure"
+        },
+        {
+          "ObservationId": "demo:count",
+          "Number": 6.1,
+          "Qualitative": null,
+          "Unit": "demo:fictional-count"
+        },
+        {
+          "ObservationId": "demo:marker",
+          "Number": 5,
+          "Qualitative": null,
+          "Unit": "demo:fictional-marker"
+        },
+        {
+          "ObservationId": "demo:urine",
+          "Number": null,
+          "Qualitative": "demo:urine-marked",
+          "Unit": null
+        },
+        {
+          "ObservationId": "demo:image",
+          "Number": null,
+          "Qualitative": "demo:image-clear",
+          "Unit": null
+        }
+      ]
+    }
+  ],
+  "staffRoster": [
+    {
+      "key": "demo:staff-doctor",
+      "role": "Physician",
+      "owner": null,
+      "Shared": true,
+      "qualifications": []
+    },
+    {
+      "key": "demo:staff-nurse",
+      "role": "Nurse",
+      "owner": null,
+      "Shared": true,
+      "qualifications": []
+    },
+    {
+      "key": "demo:staff-technician",
+      "role": "Technician",
+      "owner": null,
+      "Shared": true,
+      "qualifications": [
+        "demo:qualification_imaging"
+      ]
+    }
+  ],
+  "furniture": [
+    {
+      "key": "demo:equipment_imaging_ring",
+      "NameDe": "Scanner-Ring",
+      "NameEn": "Scanner ring",
+      "Width": 4,
+      "Depth": 2,
+      "asset": "iryomera.assets:equipment.imaging_ring_basic",
+      "capabilities": [
+        "demo:equipment_scanner"
+      ],
+      "transport": null
+    },
+    {
+      "key": "demo:equipment_imaging_stand",
+      "NameDe": "R\u00F6ntgenstativ",
+      "NameEn": "Imaging stand",
+      "Width": 3,
+      "Depth": 2,
+      "asset": "iryomera.assets:equipment.imaging_stand_basic",
+      "capabilities": [],
+      "transport": null
+    },
+    {
+      "key": "demo:equipment_lab_analyser",
+      "NameDe": "Analyseger\u00E4t",
+      "NameEn": "Analyser",
+      "Width": 1,
+      "Depth": 1,
+      "asset": "iryomera.assets:equipment.lab_analyser_basic",
+      "capabilities": [
+        "demo:equipment_analyzer"
+      ],
+      "transport": null
+    },
+    {
+      "key": "demo:furniture_exam_chair",
+      "NameDe": "Untersuchungsstuhl",
+      "NameEn": "Examination chair",
+      "Width": 1,
+      "Depth": 1,
+      "asset": "iryomera.assets:furniture.exam_chair_basic",
+      "capabilities": [],
+      "transport": null
+    },
+    {
+      "key": "demo:furniture_exam_couch",
+      "NameDe": "Untersuchungsliege",
+      "NameEn": "Examination couch",
+      "Width": 1,
+      "Depth": 2,
+      "asset": "iryomera.assets:furniture.exam_couch_basic",
+      "capabilities": [],
+      "transport": null
+    },
+    {
+      "key": "demo:furniture_lab_bench",
+      "NameDe": "Labortisch",
+      "NameEn": "Lab bench",
+      "Width": 2,
+      "Depth": 1,
+      "asset": "iryomera.assets:equipment.lab_bench_basic",
+      "capabilities": [],
+      "transport": null
+    },
+    {
+      "key": "demo:furniture_lab_cabinet",
+      "NameDe": "Laborschrank",
+      "NameEn": "Lab cabinet",
+      "Width": 2,
+      "Depth": 1,
+      "asset": "iryomera.assets:equipment.lab_cabinet_basic",
+      "capabilities": [],
+      "transport": null
+    },
+    {
+      "key": "demo:furniture_office_chair",
+      "NameDe": "B\u00FCrostuhl",
+      "NameEn": "Office chair",
+      "Width": 1,
+      "Depth": 1,
+      "asset": "iryomera.assets:furniture.office_chair_basic",
+      "capabilities": [],
+      "transport": null
+    },
+    {
+      "key": "demo:furniture_stretcher",
+      "NameDe": "Trage",
+      "NameEn": "Stretcher",
+      "Width": 1,
+      "Depth": 2,
+      "asset": "iryomera.assets:transport.stretcher_basic",
+      "capabilities": [],
+      "transport": "Lying"
+    },
+    {
+      "key": "demo:furniture_wheelchair",
+      "NameDe": "Rollstuhl",
+      "NameEn": "Wheelchair",
+      "Width": 1,
+      "Depth": 1,
+      "asset": "iryomera.assets:transport.wheelchair_basic",
+      "capabilities": [],
+      "transport": "Seated"
+    }
+  ],
+  "roomFurniture": [
+    {
+      "room": "demo:room_type_consultation",
+      "item": "demo:furniture_exam_chair",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo:room_type_consultation",
+      "item": "demo:furniture_exam_couch",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo:room_type_consultation",
+      "item": "demo:furniture_office_chair",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo:room_type_consultation",
+      "item": "demo:furniture_stretcher",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo:room_type_consultation",
+      "item": "demo:furniture_wheelchair",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo:room_type_laboratory",
+      "item": "demo:equipment_lab_analyser",
+      "requirement": "Required"
+    },
+    {
+      "room": "demo:room_type_laboratory",
+      "item": "demo:furniture_lab_bench",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo:room_type_laboratory",
+      "item": "demo:furniture_lab_cabinet",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo:room_type_laboratory",
+      "item": "demo:furniture_office_chair",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo:room_type_imaging",
+      "item": "demo:equipment_imaging_ring",
+      "requirement": "Required"
+    },
+    {
+      "room": "demo:room_type_imaging",
+      "item": "demo:equipment_imaging_stand",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo:room_type_imaging",
+      "item": "demo:furniture_office_chair",
+      "requirement": "Optional"
+    }
+  ],
+  "patientNames": [
+    "Alex Sommer",
+    "Mika Stein",
+    "Robin Winter",
+    "Jona Berger",
+    "Kim Bauer",
+    "Toni Fischer",
+    "Sam Kr\u00FCger",
+    "Luca Meier",
+    "Nico Wolf",
+    "Chris Engel"
+  ],
+  "patientMobility": [
+    {
+      "index": 3,
+      "mobility": "Seated"
+    },
+    {
+      "index": 6,
+      "mobility": "Lying"
+    }
+  ]
+}

@@ -250,6 +250,7 @@
     "studio.qualification": "Required qualification",
     "studio.relation.examinationstaffrole": "Examination → staff role",
     "studio.relation.diseasedepartment": "Disease → department",
+    "studio.relation.furnitureequipment": "Furniture → equipment",
     "studio.priority": "Priority (1 = first choice)",
     "studio.capacity": "Capacity (patients at once)",
     "studio.roomrules": "Room rules",
