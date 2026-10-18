@@ -1,6 +1,6 @@
 # ADR 0015 — mods overriding gameplay balancing
 
-Status: **proposed** (draft for owner decision, 2026-10-18). Not implemented.
+Status: accepted on 2026-10-18. Not implemented; scheduled after the Studio asset work.
 
 ## Context
 
@@ -21,10 +21,10 @@ The owner wants data-only mods to replace balancing values of existing content: 
 - Additive content stays additive; this is the only exception, limited to balancing fields.
 - No automatic code execution; resolution is data-only.
 
-## Open owner decisions
+## Owner decisions (2026-10-18)
 
-1. Field-level merge (proposed) or replacing the whole balance record.
-2. May a mod override another mod's balancing, or only the base game's?
-3. Should conflicts be visible to players (mod settings screen), or only in tools and logs? This is game UI; the SDK only reports them.
-4. Removing `requiredResources` keys: needed now, or later?
-5. Release target: with or after the Studio asset work.
+1. Field-level merge: an override replaces only the fields it sets.
+2. Targets may be the base game or other mods, as long as they are declared dependencies.
+3. Conflicts are reported by the SDK, shown by ModKit and shown to players in the game's mod settings (game UI).
+4. `requiredResources` keys can be set or changed, not removed, in v1.
+5. Implemented after the Studio asset work.
