@@ -136,6 +136,10 @@ New relation kinds: `examinationStaffRole` (examination → staff role that perf
 
 GameplayBalance and GameplayOverride have an optional `capacity` (nonnegative, simulation only): patients a department or room handles at the same time; mods can override it field by field (ADR 0015). See [ADR 0017](architecture/0017-m7-content-gaps.md).
 
+## Furniture equipment (library 0.14.0)
+
+New relation kind `furnitureEquipment` (furniture → medical equipment): placing the item gives its room that equipment capability, so an examination's `examinationEquipment` can be met by placed furniture. One item may provide several capabilities and several items may provide the same one. `RoomContents.ProvidedEquipment(packages, furnitureIds)` lists the capabilities of placed items; whether a room then satisfies an examination is game logic. Older readers reject the new kind. See [ADR 0018](architecture/0018-demo-clinic.md).
+
 ModKit authoring (`mod.json`) and archive integrity (`checksums.json`) have separate schemas in `schemas/modkit/v1`. No executable/script/plugin payload kind is defined. The archive is not a Godot PCK or game save format. The runtime game remains responsible for asset rendering and interaction behavior.
 
 ## Name pools and formats (library 0.6.0)

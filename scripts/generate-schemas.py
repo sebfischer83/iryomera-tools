@@ -23,7 +23,7 @@ def dump(path,value):
         return item
     path.write_text(json.dumps(anchor(value),indent=2,ensure_ascii=False)+'\n')
 kinds=['disease','symptom','finding','examination','observation','treatment','medicalProcedure','medicalDepartment','medicalEquipment','staffQualification','room','furniture','staffRole']
-rels=['diseaseSymptom','diseaseFinding','examinationFinding','diseaseExamination','diseaseTreatment','examinationEquipment','treatmentQualification','roomFurniture','examinationObservation','examinationRoom','examinationQualification','examinationPrerequisite','treatmentEquipment','roomEquipment','examinationStaffRole','diseaseDepartment']
+rels=['diseaseSymptom','diseaseFinding','examinationFinding','diseaseExamination','diseaseTreatment','examinationEquipment','treatmentQualification','roomFurniture','examinationObservation','examinationRoom','examinationQualification','examinationPrerequisite','treatmentEquipment','roomEquipment','examinationStaffRole','diseaseDepartment','furnitureEquipment']
 defs={}
 defs['evidenceReference']=obj({'citation':text,'uri':nullable({'type':'string','format':'uri'}),'evidenceCode':nullable(text)},['citation'])
 defs['provenance']=obj({'source':text,'externalId':text,'sourceVersion':text,'license':text,'importedAt':{'type':'string','format':'date-time'},'reviewStatus':{'enum':['unreviewed','inReview','approved','rejected']},'reviewedBy':nullable(text),'reviewedAt':nullable({'type':'string','format':'date-time'}),'evidence':array(ref('evidenceReference'))},['source','externalId','sourceVersion','license','importedAt'])

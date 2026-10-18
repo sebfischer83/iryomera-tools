@@ -34,6 +34,7 @@ python scripts/generate-modkit-schemas.py     # schemas/modkit/v1
 python scripts/generate-name-importer-schemas.py  # schemas/names/v1
 python scripts/generate-diagnostic-example.py
 python scripts/generate-modkit-example.py
+python scripts/generate-demo-clinic.py      # examples/demo-clinic from the game fixture input
 ```
 
 Further checks that CI runs on Windows and Linux:

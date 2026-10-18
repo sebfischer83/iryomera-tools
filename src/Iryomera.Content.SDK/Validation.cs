@@ -304,6 +304,7 @@ public static class ContentValidator
         RelationKind.DiseaseDepartment => (typeof(DiseaseDefinition), typeof(MedicalDepartmentDefinition)),
         RelationKind.TreatmentEquipment => (typeof(TreatmentDefinition), typeof(MedicalEquipmentDefinition)),
         RelationKind.RoomEquipment => (typeof(RoomDefinition), typeof(MedicalEquipmentDefinition)),
+        RelationKind.FurnitureEquipment => (typeof(FurnitureDefinition), typeof(MedicalEquipmentDefinition)),
         _ => null
     };
 }

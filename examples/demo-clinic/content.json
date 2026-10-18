@@ -1,0 +1,2953 @@
+{
+  "schemaVersion": "1.0.0",
+  "manifest": {
+    "schemaVersion": "1.0.0",
+    "id": "demo_clinic:content",
+    "namespace": "demo_clinic",
+    "version": "1.0.0",
+    "license": "MIT",
+    "dependencies": []
+  },
+  "definitions": [
+    {
+      "kind": "room",
+      "id": "demo_clinic:room_type_consultation",
+      "nameKey": "demo_clinic.room_type_consultation.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:room_type_consultation",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "minimumCells": 4,
+      "requiresDoor": true
+    },
+    {
+      "kind": "room",
+      "id": "demo_clinic:room_type_laboratory",
+      "nameKey": "demo_clinic.room_type_laboratory.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:room_type_laboratory",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "minimumCells": 6,
+      "requiresDoor": true
+    },
+    {
+      "kind": "room",
+      "id": "demo_clinic:room_type_imaging",
+      "nameKey": "demo_clinic.room_type_imaging.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:room_type_imaging",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "minimumCells": 9,
+      "requiresDoor": true
+    },
+    {
+      "kind": "medicalDepartment",
+      "id": "demo_clinic:department_emergency",
+      "nameKey": "demo_clinic.department_emergency.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:department_emergency",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "medicalDepartment",
+      "id": "demo_clinic:department_internal",
+      "nameKey": "demo_clinic.department_internal.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:department_internal",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "medicalDepartment",
+      "id": "demo_clinic:department_surgery",
+      "nameKey": "demo_clinic.department_surgery.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:department_surgery",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "medicalDepartment",
+      "id": "demo_clinic:department_diagnostics",
+      "nameKey": "demo_clinic.department_diagnostics.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:department_diagnostics",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "staffRole",
+      "id": "demo_clinic:role_physician",
+      "nameKey": "demo_clinic.role_physician.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "staffRole:Physician",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "staffRole",
+      "id": "demo_clinic:role_nurse",
+      "nameKey": "demo_clinic.role_nurse.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "staffRole:Nurse",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "staffRole",
+      "id": "demo_clinic:role_technician",
+      "nameKey": "demo_clinic.role_technician.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "staffRole:Technician",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "staffQualification",
+      "id": "demo_clinic:qualification_imaging",
+      "nameKey": "demo_clinic.qualification_imaging.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:qualification_imaging",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "medicalEquipment",
+      "id": "demo_clinic:equipment_analyzer",
+      "nameKey": "demo_clinic.equipment_analyzer.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:equipment_analyzer",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "medicalEquipment",
+      "id": "demo_clinic:equipment_scanner",
+      "nameKey": "demo_clinic.equipment_scanner.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:equipment_scanner",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "observation",
+      "id": "demo_clinic:observation_complaint",
+      "nameKey": "demo_clinic.observation_complaint.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:complaint",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "result": {
+        "valueKind": "text",
+        "categories": [],
+        "patientContextKeys": []
+      }
+    },
+    {
+      "kind": "observation",
+      "id": "demo_clinic:observation_temperature",
+      "nameKey": "demo_clinic.observation_temperature.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:temperature",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "result": {
+        "valueKind": "numeric",
+        "unitCode": "Cel",
+        "categories": [],
+        "patientContextKeys": []
+      }
+    },
+    {
+      "kind": "observation",
+      "id": "demo_clinic:observation_pulse",
+      "nameKey": "demo_clinic.observation_pulse.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:pulse",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "result": {
+        "valueKind": "numeric",
+        "unitCode": "/min",
+        "categories": [],
+        "patientContextKeys": []
+      }
+    },
+    {
+      "kind": "observation",
+      "id": "demo_clinic:observation_pressure",
+      "nameKey": "demo_clinic.observation_pressure.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:pressure",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "result": {
+        "valueKind": "numeric",
+        "unitCode": "{fictional_pressure}",
+        "categories": [],
+        "patientContextKeys": []
+      }
+    },
+    {
+      "kind": "observation",
+      "id": "demo_clinic:observation_count",
+      "nameKey": "demo_clinic.observation_count.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:count",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "result": {
+        "valueKind": "numeric",
+        "unitCode": "{fictional_count}",
+        "categories": [],
+        "patientContextKeys": []
+      }
+    },
+    {
+      "kind": "observation",
+      "id": "demo_clinic:observation_marker",
+      "nameKey": "demo_clinic.observation_marker.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:marker",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "result": {
+        "valueKind": "numeric",
+        "unitCode": "{fictional_marker}",
+        "categories": [],
+        "patientContextKeys": []
+      }
+    },
+    {
+      "kind": "observation",
+      "id": "demo_clinic:observation_urine",
+      "nameKey": "demo_clinic.observation_urine.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:urine",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "result": {
+        "valueKind": "categorical",
+        "categories": [
+          {
+            "key": "clear",
+            "nameKey": "demo_clinic.observation_urine.clear"
+          },
+          {
+            "key": "marked",
+            "nameKey": "demo_clinic.observation_urine.marked"
+          }
+        ],
+        "patientContextKeys": []
+      }
+    },
+    {
+      "kind": "observation",
+      "id": "demo_clinic:observation_image",
+      "nameKey": "demo_clinic.observation_image.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:image",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "result": {
+        "valueKind": "categorical",
+        "categories": [
+          {
+            "key": "clear",
+            "nameKey": "demo_clinic.observation_image.clear"
+          },
+          {
+            "key": "marked",
+            "nameKey": "demo_clinic.observation_image.marked"
+          },
+          {
+            "key": "cloudy",
+            "nameKey": "demo_clinic.observation_image.cloudy"
+          }
+        ],
+        "patientContextKeys": []
+      }
+    },
+    {
+      "kind": "examination",
+      "id": "demo_clinic:interview",
+      "nameKey": "demo_clinic.interview.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:interview",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "examination",
+      "id": "demo_clinic:temperature",
+      "nameKey": "demo_clinic.temperature.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:temperature",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "examination",
+      "id": "demo_clinic:pulse",
+      "nameKey": "demo_clinic.pulse.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:pulse",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "examination",
+      "id": "demo_clinic:blood_pressure",
+      "nameKey": "demo_clinic.blood_pressure.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:blood-pressure",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "examination",
+      "id": "demo_clinic:blood_count",
+      "nameKey": "demo_clinic.blood_count.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:blood-count",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "examination",
+      "id": "demo_clinic:inflammation",
+      "nameKey": "demo_clinic.inflammation.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:inflammation",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "examination",
+      "id": "demo_clinic:urine",
+      "nameKey": "demo_clinic.urine.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:urine",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "examination",
+      "id": "demo_clinic:imaging",
+      "nameKey": "demo_clinic.imaging.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:imaging",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "disease",
+      "id": "demo_clinic:amber",
+      "nameKey": "demo_clinic.amber.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:amber",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "disease",
+      "id": "demo_clinic:blue",
+      "nameKey": "demo_clinic.blue.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:blue",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "disease",
+      "id": "demo_clinic:green",
+      "nameKey": "demo_clinic.green.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:green",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "disease",
+      "id": "demo_clinic:violet",
+      "nameKey": "demo_clinic.violet.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:violet",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "disease",
+      "id": "demo_clinic:silver",
+      "nameKey": "demo_clinic.silver.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:silver",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "furniture",
+      "id": "demo_clinic:equipment_imaging_ring",
+      "nameKey": "demo_clinic.equipment_imaging_ring.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:equipment_imaging_ring",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "catalogAssets": [
+        {
+          "catalogId": "iryomera.assets:equipment.imaging_ring_basic",
+          "kind": "modelGlb"
+        }
+      ],
+      "placement": {
+        "footprint": {
+          "width": 4,
+          "depth": 2,
+          "cellSizeMeters": 1,
+          "occupiedCells": []
+        },
+        "interactionPoints": []
+      }
+    },
+    {
+      "kind": "furniture",
+      "id": "demo_clinic:equipment_imaging_stand",
+      "nameKey": "demo_clinic.equipment_imaging_stand.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:equipment_imaging_stand",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "catalogAssets": [
+        {
+          "catalogId": "iryomera.assets:equipment.imaging_stand_basic",
+          "kind": "modelGlb"
+        }
+      ],
+      "placement": {
+        "footprint": {
+          "width": 3,
+          "depth": 2,
+          "cellSizeMeters": 1,
+          "occupiedCells": []
+        },
+        "interactionPoints": []
+      }
+    },
+    {
+      "kind": "furniture",
+      "id": "demo_clinic:equipment_lab_analyser",
+      "nameKey": "demo_clinic.equipment_lab_analyser.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:equipment_lab_analyser",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "catalogAssets": [
+        {
+          "catalogId": "iryomera.assets:equipment.lab_analyser_basic",
+          "kind": "modelGlb"
+        }
+      ],
+      "placement": {
+        "footprint": {
+          "width": 1,
+          "depth": 1,
+          "cellSizeMeters": 1,
+          "occupiedCells": []
+        },
+        "interactionPoints": []
+      }
+    },
+    {
+      "kind": "furniture",
+      "id": "demo_clinic:furniture_exam_chair",
+      "nameKey": "demo_clinic.furniture_exam_chair.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:furniture_exam_chair",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "catalogAssets": [
+        {
+          "catalogId": "iryomera.assets:furniture.exam_chair_basic",
+          "kind": "modelGlb"
+        }
+      ],
+      "placement": {
+        "footprint": {
+          "width": 1,
+          "depth": 1,
+          "cellSizeMeters": 1,
+          "occupiedCells": []
+        },
+        "interactionPoints": []
+      }
+    },
+    {
+      "kind": "furniture",
+      "id": "demo_clinic:furniture_exam_couch",
+      "nameKey": "demo_clinic.furniture_exam_couch.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:furniture_exam_couch",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "catalogAssets": [
+        {
+          "catalogId": "iryomera.assets:furniture.exam_couch_basic",
+          "kind": "modelGlb"
+        }
+      ],
+      "placement": {
+        "footprint": {
+          "width": 1,
+          "depth": 2,
+          "cellSizeMeters": 1,
+          "occupiedCells": []
+        },
+        "interactionPoints": []
+      }
+    },
+    {
+      "kind": "furniture",
+      "id": "demo_clinic:furniture_lab_bench",
+      "nameKey": "demo_clinic.furniture_lab_bench.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:furniture_lab_bench",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "catalogAssets": [
+        {
+          "catalogId": "iryomera.assets:equipment.lab_bench_basic",
+          "kind": "modelGlb"
+        }
+      ],
+      "placement": {
+        "footprint": {
+          "width": 2,
+          "depth": 1,
+          "cellSizeMeters": 1,
+          "occupiedCells": []
+        },
+        "interactionPoints": []
+      }
+    },
+    {
+      "kind": "furniture",
+      "id": "demo_clinic:furniture_lab_cabinet",
+      "nameKey": "demo_clinic.furniture_lab_cabinet.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:furniture_lab_cabinet",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "catalogAssets": [
+        {
+          "catalogId": "iryomera.assets:equipment.lab_cabinet_basic",
+          "kind": "modelGlb"
+        }
+      ],
+      "placement": {
+        "footprint": {
+          "width": 2,
+          "depth": 1,
+          "cellSizeMeters": 1,
+          "occupiedCells": []
+        },
+        "interactionPoints": []
+      }
+    },
+    {
+      "kind": "furniture",
+      "id": "demo_clinic:furniture_office_chair",
+      "nameKey": "demo_clinic.furniture_office_chair.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:furniture_office_chair",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "catalogAssets": [
+        {
+          "catalogId": "iryomera.assets:furniture.office_chair_basic",
+          "kind": "modelGlb"
+        }
+      ],
+      "placement": {
+        "footprint": {
+          "width": 1,
+          "depth": 1,
+          "cellSizeMeters": 1,
+          "occupiedCells": []
+        },
+        "interactionPoints": []
+      }
+    },
+    {
+      "kind": "furniture",
+      "id": "demo_clinic:furniture_stretcher",
+      "nameKey": "demo_clinic.furniture_stretcher.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:furniture_stretcher",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "catalogAssets": [
+        {
+          "catalogId": "iryomera.assets:transport.stretcher_basic",
+          "kind": "modelGlb"
+        }
+      ],
+      "placement": {
+        "footprint": {
+          "width": 1,
+          "depth": 2,
+          "cellSizeMeters": 1,
+          "occupiedCells": []
+        },
+        "interactionPoints": [
+          {
+            "key": "lying",
+            "kind": "lying",
+            "x": 0.5,
+            "y": 0.8,
+            "z": 1.0,
+            "headingDegrees": 0,
+            "placeholder": true
+          },
+          {
+            "key": "handle",
+            "kind": "handle",
+            "x": 0.5,
+            "y": 0,
+            "z": 0,
+            "headingDegrees": 0,
+            "placeholder": true
+          }
+        ]
+      },
+      "mobility": "pushable",
+      "transport": {
+        "patientCapacity": 1,
+        "posture": "lying"
+      }
+    },
+    {
+      "kind": "furniture",
+      "id": "demo_clinic:furniture_wheelchair",
+      "nameKey": "demo_clinic.furniture_wheelchair.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:furniture_wheelchair",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "catalogAssets": [
+        {
+          "catalogId": "iryomera.assets:transport.wheelchair_basic",
+          "kind": "modelGlb"
+        }
+      ],
+      "placement": {
+        "footprint": {
+          "width": 1,
+          "depth": 1,
+          "cellSizeMeters": 1,
+          "occupiedCells": []
+        },
+        "interactionPoints": [
+          {
+            "key": "seat",
+            "kind": "seat",
+            "x": 0.5,
+            "y": 0.5,
+            "z": 0.5,
+            "headingDegrees": 0,
+            "placeholder": true
+          },
+          {
+            "key": "handle",
+            "kind": "handle",
+            "x": 0.5,
+            "y": 0,
+            "z": 0,
+            "headingDegrees": 0,
+            "placeholder": true
+          }
+        ]
+      },
+      "mobility": "pushable",
+      "transport": {
+        "patientCapacity": 1,
+        "posture": "seated"
+      }
+    }
+  ],
+  "relations": [
+    {
+      "id": "demo_clinic:link_examinationobservation_interview_observation_complaint",
+      "version": "1.0.0",
+      "kind": "examinationObservation",
+      "fromId": "demo_clinic:interview",
+      "toId": "demo_clinic:observation_complaint",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:interview",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_examinationroom_interview_room_type_consultation",
+      "version": "1.0.0",
+      "kind": "examinationRoom",
+      "fromId": "demo_clinic:interview",
+      "toId": "demo_clinic:room_type_consultation",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:interview",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_examinationstaffrole_interview_role_physician",
+      "version": "1.0.0",
+      "kind": "examinationStaffRole",
+      "fromId": "demo_clinic:interview",
+      "toId": "demo_clinic:role_physician",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:interview",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_examinationobservation_temperature_observation_temperature",
+      "version": "1.0.0",
+      "kind": "examinationObservation",
+      "fromId": "demo_clinic:temperature",
+      "toId": "demo_clinic:observation_temperature",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:temperature",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_examinationroom_temperature_room_type_consultation",
+      "version": "1.0.0",
+      "kind": "examinationRoom",
+      "fromId": "demo_clinic:temperature",
+      "toId": "demo_clinic:room_type_consultation",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:temperature",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_examinationstaffrole_temperature_role_nurse",
+      "version": "1.0.0",
+      "kind": "examinationStaffRole",
+      "fromId": "demo_clinic:temperature",
+      "toId": "demo_clinic:role_nurse",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:temperature",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_examinationobservation_pulse_observation_pulse",
+      "version": "1.0.0",
+      "kind": "examinationObservation",
+      "fromId": "demo_clinic:pulse",
+      "toId": "demo_clinic:observation_pulse",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:pulse",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_examinationroom_pulse_room_type_consultation",
+      "version": "1.0.0",
+      "kind": "examinationRoom",
+      "fromId": "demo_clinic:pulse",
+      "toId": "demo_clinic:room_type_consultation",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:pulse",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_examinationstaffrole_pulse_role_nurse",
+      "version": "1.0.0",
+      "kind": "examinationStaffRole",
+      "fromId": "demo_clinic:pulse",
+      "toId": "demo_clinic:role_nurse",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:pulse",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_examinationobservation_blood_pressure_observation_pressure",
+      "version": "1.0.0",
+      "kind": "examinationObservation",
+      "fromId": "demo_clinic:blood_pressure",
+      "toId": "demo_clinic:observation_pressure",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:blood-pressure",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_examinationroom_blood_pressure_room_type_consultation",
+      "version": "1.0.0",
+      "kind": "examinationRoom",
+      "fromId": "demo_clinic:blood_pressure",
+      "toId": "demo_clinic:room_type_consultation",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:blood-pressure",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_examinationstaffrole_blood_pressure_role_nurse",
+      "version": "1.0.0",
+      "kind": "examinationStaffRole",
+      "fromId": "demo_clinic:blood_pressure",
+      "toId": "demo_clinic:role_nurse",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:blood-pressure",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_examinationobservation_blood_count_observation_count",
+      "version": "1.0.0",
+      "kind": "examinationObservation",
+      "fromId": "demo_clinic:blood_count",
+      "toId": "demo_clinic:observation_count",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:blood-count",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_examinationroom_blood_count_room_type_laboratory",
+      "version": "1.0.0",
+      "kind": "examinationRoom",
+      "fromId": "demo_clinic:blood_count",
+      "toId": "demo_clinic:room_type_laboratory",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:blood-count",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_examinationstaffrole_blood_count_role_technician",
+      "version": "1.0.0",
+      "kind": "examinationStaffRole",
+      "fromId": "demo_clinic:blood_count",
+      "toId": "demo_clinic:role_technician",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:blood-count",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_examinationequipment_blood_count_equipment_analyzer",
+      "version": "1.0.0",
+      "kind": "examinationEquipment",
+      "fromId": "demo_clinic:blood_count",
+      "toId": "demo_clinic:equipment_analyzer",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:blood-count",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_examinationobservation_inflammation_observation_marker",
+      "version": "1.0.0",
+      "kind": "examinationObservation",
+      "fromId": "demo_clinic:inflammation",
+      "toId": "demo_clinic:observation_marker",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:inflammation",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_examinationroom_inflammation_room_type_laboratory",
+      "version": "1.0.0",
+      "kind": "examinationRoom",
+      "fromId": "demo_clinic:inflammation",
+      "toId": "demo_clinic:room_type_laboratory",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:inflammation",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_examinationstaffrole_inflammation_role_technician",
+      "version": "1.0.0",
+      "kind": "examinationStaffRole",
+      "fromId": "demo_clinic:inflammation",
+      "toId": "demo_clinic:role_technician",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:inflammation",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_examinationequipment_inflammation_equipment_analyzer",
+      "version": "1.0.0",
+      "kind": "examinationEquipment",
+      "fromId": "demo_clinic:inflammation",
+      "toId": "demo_clinic:equipment_analyzer",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:inflammation",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_examinationobservation_urine_observation_urine",
+      "version": "1.0.0",
+      "kind": "examinationObservation",
+      "fromId": "demo_clinic:urine",
+      "toId": "demo_clinic:observation_urine",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:urine",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_examinationroom_urine_room_type_laboratory",
+      "version": "1.0.0",
+      "kind": "examinationRoom",
+      "fromId": "demo_clinic:urine",
+      "toId": "demo_clinic:room_type_laboratory",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:urine",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_examinationstaffrole_urine_role_technician",
+      "version": "1.0.0",
+      "kind": "examinationStaffRole",
+      "fromId": "demo_clinic:urine",
+      "toId": "demo_clinic:role_technician",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:urine",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_examinationequipment_urine_equipment_analyzer",
+      "version": "1.0.0",
+      "kind": "examinationEquipment",
+      "fromId": "demo_clinic:urine",
+      "toId": "demo_clinic:equipment_analyzer",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:urine",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_examinationobservation_imaging_observation_image",
+      "version": "1.0.0",
+      "kind": "examinationObservation",
+      "fromId": "demo_clinic:imaging",
+      "toId": "demo_clinic:observation_image",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:imaging",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_examinationroom_imaging_room_type_imaging",
+      "version": "1.0.0",
+      "kind": "examinationRoom",
+      "fromId": "demo_clinic:imaging",
+      "toId": "demo_clinic:room_type_imaging",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:imaging",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_examinationstaffrole_imaging_role_technician",
+      "version": "1.0.0",
+      "kind": "examinationStaffRole",
+      "fromId": "demo_clinic:imaging",
+      "toId": "demo_clinic:role_technician",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:imaging",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_examinationequipment_imaging_equipment_scanner",
+      "version": "1.0.0",
+      "kind": "examinationEquipment",
+      "fromId": "demo_clinic:imaging",
+      "toId": "demo_clinic:equipment_scanner",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:imaging",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_examinationqualification_imaging_qualification_imaging",
+      "version": "1.0.0",
+      "kind": "examinationQualification",
+      "fromId": "demo_clinic:imaging",
+      "toId": "demo_clinic:qualification_imaging",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:imaging",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_diseasedepartment_amber_department_internal",
+      "version": "1.0.0",
+      "kind": "diseaseDepartment",
+      "fromId": "demo_clinic:amber",
+      "toId": "demo_clinic:department_internal",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:amber",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "priority": 1
+    },
+    {
+      "id": "demo_clinic:link_diseasedepartment_blue_department_internal",
+      "version": "1.0.0",
+      "kind": "diseaseDepartment",
+      "fromId": "demo_clinic:blue",
+      "toId": "demo_clinic:department_internal",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:blue",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "priority": 1
+    },
+    {
+      "id": "demo_clinic:link_diseasedepartment_blue_department_surgery",
+      "version": "1.0.0",
+      "kind": "diseaseDepartment",
+      "fromId": "demo_clinic:blue",
+      "toId": "demo_clinic:department_surgery",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:blue",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "priority": 2
+    },
+    {
+      "id": "demo_clinic:link_diseasedepartment_green_department_surgery",
+      "version": "1.0.0",
+      "kind": "diseaseDepartment",
+      "fromId": "demo_clinic:green",
+      "toId": "demo_clinic:department_surgery",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:green",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "priority": 1
+    },
+    {
+      "id": "demo_clinic:link_diseasedepartment_violet_department_internal",
+      "version": "1.0.0",
+      "kind": "diseaseDepartment",
+      "fromId": "demo_clinic:violet",
+      "toId": "demo_clinic:department_internal",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:violet",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "priority": 1
+    },
+    {
+      "id": "demo_clinic:link_diseasedepartment_silver_department_surgery",
+      "version": "1.0.0",
+      "kind": "diseaseDepartment",
+      "fromId": "demo_clinic:silver",
+      "toId": "demo_clinic:department_surgery",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:silver",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "priority": 1
+    },
+    {
+      "id": "demo_clinic:link_diseasedepartment_silver_department_internal",
+      "version": "1.0.0",
+      "kind": "diseaseDepartment",
+      "fromId": "demo_clinic:silver",
+      "toId": "demo_clinic:department_internal",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:silver",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "priority": 2
+    },
+    {
+      "id": "demo_clinic:link_furnitureequipment_equipment_imaging_ring_equipment_scanner",
+      "version": "1.0.0",
+      "kind": "furnitureEquipment",
+      "fromId": "demo_clinic:equipment_imaging_ring",
+      "toId": "demo_clinic:equipment_scanner",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:equipment_imaging_ring",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_furnitureequipment_equipment_lab_analyser_equipment_analyzer",
+      "version": "1.0.0",
+      "kind": "furnitureEquipment",
+      "fromId": "demo_clinic:equipment_lab_analyser",
+      "toId": "demo_clinic:equipment_analyzer",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:equipment_lab_analyser",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_roomfurniture_room_type_consultation_furniture_exam_chair",
+      "version": "1.0.0",
+      "kind": "roomFurniture",
+      "fromId": "demo_clinic:room_type_consultation",
+      "toId": "demo_clinic:furniture_exam_chair",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:room_type_consultation",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "requirement": "optional"
+    },
+    {
+      "id": "demo_clinic:link_roomfurniture_room_type_consultation_furniture_exam_couch",
+      "version": "1.0.0",
+      "kind": "roomFurniture",
+      "fromId": "demo_clinic:room_type_consultation",
+      "toId": "demo_clinic:furniture_exam_couch",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:room_type_consultation",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "requirement": "optional"
+    },
+    {
+      "id": "demo_clinic:link_roomfurniture_room_type_consultation_furniture_office_chair",
+      "version": "1.0.0",
+      "kind": "roomFurniture",
+      "fromId": "demo_clinic:room_type_consultation",
+      "toId": "demo_clinic:furniture_office_chair",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:room_type_consultation",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "requirement": "optional"
+    },
+    {
+      "id": "demo_clinic:link_roomfurniture_room_type_consultation_furniture_stretcher",
+      "version": "1.0.0",
+      "kind": "roomFurniture",
+      "fromId": "demo_clinic:room_type_consultation",
+      "toId": "demo_clinic:furniture_stretcher",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:room_type_consultation",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "requirement": "optional"
+    },
+    {
+      "id": "demo_clinic:link_roomfurniture_room_type_consultation_furniture_wheelchair",
+      "version": "1.0.0",
+      "kind": "roomFurniture",
+      "fromId": "demo_clinic:room_type_consultation",
+      "toId": "demo_clinic:furniture_wheelchair",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:room_type_consultation",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "requirement": "optional"
+    },
+    {
+      "id": "demo_clinic:link_roomfurniture_room_type_laboratory_equipment_lab_analyser",
+      "version": "1.0.0",
+      "kind": "roomFurniture",
+      "fromId": "demo_clinic:room_type_laboratory",
+      "toId": "demo_clinic:equipment_lab_analyser",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:room_type_laboratory",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "requirement": "required"
+    },
+    {
+      "id": "demo_clinic:link_roomfurniture_room_type_laboratory_furniture_lab_bench",
+      "version": "1.0.0",
+      "kind": "roomFurniture",
+      "fromId": "demo_clinic:room_type_laboratory",
+      "toId": "demo_clinic:furniture_lab_bench",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:room_type_laboratory",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "requirement": "optional"
+    },
+    {
+      "id": "demo_clinic:link_roomfurniture_room_type_laboratory_furniture_lab_cabinet",
+      "version": "1.0.0",
+      "kind": "roomFurniture",
+      "fromId": "demo_clinic:room_type_laboratory",
+      "toId": "demo_clinic:furniture_lab_cabinet",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:room_type_laboratory",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "requirement": "optional"
+    },
+    {
+      "id": "demo_clinic:link_roomfurniture_room_type_laboratory_furniture_office_chair",
+      "version": "1.0.0",
+      "kind": "roomFurniture",
+      "fromId": "demo_clinic:room_type_laboratory",
+      "toId": "demo_clinic:furniture_office_chair",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:room_type_laboratory",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "requirement": "optional"
+    },
+    {
+      "id": "demo_clinic:link_roomfurniture_room_type_imaging_equipment_imaging_ring",
+      "version": "1.0.0",
+      "kind": "roomFurniture",
+      "fromId": "demo_clinic:room_type_imaging",
+      "toId": "demo_clinic:equipment_imaging_ring",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:room_type_imaging",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "requirement": "required"
+    },
+    {
+      "id": "demo_clinic:link_roomfurniture_room_type_imaging_equipment_imaging_stand",
+      "version": "1.0.0",
+      "kind": "roomFurniture",
+      "fromId": "demo_clinic:room_type_imaging",
+      "toId": "demo_clinic:equipment_imaging_stand",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:room_type_imaging",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "requirement": "optional"
+    },
+    {
+      "id": "demo_clinic:link_roomfurniture_room_type_imaging_furniture_office_chair",
+      "version": "1.0.0",
+      "kind": "roomFurniture",
+      "fromId": "demo_clinic:room_type_imaging",
+      "toId": "demo_clinic:furniture_office_chair",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:room_type_imaging",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "requirement": "optional"
+    }
+  ],
+  "medicalAnnotations": [],
+  "referenceRanges": [],
+  "diagnosticRecommendations": [],
+  "gameplay": [
+    {
+      "definitionId": "demo_clinic:department_emergency",
+      "capacity": 10,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:department_internal",
+      "capacity": 2,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:department_surgery",
+      "capacity": 2,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:department_diagnostics",
+      "capacity": 0,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:interview",
+      "examinationDurationSeconds": 300,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:temperature",
+      "examinationDurationSeconds": 120,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:pulse",
+      "examinationDurationSeconds": 120,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:blood_pressure",
+      "examinationDurationSeconds": 180,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:blood_count",
+      "examinationDurationSeconds": 900,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:inflammation",
+      "examinationDurationSeconds": 1200,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:urine",
+      "examinationDurationSeconds": 480,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:imaging",
+      "examinationDurationSeconds": 1500,
+      "requiredResources": {}
+    }
+  ],
+  "diagnosticSimulation": {
+    "simulationOnly": true,
+    "observationDistributions": [
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:reading_amber_complaint",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:amber",
+        "observationId": "demo_clinic:observation_complaint",
+        "categoryWeights": {},
+        "textKey": "demo_clinic.amber.complaint"
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:reading_amber_temperature",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:amber",
+        "observationId": "demo_clinic:observation_temperature",
+        "categoryWeights": {},
+        "numericMinimum": 38.4,
+        "numericMaximum": 38.4
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:reading_amber_pulse",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:amber",
+        "observationId": "demo_clinic:observation_pulse",
+        "categoryWeights": {},
+        "numericMinimum": 108,
+        "numericMaximum": 108
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:reading_amber_pressure",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:amber",
+        "observationId": "demo_clinic:observation_pressure",
+        "categoryWeights": {},
+        "numericMinimum": 119,
+        "numericMaximum": 119
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:reading_amber_count",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:amber",
+        "observationId": "demo_clinic:observation_count",
+        "categoryWeights": {},
+        "numericMinimum": 8.2,
+        "numericMaximum": 8.2
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:reading_amber_marker",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:amber",
+        "observationId": "demo_clinic:observation_marker",
+        "categoryWeights": {},
+        "numericMinimum": 42,
+        "numericMaximum": 42
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:reading_amber_urine",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:amber",
+        "observationId": "demo_clinic:observation_urine",
+        "categoryWeights": {
+          "clear": 1
+        }
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:reading_amber_image",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:amber",
+        "observationId": "demo_clinic:observation_image",
+        "categoryWeights": {
+          "cloudy": 1
+        }
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:reading_blue_complaint",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:blue",
+        "observationId": "demo_clinic:observation_complaint",
+        "categoryWeights": {},
+        "textKey": "demo_clinic.blue.complaint"
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:reading_blue_temperature",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:blue",
+        "observationId": "demo_clinic:observation_temperature",
+        "categoryWeights": {},
+        "numericMinimum": 36.8,
+        "numericMaximum": 36.8
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:reading_blue_pulse",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:blue",
+        "observationId": "demo_clinic:observation_pulse",
+        "categoryWeights": {},
+        "numericMinimum": 79,
+        "numericMaximum": 79
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:reading_blue_pressure",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:blue",
+        "observationId": "demo_clinic:observation_pressure",
+        "categoryWeights": {},
+        "numericMinimum": 142,
+        "numericMaximum": 142
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:reading_blue_count",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:blue",
+        "observationId": "demo_clinic:observation_count",
+        "categoryWeights": {},
+        "numericMinimum": 5.3,
+        "numericMaximum": 5.3
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:reading_blue_marker",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:blue",
+        "observationId": "demo_clinic:observation_marker",
+        "categoryWeights": {},
+        "numericMinimum": 8,
+        "numericMaximum": 8
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:reading_blue_urine",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:blue",
+        "observationId": "demo_clinic:observation_urine",
+        "categoryWeights": {
+          "clear": 1
+        }
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:reading_blue_image",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:blue",
+        "observationId": "demo_clinic:observation_image",
+        "categoryWeights": {
+          "clear": 1
+        }
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:reading_green_complaint",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:green",
+        "observationId": "demo_clinic:observation_complaint",
+        "categoryWeights": {},
+        "textKey": "demo_clinic.green.complaint"
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:reading_green_temperature",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:green",
+        "observationId": "demo_clinic:observation_temperature",
+        "categoryWeights": {},
+        "numericMinimum": 37.1,
+        "numericMaximum": 37.1
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:reading_green_pulse",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:green",
+        "observationId": "demo_clinic:observation_pulse",
+        "categoryWeights": {},
+        "numericMinimum": 90,
+        "numericMaximum": 90
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:reading_green_pressure",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:green",
+        "observationId": "demo_clinic:observation_pressure",
+        "categoryWeights": {},
+        "numericMinimum": 124,
+        "numericMaximum": 124
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:reading_green_count",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:green",
+        "observationId": "demo_clinic:observation_count",
+        "categoryWeights": {},
+        "numericMinimum": 7,
+        "numericMaximum": 7
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:reading_green_marker",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:green",
+        "observationId": "demo_clinic:observation_marker",
+        "categoryWeights": {},
+        "numericMinimum": 14,
+        "numericMaximum": 14
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:reading_green_urine",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:green",
+        "observationId": "demo_clinic:observation_urine",
+        "categoryWeights": {
+          "marked": 1
+        }
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:reading_green_image",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:green",
+        "observationId": "demo_clinic:observation_image",
+        "categoryWeights": {
+          "clear": 1
+        }
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:reading_violet_complaint",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:violet",
+        "observationId": "demo_clinic:observation_complaint",
+        "categoryWeights": {},
+        "textKey": "demo_clinic.violet.complaint"
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:reading_violet_temperature",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:violet",
+        "observationId": "demo_clinic:observation_temperature",
+        "categoryWeights": {},
+        "numericMinimum": 38,
+        "numericMaximum": 38
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:reading_violet_pulse",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:violet",
+        "observationId": "demo_clinic:observation_pulse",
+        "categoryWeights": {},
+        "numericMinimum": 101,
+        "numericMaximum": 101
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:reading_violet_pressure",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:violet",
+        "observationId": "demo_clinic:observation_pressure",
+        "categoryWeights": {},
+        "numericMinimum": 127,
+        "numericMaximum": 127
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:reading_violet_count",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:violet",
+        "observationId": "demo_clinic:observation_count",
+        "categoryWeights": {},
+        "numericMinimum": 9.8,
+        "numericMaximum": 9.8
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:reading_violet_marker",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:violet",
+        "observationId": "demo_clinic:observation_marker",
+        "categoryWeights": {},
+        "numericMinimum": 32,
+        "numericMaximum": 32
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:reading_violet_urine",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:violet",
+        "observationId": "demo_clinic:observation_urine",
+        "categoryWeights": {
+          "clear": 1
+        }
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:reading_violet_image",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:violet",
+        "observationId": "demo_clinic:observation_image",
+        "categoryWeights": {
+          "marked": 1
+        }
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:reading_silver_complaint",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:silver",
+        "observationId": "demo_clinic:observation_complaint",
+        "categoryWeights": {},
+        "textKey": "demo_clinic.silver.complaint"
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:reading_silver_temperature",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:silver",
+        "observationId": "demo_clinic:observation_temperature",
+        "categoryWeights": {},
+        "numericMinimum": 37,
+        "numericMaximum": 37
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:reading_silver_pulse",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:silver",
+        "observationId": "demo_clinic:observation_pulse",
+        "categoryWeights": {},
+        "numericMinimum": 86,
+        "numericMaximum": 86
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:reading_silver_pressure",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:silver",
+        "observationId": "demo_clinic:observation_pressure",
+        "categoryWeights": {},
+        "numericMinimum": 130,
+        "numericMaximum": 130
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:reading_silver_count",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:silver",
+        "observationId": "demo_clinic:observation_count",
+        "categoryWeights": {},
+        "numericMinimum": 6.1,
+        "numericMaximum": 6.1
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:reading_silver_marker",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:silver",
+        "observationId": "demo_clinic:observation_marker",
+        "categoryWeights": {},
+        "numericMinimum": 5,
+        "numericMaximum": 5
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:reading_silver_urine",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:silver",
+        "observationId": "demo_clinic:observation_urine",
+        "categoryWeights": {
+          "marked": 1
+        }
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:reading_silver_image",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:silver",
+        "observationId": "demo_clinic:observation_image",
+        "categoryWeights": {
+          "clear": 1
+        }
+      }
+    ],
+    "manifestations": [],
+    "examinationPolicies": []
+  },
+  "namePools": [
+    {
+      "schemaVersion": "1.0.0",
+      "id": "demo_clinic:patients.given",
+      "version": "1.0.0",
+      "nameKey": "demo_clinic.pool.patients_given.name",
+      "country": "DE",
+      "part": "given",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "patientNames",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "sources": [
+        {
+          "key": "game_fixture",
+          "provenance": {
+            "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+            "externalId": "patientNames",
+            "sourceVersion": "game-fixtures-1",
+            "license": "MIT",
+            "importedAt": "2026-10-18T00:00:00Z",
+            "reviewStatus": "unreviewed",
+            "evidence": [
+              {
+                "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+              }
+            ]
+          }
+        }
+      ],
+      "entries": [
+        {
+          "key": "alex",
+          "localized": "Alex",
+          "gender": "unknown",
+          "attestations": [
+            {
+              "sourceKey": "game_fixture",
+              "externalId": "patientNames[0]"
+            }
+          ]
+        },
+        {
+          "key": "mika",
+          "localized": "Mika",
+          "gender": "unknown",
+          "attestations": [
+            {
+              "sourceKey": "game_fixture",
+              "externalId": "patientNames[1]"
+            }
+          ]
+        },
+        {
+          "key": "robin",
+          "localized": "Robin",
+          "gender": "unknown",
+          "attestations": [
+            {
+              "sourceKey": "game_fixture",
+              "externalId": "patientNames[2]"
+            }
+          ]
+        },
+        {
+          "key": "jona",
+          "localized": "Jona",
+          "gender": "unknown",
+          "attestations": [
+            {
+              "sourceKey": "game_fixture",
+              "externalId": "patientNames[3]"
+            }
+          ]
+        },
+        {
+          "key": "kim",
+          "localized": "Kim",
+          "gender": "unknown",
+          "attestations": [
+            {
+              "sourceKey": "game_fixture",
+              "externalId": "patientNames[4]"
+            }
+          ]
+        },
+        {
+          "key": "toni",
+          "localized": "Toni",
+          "gender": "unknown",
+          "attestations": [
+            {
+              "sourceKey": "game_fixture",
+              "externalId": "patientNames[5]"
+            }
+          ]
+        },
+        {
+          "key": "sam",
+          "localized": "Sam",
+          "gender": "unknown",
+          "attestations": [
+            {
+              "sourceKey": "game_fixture",
+              "externalId": "patientNames[6]"
+            }
+          ]
+        },
+        {
+          "key": "luca",
+          "localized": "Luca",
+          "gender": "unknown",
+          "attestations": [
+            {
+              "sourceKey": "game_fixture",
+              "externalId": "patientNames[7]"
+            }
+          ]
+        },
+        {
+          "key": "nico",
+          "localized": "Nico",
+          "gender": "unknown",
+          "attestations": [
+            {
+              "sourceKey": "game_fixture",
+              "externalId": "patientNames[8]"
+            }
+          ]
+        },
+        {
+          "key": "chris",
+          "localized": "Chris",
+          "gender": "unknown",
+          "attestations": [
+            {
+              "sourceKey": "game_fixture",
+              "externalId": "patientNames[9]"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "demo_clinic:patients.family",
+      "version": "1.0.0",
+      "nameKey": "demo_clinic.pool.patients_family.name",
+      "country": "DE",
+      "part": "family",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "patientNames",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "sources": [
+        {
+          "key": "game_fixture",
+          "provenance": {
+            "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+            "externalId": "patientNames",
+            "sourceVersion": "game-fixtures-1",
+            "license": "MIT",
+            "importedAt": "2026-10-18T00:00:00Z",
+            "reviewStatus": "unreviewed",
+            "evidence": [
+              {
+                "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+              }
+            ]
+          }
+        }
+      ],
+      "entries": [
+        {
+          "key": "sommer",
+          "localized": "Sommer",
+          "gender": "unknown",
+          "attestations": [
+            {
+              "sourceKey": "game_fixture",
+              "externalId": "patientNames[0]"
+            }
+          ]
+        },
+        {
+          "key": "stein",
+          "localized": "Stein",
+          "gender": "unknown",
+          "attestations": [
+            {
+              "sourceKey": "game_fixture",
+              "externalId": "patientNames[1]"
+            }
+          ]
+        },
+        {
+          "key": "winter",
+          "localized": "Winter",
+          "gender": "unknown",
+          "attestations": [
+            {
+              "sourceKey": "game_fixture",
+              "externalId": "patientNames[2]"
+            }
+          ]
+        },
+        {
+          "key": "berger",
+          "localized": "Berger",
+          "gender": "unknown",
+          "attestations": [
+            {
+              "sourceKey": "game_fixture",
+              "externalId": "patientNames[3]"
+            }
+          ]
+        },
+        {
+          "key": "bauer",
+          "localized": "Bauer",
+          "gender": "unknown",
+          "attestations": [
+            {
+              "sourceKey": "game_fixture",
+              "externalId": "patientNames[4]"
+            }
+          ]
+        },
+        {
+          "key": "fischer",
+          "localized": "Fischer",
+          "gender": "unknown",
+          "attestations": [
+            {
+              "sourceKey": "game_fixture",
+              "externalId": "patientNames[5]"
+            }
+          ]
+        },
+        {
+          "key": "krueger",
+          "localized": "Krüger",
+          "gender": "unknown",
+          "attestations": [
+            {
+              "sourceKey": "game_fixture",
+              "externalId": "patientNames[6]"
+            }
+          ]
+        },
+        {
+          "key": "meier",
+          "localized": "Meier",
+          "gender": "unknown",
+          "attestations": [
+            {
+              "sourceKey": "game_fixture",
+              "externalId": "patientNames[7]"
+            }
+          ]
+        },
+        {
+          "key": "wolf",
+          "localized": "Wolf",
+          "gender": "unknown",
+          "attestations": [
+            {
+              "sourceKey": "game_fixture",
+              "externalId": "patientNames[8]"
+            }
+          ]
+        },
+        {
+          "key": "engel",
+          "localized": "Engel",
+          "gender": "unknown",
+          "attestations": [
+            {
+              "sourceKey": "game_fixture",
+              "externalId": "patientNames[9]"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "examplePurpose": "Fictional demo clinic generated from game fixtures; not clinical facts"
+}

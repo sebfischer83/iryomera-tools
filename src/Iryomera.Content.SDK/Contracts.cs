@@ -118,7 +118,7 @@ public enum RelationKind
 {
     DiseaseSymptom, DiseaseFinding, ExaminationFinding, DiseaseExamination,
     DiseaseTreatment, ExaminationEquipment, TreatmentQualification, RoomFurniture, ExaminationObservation, ExaminationRoom, ExaminationQualification, ExaminationPrerequisite,
-    TreatmentEquipment, RoomEquipment, ExaminationStaffRole, DiseaseDepartment
+    TreatmentEquipment, RoomEquipment, ExaminationStaffRole, DiseaseDepartment, FurnitureEquipment
 }
 
 /// <summary>
