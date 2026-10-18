@@ -248,6 +248,94 @@
         "rightsNote"
       ],
       "additionalProperties": false
+    },
+    "catalogAssetFootprint": {
+      "type": "object",
+      "properties": {
+        "width": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "depth": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "width",
+        "depth"
+      ],
+      "additionalProperties": true
+    },
+    "catalogAssetIndexEntry": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "kind": {
+          "enum": [
+            "modelGlb",
+            "texture",
+            "icon"
+          ]
+        },
+        "category": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "mount": {
+          "anyOf": [
+            {
+              "enum": [
+                "floor",
+                "wall",
+                "ceiling",
+                "surface"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "footprint": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/catalogAssetFootprint"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "category"
+      ],
+      "additionalProperties": true
+    },
+    "catalogAssetIndex": {
+      "type": "object",
+      "properties": {
+        "schemaVersion": {
+          "const": "1.0.0"
+        },
+        "assets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/catalogAssetIndexEntry"
+          }
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "assets"
+      ],
+      "additionalProperties": true
     }
   }
 }

@@ -308,3 +308,4 @@ footer {
         gap:.5rem
     }
 }
+.catalog-preview { width: 96px; height: 96px; object-fit: contain; border: 1px solid var(--line, #cfd8dc); border-radius: 6px; background: #f3f6f7; font-size: 0.75rem; }
