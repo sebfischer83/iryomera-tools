@@ -17,6 +17,10 @@ Purchased models used by the base game must never enter this repository or a pub
 
 Furniture can carry `surfaces` (key, height and an X/Z rectangle in local meters) on which other items stand with `mount: surface`. The footprint covers the whole floor projection, so a surface lies inside the footprint rectangle; the SDK checks keys, positive sizes and that bound, the game checks fit, stacking and clearance. Allowed pairings are not modeled yet; if needed later they become sourced relations. Agreed with the game session; accepted by the owner.
 
+## Amendment 2026-10-18: surface categories (library 0.10.0)
+
+Surfaces may list accepted categories (`accepts`) and surface-mounted items their categories (`surfaceCategories`). An item may stand on a surface when the surface lists no categories or both lists share one (owner decision: categories rather than relations). `FurnitureSurfaces.Accepts` implements the rule; fit and clearance stay game logic.
+
 ## Studio (2026-10-18)
 
 ContentStudio edits catalog assets, placement, mounts and surfaces, and can read an optional local catalog folder (`Studio:CatalogPreviewDirectory`) with `catalog-assets.json` (schema `schemas/studio/v1` `catalogAssetIndex`) and PNG previews. The folder is read-only and never stored, audited or exported. See the [Studio guide](../content-studio.md).

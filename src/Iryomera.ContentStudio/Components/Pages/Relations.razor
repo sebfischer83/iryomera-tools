@@ -22,7 +22,7 @@
             <label>@L["studio.id"]<input @bind="RecordId" readonly="@(!Creating)" /></label>
             <label>@L["studio.kind"]<select @bind="Kind">@foreach (var kind in Enum.GetValues<RelationKind>()) { <option value="@kind">@L["studio.relation." + kind]</option> }</select></label>
             <label>@L["studio.from"]<select @bind="From"><option value="">@L["studio.select"]</option>@foreach (var d in State.Package.Definitions) { <option value="@d.Id">@Label(d.Id) (@StudioContent.Kind(d))</option> }</select></label>
-            @if (Kind == RelationKind.RoomEquipment) { <label>@L["studio.requirement"]<select @bind="Requirement"><option value="">@L["studio.requirement.default"]</option><option value="Required">@L["studio.requirement.required"]</option><option value="Optional">@L["studio.requirement.optional"]</option></select></label> }
+            @if (Kind is RelationKind.RoomEquipment or RelationKind.RoomFurniture) { <label>@L["studio.requirement"]<select @bind="Requirement"><option value="">@L[Kind == RelationKind.RoomFurniture ? "studio.requirement.defaultrequired" : "studio.requirement.default"]</option><option value="Required">@L["studio.requirement.required"]</option><option value="Optional">@L["studio.requirement.optional"]</option></select></label> }
             <label>@L["studio.to"]<select @bind="To"><option value="">@L["studio.select"]</option>@foreach (var d in State.Package.Definitions) { <option value="@d.Id">@Label(d.Id) (@StudioContent.Kind(d))</option> }</select></label>
             @if (Creating) { <label>@L["studio.source"]<input @bind="Source" /></label><label>@L["studio.license"]<input @bind="License" /></label> }
             <label>@L["studio.reviewer"]<input @bind="Actor" /></label><label>@L["studio.reason"]<textarea @bind="Note"></textarea></label><button @onclick="Save" disabled="@Busy">@L["studio.saveDraft"]</button>
@@ -47,7 +47,7 @@
     {
         var provenance = Selected?.Provenance ?? new Provenance { Source = Source, ExternalId = RecordId, SourceVersion = "1.0.0", License = License, ImportedAt = DateTimeOffset.UtcNow };
         await Projects.SaveRelationAsync(Id, State!.Project.Revision, new() { Id = RecordId, Version = Selected?.Version ?? "1.0.0", Kind = Kind, FromId = From, ToId = To, Provenance = provenance,
-            Requirement = Kind == RelationKind.RoomEquipment && Enum.TryParse<RelationRequirement>(Requirement, out var requirement) ? requirement : null }, Actor, Note, Creating);
+            Requirement = Kind is RelationKind.RoomEquipment or RelationKind.RoomFurniture && Enum.TryParse<RelationRequirement>(Requirement, out var requirement) ? requirement : null }, Actor, Note, Creating);
         State = await Projects.GetAsync(Id); Select(State.Package.Relations.Single(r => r.Id == RecordId));
     });
 }

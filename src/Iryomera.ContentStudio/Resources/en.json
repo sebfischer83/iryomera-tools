@@ -224,6 +224,11 @@
     "studio.requirement.default": "Optional (default)",
     "studio.requirement.required": "Required",
     "studio.requirement.optional": "Optional",
-    "studio.assetsresetreview": "Saving resets the review of this record only; its relationships keep their review status."
+    "studio.assetsresetreview": "Saving resets the review of this record only; its relationships keep their review status.",
+    "studio.requirement.defaultrequired": "Required (default)",
+    "studio.surfaceaccepts": "Accepted categories",
+    "studio.surfacecategories": "Surface categories",
+    "studio.roomcontents": "Offered in this room",
+    "studio.roomcontentshint": "Furniture and equipment a player can place in this room type, from room relations. Items without a relation are not offered here."
   }
 }

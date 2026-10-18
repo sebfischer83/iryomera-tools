@@ -46,6 +46,12 @@
             var relations = State.Package.Relations.Where(r => r.Kind == kind && (r.FromId == Existing.Id || r.ToId == Existing.Id)).ToArray();
             @if (relations.Length > 0) { <section class="card"><h3>@L["studio.relation." + kind]</h3><ul>@foreach (var relation in relations) { <li><code>@relation.FromId → @relation.ToId</code> · @L["studio.status." + relation.Provenance.ReviewStatus]</li> }</ul></section> }
         }
+        @if (Existing is RoomDefinition)
+        {
+            <section class="card"><h3>@L["studio.roomContents"]</h3><p>@L["studio.roomContentsHint"]</p>
+                <ul>@foreach (var item in RoomContents.Placeable([State.Package], Existing.Id)) { <li><code>@item.DefinitionId</code> · @L["studio.relation." + item.Kind] · @L["studio.requirement." + item.Requirement]</li> }</ul>
+            </section>
+        }
         <section class="card"><h3>@L["studio.requiredResources"]</h3><p>@L["studio.requirementsHint"]</p>
             <ul>@foreach (var resource in State.Package.Gameplay.Find(g => g.DefinitionId == Existing.Id)?.RequiredResources ?? []) { <li>@resource.Key: @resource.Value</li> }</ul>
             <p>@L["studio.equipmentPersonnelHint"]</p>

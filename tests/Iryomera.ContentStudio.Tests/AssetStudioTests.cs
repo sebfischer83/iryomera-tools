@@ -60,6 +60,12 @@ public sealed class AssetStudioTests
             FromId = "synthetic:demo_room", ToId = "synthetic:demo_scanner", Provenance = provenance, Requirement = RelationRequirement.Required }, "Synthetic editor", "Required device", create: true);
         state = await data.Projects.GetAsync(id);
         Assert.Equal(RelationRequirement.Required, state.Package.Relations.Single(r => r.Id == "synthetic:room_equipment_test").Requirement);
+        await data.Projects.SaveRelationAsync(id, state.Project.Revision, new() { Id = "synthetic:room_furniture_test", Version = "1.0.0", Kind = RelationKind.RoomFurniture,
+            FromId = "synthetic:demo_room", ToId = "synthetic:demo_desk", Provenance = provenance with { ExternalId = "room_furniture_test" }, Requirement = RelationRequirement.Optional }, "Synthetic editor", "Optional desk", create: true);
+        state = await data.Projects.GetAsync(id);
+        var offered = RoomContents.Placeable([state.Package], "synthetic:demo_room");
+        Assert.Contains(offered, i => i.DefinitionId == "synthetic:demo_scanner" && i.Requirement == RelationRequirement.Required);
+        Assert.Contains(offered, i => i.DefinitionId == "synthetic:demo_desk");
         await Assert.ThrowsAsync<StudioValidationException>(() => data.Projects.SaveRelationAsync(id, state.Project.Revision, new() { Id = "synthetic:treatment_equipment_test", Version = "1.0.0",
             Kind = RelationKind.TreatmentEquipment, FromId = "synthetic:amber_session", ToId = "synthetic:demo_scanner", Provenance = provenance with { ExternalId = "treatment_equipment_test" },
             Requirement = RelationRequirement.Required }, "Synthetic editor", "Requirement on the wrong kind", create: true));
