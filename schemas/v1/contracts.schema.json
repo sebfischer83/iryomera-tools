@@ -353,6 +353,21 @@
         "depth": {
           "type": "number",
           "exclusiveMinimum": 0
+        },
+        "accepts": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+              },
+              "uniqueItems": true
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
@@ -415,6 +430,21 @@
               "type": "null"
             }
           ]
+        },
+        "surfaceCategories": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+              },
+              "uniqueItems": true
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
@@ -440,6 +470,28 @@
             "properties": {
               "mount": {
                 "const": "wall"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "surfaceCategories"
+            ],
+            "properties": {
+              "surfaceCategories": {
+                "type": "array"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "mount"
+            ],
+            "properties": {
+              "mount": {
+                "const": "surface"
               }
             }
           }
@@ -2246,7 +2298,10 @@
           "then": {
             "properties": {
               "kind": {
-                "const": "roomEquipment"
+                "enum": [
+                  "roomEquipment",
+                  "roomFurniture"
+                ]
               }
             }
           }

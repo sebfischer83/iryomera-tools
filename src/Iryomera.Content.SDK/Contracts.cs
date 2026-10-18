@@ -110,7 +110,10 @@ public enum RelationKind
     TreatmentEquipment, RoomEquipment
 }
 
-/// <summary>Only for roomEquipment: whether a room type needs the equipment to count as complete. Absent means optional.</summary>
+/// <summary>
+/// For roomEquipment and roomFurniture: whether a room type needs the item to count as complete. Absent means optional for
+/// roomEquipment and required for roomFurniture; use RoomContents.EffectiveRequirement.
+/// </summary>
 public enum RelationRequirement { Required, Optional }
 
 public sealed record ContentRelation : ExtensibleRecord
@@ -121,7 +124,7 @@ public sealed record ContentRelation : ExtensibleRecord
     public required string FromId { get; init; }
     public required string ToId { get; init; }
     public required Provenance Provenance { get; init; }
-    /// <summary>Optional, omitted when null; allowed only for roomEquipment.</summary>
+    /// <summary>Optional, omitted when null; allowed only for roomEquipment and roomFurniture.</summary>
     public RelationRequirement? Requirement { get; init; }
 }
 

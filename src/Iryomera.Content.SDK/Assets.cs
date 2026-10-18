@@ -52,6 +52,8 @@ public sealed record FurnitureSurface : ExtensibleRecord
     public required decimal Z { get; init; }
     public required decimal Width { get; init; }
     public required decimal Depth { get; init; }
+    /// <summary>Optional, omitted when null: categories of surface-mounted items this surface takes; empty takes any item that fits.</summary>
+    public List<string>? Accepts { get; init; }
 }
 /// <summary>
 /// Absent mount means floor. Wall: X along the wall, Z into the room (+Z), origin on the wall surface, height from the storey
@@ -66,6 +68,8 @@ public sealed record FurniturePlacement : ExtensibleRecord
     public decimal? MountHeightMeters { get; init; }
     /// <summary>Optional, omitted when null; surfaces lie inside the footprint rectangle, which covers the whole projection.</summary>
     public List<FurnitureSurface>? Surfaces { get; init; }
+    /// <summary>Optional, omitted when null; only with mount surface. Matched against FurnitureSurface.Accepts.</summary>
+    public List<string>? SurfaceCategories { get; init; }
 }
 
 internal static class AssetValidator
@@ -100,6 +104,11 @@ internal static class AssetValidator
                 if (!ContentFormat.IsValidNamespace(surface.Key) || !surfaces.Add(surface.Key) || surface.HeightMeters <= 0 || surface.Width <= 0 || surface.Depth <= 0 ||
                     surface.X < 0 || surface.Z < 0 || surface.X + surface.Width > footprint.Width * footprint.CellSizeMeters || surface.Z + surface.Depth > footprint.Depth * footprint.CellSizeMeters)
                     issues.Add(new("furniture-surface", definition.Id, "Surfaces need unique stable keys, positive height and size, and must lie inside the footprint rectangle."));
+            foreach (var categories in (placement.Surfaces ?? []).Select(s => s.Accepts).Append(placement.SurfaceCategories))
+                if (categories is not null && (categories.Any(c => !ContentFormat.IsValidNamespace(c)) || categories.Distinct(StringComparer.Ordinal).Count() != categories.Count))
+                    issues.Add(new("furniture-surface-category", definition.Id, "Surface categories must be unique stable keys."));
+            if (placement.SurfaceCategories is not null && placement.Mount != FurnitureMount.Surface)
+                issues.Add(new("furniture-surface-category", definition.Id, "Surface categories are allowed only with mount surface."));
             if (footprint.Width <= 0 || footprint.Depth <= 0 || footprint.CellSizeMeters <= 0)
                 issues.Add(new("footprint", definition.Id, "Footprint dimensions and cell size must be positive."));
             var cells = new HashSet<(int, int)>();

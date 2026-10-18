@@ -224,6 +224,11 @@
     "studio.requirement.default": "Optional (Standard)",
     "studio.requirement.required": "Pflicht",
     "studio.requirement.optional": "Optional",
-    "studio.assetsresetreview": "Speichern setzt nur die Prüfung dieses Eintrags zurück; seine Beziehungen behalten ihren Prüfstatus."
+    "studio.assetsresetreview": "Speichern setzt nur die Prüfung dieses Eintrags zurück; seine Beziehungen behalten ihren Prüfstatus.",
+    "studio.requirement.defaultrequired": "Pflicht (Standard)",
+    "studio.surfaceaccepts": "Erlaubte Kategorien",
+    "studio.surfacecategories": "Flächen-Kategorien",
+    "studio.roomcontents": "In diesem Raum angeboten",
+    "studio.roomcontentshint": "Möbel und Geräte, die ein Spieler in dieser Raumart platzieren kann, aus den Raum-Beziehungen. Gegenstände ohne Beziehung werden hier nicht angeboten."
   }
 }

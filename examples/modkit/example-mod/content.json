@@ -233,7 +233,10 @@
             "x": 0,
             "z": 0,
             "width": 2,
-            "depth": 1
+            "depth": 1,
+            "accepts": [
+              "decoration"
+            ]
           }
         ]
       }

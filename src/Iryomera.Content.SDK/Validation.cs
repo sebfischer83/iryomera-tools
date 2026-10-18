@@ -122,8 +122,8 @@ public static class ContentValidator
                 Register(relation.Id, manifest.Namespace, path + ".relations[" + relation.Id + "]");
                 CheckVersion(relation.Version, relation.Id);
                 CheckProvenance(relation.Provenance, relation.Id);
-                if (relation.Requirement is { } requirement && (!Enum.IsDefined(requirement) || relation.Kind != RelationKind.RoomEquipment))
-                    Error("relation-requirement", relation.Id, "A requirement is allowed only on roomEquipment relations and must be required or optional.");
+                if (relation.Requirement is { } requirement && (!Enum.IsDefined(requirement) || relation.Kind is not (RelationKind.RoomEquipment or RelationKind.RoomFurniture)))
+                    Error("relation-requirement", relation.Id, "A requirement is allowed only on roomEquipment and roomFurniture relations and must be required or optional.");
             }
             foreach (var annotation in item.MedicalAnnotations)
             {
