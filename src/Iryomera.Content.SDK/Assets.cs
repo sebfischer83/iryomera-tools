@@ -57,7 +57,8 @@ public sealed record FurnitureFootprint : ExtensibleRecord
 /// <summary>
 /// Local meters relative to the footprint's lower X/Z corner, Y up. Points may lie outside occupied cells. HeadingDegrees is
 /// the facing of the person at the point: 0° looks along local +Z, increasing counterclockwise seen from above, so 90° looks
-/// along +X, 180° along -Z and 270° along -X (a right-handed rotation about +Y). Kind is optional: seat, lying, handle,
+/// along +X, 180° along -Z and 270° along -X (a right-handed rotation about +Y). For a lying point it is the direction from
+/// feet to head. Kind is optional: seat, lying, handle,
 /// operator, entry or another stable key.
 /// </summary>
 public sealed record InteractionPoint : ExtensibleRecord

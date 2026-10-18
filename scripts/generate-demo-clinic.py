@@ -1,7 +1,7 @@
 """Demo clinic content package generated from the private game's demo fixture values (ADR 0018).
 
 Everything is fictional game content for a playable demo, not medical knowledge. Readings are deterministic
-simulation-only distributions; interaction points of transport items and surface heights are placeholders until the game supplies geometry.
+simulation-only distributions; interaction points the game has not measured and surface heights are placeholders.
 """
 import json
 from pathlib import Path
@@ -20,7 +20,8 @@ OBSERVATIONS = {
     'demo:pressure':('Pressure (fictional scale)','Druck (fiktive Skala)'), 'demo:count':('Count (fictional scale)','Zählwert (fiktive Skala)'),
     'demo:marker':('Marker (fictional scale)','Marker (fiktive Skala)'), 'demo:urine':('Urine result','Urinbefund'), 'demo:image':('Image result','Bildbefund')}
 CATEGORIES = {'clear':('Clear','Unauffällig'), 'marked':('Marked','Auffällig'), 'cloudy':('Cloudy','Verschattet')}
-# Placeholder geometry (owner decision): centred seat/lying point and a handle at the back edge, all facing +Z.
+# Placeholder geometry (owner decision) for transport items without game points: centred seat/lying point and a handle
+# at the back edge, all facing +Z.
 POINTS = {
     'Seated':[{'key':'seat','kind':'seat','x':0.5,'y':0.5,'z':0.5,'headingDegrees':0}, {'key':'handle','kind':'handle','x':0.5,'y':0,'z':0,'headingDegrees':0}],
     'Lying':[{'key':'lying','kind':'lying','x':0.5,'y':0.8,'z':1.0,'headingDegrees':0}, {'key':'handle','kind':'handle','x':0.5,'y':0,'z':0,'headingDegrees':0}]}
@@ -120,8 +121,12 @@ for item in fixtures['furniture']:
         placement['surfaces'] = [{'key':'top', 'heightMeters':SURFACE_HEIGHT, 'x':0, 'z':0, 'width':item['Width'], 'depth':item['Depth'], 'accepts':item['surfaceAccepts'], 'placeholder':True}]
     if item.get('surfaceCategories') is not None: placement['surfaceCategories'] = item['surfaceCategories']
     extra = {'catalogAssets':[{'catalogId':item['asset'], 'kind':'modelGlb'}], 'placement':placement}
-    if item['transport']:
+    if 'interactionPoints' in item:
+        # Points supplied by the game; measured ones lose the placeholder marker.
+        placement['interactionPoints'] = [{k:v for k, v in point.items() if k != 'placeholder'} | ({'placeholder':True} if point['placeholder'] else {}) for point in item['interactionPoints']]
+    elif item['transport']:
         placement['interactionPoints'] = [{**point, 'placeholder':True} for point in POINTS[item['transport']]]
+    if item['transport']:
         extra.update(mobility='pushable', transport={'patientCapacity':1, 'posture':item['transport'].lower()})
     furniture[item['key']] = definition('furniture', local(item['key']), item['key'], item['NameEn'], item['NameDe'], **extra)
     for capability in item['capabilities']: relation('furnitureEquipment', furniture[item['key']], equipment[capability], item['key'])

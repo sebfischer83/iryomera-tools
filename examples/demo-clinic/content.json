@@ -748,18 +748,36 @@
       },
       "catalogAssets": [
         {
-          "catalogId": "iryomera.assets:equipment.imaging_ring_basic",
+          "catalogId": "iryomera.assets:equipment.ct_scanner_basic",
           "kind": "modelGlb"
         }
       ],
       "placement": {
         "footprint": {
-          "width": 4,
-          "depth": 2,
+          "width": 2,
+          "depth": 3,
           "cellSizeMeters": 1,
           "occupiedCells": []
         },
-        "interactionPoints": []
+        "interactionPoints": [
+          {
+            "key": "lying",
+            "kind": "lying",
+            "x": 1.0,
+            "y": 0.71,
+            "z": 1.96,
+            "headingDegrees": 180
+          },
+          {
+            "key": "operator",
+            "kind": "operator",
+            "x": 1.0,
+            "y": 0,
+            "z": 3.0,
+            "headingDegrees": 180,
+            "placeholder": true
+          }
+        ]
       }
     },
     {
@@ -1158,10 +1176,9 @@
             "key": "lying",
             "kind": "lying",
             "x": 0.5,
-            "y": 0.8,
+            "y": 0.82,
             "z": 1.0,
-            "headingDegrees": 0,
-            "placeholder": true
+            "headingDegrees": 0
           },
           {
             "key": "handle",

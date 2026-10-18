@@ -14,6 +14,7 @@ For milestone M7 the game replaces its local demo fixtures with SDK content. The
 - Case readings are deterministic simulation-only distributions (numeric minimum equal to maximum, one category weight, or a text key). No reference ranges, recommendations or medical relations are generated.
 - Wheelchair and stretcher are `pushable` with transport. Their seat, lying and handle points are placeholders (extension field `placeholder: true`) until the game supplies geometry (owner decision).
 - Since 0.14.1 the input carries mounts and surfaces (game asset stage 2b, 14 items). Surface heights are placeholders (`placeholder: true`) because the game takes them from the model.
+- Since 0.14.2 the game can supply interaction points per item. The CT scanner (2 × 3 cells, catalog asset `equipment.ct_scanner_basic`, ID unchanged for savegames) and the stretcher have measured lying points; their operator and handle points stay placeholders.
 - Fixture values without an SDK contract stay in the game: `serviceOnly` departments and per-patient mobility.
 
 ## Consequences
