@@ -36,6 +36,7 @@
             <section class="card"><label>@L["studio.reviewer"]<InputText @bind-Value="Model.Actor" required /></label><label>@L["studio.reason"]<InputTextArea @bind-Value="Model.Note" required /></label><p>@L["studio.editResetsReview"]</p><button type="submit" disabled="@Busy">@L["studio.saveDraft"]</button></section>
         </EditForm>
     }
+    else if (Existing is not null && Section == "assets") { <AssetEditor State="State" Definition="Existing" OnChanged="Load" /> }
     else if (Existing is not null && Section == "gameplay") { <GameplayEditor State="State" DefinitionId="@Existing.Id" OnChanged="Load" /> }
     else if (Existing is not null && Section == "relationships")
     {
@@ -59,7 +60,7 @@
     [Parameter] public Guid Id { get; set; } [Parameter] public string? ContentId { get; set; }
     private ProjectSnapshot? State; private ContentDefinition? Existing; private DefinitionEdit? Model;
     private string Section = "general";
-    private readonly string[] Sections = ["general", "classifications", "relationships", "gameplay", "translations", "sources", "review"];
+    private readonly string[] Sections = ["general", "classifications", "relationships", "assets", "gameplay", "translations", "sources", "review"];
     protected override Task OnParametersSetAsync() => Run(Load);
     private async Task Load()
     {
@@ -70,6 +71,6 @@
     private IEnumerable<string> DerivedRequirements()
     {
         var related = State!.Package.Relations.Where(r => r.FromId == Existing!.Id && r.Kind is RelationKind.DiseaseExamination or RelationKind.DiseaseTreatment).Select(r => r.ToId).ToHashSet(StringComparer.Ordinal);
-        return State.Package.Relations.Where(r => related.Contains(r.FromId) && r.Kind is RelationKind.ExaminationEquipment or RelationKind.TreatmentQualification).Select(r => r.ToId).Distinct(StringComparer.Ordinal);
+        return State.Package.Relations.Where(r => related.Contains(r.FromId) && r.Kind is RelationKind.ExaminationEquipment or RelationKind.TreatmentEquipment or RelationKind.TreatmentQualification).Select(r => r.ToId).Distinct(StringComparer.Ordinal);
     }
 }

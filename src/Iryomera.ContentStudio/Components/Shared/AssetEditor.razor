@@ -1,0 +1,94 @@
+@inherits StudioPage
+@inject ProjectService Projects
+@inject StudioCatalog Catalog
+<h2>@L["studio.section.assets"]</h2><p class="notice">@L["studio.assetsNotice"]</p><Feedback Error="Error" Message="@Message" />
+@if (!Catalog.Configured) { <p>@L["studio.catalogNotConfigured"]</p> }
+else if (Index.Error is { } indexError) { <p class="error">@L["studio.catalogError"] @indexError</p> }
+<section class="card"><h3>@L["studio.catalogAssets"]</h3><p>@L["studio.catalogAssetsHint"]</p>
+    @foreach (var row in Rows)
+    {
+        <div class="toolbar" @key="row">
+            <label>@L["studio.assetKind"]<select @bind="row.Kind">@foreach (var kind in Enum.GetValues<AssetKind>()) { <option value="@kind">@L["studio.assetKind." + kind]</option> }</select></label>
+            <label>@L["studio.catalogId"]<input @bind="row.CatalogId" list="catalog-options" /></label>
+            @if (Catalog.Configured && ContentFormat.IsValidId(row.CatalogId)) { <img class="catalog-preview" src="@("/catalog-preview?id=" + Uri.EscapeDataString(row.CatalogId))" alt="@L["studio.noPreview"]" loading="lazy" width="96" height="96" /> }
+            @if (Definition is FurnitureDefinition && Suggestion(row) is { } suggestion) { <button type="button" class="secondary" @onclick="() => Apply(suggestion)">@L["studio.applyCatalogSuggestion"]</button> }
+            <button type="button" class="secondary" @onclick="() => Rows.Remove(row)">@L["studio.remove"]</button>
+        </div>
+    }
+    <datalist id="catalog-options">@foreach (var entry in Index.Entries) { <option value="@entry.Id">@entry.Category · @L["studio.assetKind." + entry.Kind]</option> }</datalist>
+    <button type="button" @onclick="() => Rows.Add(new())">@L["studio.addCatalogAsset"]</button>
+</section>
+@if (Definition is FurnitureDefinition)
+{
+    <section class="card"><h3>@L["studio.placement"]</h3><p>@L["studio.placementHint"]</p>
+        <label><input type="checkbox" @bind="HasPlacement" /> @L["studio.hasPlacement"]</label>
+        @if (HasPlacement)
+        {
+            <div class="columns">
+                <label>@L["studio.footprintWidth"]<input type="number" min="1" @bind="Width" /></label>
+                <label>@L["studio.footprintDepth"]<input type="number" min="1" @bind="Depth" /></label>
+                <label>@L["studio.cellSize"]<input type="number" step="any" min="0" @bind="CellSize" /></label>
+                <label>@L["studio.mount"]<select @bind="Mount"><option value="">@L["studio.mount.default"]</option>@foreach (var mount in Enum.GetValues<FurnitureMount>()) { <option value="@mount">@L["studio.mount." + mount]</option> }</select></label>
+                @if (Mount == nameof(FurnitureMount.Wall)) { <label>@L["studio.mountHeight"]<input type="number" step="any" min="0" @bind="MountHeight" /></label> }
+            </div>
+            <h4>@L["studio.surfaces"]</h4>
+            @foreach (var surface in Surfaces)
+            {
+                <div class="toolbar" @key="surface">
+                    <label>@L["studio.surfaceKey"]<input @bind="surface.Key" /></label><label>@L["studio.surfaceHeight"]<input type="number" step="any" @bind="surface.Height" /></label>
+                    <label>X<input type="number" step="any" @bind="surface.X" /></label><label>Z<input type="number" step="any" @bind="surface.Z" /></label>
+                    <label>@L["studio.surfaceWidth"]<input type="number" step="any" @bind="surface.Width" /></label><label>@L["studio.surfaceDepth"]<input type="number" step="any" @bind="surface.Depth" /></label>
+                    <button type="button" class="secondary" @onclick="() => Surfaces.Remove(surface)">@L["studio.remove"]</button>
+                </div>
+            }
+            <button type="button" @onclick="() => Surfaces.Add(new())">@L["studio.addSurface"]</button>
+            <p>@L["studio.placementPreserved"]</p>
+        }
+    </section>
+}
+<section class="card"><label>@L["studio.reviewer"]<input @bind="Actor" /></label><label>@L["studio.reason"]<textarea @bind="Note"></textarea></label><p>@L["studio.assetsResetReview"]</p><button @onclick="Save" disabled="@Busy">@L["studio.saveAssets"]</button></section>
+@code {
+    [Parameter] public ProjectSnapshot State { get; set; } = null!; [Parameter] public ContentDefinition Definition { get; set; } = null!; [Parameter] public EventCallback OnChanged { get; set; }
+    private (IReadOnlyList<CatalogAssetIndexEntry> Entries, string? Error) Index = ([], null);
+    private List<AssetRow> Rows = []; private List<SurfaceRow> Surfaces = [];
+    private bool HasPlacement; private int Width = 1; private int Depth = 1; private decimal CellSize = 1; private string Mount = ""; private decimal? MountHeight;
+    private string Actor = ""; private string Note = ""; private long LoadedRevision = -1;
+    protected override void OnParametersSet()
+    {
+        Index = Catalog.Index();
+        if (LoadedRevision == State.Project.Revision) return; LoadedRevision = State.Project.Revision;
+        Rows = (Definition.CatalogAssets ?? []).Select(a => new AssetRow { CatalogId = a.CatalogId, Kind = a.Kind }).ToList();
+        var placement = (Definition as FurnitureDefinition)?.Placement;
+        HasPlacement = placement is not null; Width = placement?.Footprint.Width ?? 1; Depth = placement?.Footprint.Depth ?? 1; CellSize = placement?.Footprint.CellSizeMeters ?? 1;
+        Mount = placement?.Mount?.ToString() ?? ""; MountHeight = placement?.MountHeightMeters;
+        Surfaces = (placement?.Surfaces ?? []).Select(s => new SurfaceRow { Key = s.Key, Height = s.HeightMeters, X = s.X, Z = s.Z, Width = s.Width, Depth = s.Depth }).ToList();
+    }
+    private CatalogAssetIndexEntry? Suggestion(AssetRow row) => Index.Entries.FirstOrDefault(e => e.Id == row.CatalogId && e.Kind == row.Kind && (e.Mount is not null || e.FootprintWidth is not null));
+    private void Apply(CatalogAssetIndexEntry entry)
+    {
+        HasPlacement = true;
+        if (entry.FootprintWidth is { } w && entry.FootprintDepth is { } d) { Width = w; Depth = d; }
+        if (entry.Mount is { } mount) Mount = mount.ToString();
+    }
+    private Task Save() => Run(async () =>
+    {
+        var assets = Rows.Select(r => new CatalogAssetReference { CatalogId = r.CatalogId.Trim(), Kind = r.Kind }).ToList();
+        FurniturePlacement? placement = null;
+        if (Definition is FurnitureDefinition furniture && HasPlacement)
+        {
+            // Occupied cells and interaction points are kept as they are; this editor changes footprint size, mount and surfaces.
+            var old = furniture.Placement;
+            placement = new()
+            {
+                Footprint = (old?.Footprint ?? new() { Width = Width, Depth = Depth }) with { Width = Width, Depth = Depth, CellSizeMeters = CellSize },
+                InteractionPoints = old?.InteractionPoints ?? [], Extensions = old?.Extensions,
+                Mount = Enum.TryParse<FurnitureMount>(Mount, out var mount) ? mount : null, MountHeightMeters = Mount == nameof(FurnitureMount.Wall) ? MountHeight : null,
+                Surfaces = Surfaces.Count == 0 ? null : Surfaces.Select(s => new FurnitureSurface { Key = s.Key.Trim(), HeightMeters = s.Height, X = s.X, Z = s.Z, Width = s.Width, Depth = s.Depth }).ToList()
+            };
+        }
+        await Projects.SaveAssetsAsync(State.Project.Id, State.Project.Revision, Definition.Id, assets, placement, Actor, Note);
+        await OnChanged.InvokeAsync();
+    });
+    private sealed class AssetRow { public string CatalogId { get; set; } = ""; public AssetKind Kind { get; set; } = AssetKind.ModelGlb; }
+    private sealed class SurfaceRow { public string Key { get; set; } = "top"; public decimal Height { get; set; } = 1; public decimal X { get; set; } public decimal Z { get; set; } public decimal Width { get; set; } = 1; public decimal Depth { get; set; } = 1; }
+}

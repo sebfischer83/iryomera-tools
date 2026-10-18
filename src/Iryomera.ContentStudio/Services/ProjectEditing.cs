@@ -52,6 +52,23 @@ public sealed partial class ProjectService
             InvalidateDependents(state.Package, definition.Id);
         }, ct: ct);
 
+    /// <summary>
+    /// Replaces catalog asset references and, for furniture, the placement. Like other definition edits this resets the
+    /// definition's review; relations are unaffected because assets and placement carry no medical meaning.
+    /// </summary>
+    public Task SaveAssetsAsync(Guid project, long revision, string definitionId, IReadOnlyList<CatalogAssetReference> catalogAssets, FurniturePlacement? placement,
+        string actor, string note, CancellationToken ct = default) =>
+        MutateAsync(project, revision, "asset-edit", definitionId, actor, note, state =>
+        {
+            var index = state.Package.Definitions.FindIndex(d => d.Id == definitionId);
+            if (index < 0) throw new ArgumentException("Unknown definition.");
+            var definition = state.Package.Definitions[index];
+            if (placement is not null && definition is not FurnitureDefinition) throw new ArgumentException("Only furniture has a placement.");
+            definition = definition with { CatalogAssets = catalogAssets.Count == 0 ? null : catalogAssets.ToList(), Provenance = StudioContent.Draft(definition.Provenance) };
+            if (definition is FurnitureDefinition furniture) definition = furniture with { Placement = placement };
+            state.Package.Definitions[index] = definition;
+        }, ct: ct);
+
     public Task SaveRelationAsync(Guid project, long revision, ContentRelation relation, string actor, string note, bool create = false, CancellationToken ct = default) =>
         MutateAsync(project, revision, "relation-edit", relation.Id, actor, note, state =>
         {

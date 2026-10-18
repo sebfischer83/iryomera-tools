@@ -87,6 +87,21 @@ with tempfile.TemporaryDirectory(prefix='iryomera-studio-browser-') as temporary
                 settle('**/relations')
                 page.locator('svg.graph g').first.wait_for(); page.locator('svg.graph g').first.click()
                 page.get_by_role('heading', name='Medical review status', exact=True).wait_for()
+                # Catalog asset assignment without a local catalog folder: IDs are entered by hand and survive a reload.
+                page.goto(project_url + '/definitions/synthetic%3Ademo_desk')
+                interactive_after(page.get_by_role('heading', name='Demo desk', exact=True))
+                page.get_by_role('button', name='Assets', exact=True).click()
+                page.get_by_role('button', name='Add catalog asset', exact=True).click()
+                page.get_by_label('Catalog ID', exact=True).fill('iryomera.assets:furniture.desk_example')
+                page.get_by_label('Operator / reviewer', exact=True).fill('Synthetic browser test operator')
+                page.get_by_label('Reason and evidence', exact=True).fill('Own synthetic catalog ID')
+                page.get_by_role('button', name='Save assets', exact=True).click()
+                for _ in range(40):
+                    page.reload(); interactive_after(page.get_by_role('heading', name='Demo desk', exact=True))
+                    page.get_by_role('button', name='Assets', exact=True).click()
+                    if page.get_by_label('Catalog ID', exact=True).count() == 1: break
+                    page.wait_for_timeout(250)
+                assert page.get_by_label('Catalog ID', exact=True).input_value() == 'iryomera.assets:furniture.desk_example'
                 # Explicit selection and rights decisions; nothing is automatically approved.
                 page.get_by_role('link', name='Review & export', exact=True).click()
                 settle('**/release')
@@ -103,6 +118,8 @@ with tempfile.TemporaryDirectory(prefix='iryomera-studio-browser-') as temporary
                 with zipfile.ZipFile(path) as release:
                     content = json.loads(release.read('content.json'))
                     assert len(content['definitions']) == 22
+                    desk = next(d for d in content['definitions'] if d['id'] == 'synthetic:demo_desk')
+                    assert desk['catalogAssets'] == [{'catalogId': 'iryomera.assets:furniture.desk_example', 'kind': 'modelGlb'}]
                     assert all(d['provenance']['reviewStatus'] == 'approved' for d in content['definitions'])
                     english = json.loads(release.read('localization/en.json'))
                     assert 'Synthetic browser-edited condition' in english['entries'].values()

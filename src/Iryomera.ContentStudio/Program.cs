@@ -16,6 +16,7 @@ builder.Services.AddDbContextFactory<StudioDbContext>(options => options.UseSqli
 builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 builder.Services.AddScoped<ProjectService>(); builder.Services.AddScoped<ImportService>(); builder.Services.AddScoped<StudioExportService>();
 builder.Services.AddSingleton(StudioUiCatalogs.Load());
+builder.Services.AddSingleton<StudioCatalog>();
 builder.Services.AddSingleton<IStringLocalizer>(service => new StudioStringLocalizer(service.GetRequiredService<ContentLocalizer>()));
 builder.Services.Configure<RequestLocalizationOptions>(options => options.SetDefaultCulture("en").AddSupportedCultures("en", "de").AddSupportedUICultures("en", "de"));
 builder.Configuration["AllowedHosts"] ??= "localhost;127.0.0.1;[::1]";
@@ -39,6 +40,12 @@ app.MapGet("/download/{id:guid}", async (Guid id, StudioExportService exports, I
     try { return Results.File(await exports.ExportAsync(id, ct), "application/zip", "iryomera-content-" + id.ToString("N") + ".zip"); }
     catch (Exception e) when (e is InvalidOperationException or StudioValidationException or ArgumentException)
     { return Results.Problem(text["studio.exportBlocked"] + "\n" + e.Message, statusCode: 422); }
+});
+// Previews come from the optional local catalog folder only; they are never stored, audited or exported.
+app.MapGet("/catalog-preview", async (string id, StudioCatalog catalog, HttpContext context, CancellationToken ct) =>
+{
+    context.Response.Headers.CacheControl = "no-store"; context.Response.Headers["X-Content-Type-Options"] = "nosniff";
+    return await catalog.PreviewAsync(id, ct) is { } bytes ? Results.File(bytes, "image/png") : Results.NotFound();
 });
 app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
 app.MapRazorComponents<App>().AddInteractiveServerRenderMode();

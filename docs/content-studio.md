@@ -35,6 +35,22 @@ PowerShell/Windows paths work with the same configuration argument. The director
 
 For the definition-only diagnostic prototype, upload `examples/synthetic/diagnostics.json`, then import `diagnostics.en.json` and `diagnostics.de.json` on the validation page. The package is entirely fictional. See [diagnostic contracts](diagnostic-content.md).
 
+## Assets, placement and equipment
+
+The **Assets** tab of a definition edits catalog asset references (`catalogAssets`: asset kind and a neutral catalog ID such as `iryomera.assets:wall.notice_board`) and, for furniture, the placement: footprint size and cell size, mount (floor, wall with height, ceiling, surface) and surfaces other items can stand on. Occupied cells and interaction points are kept unchanged. Saving resets the review of that definition only; its relationships keep their review status. The SDK validates the result as usual ([ADR 0013](architecture/0013-catalog-assets-and-mounting.md)).
+
+Optionally point Studio at the local folder written by the game's private asset plugin:
+
+```sh
+dotnet run --project src/Iryomera.ContentStudio -c Release --no-build -- --Studio:CatalogPreviewDirectory /absolute/private/catalog
+```
+
+- `catalog-assets.json` in that folder fills the catalog ID selection list. It must match the `catalogAssetIndex` schema in [schemas/studio/v1](../schemas/studio/v1/) (`schemaVersion`, `assets[]` with `id`, `kind`, `category`, optional `mount` and `footprint`; unknown fields are tolerated). The **Use catalog footprint and mount** button copies those suggestions into the placement form. An invalid file is reported and ignored; IDs can always be typed by hand, for example for mods.
+- `<namespace>/<local_name>.png` previews (for example `iryomera.assets/wall.notice_board.png`) are shown next to an ID. Studio serves them read-only through `/catalog-preview?id=…`, builds the path only from a validated ID, stays inside the folder, refuses links, files over 2 MiB and non-PNG content, and shows a placeholder when no preview exists.
+- Nothing from the folder is stored in the database, audit history, release ZIPs or ModKit packages. Keep it outside the repository; it may contain renders of purchased assets.
+
+The relationship editor offers `treatmentEquipment` and `roomEquipment`; for `roomEquipment` it also sets whether the equipment is required for the room type ([ADR 0014](architecture/0014-equipment-relations.md)).
+
 ## Phase 2 imports
 
 Upload a saved `ImportWorkspace` JSON on **Imports**, up to 32 MiB. Raw files first go through the importer schema boundary. The original snapshot is immutable; current reviews/rights are separate audited revisions. Browse/filter/paginate terms/assertions, original claims, diagnostics, matches and controlled bulk-review previews. Existing HPOA/OMIM/obsolete-term/deprecated-Wikidata gates apply.
