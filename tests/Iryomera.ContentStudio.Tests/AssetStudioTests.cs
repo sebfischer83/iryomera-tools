@@ -85,10 +85,11 @@ public sealed class AssetStudioTests
     public async Task RoomRulesAndRoutingPrioritiesAreSaved()
     {
         await using var data = await StudioTestData.CreateAsync(); var id = await data.Synthetic(); var state = await data.Projects.GetAsync(id);
-        await data.Projects.SaveRoomRulesAsync(id, state.Project.Revision, "synthetic:demo_room", 6, true, "Synthetic editor", "Room rules");
+        await data.Projects.SaveRoomRulesAsync(id, state.Project.Revision, "synthetic:demo_room", 6, true, "Synthetic editor", "Room rules", RoomRole.Ward, true);
         state = await data.Projects.GetAsync(id);
         var room = state.Package.Definitions.OfType<RoomDefinition>().Single(r => r.Id == "synthetic:demo_room");
         Assert.Equal((6, true, ReviewStatus.Unreviewed), (room.MinimumCells!.Value, room.RequiresDoor!.Value, room.Provenance.ReviewStatus));
+        Assert.Equal((RoomRole.Ward, true), (room.Role!.Value, room.Shareable!.Value));
         await Assert.ThrowsAsync<ArgumentException>(() => data.Projects.SaveRoomRulesAsync(id, state.Project.Revision, "synthetic:demo_desk", 6, null, "Synthetic editor", "Not a room"));
         await Assert.ThrowsAsync<StudioValidationException>(() => data.Projects.SaveRoomRulesAsync(id, state.Project.Revision, "synthetic:demo_room", 0, null, "Synthetic editor", "Too small"));
         var department = state.Package.Definitions.OfType<MedicalDepartmentDefinition>().First().Id;

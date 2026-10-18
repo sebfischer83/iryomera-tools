@@ -102,7 +102,15 @@ public sealed record RoomDefinition : ContentDefinition
     public int? MinimumCells { get; init; }
     /// <summary>True when the room needs at least one door; absent means no door rule.</summary>
     public bool? RequiresDoor { get; init; }
+    /// <summary>Optional, omitted when null: the clinic role of this room type (ADR 0020); absent means no role.</summary>
+    public RoomRole? Role { get; init; }
+    /// <summary>True when several departments may use one room of this type; absent means not shared.</summary>
+    public bool? Shareable { get; init; }
 }
+/// <summary>Reception, waiting room or ward (bed room). Beds are ward furniture with a lying point.</summary>
+public enum RoomRole { Reception, Waiting, Ward }
+/// <summary>Simulation only: how a case reaches the clinic. Walk-in cases come during opening hours; emergency cases only to an open emergency department.</summary>
+public enum PatientArrival { WalkIn, Emergency }
 public sealed record FurnitureDefinition : ContentDefinition
 {
     public FurniturePlacement? Placement { get; init; }
@@ -166,6 +174,13 @@ public sealed record GameplayBalance : ExtensibleRecord
     public decimal? UnlockCost { get; init; }
     /// <summary>Simulation only: discharged patients needed before a department can open; a whole number.</summary>
     public decimal? UnlockDischargedPatients { get; init; }
+    /// <summary>Simulation only: first and last game hour (0–24, whole numbers) a department admits new patients and referrals.</summary>
+    public decimal? OpenFromHour { get; init; }
+    public decimal? OpenToHour { get; init; }
+    /// <summary>Simulation only: how a disease's cases arrive.</summary>
+    public PatientArrival? Arrival { get; init; }
+    /// <summary>Simulation only: inpatient stay after treatment; 0 or absent means outpatient.</summary>
+    public decimal? StayDurationSeconds { get; init; }
     public Dictionary<string, decimal> RequiredResources { get; init; } = [];
 }
 

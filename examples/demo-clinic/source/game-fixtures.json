@@ -26,36 +26,68 @@
       "nameDe": "OP-Saal",
       "nameEn": "Operating room",
       "MinimumCells": 16,
-      "RequiresDoor": true
+      "RequiresDoor": true,
+      "shareable": true
+    },
+    {
+      "key": "demo_clinic:room_type_reception",
+      "nameDe": "Empfang",
+      "nameEn": "Reception",
+      "MinimumCells": 4,
+      "RequiresDoor": false,
+      "role": "reception"
+    },
+    {
+      "key": "demo_clinic:room_type_waiting",
+      "nameDe": "Wartezimmer",
+      "nameEn": "Waiting room",
+      "MinimumCells": 6,
+      "RequiresDoor": false,
+      "role": "waiting"
+    },
+    {
+      "key": "demo_clinic:room_type_ward",
+      "nameDe": "Bettenzimmer",
+      "nameEn": "Ward room",
+      "MinimumCells": 9,
+      "RequiresDoor": true,
+      "role": "ward"
     }
   ],
   "departments": [
     {
+      "key": "demo_clinic:department_general",
+      "NameDe": "Allgemeinmedizin",
+      "NameEn": "General practice",
+      "Capacity": null,
+      "ServiceOnly": false
+    },
+    {
       "key": "demo:department_emergency",
       "NameDe": "Notaufnahme",
       "NameEn": "Emergency",
-      "Capacity": 10,
+      "Capacity": null,
       "ServiceOnly": false
     },
     {
       "key": "demo:department_internal",
       "NameDe": "Innere Medizin",
       "NameEn": "Internal medicine",
-      "Capacity": 2,
+      "Capacity": null,
       "ServiceOnly": false
     },
     {
       "key": "demo:department_surgery",
       "NameDe": "Chirurgie",
       "NameEn": "Surgery",
-      "Capacity": 2,
+      "Capacity": null,
       "ServiceOnly": false
     },
     {
       "key": "demo:department_diagnostics",
       "NameDe": "Diagnostik",
       "NameEn": "Diagnostics",
-      "Capacity": 0,
+      "Capacity": null,
       "ServiceOnly": true
     }
   ],
@@ -69,10 +101,10 @@
     },
     {
       "disease": "demo:blue",
-      "preferred": "demo:department_internal",
+      "preferred": "demo_clinic:department_general",
       "allowed": [
-        "demo:department_internal",
-        "demo:department_surgery"
+        "demo_clinic:department_general",
+        "demo:department_internal"
       ]
     },
     {
@@ -789,6 +821,96 @@
           "placeholder": true
         }
       ]
+    },
+    {
+      "key": "demo_clinic:furniture_reception_desk",
+      "NameDe": "Empfangstresen",
+      "NameEn": "Reception desk",
+      "Width": 1,
+      "Depth": 1,
+      "asset": "iryomera.assets:furniture.reception_desk_basic",
+      "capabilities": [],
+      "transport": null,
+      "mount": "Floor",
+      "surfaceAccepts": null,
+      "surfaceCategories": null,
+      "interactionPoints": [
+        {
+          "key": "operator",
+          "kind": "operator",
+          "x": 0.5,
+          "y": 0,
+          "z": 1.2,
+          "headingDegrees": 180,
+          "placeholder": true
+        }
+      ]
+    },
+    {
+      "key": "demo_clinic:furniture_waiting_bench",
+      "NameDe": "Wartebank",
+      "NameEn": "Waiting bench",
+      "Width": 2,
+      "Depth": 1,
+      "asset": "iryomera.assets:furniture.waiting_bench_basic",
+      "capabilities": [],
+      "transport": null,
+      "mount": "Floor",
+      "surfaceAccepts": null,
+      "surfaceCategories": null,
+      "interactionPoints": [
+        {
+          "key": "seat_1",
+          "kind": "seat",
+          "x": 0.5,
+          "y": 0.45,
+          "z": 0.55,
+          "headingDegrees": 0,
+          "placeholder": false
+        },
+        {
+          "key": "seat_2",
+          "kind": "seat",
+          "x": 1.0,
+          "y": 0.45,
+          "z": 0.55,
+          "headingDegrees": 0,
+          "placeholder": false
+        },
+        {
+          "key": "seat_3",
+          "kind": "seat",
+          "x": 1.5,
+          "y": 0.45,
+          "z": 0.55,
+          "headingDegrees": 0,
+          "placeholder": false
+        }
+      ]
+    },
+    {
+      "key": "demo_clinic:furniture_hospital_bed",
+      "NameDe": "Krankenbett",
+      "NameEn": "Hospital bed",
+      "Width": 1,
+      "Depth": 2,
+      "asset": "iryomera.assets:furniture.hospital_bed_basic",
+      "capabilities": [],
+      "transport": null,
+      "mount": "Floor",
+      "surfaceAccepts": null,
+      "surfaceCategories": null,
+      "interactionPoints": [
+        {
+          "key": "lying",
+          "kind": "lying",
+          "x": 0.5,
+          "y": 0.55,
+          "z": 1.0,
+          "headingDegrees": 180,
+          "placeholder": false
+        }
+      ]
     }
   ],
   "roomFurniture": [
@@ -931,6 +1053,76 @@
       "room": "demo_clinic:room_type_operating",
       "item": "demo:furniture_wall_picture",
       "requirement": "Optional"
+    },
+    {
+      "room": "demo_clinic:room_type_reception",
+      "item": "demo_clinic:furniture_reception_desk",
+      "requirement": "Required"
+    },
+    {
+      "room": "demo_clinic:room_type_reception",
+      "item": "demo:furniture_office_chair",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo_clinic:room_type_reception",
+      "item": "demo:furniture_ceiling_lamp",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo_clinic:room_type_reception",
+      "item": "demo:furniture_wall_picture",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo_clinic:room_type_reception",
+      "item": "demo:furniture_disinfectant_dispenser",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo_clinic:room_type_waiting",
+      "item": "demo_clinic:furniture_waiting_bench",
+      "requirement": "Required"
+    },
+    {
+      "room": "demo_clinic:room_type_waiting",
+      "item": "demo:furniture_ceiling_lamp",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo_clinic:room_type_waiting",
+      "item": "demo:furniture_wall_picture",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo_clinic:room_type_waiting",
+      "item": "demo:furniture_disinfectant_dispenser",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo_clinic:room_type_ward",
+      "item": "demo_clinic:furniture_hospital_bed",
+      "requirement": "Required"
+    },
+    {
+      "room": "demo_clinic:room_type_ward",
+      "item": "demo:furniture_ceiling_lamp",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo_clinic:room_type_ward",
+      "item": "demo:furniture_wall_picture",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo_clinic:room_type_ward",
+      "item": "demo:furniture_disinfectant_dispenser",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo_clinic:room_type_ward",
+      "item": "demo:furniture_office_chair",
+      "requirement": "Optional"
     }
   ],
   "patientNames": [
@@ -989,7 +1181,10 @@
       "demo:furniture_wall_picture": 120,
       "demo:furniture_disinfectant_dispenser": 80,
       "demo:equipment_microscope": 2500,
-      "demo_clinic:equipment_surgical_table": 25000
+      "demo_clinic:equipment_surgical_table": 25000,
+      "demo_clinic:furniture_reception_desk": 2000,
+      "demo_clinic:furniture_waiting_bench": 600,
+      "demo_clinic:furniture_hospital_bed": 3000
     },
     "wagePerHour": {
       "Physician": 60,
@@ -1003,5 +1198,125 @@
     "demo:green": 60,
     "demo:violet": 30,
     "demo:silver": 45
+  },
+  "departmentRooms": [
+    {
+      "department": "demo_clinic:department_general",
+      "room": "demo:room_type_consultation",
+      "requirement": "Required",
+      "treatment": true
+    },
+    {
+      "department": "demo:department_emergency",
+      "room": "demo:room_type_consultation",
+      "requirement": "Required",
+      "treatment": true
+    },
+    {
+      "department": "demo:department_internal",
+      "room": "demo:room_type_consultation",
+      "requirement": "Required",
+      "treatment": true
+    },
+    {
+      "department": "demo:department_internal",
+      "room": "demo_clinic:room_type_ward",
+      "requirement": "Required",
+      "treatment": false
+    },
+    {
+      "department": "demo:department_internal",
+      "room": "demo:room_type_laboratory",
+      "requirement": "Optional",
+      "treatment": false
+    },
+    {
+      "department": "demo:department_surgery",
+      "room": "demo:room_type_consultation",
+      "requirement": "Required",
+      "treatment": false
+    },
+    {
+      "department": "demo:department_surgery",
+      "room": "demo_clinic:room_type_operating",
+      "requirement": "Required",
+      "treatment": true
+    },
+    {
+      "department": "demo:department_surgery",
+      "room": "demo_clinic:room_type_ward",
+      "requirement": "Required",
+      "treatment": false
+    },
+    {
+      "department": "demo:department_diagnostics",
+      "room": "demo:room_type_laboratory",
+      "requirement": "Required",
+      "treatment": false
+    },
+    {
+      "department": "demo:department_diagnostics",
+      "room": "demo:room_type_imaging",
+      "requirement": "Optional",
+      "treatment": false
+    }
+  ],
+  "departmentUnlock": [
+    {
+      "department": "demo_clinic:department_general",
+      "cost": 0,
+      "dischargedPatients": 0,
+      "openFromHour": 8,
+      "openToHour": 18,
+      "requires": []
+    },
+    {
+      "department": "demo:department_emergency",
+      "cost": 25000,
+      "dischargedPatients": 10,
+      "openFromHour": 0,
+      "openToHour": 24,
+      "requires": []
+    },
+    {
+      "department": "demo:department_internal",
+      "cost": 30000,
+      "dischargedPatients": 25,
+      "openFromHour": 8,
+      "openToHour": 20,
+      "requires": []
+    },
+    {
+      "department": "demo:department_surgery",
+      "cost": 50000,
+      "dischargedPatients": 60,
+      "openFromHour": 8,
+      "openToHour": 20,
+      "requires": [
+        "demo:department_internal"
+      ]
+    },
+    {
+      "department": "demo:department_diagnostics",
+      "cost": 20000,
+      "dischargedPatients": 10,
+      "openFromHour": 0,
+      "openToHour": 24,
+      "requires": []
+    }
+  ],
+  "arrival": {
+    "demo:amber": "walkIn",
+    "demo:blue": "walkIn",
+    "demo:violet": "walkIn",
+    "demo:green": "emergency",
+    "demo:silver": "emergency"
+  },
+  "stayHours": {
+    "demo:blue": 0,
+    "demo:amber": 12,
+    "demo:violet": 8,
+    "demo:green": 24,
+    "demo:silver": 16
   }
 }

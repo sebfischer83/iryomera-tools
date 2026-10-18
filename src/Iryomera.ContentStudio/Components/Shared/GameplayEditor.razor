@@ -16,6 +16,10 @@
         <label>@L["studio.wageperhour"]<InputNumber @bind-Value="Model.WagePerHour" step="any" /></label>
         <label>@L["studio.unlockcost"]<InputNumber @bind-Value="Model.UnlockCost" step="any" /></label>
         <label>@L["studio.unlockdischargedpatients"]<InputNumber @bind-Value="Model.UnlockDischargedPatients" step="1" /></label>
+        <label>@L["studio.openfromhour"]<InputNumber @bind-Value="Model.OpenFromHour" step="1" /></label>
+        <label>@L["studio.opentohour"]<InputNumber @bind-Value="Model.OpenToHour" step="1" /></label>
+        <label>@L["studio.arrival"]<InputSelect @bind-Value="Model.Arrival"><option value="">@L["studio.arrival.none"]</option>@foreach (var arrival in Enum.GetValues<PatientArrival>()) { <option value="@arrival">@L["studio.arrival." + arrival.ToString().ToLowerInvariant()]</option> }</InputSelect></label>
+        <label>@L["studio.staydurationseconds"]<InputNumber @bind-Value="Model.StayDurationSeconds" step="any" /></label>
     </div>
     <section class="card"><h3>@L["studio.requiredResources"]</h3><p>@L["studio.requirementsHint"]</p>
         @foreach (var row in Resources)
@@ -32,15 +36,17 @@
     {
         if (LoadedRevision == State.Project.Revision) return; LoadedRevision = State.Project.Revision;
         var old = State.Package.Gameplay.Find(b => b.DefinitionId == DefinitionId);
-        Model = new() { Rarity = old?.Rarity, Severity = old?.Severity, Duration = old?.TreatmentDurationSeconds, ExaminationDuration = old?.ExaminationDurationSeconds, ExaminationCost = old?.ExaminationCost, TreatmentCost = old?.TreatmentCost, Difficulty = old?.DiagnosticDifficulty, Success = old?.SimulatedSuccessProbability, Capacity = old?.Capacity, PurchaseCost = old?.PurchaseCost, WagePerHour = old?.WagePerHour, UnlockCost = old?.UnlockCost, UnlockDischargedPatients = old?.UnlockDischargedPatients };
+        Model = new() { Rarity = old?.Rarity, Severity = old?.Severity, Duration = old?.TreatmentDurationSeconds, ExaminationDuration = old?.ExaminationDurationSeconds, ExaminationCost = old?.ExaminationCost, TreatmentCost = old?.TreatmentCost, Difficulty = old?.DiagnosticDifficulty, Success = old?.SimulatedSuccessProbability, Capacity = old?.Capacity, PurchaseCost = old?.PurchaseCost, WagePerHour = old?.WagePerHour, UnlockCost = old?.UnlockCost, UnlockDischargedPatients = old?.UnlockDischargedPatients,
+            OpenFromHour = old?.OpenFromHour, OpenToHour = old?.OpenToHour, Arrival = old?.Arrival, StayDurationSeconds = old?.StayDurationSeconds };
         Resources = old?.RequiredResources.Select(r => new ResourceRow { Key = r.Key, Quantity = r.Value }).ToList() ?? [];
     }
     private Task Save() => Run(async () =>
     {
         await Projects.SaveGameplayAsync(State.Project.Id, State.Project.Revision, new()
-        { DefinitionId = DefinitionId, Rarity = Model.Rarity, Severity = Model.Severity, TreatmentDurationSeconds = Model.Duration, ExaminationDurationSeconds = Model.ExaminationDuration, ExaminationCost = Model.ExaminationCost, TreatmentCost = Model.TreatmentCost, DiagnosticDifficulty = Model.Difficulty, SimulatedSuccessProbability = Model.Success, Capacity = Model.Capacity, PurchaseCost = Model.PurchaseCost, WagePerHour = Model.WagePerHour, UnlockCost = Model.UnlockCost, UnlockDischargedPatients = Model.UnlockDischargedPatients, RequiredResources = Resources.ToDictionary(r => r.Key, r => r.Quantity, StringComparer.Ordinal) }, Actor, Note);
+        { DefinitionId = DefinitionId, Rarity = Model.Rarity, Severity = Model.Severity, TreatmentDurationSeconds = Model.Duration, ExaminationDurationSeconds = Model.ExaminationDuration, ExaminationCost = Model.ExaminationCost, TreatmentCost = Model.TreatmentCost, DiagnosticDifficulty = Model.Difficulty, SimulatedSuccessProbability = Model.Success, Capacity = Model.Capacity, PurchaseCost = Model.PurchaseCost, WagePerHour = Model.WagePerHour, UnlockCost = Model.UnlockCost, UnlockDischargedPatients = Model.UnlockDischargedPatients,
+            OpenFromHour = Model.OpenFromHour, OpenToHour = Model.OpenToHour, Arrival = Model.Arrival, StayDurationSeconds = Model.StayDurationSeconds, RequiredResources = Resources.ToDictionary(r => r.Key, r => r.Quantity, StringComparer.Ordinal) }, Actor, Note);
         await OnChanged.InvokeAsync();
     });
-    private sealed class BalanceModel { public decimal? Rarity { get; set; } public decimal? Severity { get; set; } public decimal? Duration { get; set; } public decimal? ExaminationDuration { get; set; } public decimal? ExaminationCost { get; set; } public decimal? TreatmentCost { get; set; } public decimal? Difficulty { get; set; } public decimal? Success { get; set; } public decimal? Capacity { get; set; } public decimal? PurchaseCost { get; set; } public decimal? WagePerHour { get; set; } public decimal? UnlockCost { get; set; } public decimal? UnlockDischargedPatients { get; set; } }
+    private sealed class BalanceModel { public decimal? Rarity { get; set; } public decimal? Severity { get; set; } public decimal? Duration { get; set; } public decimal? ExaminationDuration { get; set; } public decimal? ExaminationCost { get; set; } public decimal? TreatmentCost { get; set; } public decimal? Difficulty { get; set; } public decimal? Success { get; set; } public decimal? Capacity { get; set; } public decimal? PurchaseCost { get; set; } public decimal? WagePerHour { get; set; } public decimal? UnlockCost { get; set; } public decimal? UnlockDischargedPatients { get; set; } public decimal? OpenFromHour { get; set; } public decimal? OpenToHour { get; set; } public PatientArrival? Arrival { get; set; } public decimal? StayDurationSeconds { get; set; } }
     private sealed class ResourceRow { public string Key { get; set; } = ""; public decimal Quantity { get; set; } = 1; }
 }

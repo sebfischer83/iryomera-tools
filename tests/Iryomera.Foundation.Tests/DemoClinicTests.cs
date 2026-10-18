@@ -30,7 +30,7 @@ public sealed class DemoClinicTests
             catalogs.Add(catalog.Value!);
         }
         Assert.Empty(ContentLocalizationValidator.Validate(package, catalogs));
-        Assert.Equal((4, 4, 3, 1, 2, 8, 8, 5, 15), (Count<RoomDefinition>(), Count<MedicalDepartmentDefinition>(), Count<StaffRoleDefinition>(), Count<StaffQualificationDefinition>(),
+        Assert.Equal((7, 5, 3, 1, 2, 8, 8, 5, 18), (Count<RoomDefinition>(), Count<MedicalDepartmentDefinition>(), Count<StaffRoleDefinition>(), Count<StaffQualificationDefinition>(),
             Count<MedicalEquipmentDefinition>(), Count<ObservationDefinition>(), Count<ExaminationDefinition>(), Count<DiseaseDefinition>(), Count<FurnitureDefinition>()));
         Assert.All(package.Definitions.Select(d => d.Provenance).Concat(package.Relations.Select(r => r.Provenance)), p =>
             Assert.True(p is { License: "MIT", ReviewStatus: ReviewStatus.Unreviewed } && p.Source.Contains("fictional", StringComparison.Ordinal)));
@@ -48,15 +48,34 @@ public sealed class DemoClinicTests
         var lab = package.Definitions.OfType<RoomDefinition>().Single(r => r.Id == Ns + "room_type_laboratory");
         Assert.Equal((6, true), (lab.MinimumCells!.Value, lab.RequiresDoor!.Value));
         var gameplay = GameplayResolver.Resolve(set);
-        Assert.Equal(10m, gameplay.Balances.Single(b => b.DefinitionId == Ns + "department_emergency").Capacity);
-        Assert.Equal(0m, gameplay.Balances.Single(b => b.DefinitionId == Ns + "department_diagnostics").Capacity);
+        Assert.All(gameplay.Balances, b => Assert.Null(b.Capacity)); // abstract department capacity is no longer used (M9)
         Assert.Equal(1500m, gameplay.Balances.Single(b => b.DefinitionId == Ns + "imaging").ExaminationDurationSeconds);
         decimal? Field(string id, Func<GameplayBalance, decimal?> field) => field(gameplay.Balances.Single(b => b.DefinitionId == Ns + id));
         Assert.Equal((600m, 1200m, 60000m, 80m, 60m, 35m), (Field("imaging", b => b.ExaminationCost)!.Value, Field("green", b => b.TreatmentCost)!.Value,
             Field("equipment_imaging_ring", b => b.PurchaseCost)!.Value, Field("furniture_disinfectant_dispenser", b => b.PurchaseCost)!.Value,
             Field("role_physician", b => b.WagePerHour)!.Value, Field("role_technician", b => b.WagePerHour)!.Value));
-        Assert.Equal(15, gameplay.Balances.Count(b => b.PurchaseCost is not null));
-        Assert.DoesNotContain(package.Relations, r => r.Kind is RelationKind.DepartmentRoom or RelationKind.DepartmentPrerequisite); // department values are on hold
+        Assert.Equal(18, gameplay.Balances.Count(b => b.PurchaseCost is not null));
+        var surgery = Ns + "department_surgery";
+        Assert.Equal([(Ns + "room_type_consultation", RelationRequirement.Required, false), (Ns + "room_type_operating", RelationRequirement.Required, true), (Ns + "room_type_ward", RelationRequirement.Required, false)],
+            Departments.Rooms(set, surgery).Select(r => (r.RoomId, r.Requirement, r.TreatmentRoom)));
+        Assert.Equal([Ns + "department_internal"], Departments.Prerequisites(set, surgery));
+        Assert.DoesNotContain(Departments.Rooms(set, Ns + "department_diagnostics"), r => r.TreatmentRoom);
+        Assert.Equal((50000m, 60m, 8m, 20m), (Field("department_surgery", b => b.UnlockCost)!.Value, Field("department_surgery", b => b.UnlockDischargedPatients)!.Value,
+            Field("department_surgery", b => b.OpenFromHour)!.Value, Field("department_surgery", b => b.OpenToHour)!.Value));
+        Assert.Equal((0m, 0m, 8m, 18m), (Field("department_general", b => b.UnlockCost)!.Value, Field("department_general", b => b.UnlockDischargedPatients)!.Value,
+            Field("department_general", b => b.OpenFromHour)!.Value, Field("department_general", b => b.OpenToHour)!.Value));
+        Assert.Equal((0m, 24m), (Field("department_emergency", b => b.OpenFromHour)!.Value, Field("department_emergency", b => b.OpenToHour)!.Value));
+        PatientArrival Arrival(string id) => gameplay.Balances.Single(b => b.DefinitionId == Ns + id).Arrival!.Value;
+        Assert.Equal((PatientArrival.WalkIn, PatientArrival.Emergency, PatientArrival.Emergency), (Arrival("blue"), Arrival("green"), Arrival("silver")));
+        Assert.Equal((0m, 86400m), (Field("blue", b => b.StayDurationSeconds)!.Value, Field("green", b => b.StayDurationSeconds)!.Value));
+        Assert.Equal([(Ns + "department_general", 1), (Ns + "department_internal", 2)],
+            package.Relations.Where(r => r.FromId == Ns + "blue" && r.Kind == RelationKind.DiseaseDepartment).Select(r => (r.ToId, r.Priority!.Value)).OrderBy(x => x.Item2));
+        RoomDefinition Room(string id) => package.Definitions.OfType<RoomDefinition>().Single(r => r.Id == Ns + id);
+        Assert.Equal((RoomRole.Reception, RoomRole.Waiting, RoomRole.Ward, true), (Room("room_type_reception").Role!.Value, Room("room_type_waiting").Role!.Value, Room("room_type_ward").Role!.Value, Room("room_type_operating").Shareable!.Value));
+        Assert.Null(Room("room_type_consultation").Role);
+        var waiting = package.Definitions.OfType<FurnitureDefinition>().Single(f => f.Id == Ns + "furniture_waiting_bench").Placement!;
+        Assert.Equal((2, 3), (waiting.Footprint.Width, waiting.InteractionPoints.Count(p => p.Kind == "seat")));
+        Assert.Equal(RelationRequirement.Required, RoomContents.Placeable(set, Ns + "room_type_ward").Single(i => i.DefinitionId == Ns + "furniture_hospital_bed").Requirement);
         Assert.Equal(3600m, Field("green", b => b.TreatmentDurationSeconds));
         var table = package.Definitions.OfType<FurnitureDefinition>().Single(f => f.Id == Ns + "equipment_surgical_table");
         Assert.Equal((1, 3, table.Id), (table.Placement!.Footprint.Width, table.Placement.Footprint.Depth, table.Provenance.ExternalId));
@@ -68,8 +87,8 @@ public sealed class DemoClinicTests
         Assert.Equal([Ns + "equipment_scanner"], Targets("imaging", RelationKind.ExaminationEquipment));
         Assert.Equal([Ns + "qualification_imaging"], Targets("imaging", RelationKind.ExaminationQualification));
         Assert.Equal([Ns + "observation_pressure"], Targets("blood_pressure", RelationKind.ExaminationObservation));
-        Assert.Equal([(Ns + "department_internal", 1), (Ns + "department_surgery", 2)],
-            package.Relations.Where(r => r.FromId == Ns + "blue" && r.Kind == RelationKind.DiseaseDepartment).Select(r => (r.ToId, r.Priority!.Value)).ToArray());
+        Assert.Equal([(Ns + "department_surgery", 1), (Ns + "department_internal", 2)],
+            package.Relations.Where(r => r.FromId == Ns + "silver" && r.Kind == RelationKind.DiseaseDepartment).Select(r => (r.ToId, r.Priority!.Value)).ToArray());
 
         var placeable = RoomContents.Placeable(set, lab.Id);
         Assert.Equal(RelationRequirement.Required, placeable.Single(i => i.DefinitionId == Ns + "equipment_lab_analyser").Requirement);
