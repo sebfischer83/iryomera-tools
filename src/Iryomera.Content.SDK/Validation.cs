@@ -111,6 +111,11 @@ public static class ContentValidator
             }
             foreach (var format in item.NameFormats ?? [])
             { Register(format.Id, manifest.Namespace, format.Id); CheckSchema(format.SchemaVersion, format.Id); CheckVersion(format.Version, format.Id); CheckProvenance(format.Provenance, format.Id); }
+            foreach (var change in item.GameplayOverrides ?? [])
+            {
+                Register(change.Id, manifest.Namespace, change.Id); CheckSchema(change.SchemaVersion, change.Id); CheckVersion(change.Version, change.Id);
+                if (!change.SimulationOnly) Error("gameplay-override", change.Id, "Gameplay overrides are simulation-only.");
+            }
             errors.AddRange(NameValidator.Validate(item));
             if (item.DiagnosticSimulation is { } simulation)
             {
@@ -205,6 +210,21 @@ public static class ContentValidator
             }
             errors.AddRange(DiagnosticValidator.Validate(item, id => Resolve(id, id)?.Definition));
             errors.AddRange(AssetValidator.Validate(item, id => Resolve(id, id)?.Definition));
+            var overridden = new HashSet<string>(StringComparer.Ordinal);
+            foreach (var change in item.GameplayOverrides ?? [])
+            {
+                if (change.TargetDefinitionId.StartsWith(item.Manifest.Namespace + ":", StringComparison.Ordinal))
+                    Error("gameplay-override-own", change.Id, "Override balancing of your own definitions in gameplay instead.");
+                else Resolve(change.TargetDefinitionId, change.Id + ".targetDefinitionId");
+                if (!overridden.Add(change.TargetDefinitionId)) Error("duplicate-gameplay-override", change.Id, "One override per target definition and package.");
+                if (!change.Values().Any()) Error("gameplay-override-empty", change.Id, "An override must set at least one balancing value.");
+                if (new[] { change.Rarity, change.Severity, change.DiagnosticDifficulty, change.SimulatedSuccessProbability }.Any(x => x is < 0 or > 1))
+                    Error("balance-range", change.Id, "Normalized simulation values must be within [0,1].");
+                if (new[] { change.TreatmentDurationSeconds, change.ExaminationDurationSeconds, change.ExaminationCost, change.TreatmentCost }.Any(x => x < 0) || (change.RequiredResources ?? []).Values.Any(x => x < 0))
+                    Error("balance-range", change.Id, "Simulation time, costs and resources must be nonnegative.");
+                foreach (var resource in (change.RequiredResources ?? []).Keys)
+                    if (string.IsNullOrWhiteSpace(resource)) Error("resource-key", change.Id, "Resource keys must be nonempty.");
+            }
             var balances = new HashSet<string>(StringComparer.Ordinal);
             foreach (var balance in item.Gameplay)
             {

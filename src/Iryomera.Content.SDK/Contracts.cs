@@ -193,6 +193,8 @@ public sealed record ContentPackage : ExtensibleRecord
     /// <summary>Optional, omitted when null to keep the legacy wire shape and digests.</summary>
     public List<NamePool>? NamePools { get; init; }
     public List<NameFormat>? NameFormats { get; init; }
+    /// <summary>Optional, omitted when null; simulation-only balancing overrides for declared dependencies (ADR 0015).</summary>
+    public List<GameplayOverride>? GameplayOverrides { get; init; }
 }
 
 /// <summary>A separately stored language catalog, owned by a package namespace.</summary>
