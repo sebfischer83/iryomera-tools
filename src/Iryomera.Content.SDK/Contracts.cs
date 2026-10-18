@@ -106,8 +106,12 @@ public sealed record StaffRoleDefinition : ContentDefinition;
 public enum RelationKind
 {
     DiseaseSymptom, DiseaseFinding, ExaminationFinding, DiseaseExamination,
-    DiseaseTreatment, ExaminationEquipment, TreatmentQualification, RoomFurniture, ExaminationObservation, ExaminationRoom, ExaminationQualification, ExaminationPrerequisite
+    DiseaseTreatment, ExaminationEquipment, TreatmentQualification, RoomFurniture, ExaminationObservation, ExaminationRoom, ExaminationQualification, ExaminationPrerequisite,
+    TreatmentEquipment, RoomEquipment
 }
+
+/// <summary>Only for roomEquipment: whether a room type needs the equipment to count as complete. Absent means optional.</summary>
+public enum RelationRequirement { Required, Optional }
 
 public sealed record ContentRelation : ExtensibleRecord
 {
@@ -117,6 +121,8 @@ public sealed record ContentRelation : ExtensibleRecord
     public required string FromId { get; init; }
     public required string ToId { get; init; }
     public required Provenance Provenance { get; init; }
+    /// <summary>Optional, omitted when null; allowed only for roomEquipment.</summary>
+    public RelationRequirement? Requirement { get; init; }
 }
 
 /// <summary>Simulation only: none of these values expresses clinical evidence or advice.</summary>

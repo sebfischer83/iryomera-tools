@@ -23,7 +23,7 @@ def dump(path,value):
         return item
     path.write_text(json.dumps(anchor(value),indent=2,ensure_ascii=False)+'\n')
 kinds=['disease','symptom','finding','examination','observation','treatment','medicalProcedure','medicalDepartment','medicalEquipment','staffQualification','room','furniture','staffRole']
-rels=['diseaseSymptom','diseaseFinding','examinationFinding','diseaseExamination','diseaseTreatment','examinationEquipment','treatmentQualification','roomFurniture','examinationObservation','examinationRoom','examinationQualification','examinationPrerequisite']
+rels=['diseaseSymptom','diseaseFinding','examinationFinding','diseaseExamination','diseaseTreatment','examinationEquipment','treatmentQualification','roomFurniture','examinationObservation','examinationRoom','examinationQualification','examinationPrerequisite','treatmentEquipment','roomEquipment']
 defs={}
 defs['evidenceReference']=obj({'citation':text,'uri':nullable({'type':'string','format':'uri'}),'evidenceCode':nullable(text)},['citation'])
 defs['provenance']=obj({'source':text,'externalId':text,'sourceVersion':text,'license':text,'importedAt':{'type':'string','format':'date-time'},'reviewStatus':{'enum':['unreviewed','inReview','approved','rejected']},'reviewedBy':nullable(text),'reviewedAt':nullable({'type':'string','format':'date-time'}),'evidence':array(ref('evidenceReference'))},['source','externalId','sourceVersion','license','importedAt'])
@@ -35,7 +35,8 @@ defs['catalogAssetReference']=obj({'catalogId':id,'kind':{'enum':['modelGlb','te
 defs['footprintCell']=obj({'x':{'type':'integer','minimum':0},'z':{'type':'integer','minimum':0}},['x','z'])
 defs['furnitureFootprint']=obj({'width':{'type':'integer','minimum':1},'depth':{'type':'integer','minimum':1},'cellSizeMeters':{'type':'number','exclusiveMinimum':0},'occupiedCells':array(ref('footprintCell'))},['width','depth'])
 defs['interactionPoint']=obj({'key':ns,'x':{'type':'number'},'y':{'type':'number'},'z':{'type':'number'},'headingDegrees':nullable({'type':'number','minimum':0,'exclusiveMaximum':360}),'requiredQualificationId':nullable(id)},['key','x','y','z'])
-defs['furniturePlacement']=obj({'footprint':ref('furnitureFootprint'),'interactionPoints':array(ref('interactionPoint')),'mount':nullable({'enum':['floor','wall','ceiling']}),'mountHeightMeters':nullable({'type':'number','minimum':0})},['footprint'])
+defs['furnitureSurface']=obj({'key':ns,'heightMeters':{'type':'number','exclusiveMinimum':0},'x':{'type':'number','minimum':0},'z':{'type':'number','minimum':0},'width':{'type':'number','exclusiveMinimum':0},'depth':{'type':'number','exclusiveMinimum':0}},['key','heightMeters','x','z','width','depth'])
+defs['furniturePlacement']=obj({'footprint':ref('furnitureFootprint'),'interactionPoints':array(ref('interactionPoint')),'mount':nullable({'enum':['floor','wall','ceiling','surface']}),'mountHeightMeters':nullable({'type':'number','minimum':0}),'surfaces':nullable(array(ref('furnitureSurface')))},['footprint'])
 defs['furniturePlacement']['allOf']=[{'if':{'required':['mountHeightMeters'],'properties':{'mountHeightMeters':{'type':'number'}}},'then':{'required':['mount'],'properties':{'mount':{'const':'wall'}}}}]
 base={'id':id,'nameKey':key,'descriptionKey':nullable(key),'version':version,'provenance':ref('provenance'),'classifications':array(ref('externalIdentifier')),'synonymKeys':array(key),'assets':nullable(array(ref('assetReference'))),'catalogAssets':nullable(array(ref('catalogAssetReference')))}
 for kind in kinds:defs[kind+'Definition']=obj({'kind':{'const':kind},**base},['kind','id','nameKey','version','provenance'])
@@ -59,7 +60,8 @@ defs['simulatedManifestation']=obj({**versioned,'simulationOnly':{'const':True},
 defs['examinationResultPolicy']=obj({**versioned,'simulationOnly':{'const':True},'examinationId':id,'visibility':{'enum':['initiallyVisible','afterExamination','hidden']},'repeatPolicy':{'enum':['untilPatientStateChanges','afterInterval']},'repeatIntervalSeconds':nullable({'type':'number','exclusiveMinimum':0})},['schemaVersion','simulationOnly','id','version','examinationId'])
 defs['diagnosticSimulationSettings']=obj({'simulationOnly':{'const':True},'observationDistributions':array(ref('simulatedObservationDistribution')),'manifestations':array(ref('simulatedManifestation')),'examinationPolicies':array(ref('examinationResultPolicy'))},['simulationOnly'])
 defs['contentDefinition']={'oneOf':[ref(k+'Definition') for k in kinds]}
-defs['contentRelation']=obj({'id':id,'version':version,'kind':{'enum':rels},'fromId':id,'toId':id,'provenance':ref('provenance')},['id','version','kind','fromId','toId','provenance'])
+defs['contentRelation']=obj({'id':id,'version':version,'kind':{'enum':rels},'fromId':id,'toId':id,'provenance':ref('provenance'),'requirement':nullable({'enum':['required','optional']})},['id','version','kind','fromId','toId','provenance'])
+defs['contentRelation']['allOf']=[{'if':{'required':['requirement'],'properties':{'requirement':{'enum':['required','optional']}}},'then':{'properties':{'kind':{'const':'roomEquipment'}}}}]
 defs['annotationReference']=obj({'externalId':text,'contentId':nullable(id)},['externalId'])
 defs['observationFrequency']=obj({'sourceValue':text,'term':nullable(ref('annotationReference'))},['sourceValue'])
 defs['medicalAnnotation']=obj({

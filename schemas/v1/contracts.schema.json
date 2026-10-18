@@ -327,6 +327,44 @@
       ],
       "additionalProperties": true
     },
+    "furnitureSurface": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "heightMeters": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "x": {
+          "type": "number",
+          "minimum": 0
+        },
+        "z": {
+          "type": "number",
+          "minimum": 0
+        },
+        "width": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "depth": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      },
+      "required": [
+        "key",
+        "heightMeters",
+        "x",
+        "z",
+        "width",
+        "depth"
+      ],
+      "additionalProperties": true
+    },
     "furniturePlacement": {
       "type": "object",
       "properties": {
@@ -345,7 +383,8 @@
               "enum": [
                 "floor",
                 "wall",
-                "ceiling"
+                "ceiling",
+                "surface"
               ]
             },
             {
@@ -358,6 +397,19 @@
             {
               "type": "number",
               "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "surfaces": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/furnitureSurface"
+              }
             },
             {
               "type": "null"
@@ -2137,7 +2189,9 @@
             "examinationObservation",
             "examinationRoom",
             "examinationQualification",
-            "examinationPrerequisite"
+            "examinationPrerequisite",
+            "treatmentEquipment",
+            "roomEquipment"
           ]
         },
         "fromId": {
@@ -2150,6 +2204,19 @@
         },
         "provenance": {
           "$ref": "#/$defs/provenance"
+        },
+        "requirement": {
+          "anyOf": [
+            {
+              "enum": [
+                "required",
+                "optional"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
@@ -2160,7 +2227,31 @@
         "toId",
         "provenance"
       ],
-      "additionalProperties": true
+      "additionalProperties": true,
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "requirement"
+            ],
+            "properties": {
+              "requirement": {
+                "enum": [
+                  "required",
+                  "optional"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "kind": {
+                "const": "roomEquipment"
+              }
+            }
+          }
+        }
+      ]
     },
     "annotationReference": {
       "type": "object",
