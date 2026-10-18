@@ -14,12 +14,25 @@ else if (Index.Error is { } indexError) { <p class="error">@L["studio.catalogErr
             @if (Definition is FurnitureDefinition && Suggestion(row) is { } suggestion) { <button type="button" class="secondary" @onclick="() => Apply(suggestion)">@L["studio.applyCatalogSuggestion"]</button> }
             <button type="button" class="secondary" @onclick="() => Rows.Remove(row)">@L["studio.remove"]</button>
         </div>
+        @if (Definition is FurnitureDefinition && Mismatch(row) is { Length: > 0 } mismatch) { <p class="error">@L["studio.catalogMismatch"] @mismatch</p> }
     }
     <datalist id="catalog-options">@foreach (var entry in Index.Entries) { <option value="@entry.Id">@entry.Category · @L["studio.assetKind." + entry.Kind]</option> }</datalist>
     <button type="button" @onclick="() => Rows.Add(new())">@L["studio.addCatalogAsset"]</button>
 </section>
 @if (Definition is FurnitureDefinition)
 {
+    <section class="card"><h3>@L["studio.mobility"]</h3>
+        <div class="columns">
+            <label>@L["studio.mobility"]<select @bind="Mobility"><option value="">@L["studio.mobility.default"]</option>@foreach (var mobility in Enum.GetValues<FurnitureMobility>()) { <option value="@mobility">@L["studio.mobility." + mobility]</option> }</select></label>
+            <label><input type="checkbox" @bind="HasTransport" /> @L["studio.transport"]</label>
+            @if (HasTransport)
+            {
+                <label>@L["studio.patientCapacity"]<input type="number" min="1" @bind="PatientCapacity" /></label>
+                <label>@L["studio.posture"]<select @bind="Posture">@foreach (var posture in Enum.GetValues<TransportPosture>()) { <option value="@posture">@L["studio.posture." + posture]</option> }</select></label>
+                <label>@L["studio.qualification"]<input @bind="TransportQualification" list="qualification-options" /></label>
+            }
+        </div>
+    </section>
     <section class="card"><h3>@L["studio.placement"]</h3><p>@L["studio.placementHint"]</p>
         <label><input type="checkbox" @bind="HasPlacement" /> @L["studio.hasPlacement"]</label>
         @if (HasPlacement)
@@ -44,28 +57,58 @@ else if (Index.Error is { } indexError) { <p class="error">@L["studio.catalogErr
                 </div>
             }
             <button type="button" @onclick="() => Surfaces.Add(new())">@L["studio.addSurface"]</button>
+            <h4>@L["studio.interactionPoints"]</h4><p>@L["studio.interactionPointsHint"]</p>
+            @foreach (var point in Points)
+            {
+                <div class="toolbar" @key="point">
+                    <label>@L["studio.pointKey"]<input @bind="point.Key" /></label>
+                    <label>@L["studio.pointKind"]<input @bind="point.Kind" list="point-kinds" /></label>
+                    <label>X<input type="number" step="any" @bind="point.X" /></label><label>Y<input type="number" step="any" @bind="point.Y" /></label><label>Z<input type="number" step="any" @bind="point.Z" /></label>
+                    <label>@L["studio.heading"]<input type="number" step="any" min="0" max="359.999" @bind="point.Heading" /></label>
+                    <label>@L["studio.qualification"]<input @bind="point.Qualification" list="qualification-options" /></label>
+                    <button type="button" class="secondary" @onclick="() => Points.Remove(point)">@L["studio.remove"]</button>
+                </div>
+            }
+            <button type="button" @onclick="() => Points.Add(new())">@L["studio.addPoint"]</button>
             <p>@L["studio.placementPreserved"]</p>
         }
     </section>
+    <datalist id="point-kinds">@foreach (var kind in new[] { InteractionPointKinds.Seat, InteractionPointKinds.Lying, InteractionPointKinds.Handle, InteractionPointKinds.Operator, InteractionPointKinds.Entry }) { <option value="@kind"></option> }</datalist>
+    <datalist id="qualification-options">@foreach (var q in State.Package.Definitions.OfType<StaffQualificationDefinition>()) { <option value="@q.Id">@StudioContent.Name(State, q, CultureInfo.CurrentUICulture.Name)</option> }</datalist>
 }
 <section class="card"><label>@L["studio.reviewer"]<input @bind="Actor" /></label><label>@L["studio.reason"]<textarea @bind="Note"></textarea></label><p>@L["studio.assetsResetReview"]</p><button @onclick="Save" disabled="@Busy">@L["studio.saveAssets"]</button></section>
 @code {
     [Parameter] public ProjectSnapshot State { get; set; } = null!; [Parameter] public ContentDefinition Definition { get; set; } = null!; [Parameter] public EventCallback OnChanged { get; set; }
     private (IReadOnlyList<CatalogAssetIndexEntry> Entries, string? Error) Index = ([], null);
-    private List<AssetRow> Rows = []; private List<SurfaceRow> Surfaces = [];
+    private List<AssetRow> Rows = []; private List<SurfaceRow> Surfaces = []; private List<PointRow> Points = [];
     private bool HasPlacement; private int Width = 1; private int Depth = 1; private decimal CellSize = 1; private string Mount = ""; private decimal? MountHeight; private string SurfaceCategories = "";
+    private string Mobility = ""; private bool HasTransport; private int PatientCapacity = 1; private TransportPosture Posture = TransportPosture.Seated; private string TransportQualification = "";
     private string Actor = ""; private string Note = ""; private long LoadedRevision = -1;
     protected override void OnParametersSet()
     {
         Index = Catalog.Index();
         if (LoadedRevision == State.Project.Revision) return; LoadedRevision = State.Project.Revision;
         Rows = (Definition.CatalogAssets ?? []).Select(a => new AssetRow { CatalogId = a.CatalogId, Kind = a.Kind }).ToList();
-        var placement = (Definition as FurnitureDefinition)?.Placement;
+        var furniture = Definition as FurnitureDefinition; var placement = furniture?.Placement;
         HasPlacement = placement is not null; Width = placement?.Footprint.Width ?? 1; Depth = placement?.Footprint.Depth ?? 1; CellSize = placement?.Footprint.CellSizeMeters ?? 1;
         Mount = placement?.Mount?.ToString() ?? ""; MountHeight = placement?.MountHeightMeters; SurfaceCategories = string.Join(", ", placement?.SurfaceCategories ?? []);
         Surfaces = (placement?.Surfaces ?? []).Select(s => new SurfaceRow { Key = s.Key, Height = s.HeightMeters, X = s.X, Z = s.Z, Width = s.Width, Depth = s.Depth, Accepts = string.Join(", ", s.Accepts ?? []) }).ToList();
+        Points = (placement?.InteractionPoints ?? []).Select(p => new PointRow { Key = p.Key, Kind = p.Kind ?? "", X = p.X, Y = p.Y, Z = p.Z, Heading = p.HeadingDegrees, Qualification = p.RequiredQualificationId ?? "" }).ToList();
+        Mobility = furniture?.Mobility?.ToString() ?? ""; HasTransport = furniture?.Transport is not null;
+        PatientCapacity = furniture?.Transport?.PatientCapacity ?? 1; Posture = furniture?.Transport?.Posture ?? TransportPosture.Seated; TransportQualification = furniture?.Transport?.RequiredQualificationId ?? "";
     }
     private CatalogAssetIndexEntry? Suggestion(AssetRow row) => Index.Entries.FirstOrDefault(e => e.Id == row.CatalogId && e.Kind == row.Kind && (e.Mount is not null || e.FootprintWidth is not null));
+    /// <summary>A warning only: the content definition wins for the game; catalog values describe what the model can show.</summary>
+    private string Mismatch(AssetRow row)
+    {
+        var entry = Index.Entries.FirstOrDefault(e => e.Id == row.CatalogId && e.Kind == row.Kind && e.Kind == AssetKind.ModelGlb);
+        if (entry is null) return "";
+        var problems = new List<string>();
+        if (Enum.TryParse<FurnitureMobility>(Mobility, out var mobility) && mobility != FurnitureMobility.Fixed && entry.Mobility == FurnitureMobility.Fixed) problems.Add("mobility " + mobility);
+        if (entry.InteractionPointKinds is { } kinds)
+            problems.AddRange(Points.Select(p => p.Kind.Trim()).Where(k => k.Length > 0 && !kinds.Contains(k, StringComparer.Ordinal)).Distinct(StringComparer.Ordinal));
+        return string.Join(", ", problems);
+    }
     private void Apply(CatalogAssetIndexEntry entry)
     {
         HasPlacement = true;
@@ -75,24 +118,36 @@ else if (Index.Error is { } indexError) { <p class="error">@L["studio.catalogErr
     private Task Save() => Run(async () =>
     {
         var assets = Rows.Select(r => new CatalogAssetReference { CatalogId = r.CatalogId.Trim(), Kind = r.Kind }).ToList();
-        FurniturePlacement? placement = null;
-        if (Definition is FurnitureDefinition furniture && HasPlacement)
+        FurniturePlacement? placement = null; FurnitureMobility? mobility = null; FurnitureTransport? transport = null;
+        if (Definition is FurnitureDefinition furniture)
         {
-            // Occupied cells and interaction points are kept as they are; this editor changes footprint size, mount and surfaces.
-            var old = furniture.Placement;
-            placement = new()
+            mobility = Enum.TryParse<FurnitureMobility>(Mobility, out var m) ? m : null;
+            transport = HasTransport ? new() { PatientCapacity = PatientCapacity, Posture = Posture, RequiredQualificationId = TransportQualification.Trim() is { Length: > 0 } q ? q : null, Extensions = furniture.Transport?.Extensions } : null;
+            if (HasPlacement)
             {
-                Footprint = (old?.Footprint ?? new() { Width = Width, Depth = Depth }) with { Width = Width, Depth = Depth, CellSizeMeters = CellSize },
-                InteractionPoints = old?.InteractionPoints ?? [], Extensions = old?.Extensions,
-                Mount = Enum.TryParse<FurnitureMount>(Mount, out var mount) ? mount : null, MountHeightMeters = Mount == nameof(FurnitureMount.Wall) ? MountHeight : null,
-                Surfaces = Surfaces.Count == 0 ? null : Surfaces.Select(s => new FurnitureSurface { Key = s.Key.Trim(), HeightMeters = s.Height, X = s.X, Z = s.Z, Width = s.Width, Depth = s.Depth, Accepts = Keys(s.Accepts) }).ToList(),
-                SurfaceCategories = Mount == nameof(FurnitureMount.Surface) ? Keys(SurfaceCategories) : null
-            };
+                // Occupied cells and unknown point fields are kept; this editor changes footprint size, mount, surfaces and points.
+                var old = furniture.Placement;
+                placement = new()
+                {
+                    Footprint = (old?.Footprint ?? new() { Width = Width, Depth = Depth }) with { Width = Width, Depth = Depth, CellSizeMeters = CellSize },
+                    InteractionPoints = Points.Select(p => new InteractionPoint
+                    {
+                        Key = p.Key.Trim(), Kind = p.Kind.Trim() is { Length: > 0 } kind ? kind : null, X = p.X, Y = p.Y, Z = p.Z, HeadingDegrees = p.Heading,
+                        RequiredQualificationId = p.Qualification.Trim() is { Length: > 0 } qualification ? qualification : null,
+                        Extensions = old?.InteractionPoints.FirstOrDefault(o => o.Key == p.Key.Trim())?.Extensions
+                    }).ToList(),
+                    Extensions = old?.Extensions,
+                    Mount = Enum.TryParse<FurnitureMount>(Mount, out var mount) ? mount : null, MountHeightMeters = Mount == nameof(FurnitureMount.Wall) ? MountHeight : null,
+                    Surfaces = Surfaces.Count == 0 ? null : Surfaces.Select(s => new FurnitureSurface { Key = s.Key.Trim(), HeightMeters = s.Height, X = s.X, Z = s.Z, Width = s.Width, Depth = s.Depth, Accepts = Keys(s.Accepts) }).ToList(),
+                    SurfaceCategories = Mount == nameof(FurnitureMount.Surface) ? Keys(SurfaceCategories) : null
+                };
+            }
         }
-        await Projects.SaveAssetsAsync(State.Project.Id, State.Project.Revision, Definition.Id, assets, placement, Actor, Note);
+        await Projects.SaveAssetsAsync(State.Project.Id, State.Project.Revision, Definition.Id, assets, placement, Actor, Note, mobility, transport);
         await OnChanged.InvokeAsync();
     });
     private static List<string>? Keys(string text) => text.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries) is { Length: > 0 } keys ? [.. keys] : null;
     private sealed class AssetRow { public string CatalogId { get; set; } = ""; public AssetKind Kind { get; set; } = AssetKind.ModelGlb; }
     private sealed class SurfaceRow { public string Key { get; set; } = "top"; public decimal Height { get; set; } = 1; public decimal X { get; set; } public decimal Z { get; set; } public decimal Width { get; set; } = 1; public decimal Depth { get; set; } = 1; public string Accepts { get; set; } = ""; }
+    private sealed class PointRow { public string Key { get; set; } = ""; public string Kind { get; set; } = ""; public decimal X { get; set; } public decimal Y { get; set; } public decimal Z { get; set; } public decimal? Heading { get; set; } public string Qualification { get; set; } = ""; }
 }

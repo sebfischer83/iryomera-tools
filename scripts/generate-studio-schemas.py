@@ -17,7 +17,7 @@ kinds=sdk['catalogAssetReference']['properties']['kind']
 ns=sdk['contentPackageManifest']['properties']['namespace']
 def open_obj(p,r):return {'type':'object','properties':p,'required':r,'additionalProperties':True}
 defs['catalogAssetFootprint']=open_obj({'width':{'type':'integer','minimum':1},'depth':{'type':'integer','minimum':1}},['width','depth'])
-defs['catalogAssetIndexEntry']=open_obj({'id':id,'kind':kinds,'category':ns,'mount':{'anyOf':[{'enum':['floor','wall','ceiling','surface']},{'type':'null'}]},'footprint':{'anyOf':[ref('catalogAssetFootprint'),{'type':'null'}]}},['id','kind','category'])
+defs['catalogAssetIndexEntry']=open_obj({'id':id,'kind':kinds,'category':ns,'mount':{'anyOf':[{'enum':['floor','wall','ceiling','surface']},{'type':'null'}]},'footprint':{'anyOf':[ref('catalogAssetFootprint'),{'type':'null'}]},'mobility':{'anyOf':[{'enum':['fixed','movable','pushable']},{'type':'null'}]},'interactionPointKinds':{'anyOf':[{'type':'array','items':ns,'uniqueItems':True},{'type':'null'}]}},['id','kind','category'])
 defs['catalogAssetIndex']=open_obj({'schemaVersion':{'const':'1.0.0'},'assets':{'type':'array','items':ref('catalogAssetIndexEntry')}},['schemaVersion','assets'])
 base='https://schemas.iryomera.org/studio/v1/'
 (out/'contracts.schema.json').write_text(json.dumps({'$schema':'https://json-schema.org/draft/2020-12/schema','$id':base+'contracts.schema.json','$defs':defs},indent=2)+'\n')

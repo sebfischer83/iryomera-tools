@@ -58,7 +58,7 @@ In a GitHub Actions workflow of another repository, use a repository secret hold
 Install a tool from the feed:
 
 ```sh
-dotnet tool install Iryomera.ModKit --version 0.11.0 --tool-path ./tools
+dotnet tool install Iryomera.ModKit --version 0.12.0 --tool-path ./tools
 ```
 
 Packaging and publication are technical distribution steps. They grant no clinical approval and no rights to third-party data; packages contain only MIT code and synthetic examples.

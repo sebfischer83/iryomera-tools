@@ -99,6 +99,10 @@ public sealed record RoomDefinition : ContentDefinition;
 public sealed record FurnitureDefinition : ContentDefinition
 {
     public FurniturePlacement? Placement { get; init; }
+    /// <summary>Optional, omitted when null; absent means fixed.</summary>
+    public FurnitureMobility? Mobility { get; init; }
+    /// <summary>Optional, omitted when null: patients this item carries (ADR 0016).</summary>
+    public FurnitureTransport? Transport { get; init; }
 }
 public sealed record StaffRoleDefinition : ContentDefinition;
 

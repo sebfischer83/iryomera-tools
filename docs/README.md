@@ -18,6 +18,6 @@ English is the authoritative language for repository documentation, public API d
 - [Localization](localization.md) and [Godot integration](godot-integration.md).
 - [Name importer](name-importer.md) (Phase 5, first adapters): [plan](plans/names.md), [ADR 0011](architecture/0011-name-pools.md) and [name source candidates](data-sources/names.md).
 - [Furniture asset catalog references and mounting](plans/furniture-assets.md), [ADR 0013](architecture/0013-catalog-assets-and-mounting.md) and [equipment relations, ADR 0014](architecture/0014-equipment-relations.md).
-- [ADR 0015, mods overriding gameplay balancing](architecture/0015-gameplay-overrides.md).
+- [ADR 0015, mods overriding gameplay balancing](architecture/0015-gameplay-overrides.md) and [ADR 0016, movable furniture](architecture/0016-movable-furniture.md).
 - [Releases and package feed](releases.md) and [ADR 0012](architecture/0012-github-packages-feed.md).
 - [Architecture foundations](architecture/0001-foundation.md) and [binding development rules](../AGENTS.md).

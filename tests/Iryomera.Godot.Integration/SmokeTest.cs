@@ -56,6 +56,8 @@ public partial class SmokeTest : Node
             Assert(furniture.Placement.Surfaces!.Single().Accepts!.Single() == "decoration" && RoomContents.Placeable([modContent.Value], "example_mod:demo_room").Any(i => i.Requirement == RelationRequirement.Required), "Surface categories or room contents were lost.");
             Assert(furniture.Placement.Surfaces!.Single().Key == "top" && modContent.Value.Relations.Single(r => r.Kind == RelationKind.RoomEquipment).Requirement == RelationRequirement.Required
                 && modContent.Value.Relations.Any(r => r.Kind == RelationKind.TreatmentEquipment), "Surface or equipment relation contracts were lost.");
+            var wheelchair = modContent.Value.Definitions.OfType<FurnitureDefinition>().Single(f => f.Transport is not null);
+            Assert(wheelchair.Mobility == FurnitureMobility.Pushable && wheelchair.Transport!.Posture == TransportPosture.Seated && wheelchair.Placement!.InteractionPoints.Any(p => p.Kind == InteractionPointKinds.Handle), "Movable furniture contracts were lost.");
             var wallItem = modContent.Value.Definitions.OfType<FurnitureDefinition>().Single(f => f.CatalogAssets is not null);
             Assert(wallItem.CatalogAssets![0].CatalogId == "iryomera.assets:wall.notice_board_example" && wallItem.Placement!.Mount == FurnitureMount.Wall && wallItem.Placement.MountHeightMeters == 1.5m, "Catalog asset/mount contracts were lost.");
             await using var namesSource = File.OpenRead(ProjectSettings.GlobalizePath("res://names.json"));
