@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Security.Cryptography;
 using System.Text;
 using Iryomera.Content.SDK;
 using Iryomera.Localization;
@@ -8,13 +9,15 @@ namespace Iryomera.NameImporter;
 /// <summary>
 /// Exports approved records of permitted batches as one SDK content package with name pools and en/de pool labels.
 /// Identical name strings and genders from several batches become one entry that keeps every attestation; statistics
-/// stay per source. Differing romanizations are a conflict and block the export. Name formats are not exported.
+/// stay per source. Differing romanizations are a conflict and block the export. Name formats are not exported. An
+/// optional cap keeps the most frequent entries per pool; see <see cref="Cap"/>.
 /// </summary>
 public sealed class NameExporter
 {
-    public async Task<NameReleaseReport> ExportAsync(NameWorkspace workspace, string output, string version, CancellationToken ct = default)
+    public async Task<NameReleaseReport> ExportAsync(NameWorkspace workspace, string output, string version, int? maxEntriesPerPool = null, CancellationToken ct = default)
     {
         NameWorkspaceValidation.EnsureShape(workspace);
+        if (maxEntriesPerPool is < 1) throw new ArgumentException("The entry cap per pool must be at least 1.");
         if (!ContentValidator.IsVersion(version)) throw new ArgumentException("Package version must be canonical SemVer 2.");
         output = Path.GetFullPath(output);
         if (Directory.Exists(output) || File.Exists(output)) throw new IOException("Output already exists; releases are never overwritten.");
@@ -63,12 +66,14 @@ public sealed class NameExporter
                     }).OrderBy(a => a.SourceKey, StringComparer.Ordinal).ThenBy(a => a.BirthYearFrom).ThenBy(a => a.ExternalId, StringComparer.Ordinal).ToList()
                 });
             }
+            var kept = maxEntriesPerPool is { } max ? Cap(entries, max, group.Select(x => x.Batch).DistinctBy(b => b.Id)) : entries;
             pools.Add(new()
             {
                 Id = ns + ":" + local, Version = version, NameKey = PoolKey(ns, local), Country = group.Key.Country, Region = group.Key.Region, Part = group.Key.Part,
                 Provenance = Approved(new() { Source = "Iryomera NameImporter release", ExternalId = ns + ":" + local, SourceVersion = version, License = licenses, ImportedAt = batches.Max(b => b.Options.ImportedAt) }, latest),
-                Sources = group.Select(x => x.Batch.Id).Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).Select(id => sources[id]).ToList(),
-                Entries = entries.OrderBy(e => e.Key, StringComparer.Ordinal).ToList()
+                Sources = kept.SelectMany(e => e.Attestations).Select(a => a.SourceKey).Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal)
+                    .Select(key => sources.Values.Single(s => s.Key == key)).ToList(),
+                Entries = kept.OrderBy(e => e.Key, StringComparer.Ordinal).ToList()
             });
         }
         if (conflicts.Count > 0) throw new InvalidOperationException("Romanization conflicts; reject one of the records or fix the source: " + string.Join(" ", conflicts.Order(StringComparer.Ordinal)));
@@ -84,10 +89,11 @@ public sealed class NameExporter
         }).ToArray();
         var issues = ContentValidator.Validate(package).Concat(LocalizationValidator.Validate(catalogs, LocalizationValidator.GetContentKeys(package), ["en", "de"])).ToArray();
         if (issues.Length > 0) throw new InvalidOperationException("Exported package is invalid: " + string.Join("; ", issues.Select(i => i.Code + " " + i.Path)));
+        var exported = pools.SelectMany(p => p.Entries).SelectMany(x => x.Attestations).CountBy(a => a.SourceKey).ToDictionary(StringComparer.Ordinal);
         var report = new NameReleaseReport
         {
             PackageId = package.Manifest.Id, Version = version,
-            Batches = batches.Select(b => new NameReleaseBatch(b.Id, b.Options.Source, b.Options.SourceVersion, b.Options.License, b.InputSha256, selected.Count(x => x.Batch.Id == b.Id))).ToList(),
+            Batches = batches.Where(b => exported.ContainsKey(SourceKey(b.Id))).Select(b => new NameReleaseBatch(b.Id, b.Options.Source, b.Options.SourceVersion, b.Options.License, b.InputSha256, exported[SourceKey(b.Id)])).ToList(),
             Pools = pools.Select(p => new NameReleasePool(p.Id, p.Country, p.Region, p.Part, p.Entries.Count)).ToList()
         };
         var staging = Path.Combine(Path.GetDirectoryName(output)!, ".iryomera-names-" + Guid.NewGuid().ToString("N", CultureInfo.InvariantCulture));
@@ -97,7 +103,7 @@ public sealed class NameExporter
             await Write(Path.Combine(staging, "content.json"), package, ct);
             foreach (var catalog in catalogs) await Write(Path.Combine(staging, "localization", catalog.Language + ".json"), catalog, ct);
             await Write(Path.Combine(staging, "release-report.json"), report, ct);
-            await File.WriteAllTextAsync(Path.Combine(staging, "NOTICE.md"), Notice(batches), new UTF8Encoding(false), ct);
+            await File.WriteAllTextAsync(Path.Combine(staging, "NOTICE.md"), Notice(batches.Where(b => exported.ContainsKey(SourceKey(b.Id))), maxEntriesPerPool), new UTF8Encoding(false), ct);
             ct.ThrowIfCancellationRequested();
             Directory.Move(staging, output);
         }
@@ -123,9 +129,30 @@ public sealed class NameExporter
         await using var output = new FileStream(path, FileMode.CreateNew, FileAccess.Write, FileShare.None, 65536, FileOptions.Asynchronous);
         await ContentJson.WriteAsync(output, value, ct);
     }
-    private static string Notice(IEnumerable<NameBatch> batches)
+    /// <summary>
+    /// Keeps at most <paramref name="max"/> entries. Counts are compared only within one dataset (sources with the same source
+    /// URL and version, such as the birth years of one SSA release): the dataset with the largest total count in the pool ranks
+    /// entries by their summed count from it. Entries without such counts follow in SHA-256 order of their entry key, a stable
+    /// order without alphabetical bias, which also breaks ties.
+    /// </summary>
+    internal static List<NameEntry> Cap(List<NameEntry> entries, int max, IEnumerable<NameBatch> batches)
+    {
+        if (entries.Count <= max) return entries;
+        var dataset = batches.ToDictionary(b => SourceKey(b.Id), b => (b.Options.SourceUrl, b.Options.SourceVersion), StringComparer.Ordinal);
+        var leading = entries.SelectMany(e => e.Attestations).Where(a => a.Count is not null)
+            .GroupBy(a => dataset[a.SourceKey]).Select(g => (g.Key, Total: g.Sum(a => a.Count!.Value)))
+            .OrderByDescending(x => x.Total).ThenBy(x => x.Key.SourceUrl, StringComparer.Ordinal).ThenBy(x => x.Key.SourceVersion, StringComparer.Ordinal)
+            .Select(x => ((string SourceUrl, string SourceVersion)?)x.Key).FirstOrDefault();
+        long Score(NameEntry entry) => entry.Attestations.Where(a => a.Count is not null && dataset[a.SourceKey] == leading).Sum(a => a.Count!.Value);
+        static string Stable(NameEntry entry) => Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(entry.Key)));
+        return entries.OrderByDescending(Score).ThenBy(Stable, StringComparer.Ordinal).Take(max).ToList();
+    }
+
+    private static string Notice(IEnumerable<NameBatch> batches, int? maxEntriesPerPool)
     {
         var text = new StringBuilder("# Name data notices\n\nName data keeps its original licenses; the Iryomera MIT license covers only the tool. Names describe no real person.\n");
+        if (maxEntriesPerPool is { } max)
+            text.Append(CultureInfo.InvariantCulture, $"\nSelection: at most {max} entries per pool, the most frequent by source counts within one dataset, otherwise in SHA-256 order of the entry key.\n");
         foreach (var b in batches)
             text.Append(CultureInfo.InvariantCulture, $"\n## {b.Options.Source} {b.Options.SourceVersion}\n\n- Source: {b.Options.SourceUrl}\n- License: {b.Options.License}\n- Attribution: {b.Options.Attribution}\n- Input SHA-256: {b.InputSha256}\n- Batch: {b.Id}\n\n```text\n{b.Options.LicenseText.TrimEnd()}\n```\n");
         return text.ToString();

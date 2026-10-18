@@ -174,6 +174,36 @@ public sealed class NameImporterTests : IDisposable
     }
 
     [Fact]
+    public async Task CapKeepsTheMostFrequentEntriesWithinOneDatasetAndIsDeterministic()
+    {
+        // Same SSA release, two birth years: counts are summed within the dataset (Talvina 150, Orwen 95, Brannoc 30, Kaelo 7).
+        var recent = await Ssa("Talvina,F,120\nOrwen,M,95\nKaelo,F,7\n", 2020); var older = await Ssa("Talvina,F,30\nBrannoc,M,30\n", 1950, "old.txt");
+        var workspace = await Approved(recent, older);
+        var report = await new NameExporter().ExportAsync(workspace, PathFor("capped"), "1.0.0", maxEntriesPerPool: 2);
+        await using (var content = System.IO.File.OpenRead(Path.Combine(PathFor("capped"), "content.json")))
+        {
+            var result = await ContentDocuments.ReadValidatedAsync<ContentPackage>(content);
+            Assert.True(result.IsValid, string.Join(';', result.Issues));
+            var pool = Assert.Single(result.Value!.NamePools!);
+            Assert.Equal(["Orwen", "Talvina"], pool.Entries.Select(e => e.Localized).Order(StringComparer.Ordinal));
+            Assert.Equal([1950, 2020], pool.Entries.Single(e => e.Localized == "Talvina").Attestations.Select(a => a.BirthYearFrom!.Value).Order());
+        }
+        Assert.Equal(2, report.Pools[0].Entries);
+        Assert.Equal(3, report.Batches.Sum(b => b.ExportedRecords));
+        Assert.Contains("at most 2 entries per pool", System.IO.File.ReadAllText(Path.Combine(PathFor("capped"), "NOTICE.md")));
+        Assert.Equal(4, (await new NameExporter().ExportAsync(workspace, PathFor("uncapped"), "1.0.0", maxEntriesPerPool: 10)).Pools[0].Entries);
+        await Assert.ThrowsAsync<ArgumentException>(() => new NameExporter().ExportAsync(workspace, PathFor("zero"), "1.0.0", maxEntriesPerPool: 0));
+
+        // Without counts the order is the SHA-256 of the entry key: stable across runs and input order.
+        NameEntry Entry(string name) => new() { Key = NameIdentity.EntryKey(name, NameGender.Unknown), Localized = name, Gender = NameGender.Unknown, Attestations = [new() { SourceKey = "b_000000000000" }] };
+        var names = new[] { "Aldo", "Bryn", "Cato", "Dara", "Emer", "Fenn" };
+        var batch = recent with { Id = "batch_" + new string('0', 64) };
+        var first = NameExporter.Cap(names.Select(Entry).ToList(), 3, [batch]).Select(e => e.Localized).ToArray();
+        Assert.Equal(first, NameExporter.Cap(names.Reverse().Select(Entry).ToList(), 3, [batch]).Select(e => e.Localized));
+        Assert.Equal(3, first.Length);
+    }
+
+    [Fact]
     public async Task OnlyApprovedRecordsOfPermittedBatchesAreExported()
     {
         var batch = await Ssa("Talvina,F,120\nOrwen,M,95\n"); var blocked = await Ssa("Brannoc,M,30\n", 1950, "blocked.txt");
