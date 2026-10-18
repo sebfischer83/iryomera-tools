@@ -7,6 +7,10 @@
     "demo_clinic.room_type_laboratory.name": "Labor",
     "demo_clinic.room_type_imaging.name": "Bildgebung",
     "demo_clinic.room_type_operating.name": "OP-Saal",
+    "demo_clinic.room_type_reception.name": "Empfang",
+    "demo_clinic.room_type_waiting.name": "Wartezimmer",
+    "demo_clinic.room_type_ward.name": "Bettenzimmer",
+    "demo_clinic.department_general.name": "Allgemeinmedizin",
     "demo_clinic.department_emergency.name": "Notaufnahme",
     "demo_clinic.department_internal.name": "Innere Medizin",
     "demo_clinic.department_surgery.name": "Chirurgie",
@@ -63,6 +67,9 @@
     "demo_clinic.furniture_wall_picture.name": "Wandbild",
     "demo_clinic.furniture_wheelchair.name": "Rollstuhl",
     "demo_clinic.equipment_surgical_table.name": "OP-Tisch",
+    "demo_clinic.furniture_reception_desk.name": "Empfangstresen",
+    "demo_clinic.furniture_waiting_bench.name": "Wartebank",
+    "demo_clinic.furniture_hospital_bed.name": "Krankenbett",
     "demo_clinic.pool.patients_given.name": "Demo-Patienten: Vornamen",
     "demo_clinic.pool.patients_family.name": "Demo-Patienten: Nachnamen"
   }

@@ -43,7 +43,7 @@ base={'id':id,'nameKey':key,'descriptionKey':nullable(key),'version':version,'pr
 for kind in kinds:defs[kind+'Definition']=obj({'kind':{'const':kind},**base},['kind','id','nameKey','version','provenance'])
 defs['furnitureDefinition']['properties']['placement']=nullable(ref('furniturePlacement'))
 # Room layout rules (ADR 0017): game rules in grid cells, not medical statements.
-defs['roomDefinition']['properties'].update({'minimumCells':nullable({'type':'integer','minimum':1}),'requiresDoor':{'type':['boolean','null']}})
+defs['roomDefinition']['properties'].update({'minimumCells':nullable({'type':'integer','minimum':1}),'requiresDoor':{'type':['boolean','null']},'role':nullable({'enum':['reception','waiting','ward']}),'shareable':{'type':['boolean','null']}})
 # Movable furniture (ADR 0016): game rules, not medical statements. Headings: 0 deg = local +Z, counterclockwise from above (90 deg = +X).
 defs['furnitureTransport']=obj({'patientCapacity':{'type':'integer','minimum':1},'posture':{'enum':['seated','lying']},'requiredQualificationId':nullable(id)},['patientCapacity','posture'])
 defs['furnitureDefinition']['properties']['mobility']=nullable({'enum':['fixed','movable','pushable']})
@@ -89,7 +89,9 @@ defs['contentPackageManifest']=obj(manifest,['schemaVersion','id','namespace','v
 defs['modManifest']=obj({**manifest,'nameKey':key,'author':text,'compatibleGameVersions':text,'contentFiles':array({'type':'string','minLength':1,'pattern':r'^(?!/)(?!.*\\)(?!.*:)(?!.*(?:^|/)\.\.?(/|$)).+$'}),'supportedLanguages':array({'type':'string','pattern':r'^[a-z]{2,3}(-[A-Za-z0-9]{2,8})*$'})},['schemaVersion','id','namespace','nameKey','author','version','compatibleGameVersions','license'])
 bal={'definitionId':id}
 for name in ['rarity','severity','diagnosticDifficulty','simulatedSuccessProbability']:bal[name]=nullable({'type':'number','minimum':0,'maximum':1})
-for name in ['treatmentDurationSeconds','examinationDurationSeconds','examinationCost','treatmentCost','capacity','purchaseCost','wagePerHour','unlockCost','unlockDischargedPatients']:bal[name]=nullable({'type':'number','minimum':0})
+for name in ['treatmentDurationSeconds','examinationDurationSeconds','examinationCost','treatmentCost','capacity','purchaseCost','wagePerHour','unlockCost','unlockDischargedPatients','stayDurationSeconds']:bal[name]=nullable({'type':'number','minimum':0})
+for name in ['openFromHour','openToHour']:bal[name]=nullable({'type':'integer','minimum':0,'maximum':24})
+bal['arrival']=nullable({'enum':['walkIn','emergency']})
 bal['requiredResources']={'type':'object','propertyNames':text,'additionalProperties':{'type':'number','minimum':0}}
 defs['gameplayBalance']=obj(bal,['definitionId'])
 # Simulation-only overrides of declared dependencies' balancing (ADR 0015); only set fields replace earlier values.

@@ -57,5 +57,15 @@ internal static class DepartmentValidator
             yield return new("balance-range", balance.DefinitionId, "Discharged patients for unlocking must be a whole number.");
         foreach (var change in (package.GameplayOverrides ?? []).Where(c => c.UnlockDischargedPatients is { } n && n != decimal.Truncate(n)))
             yield return new("balance-range", change.Id, "Discharged patients for unlocking must be a whole number.");
+        var hours = package.Gameplay.Select(b => (Path: b.DefinitionId, b.OpenFromHour, b.OpenToHour, b.Arrival))
+            .Concat((package.GameplayOverrides ?? []).Select(c => (Path: c.Id, c.OpenFromHour, c.OpenToHour, c.Arrival)));
+        foreach (var (path, from, to, arrival) in hours)
+        {
+            if (new[] { from, to }.Any(h => h is { } x && (x < 0 || x > 24 || x != decimal.Truncate(x))) || from >= to)
+                yield return new("balance-range", path, "Opening hours are whole hours in [0,24] with openFromHour before openToHour.");
+            if (arrival is { } a && !Enum.IsDefined(a)) yield return new("balance-range", path, "Unknown patient arrival route.");
+        }
+        foreach (var room in package.Definitions.OfType<RoomDefinition>().Where(r => r.Role is { } role && !Enum.IsDefined(role)))
+            yield return new("room-role", room.Id, "Unknown room role.");
     }
 }
