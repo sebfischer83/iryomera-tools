@@ -128,6 +128,14 @@ InteractionPoint has an optional `kind` (stable key). Standard kinds: `seat` (a 
 
 FurnitureDefinition has optional `mobility`, meaning movement during play rather than the player rearranging items (the game allows that for every item): `fixed` (default) stays where it was placed, `movable` is carried by staff to where it is needed without a patient on it (mobile device, IV stand, chair moved to a bed), and `pushable` is pushed by one person with a patient on it (wheelchair, mobile bed). The optional `transport` (`patientCapacity` ≥ 1, `posture` `seated` or `lying`, optional `requiredQualificationId` for the pushing staff) describes the patients it carries. Both fields are omitted when null. Rules (`furniture-transport`): transport requires `pushable` (since 0.12.1; 0.12.0 also allowed `movable`); it needs at least `patientCapacity` points of kind `seat` or `lying` matching the posture; `pushable` needs at least one `handle`. These are game and simulation rules, not medical statements. See [ADR 0016](architecture/0016-movable-furniture.md).
 
+## Room rules, staff roles, routing and capacity (library 0.13.0)
+
+RoomDefinition has optional `minimumCells` (minimum floor area in grid cells; rooms may have any shape made of cells) and `requiresDoor`, omitted when null (`room-size` for values below 1). These are game layout rules.
+
+New relation kinds: `examinationStaffRole` (examination → staff role that performs it; additional qualifications stay on `examinationQualification`) and `diseaseDepartment` (disease → medical department) for routing. `diseaseDepartment` may carry an optional `priority` (≥ 1; 1 is the preferred department, higher numbers are fallbacks; every linked department is acceptable), allowed only on that kind (`relation-priority`). Older readers reject the new relation kinds.
+
+GameplayBalance and GameplayOverride have an optional `capacity` (nonnegative, simulation only): patients a department or room handles at the same time; mods can override it field by field (ADR 0015). See [ADR 0017](architecture/0017-m7-content-gaps.md).
+
 ModKit authoring (`mod.json`) and archive integrity (`checksums.json`) have separate schemas in `schemas/modkit/v1`. No executable/script/plugin payload kind is defined. The archive is not a Godot PCK or game save format. The runtime game remains responsible for asset rendering and interaction behavior.
 
 ## Name pools and formats (library 0.6.0)

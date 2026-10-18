@@ -69,6 +69,15 @@ public sealed partial class ProjectService
             state.Package.Definitions[index] = definition;
         }, ct: ct);
 
+    /// <summary>Room layout rules (ADR 0017). Like other definition edits this resets the room's review only.</summary>
+    public Task SaveRoomRulesAsync(Guid project, long revision, string roomId, int? minimumCells, bool? requiresDoor, string actor, string note, CancellationToken ct = default) =>
+        MutateAsync(project, revision, "room-rules", roomId, actor, note, state =>
+        {
+            var index = state.Package.Definitions.FindIndex(d => d.Id == roomId);
+            if (index < 0 || state.Package.Definitions[index] is not RoomDefinition room) throw new ArgumentException("Select a room definition.");
+            state.Package.Definitions[index] = room with { MinimumCells = minimumCells, RequiresDoor = requiresDoor, Provenance = StudioContent.Draft(room.Provenance) };
+        }, ct: ct);
+
     public Task SaveRelationAsync(Guid project, long revision, ContentRelation relation, string actor, string note, bool create = false, CancellationToken ct = default) =>
         MutateAsync(project, revision, "relation-edit", relation.Id, actor, note, state =>
         {

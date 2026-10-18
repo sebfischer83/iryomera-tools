@@ -1399,6 +1399,23 @@
               "type": "null"
             }
           ]
+        },
+        "minimumCells": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "requiresDoor": {
+          "type": [
+            "boolean",
+            "null"
+          ]
         }
       },
       "required": [
@@ -2309,7 +2326,9 @@
             "examinationQualification",
             "examinationPrerequisite",
             "treatmentEquipment",
-            "roomEquipment"
+            "roomEquipment",
+            "examinationStaffRole",
+            "diseaseDepartment"
           ]
         },
         "fromId": {
@@ -2330,6 +2349,17 @@
                 "required",
                 "optional"
               ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "priority": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 1
             },
             {
               "type": "null"
@@ -2368,6 +2398,25 @@
                   "roomEquipment",
                   "roomFurniture"
                 ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "priority"
+            ],
+            "properties": {
+              "priority": {
+                "type": "integer"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "kind": {
+                "const": "diseaseDepartment"
               }
             }
           }
@@ -2782,6 +2831,17 @@
             }
           ]
         },
+        "capacity": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
         "requiredResources": {
           "type": "object",
           "propertyNames": {
@@ -2903,6 +2963,17 @@
           ]
         },
         "treatmentCost": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "capacity": {
           "anyOf": [
             {
               "type": "number",

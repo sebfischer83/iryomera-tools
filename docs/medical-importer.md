@@ -14,7 +14,7 @@ The project also packs as the `iryomera-medical` .NET tool (released versions ar
 
 ```sh
 dotnet pack src/Iryomera.MedicalImporter -c Release -o artifacts
-dotnet tool install Iryomera.MedicalImporter --version 0.12.1 --add-source ./artifacts --tool-path ./artifacts/tools
+dotnet tool install Iryomera.MedicalImporter --version 0.13.0 --add-source ./artifacts --tool-path ./artifacts/tools
 # Windows: artifacts/tools/iryomera-medical.exe
 # Linux: ./artifacts/tools/iryomera-medical
 ```

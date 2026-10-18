@@ -19,6 +19,16 @@ else if (Index.Error is { } indexError) { <p class="error">@L["studio.catalogErr
     <datalist id="catalog-options">@foreach (var entry in Index.Entries) { <option value="@entry.Id">@entry.Category · @L["studio.assetKind." + entry.Kind]</option> }</datalist>
     <button type="button" @onclick="() => Rows.Add(new())">@L["studio.addCatalogAsset"]</button>
 </section>
+@if (Definition is RoomDefinition)
+{
+    <section class="card"><h3>@L["studio.roomRules"]</h3><p>@L["studio.roomRulesHint"]</p>
+        <div class="columns">
+            <label>@L["studio.minimumCells"]<input type="number" min="1" @bind="MinimumCells" /></label>
+            <label><input type="checkbox" @bind="RequiresDoor" /> @L["studio.requiresDoor"]</label>
+        </div>
+        <button type="button" @onclick="SaveRoomRules" disabled="@Busy">@L["studio.saveRoomRules"]</button>
+    </section>
+}
 @if (Definition is FurnitureDefinition)
 {
     <section class="card"><h3>@L["studio.mobility"]</h3>
@@ -83,11 +93,13 @@ else if (Index.Error is { } indexError) { <p class="error">@L["studio.catalogErr
     private List<AssetRow> Rows = []; private List<SurfaceRow> Surfaces = []; private List<PointRow> Points = [];
     private bool HasPlacement; private int Width = 1; private int Depth = 1; private decimal CellSize = 1; private string Mount = ""; private decimal? MountHeight; private string SurfaceCategories = "";
     private string Mobility = ""; private bool HasTransport; private int PatientCapacity = 1; private TransportPosture Posture = TransportPosture.Seated; private string TransportQualification = "";
+    private int? MinimumCells; private bool RequiresDoor;
     private string Actor = ""; private string Note = ""; private long LoadedRevision = -1;
     protected override void OnParametersSet()
     {
         Index = Catalog.Index();
         if (LoadedRevision == State.Project.Revision) return; LoadedRevision = State.Project.Revision;
+        MinimumCells = (Definition as RoomDefinition)?.MinimumCells; RequiresDoor = (Definition as RoomDefinition)?.RequiresDoor ?? false;
         Rows = (Definition.CatalogAssets ?? []).Select(a => new AssetRow { CatalogId = a.CatalogId, Kind = a.Kind }).ToList();
         var furniture = Definition as FurnitureDefinition; var placement = furniture?.Placement;
         HasPlacement = placement is not null; Width = placement?.Footprint.Width ?? 1; Depth = placement?.Footprint.Depth ?? 1; CellSize = placement?.Footprint.CellSizeMeters ?? 1;
@@ -144,6 +156,12 @@ else if (Index.Error is { } indexError) { <p class="error">@L["studio.catalogErr
             }
         }
         await Projects.SaveAssetsAsync(State.Project.Id, State.Project.Revision, Definition.Id, assets, placement, Actor, Note, mobility, transport);
+        await OnChanged.InvokeAsync();
+    });
+    // The reviewer and reason fields below the editor apply to this save too.
+    private Task SaveRoomRules() => Run(async () =>
+    {
+        await Projects.SaveRoomRulesAsync(State.Project.Id, State.Project.Revision, Definition.Id, MinimumCells, RequiresDoor ? true : null, Actor, Note);
         await OnChanged.InvokeAsync();
     });
     private static List<string>? Keys(string text) => text.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries) is { Length: > 0 } keys ? [.. keys] : null;

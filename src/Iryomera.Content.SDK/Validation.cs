@@ -93,6 +93,8 @@ public static class ContentValidator
                 if (definition.DescriptionKey is not null) CheckKey(definition.DescriptionKey, dp + ".descriptionKey");
                 foreach (var key in definition.SynonymKeys) CheckKey(key, dp + ".synonymKeys");
                 CheckProvenance(definition.Provenance, dp);
+                if (definition is RoomDefinition { MinimumCells: < 1 })
+                    Error("room-size", dp, "The minimum room size is a positive number of grid cells.");
                 foreach (var classification in definition.Classifications)
                 {
                     if (string.IsNullOrWhiteSpace(classification.System) || string.IsNullOrWhiteSpace(classification.Value))
@@ -127,6 +129,8 @@ public static class ContentValidator
                 Register(relation.Id, manifest.Namespace, path + ".relations[" + relation.Id + "]");
                 CheckVersion(relation.Version, relation.Id);
                 CheckProvenance(relation.Provenance, relation.Id);
+                if (relation.Priority is { } priority && (priority < 1 || relation.Kind != RelationKind.DiseaseDepartment))
+                    Error("relation-priority", relation.Id, "A priority is allowed only on diseaseDepartment relations and must be at least 1.");
                 if (relation.Requirement is { } requirement && (!Enum.IsDefined(requirement) || relation.Kind is not (RelationKind.RoomEquipment or RelationKind.RoomFurniture)))
                     Error("relation-requirement", relation.Id, "A requirement is allowed only on roomEquipment and roomFurniture relations and must be required or optional.");
             }
@@ -220,7 +224,7 @@ public static class ContentValidator
                 if (!change.Values().Any()) Error("gameplay-override-empty", change.Id, "An override must set at least one balancing value.");
                 if (new[] { change.Rarity, change.Severity, change.DiagnosticDifficulty, change.SimulatedSuccessProbability }.Any(x => x is < 0 or > 1))
                     Error("balance-range", change.Id, "Normalized simulation values must be within [0,1].");
-                if (new[] { change.TreatmentDurationSeconds, change.ExaminationDurationSeconds, change.ExaminationCost, change.TreatmentCost }.Any(x => x < 0) || (change.RequiredResources ?? []).Values.Any(x => x < 0))
+                if (new[] { change.TreatmentDurationSeconds, change.ExaminationDurationSeconds, change.ExaminationCost, change.TreatmentCost, change.Capacity }.Any(x => x < 0) || (change.RequiredResources ?? []).Values.Any(x => x < 0))
                     Error("balance-range", change.Id, "Simulation time, costs and resources must be nonnegative.");
                 foreach (var resource in (change.RequiredResources ?? []).Keys)
                     if (string.IsNullOrWhiteSpace(resource)) Error("resource-key", change.Id, "Resource keys must be nonempty.");
@@ -232,7 +236,7 @@ public static class ContentValidator
                 if (!balances.Add(balance.DefinitionId)) Error("duplicate-balance", balance.DefinitionId, "Multiple balance records for one definition.");
                 if (new[] { balance.Rarity, balance.Severity, balance.DiagnosticDifficulty, balance.SimulatedSuccessProbability }.Any(x => x is < 0 or > 1))
                     Error("balance-range", balance.DefinitionId, "Normalized simulation values must be within [0,1].");
-                if (new[] { balance.TreatmentDurationSeconds, balance.ExaminationDurationSeconds, balance.ExaminationCost, balance.TreatmentCost }.Any(x => x < 0) || balance.RequiredResources.Values.Any(x => x < 0))
+                if (new[] { balance.TreatmentDurationSeconds, balance.ExaminationDurationSeconds, balance.ExaminationCost, balance.TreatmentCost, balance.Capacity }.Any(x => x < 0) || balance.RequiredResources.Values.Any(x => x < 0))
                     Error("balance-range", balance.DefinitionId, "Simulation time, costs and resources must be nonnegative.");
                 foreach (var resource in balance.RequiredResources.Keys)
                     if (string.IsNullOrWhiteSpace(resource)) Error("resource-key", balance.DefinitionId, "Resource keys must be nonempty.");
@@ -296,6 +300,8 @@ public static class ContentValidator
         RelationKind.ExaminationQualification => (typeof(ExaminationDefinition), typeof(StaffQualificationDefinition)),
         RelationKind.ExaminationPrerequisite => (typeof(ExaminationDefinition), typeof(ExaminationDefinition)),
         RelationKind.RoomFurniture => (typeof(RoomDefinition), typeof(FurnitureDefinition)),
+        RelationKind.ExaminationStaffRole => (typeof(ExaminationDefinition), typeof(StaffRoleDefinition)),
+        RelationKind.DiseaseDepartment => (typeof(DiseaseDefinition), typeof(MedicalDepartmentDefinition)),
         RelationKind.TreatmentEquipment => (typeof(TreatmentDefinition), typeof(MedicalEquipmentDefinition)),
         RelationKind.RoomEquipment => (typeof(RoomDefinition), typeof(MedicalEquipmentDefinition)),
         _ => null

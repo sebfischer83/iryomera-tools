@@ -14,7 +14,7 @@ Replace `iryomera-mod` below with `dotnet run --project src/Iryomera.ModKit -c R
 
 ```sh
 dotnet pack src/Iryomera.ModKit -c Release --no-build -o artifacts
-dotnet tool install Iryomera.ModKit --version 0.12.1 --add-source ./artifacts --tool-path ./artifacts/mod-tools
+dotnet tool install Iryomera.ModKit --version 0.13.0 --add-source ./artifacts --tool-path ./artifacts/mod-tools
 # Windows: artifacts/mod-tools/iryomera-mod.exe
 # Linux: ./artifacts/mod-tools/iryomera-mod
 ```
@@ -58,7 +58,7 @@ An asset reference has `path`, `kind` (`modelGlb`, `texture`, `icon`), original 
 
 Furniture placement includes a footprint with positive integer `width`/`depth`, positive `cellSizeMeters` (default 1), and optional `occupiedCells`. An empty cell list fills the rectangle; explicit X/Z cells must be unique and within bounds. Interaction points have stable unique keys, an optional kind (`seat`, `lying`, `handle`, `operator`, `entry` or another stable key), local X/Y/Z meters, optional heading `[0,360)` (0° faces local +Z, counterclockwise seen from above, 90° faces +X) and an optional staff qualification ID. Origin is the footprint's lower X/Z corner, Y up; points can stand outside occupied cells. Runtime orientation, placement and interaction execution belong to the game.
 
-Use `roomFurniture` and `roomEquipment` relations for what a room type offers, with `requirement` for required or optional items (absent means required for furniture and optional for equipment), and examination room/equipment/qualification relations for diagnostic resources. These are independent sourced records; no duplicated room requirement list or arbitrary mod callback is introduced. The example includes all thirteen definition kinds, a numeric observation, twelve relationships (including a required `roomEquipment` and a `treatmentEquipment`), a 2×1 furniture footprint with a surface, service point and separate simulation balancing.
+Use `roomFurniture` and `roomEquipment` relations for what a room type offers, with `requirement` for required or optional items (absent means required for furniture and optional for equipment), and examination room/equipment/qualification relations for diagnostic resources. These are independent sourced records; no duplicated room requirement list or arbitrary mod callback is introduced. The example includes all thirteen definition kinds, a numeric observation, fourteen relationships (including a required `roomEquipment`, a `treatmentEquipment`, an `examinationStaffRole` and a `diseaseDepartment` with priority), room size and door rules, a department capacity, a 2×1 furniture footprint with a surface, service point and separate simulation balancing.
 
 A definition may also list `catalogAssets` (`catalogId` + `kind`) to reuse a model from the game's private catalog without shipping it. Catalog references need no inventory entry, are never fetched or packaged, and `inspect` lists them as `unresolvedCatalogAssets`. The game decides whether an ID exists; unknown IDs fall back to a procedural model. Never put purchased files, vendor names, file names or node names into a mod or a catalog ID.
 
