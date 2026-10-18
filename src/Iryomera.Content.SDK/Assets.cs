@@ -2,6 +2,11 @@ namespace Iryomera.Content.SDK;
 
 public enum AssetKind { ModelGlb, Texture, Icon }
 public enum FurnitureMount { Floor, Wall, Ceiling, Surface }
+/// <summary>
+/// Movement during play, not the player rearranging items (the game allows that for every item). Fixed stays where it was
+/// placed; Movable is carried by staff to where it is needed, without a patient on it; Pushable is pushed by one person with
+/// a patient on it and is the only mobility that allows transport.
+/// </summary>
 public enum FurnitureMobility { Fixed, Movable, Pushable }
 public enum TransportPosture { Seated, Lying }
 
@@ -150,7 +155,7 @@ internal static class AssetValidator
         return issues;
     }
 
-    /// <summary>Transport needs a movable or pushable item with enough seat or lying points; pushable items need a handle.</summary>
+    /// <summary>Transport needs a pushable item with enough seat or lying points; pushable items need a handle.</summary>
     private static void ValidateMobility(FurnitureDefinition furniture, Func<string, ContentDefinition?> resolve, List<ValidationIssue> issues)
     {
         void Error(string message) => issues.Add(new("furniture-transport", furniture.Id, message));
@@ -159,7 +164,7 @@ internal static class AssetValidator
         int Count(string kind) => points.Count(p => p.Kind == kind);
         if (furniture.Mobility == FurnitureMobility.Pushable && Count(InteractionPointKinds.Handle) == 0) Error("A pushable item needs at least one handle interaction point.");
         if (furniture.Transport is not { } transport) return;
-        if (furniture.Mobility is not (FurnitureMobility.Movable or FurnitureMobility.Pushable)) Error("Transport requires mobility movable or pushable.");
+        if (furniture.Mobility != FurnitureMobility.Pushable) Error("Transport requires mobility pushable; movable items are carried by staff without a patient.");
         if (transport.PatientCapacity < 1) Error("Patient capacity must be at least 1.");
         if (!Enum.IsDefined(transport.Posture)) Error("Unknown transport posture.");
         var required = transport.Posture == TransportPosture.Lying ? InteractionPointKinds.Lying : InteractionPointKinds.Seat;

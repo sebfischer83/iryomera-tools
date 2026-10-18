@@ -37,15 +37,16 @@ public sealed class MovableFurnitureTests
     [Fact]
     public void BenchesWithSeveralSeatsSatisfyHigherCapacity()
     {
-        var (package, _) = Bed(FurnitureMobility.Movable, new() { PatientCapacity = 2, Posture = TransportPosture.Seated }, Point("seat_1", "seat"), Point("seat_2", "seat"));
+        var (package, _) = Bed(FurnitureMobility.Pushable, new() { PatientCapacity = 2, Posture = TransportPosture.Seated }, Point("seat_1", "seat"), Point("seat_2", "seat"), Point("handle", "handle"));
         Assert.Empty(ContentValidator.Validate(package));
-        Assert.Contains(ContentValidator.Validate(Bed(FurnitureMobility.Movable, new() { PatientCapacity = 3, Posture = TransportPosture.Seated }, Point("seat_1", "seat"), Point("seat_2", "seat")).Package),
+        Assert.Contains(ContentValidator.Validate(Bed(FurnitureMobility.Pushable, new() { PatientCapacity = 3, Posture = TransportPosture.Seated }, Point("seat_1", "seat"), Point("seat_2", "seat"), Point("handle", "handle")).Package),
             i => i.Code == "furniture-transport");
     }
 
     [Theory]
     [InlineData("pushable-without-handle", "furniture-transport")]
     [InlineData("transport-fixed", "furniture-transport")]
+    [InlineData("transport-movable", "furniture-transport")]
     [InlineData("transport-without-mobility", "furniture-transport")]
     [InlineData("missing-lying", "furniture-transport")]
     [InlineData("capacity", "furniture-transport")]
@@ -59,6 +60,7 @@ public sealed class MovableFurnitureTests
         {
             "pushable-without-handle" => Bed(FurnitureMobility.Pushable, null, lying),
             "transport-fixed" => Bed(FurnitureMobility.Fixed, lyingTransport, lying),
+            "transport-movable" => Bed(FurnitureMobility.Movable, lyingTransport, lying),
             "transport-without-mobility" => Bed(null, lyingTransport, lying),
             "missing-lying" => Bed(FurnitureMobility.Pushable, lyingTransport, handle, Point("seat", "seat")),
             "capacity" => Bed(FurnitureMobility.Pushable, lyingTransport with { PatientCapacity = 0 }, handle, lying),
@@ -67,6 +69,10 @@ public sealed class MovableFurnitureTests
         };
         Assert.Contains(ContentValidator.Validate(package), i => i.Code == code);
     }
+
+    [Fact]
+    public void MovableItemsNeedNoHandleOrTransport() =>
+        Assert.Empty(ContentValidator.Validate(Bed(FurnitureMobility.Movable, null, Point("operator", InteractionPointKinds.Operator)).Package));
 
     [Fact]
     public void FixedOperatorPointsNeedNoTransport()
