@@ -9,7 +9,9 @@ namespace Iryomera.NameImporter.Adapters;
 /// type, statement, rank and name (the P1705 native label with its language tag); optional romanized. Countries come only
 /// from the operator's explicit language-to-country mapping; unmapped languages are not staged. Name items carry no
 /// frequency, so no rank, count or proportion is staged. Deprecated statements are not staged. All bindings stay in
-/// the source fields with their Q/P/statement identities. CC0 is required; it is not an approval.
+/// the source fields with their Q/P/statement identities. CC0 is required; it is not an approval. The optional romanized
+/// binding (an English label) is staged only for names outside Latin script: for Latin-script names the label is often a
+/// different name (for example the base surname of a Polish feminine form), not a transliteration (1.1.0).
 /// </summary>
 public sealed partial class WikidataNamesAdapter : INameAdapter
 {
@@ -20,7 +22,7 @@ public sealed partial class WikidataNamesAdapter : INameAdapter
     };
     private const string Entity = "http://www.wikidata.org/entity/";
     public string SourceId => "wikidata-names";
-    public string Version => "1.0.0";
+    public string Version => "1.1.0";
     public string Description => "Saved Wikidata SPARQL JSON for name items (P1705 native labels); requires --retrieved-at and --language-country.";
     public bool Redistributable => true;
     public string Format => "json";
@@ -66,8 +68,13 @@ public sealed partial class WikidataNamesAdapter : INameAdapter
             var language = fields["name"].TryGetProperty("xml:lang", out var lang) ? lang.GetString() ?? "" : "";
             if (!map.TryGetValue(language, out var country))
             { context.Diagnostic(NameDiagnosticSeverity.Information, "language-not-mapped", row, $"Language '{language}' has no operator country mapping; not staged."); continue; }
-            context.Record(row, country, kind.Part, Value("name"), fields, kind.Gender, Value("romanized") is { Length: > 0 } romanized ? romanized : null,
-                "Wikidata (query binding 'romanized')", externalId: item[Entity.Length..]);
+            var name = Value("name"); var romanized = Value("romanized") is { Length: > 0 } label ? label : null;
+            if (romanized is not null && NameText.IsLatin(name.Trim()))
+            {
+                if (romanized != name) context.Diagnostic(NameDiagnosticSeverity.Information, "romanized-not-applicable", row, "Latin-script name; the English label is kept in the source fields only.");
+                romanized = null;
+            }
+            context.Record(row, country, kind.Part, name, fields, kind.Gender, romanized, "Wikidata (query binding 'romanized')", externalId: item[Entity.Length..]);
         }
     }
 
