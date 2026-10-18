@@ -314,6 +314,23 @@ public sealed class NameImporterTests : IDisposable
     }
 
     [Fact]
+    public async Task WikidataEnglishLabelsAreNotRomanizationsOfLatinNames()
+    {
+        // Invented items: a feminine surname form whose English label is the base name, and a name whose label is identical.
+        var json = "{\"head\":{\"vars\":[\"item\",\"type\",\"statement\",\"rank\",\"name\",\"romanized\"]},\"results\":{\"bindings\":[" + string.Join(",",
+            Binding("Q90000011", "Q101352", "NormalRank", "Talwinówna", "pl", "Talwin"), Binding("Q90000012", "Q12308941", "NormalRank", "Orwen", "pl", "Orwen"),
+            Binding("Q90000013", "Q101352", "NormalRank", "霞森", "ja", "Kasumori")) + "]}}";
+        var options = Options("wikidata-names") with { RetrievedAt = At, LanguageCountries = new(StringComparer.Ordinal) { ["pl"] = "PL", ["ja"] = "JP" } };
+        var batch = await new NameImportEngine().ReadAsync(File("latin.json", json), options);
+        Assert.Null(batch.Records.Single(r => r.ExternalId == "Q90000011").Romanized);
+        Assert.Null(batch.Records.Single(r => r.ExternalId == "Q90000012").Romanized);
+        Assert.Equal("Kasumori", batch.Records.Single(r => r.ExternalId == "Q90000013").Romanized);
+        Assert.Equal("Talwin", batch.Records.Single(r => r.ExternalId == "Q90000011").SourceFields["romanized"].GetProperty("value").GetString());
+        Assert.Equal(["romanized-not-applicable"], batch.Diagnostics.Select(d => d.Code));
+        Assert.Equal("1.1.0", batch.AdapterVersion);
+    }
+
+    [Fact]
     public async Task CommandLineRunsImportReviewRightsAndExport()
     {
         var input = File("yob2020.txt", "Talvina,F,120\nOrwen,M,95\n"); var license = File("license.txt", "Synthetic test license text.");
