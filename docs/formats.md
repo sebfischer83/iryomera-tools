@@ -144,6 +144,12 @@ New relation kind `furnitureEquipment` (furniture → medical equipment): placin
 
 GameplayBalance and GameplayOverride have optional `purchaseCost` (game currency to buy one item, typically furniture or equipment) and `wagePerHour` (game currency per game hour, typically for a staff role). Both are nonnegative (`balance-range`), simulation only and omitted when null. Mods override them field by field like the other balancing values, and competing overrides are reported as `gameplay-override-conflict` warnings (ADR 0015). They are game economy values, never real prices or wages. Construction costs for floors, walls and doors are a game setting, not content. See [ADR 0019](architecture/0019-price-balancing.md).
 
+## Departments: rooms, opening order and unlock values (library 0.17.0)
+
+New relation kinds `departmentRoom` (medical department → room type the department uses) and `departmentPrerequisite` (department → department that must already be open). `departmentRoom` takes `requirement` (absent means required, as for `roomFurniture`) and an optional `treatmentRoom: true` for the room type where the department treats patients; the flag is allowed only on that kind, the treatment room must be required, and a department has at most one (`relation-treatment-room`). Department prerequisites must be acyclic (`department-cycle`). `Departments.Rooms` and `Departments.Prerequisites` aggregate them over a package set. Older readers reject the new relation kinds.
+
+GameplayBalance and GameplayOverride have optional `unlockCost` (game currency to open a department) and `unlockDischargedPatients` (discharged patients needed first; a whole number), both nonnegative (`balance-range`), simulation only and overridable by mods. Whether absent values mean open is game logic. `treatmentDurationSeconds` applies to any definition, including diseases (time to treat a case). See [ADR 0020](architecture/0020-departments.md).
+
 ModKit authoring (`mod.json`) and archive integrity (`checksums.json`) have separate schemas in `schemas/modkit/v1`. No executable/script/plugin payload kind is defined. The archive is not a Godot PCK or game save format. The runtime game remains responsible for asset rendering and interaction behavior.
 
 ## Name pools and formats (library 0.6.0)

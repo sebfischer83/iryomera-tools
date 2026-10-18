@@ -22,8 +22,9 @@
             <label>@L["studio.id"]<input @bind="RecordId" readonly="@(!Creating)" /></label>
             <label>@L["studio.kind"]<select @bind="Kind">@foreach (var kind in Enum.GetValues<RelationKind>()) { <option value="@kind">@L["studio.relation." + kind]</option> }</select></label>
             <label>@L["studio.from"]<select @bind="From"><option value="">@L["studio.select"]</option>@foreach (var d in State.Package.Definitions) { <option value="@d.Id">@Label(d.Id) (@StudioContent.Kind(d))</option> }</select></label>
-            @if (Kind is RelationKind.RoomEquipment or RelationKind.RoomFurniture) { <label>@L["studio.requirement"]<select @bind="Requirement"><option value="">@L[Kind == RelationKind.RoomFurniture ? "studio.requirement.defaultrequired" : "studio.requirement.default"]</option><option value="Required">@L["studio.requirement.required"]</option><option value="Optional">@L["studio.requirement.optional"]</option></select></label> }
+            @if (Kind is RelationKind.RoomEquipment or RelationKind.RoomFurniture or RelationKind.DepartmentRoom) { <label>@L["studio.requirement"]<select @bind="Requirement"><option value="">@L[Kind == RelationKind.RoomEquipment ? "studio.requirement.default" : "studio.requirement.defaultrequired"]</option><option value="Required">@L["studio.requirement.required"]</option><option value="Optional">@L["studio.requirement.optional"]</option></select></label> }
             @if (Kind == RelationKind.DiseaseDepartment) { <label>@L["studio.priority"]<input type="number" min="1" @bind="Priority" /></label> }
+            @if (Kind == RelationKind.DepartmentRoom) { <label><input type="checkbox" @bind="TreatmentRoom" /> @L["studio.treatmentroom"]</label> }
             <label>@L["studio.to"]<select @bind="To"><option value="">@L["studio.select"]</option>@foreach (var d in State.Package.Definitions) { <option value="@d.Id">@Label(d.Id) (@StudioContent.Kind(d))</option> }</select></label>
             @if (Creating) { <label>@L["studio.source"]<input @bind="Source" /></label><label>@L["studio.license"]<input @bind="License" /></label> }
             <label>@L["studio.reviewer"]<input @bind="Actor" /></label><label>@L["studio.reason"]<textarea @bind="Note"></textarea></label><button @onclick="Save" disabled="@Busy">@L["studio.saveDraft"]</button>
@@ -36,11 +37,11 @@
 @code {
     [Parameter] public Guid Id { get; set; } [SupplyParameterFromQuery(Name = "focus")] public string? Focus { get; set; }
     private ProjectSnapshot? State; private ContentRelation? Selected; private bool Creating = true;
-    private string RecordId = ""; private RelationKind Kind = RelationKind.DiseaseFinding; private string From = ""; private string To = ""; private string Actor = ""; private string Note = ""; private string Source = "local:curation"; private string License = "MIT"; private string Requirement = ""; private int? Priority;
+    private string RecordId = ""; private RelationKind Kind = RelationKind.DiseaseFinding; private string From = ""; private string To = ""; private string Actor = ""; private string Note = ""; private string Source = "local:curation"; private string License = "MIT"; private string Requirement = ""; private int? Priority; private bool TreatmentRoom;
     private IEnumerable<ContentRelation> Visible => State!.Package.Relations.Where(r => string.IsNullOrEmpty(Focus) || r.FromId == Focus || r.ToId == Focus);
     protected override Task OnParametersSetAsync() => Run(async () => { State = await Projects.GetAsync(Id); New(); });
-    private void New() { Creating = true; Selected = null; RecordId = State!.Package.Manifest.Namespace + ":new_relation"; From = Focus ?? ""; To = ""; Requirement = ""; Priority = null; }
-    private void Select(ContentRelation relation) { Creating = false; Selected = relation; RecordId = relation.Id; Kind = relation.Kind; From = relation.FromId; To = relation.ToId; Requirement = relation.Requirement?.ToString() ?? ""; Priority = relation.Priority; }
+    private void New() { Creating = true; Selected = null; RecordId = State!.Package.Manifest.Namespace + ":new_relation"; From = Focus ?? ""; To = ""; Requirement = ""; Priority = null; TreatmentRoom = false; }
+    private void Select(ContentRelation relation) { Creating = false; Selected = relation; RecordId = relation.Id; Kind = relation.Kind; From = relation.FromId; To = relation.ToId; Requirement = relation.Requirement?.ToString() ?? ""; Priority = relation.Priority; TreatmentRoom = relation.TreatmentRoom == true; }
     private void SelectByKeyboard(KeyboardEventArgs args, ContentRelation relation) { if (args.Key is "Enter" or " ") Select(relation); }
     private string Label(string id) { var d = State!.Package.Definitions.Find(d => d.Id == id); var label = d is null ? id : StudioContent.Name(State, d, CultureInfo.CurrentUICulture.Name); return label.Length > 33 ? label[..30] + "…" : label; }
     private async Task Refresh() { State = await Projects.GetAsync(Id); if (Selected is not null) Select(State.Package.Relations.Single(r => r.Id == Selected.Id)); }
@@ -48,8 +49,9 @@
     {
         var provenance = Selected?.Provenance ?? new Provenance { Source = Source, ExternalId = RecordId, SourceVersion = "1.0.0", License = License, ImportedAt = DateTimeOffset.UtcNow };
         await Projects.SaveRelationAsync(Id, State!.Project.Revision, new() { Id = RecordId, Version = Selected?.Version ?? "1.0.0", Kind = Kind, FromId = From, ToId = To, Provenance = provenance,
-            Requirement = Kind is RelationKind.RoomEquipment or RelationKind.RoomFurniture && Enum.TryParse<RelationRequirement>(Requirement, out var requirement) ? requirement : null,
-            Priority = Kind == RelationKind.DiseaseDepartment ? Priority : null }, Actor, Note, Creating);
+            Requirement = Kind is RelationKind.RoomEquipment or RelationKind.RoomFurniture or RelationKind.DepartmentRoom && Enum.TryParse<RelationRequirement>(Requirement, out var requirement) ? requirement : null,
+            Priority = Kind == RelationKind.DiseaseDepartment ? Priority : null,
+            TreatmentRoom = Kind == RelationKind.DepartmentRoom && TreatmentRoom ? true : null }, Actor, Note, Creating);
         State = await Projects.GetAsync(Id); Select(State.Package.Relations.Single(r => r.Id == RecordId));
     });
 }

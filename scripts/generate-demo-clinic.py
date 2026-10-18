@@ -72,7 +72,8 @@ rooms = {r['key']:definition('room', local(r['key']), r['key'], r['nameEn'], r['
 departments = {}
 for d in fixtures['departments']:
     departments[d['key']] = definition('medicalDepartment', local(d['key']), d['key'], d['NameEn'], d['NameDe'])
-    balance(departments[d['key']], capacity=d['Capacity'])
+    unlock = next((u for u in fixtures.get('departmentUnlock', []) if u['department'] == d['key']), None)
+    balance(departments[d['key']], capacity=d['Capacity'], **({'unlockCost':unlock['cost'], 'unlockDischargedPatients':unlock['dischargedPatients']} if unlock else {}))
 roles = {role:definition('staffRole', 'role_' + role.lower(), 'staffRole:' + role, *names) for role, names in ROLES.items()}
 for role, role_id in roles.items():
     if price('wagePerHour', role): balance(role_id, **price('wagePerHour', role))
@@ -107,7 +108,9 @@ for exam in fixtures['examinations']:
 diseases = {}
 for case in fixtures['cases']:
     disease = diseases[case['key']] = definition('disease', local(case['key']), case['key'], case['NameEn'], case['NameDe'])
-    if price('treatmentCost', case['key']): balance(disease, **price('treatmentCost', case['key']))
+    duration = fixtures.get('treatmentDurationMinutes', {}).get(case['key'])
+    values = {**price('treatmentCost', case['key']), **({'treatmentDurationSeconds':duration * 60} if duration else {})}
+    if values: balance(disease, **values)
     for reading in case['readings']:
         distribution = {'schemaVersion':'1.0.0', 'simulationOnly':True, 'id':ident('reading_' + local(case['key']) + '_' + local(reading['ObservationId'])), 'version':'1.0.0',
                         'diseaseId':disease, 'observationId':observations[reading['ObservationId']], 'categoryWeights':{}}
@@ -140,6 +143,11 @@ for item in fixtures['furniture']:
     for capability in item['capabilities']: relation('furnitureEquipment', furniture[item['key']], equipment[capability], item['key'])
 for link in fixtures['roomFurniture']:
     relation('roomFurniture', rooms[link['room']], furniture[link['item']], link['room'], requirement=link['requirement'].lower())
+# M9: rooms a department uses (absent requirement means required) and the order in which departments open.
+for link in fixtures.get('departmentRooms', []):
+    relation('departmentRoom', departments[link['department']], rooms[link['room']], link['department'], requirement=link['requirement'].lower(), **({'treatmentRoom':True} if link['treatment'] else {}))
+for unlock in fixtures.get('departmentUnlock', []):
+    for required in unlock['requires']: relation('departmentPrerequisite', departments[unlock['department']], departments[required], unlock['department'])
 
 for part, index in (('given', 0), ('family', 1)):
     entries = []

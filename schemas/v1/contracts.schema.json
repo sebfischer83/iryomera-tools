@@ -2329,7 +2329,9 @@
             "roomEquipment",
             "examinationStaffRole",
             "diseaseDepartment",
-            "furnitureEquipment"
+            "furnitureEquipment",
+            "departmentRoom",
+            "departmentPrerequisite"
           ]
         },
         "fromId": {
@@ -2366,6 +2368,16 @@
               "type": "null"
             }
           ]
+        },
+        "treatmentRoom": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
@@ -2397,7 +2409,8 @@
               "kind": {
                 "enum": [
                   "roomEquipment",
-                  "roomFurniture"
+                  "roomFurniture",
+                  "departmentRoom"
                 ]
               }
             }
@@ -2418,6 +2431,25 @@
             "properties": {
               "kind": {
                 "const": "diseaseDepartment"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "treatmentRoom"
+            ],
+            "properties": {
+              "treatmentRoom": {
+                "type": "boolean"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "kind": {
+                "const": "departmentRoom"
               }
             }
           }
@@ -2865,6 +2897,28 @@
             }
           ]
         },
+        "unlockCost": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "unlockDischargedPatients": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
         "requiredResources": {
           "type": "object",
           "propertyNames": {
@@ -3019,6 +3073,28 @@
           ]
         },
         "wagePerHour": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "unlockCost": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "unlockDischargedPatients": {
           "anyOf": [
             {
               "type": "number",

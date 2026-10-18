@@ -6,6 +6,7 @@
     "demo_clinic.room_type_consultation.name": "Examination room",
     "demo_clinic.room_type_laboratory.name": "Laboratory",
     "demo_clinic.room_type_imaging.name": "Imaging",
+    "demo_clinic.room_type_operating.name": "Operating room",
     "demo_clinic.department_emergency.name": "Emergency",
     "demo_clinic.department_internal.name": "Internal medicine",
     "demo_clinic.department_surgery.name": "Surgery",
@@ -61,6 +62,7 @@
     "demo_clinic.furniture_stretcher.name": "Stretcher",
     "demo_clinic.furniture_wall_picture.name": "Wall picture",
     "demo_clinic.furniture_wheelchair.name": "Wheelchair",
+    "demo_clinic.equipment_surgical_table.name": "Surgical table",
     "demo_clinic.pool.patients_given.name": "Demo patient given names",
     "demo_clinic.pool.patients_family.name": "Demo patient family names"
   }

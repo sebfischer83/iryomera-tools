@@ -23,7 +23,7 @@ def dump(path,value):
         return item
     path.write_text(json.dumps(anchor(value),indent=2,ensure_ascii=False)+'\n')
 kinds=['disease','symptom','finding','examination','observation','treatment','medicalProcedure','medicalDepartment','medicalEquipment','staffQualification','room','furniture','staffRole']
-rels=['diseaseSymptom','diseaseFinding','examinationFinding','diseaseExamination','diseaseTreatment','examinationEquipment','treatmentQualification','roomFurniture','examinationObservation','examinationRoom','examinationQualification','examinationPrerequisite','treatmentEquipment','roomEquipment','examinationStaffRole','diseaseDepartment','furnitureEquipment']
+rels=['diseaseSymptom','diseaseFinding','examinationFinding','diseaseExamination','diseaseTreatment','examinationEquipment','treatmentQualification','roomFurniture','examinationObservation','examinationRoom','examinationQualification','examinationPrerequisite','treatmentEquipment','roomEquipment','examinationStaffRole','diseaseDepartment','furnitureEquipment','departmentRoom','departmentPrerequisite']
 defs={}
 defs['evidenceReference']=obj({'citation':text,'uri':nullable({'type':'string','format':'uri'}),'evidenceCode':nullable(text)},['citation'])
 defs['provenance']=obj({'source':text,'externalId':text,'sourceVersion':text,'license':text,'importedAt':{'type':'string','format':'date-time'},'reviewStatus':{'enum':['unreviewed','inReview','approved','rejected']},'reviewedBy':nullable(text),'reviewedAt':nullable({'type':'string','format':'date-time'}),'evidence':array(ref('evidenceReference'))},['source','externalId','sourceVersion','license','importedAt'])
@@ -67,9 +67,10 @@ defs['simulatedManifestation']=obj({**versioned,'simulationOnly':{'const':True},
 defs['examinationResultPolicy']=obj({**versioned,'simulationOnly':{'const':True},'examinationId':id,'visibility':{'enum':['initiallyVisible','afterExamination','hidden']},'repeatPolicy':{'enum':['untilPatientStateChanges','afterInterval']},'repeatIntervalSeconds':nullable({'type':'number','exclusiveMinimum':0})},['schemaVersion','simulationOnly','id','version','examinationId'])
 defs['diagnosticSimulationSettings']=obj({'simulationOnly':{'const':True},'observationDistributions':array(ref('simulatedObservationDistribution')),'manifestations':array(ref('simulatedManifestation')),'examinationPolicies':array(ref('examinationResultPolicy'))},['simulationOnly'])
 defs['contentDefinition']={'oneOf':[ref(k+'Definition') for k in kinds]}
-defs['contentRelation']=obj({'id':id,'version':version,'kind':{'enum':rels},'fromId':id,'toId':id,'provenance':ref('provenance'),'requirement':nullable({'enum':['required','optional']}),'priority':nullable({'type':'integer','minimum':1})},['id','version','kind','fromId','toId','provenance'])
-defs['contentRelation']['allOf']=[{'if':{'required':['requirement'],'properties':{'requirement':{'enum':['required','optional']}}},'then':{'properties':{'kind':{'enum':['roomEquipment','roomFurniture']}}}},
-    {'if':{'required':['priority'],'properties':{'priority':{'type':'integer'}}},'then':{'properties':{'kind':{'const':'diseaseDepartment'}}}}]
+defs['contentRelation']=obj({'id':id,'version':version,'kind':{'enum':rels},'fromId':id,'toId':id,'provenance':ref('provenance'),'requirement':nullable({'enum':['required','optional']}),'priority':nullable({'type':'integer','minimum':1}),'treatmentRoom':nullable({'type':'boolean'})},['id','version','kind','fromId','toId','provenance'])
+defs['contentRelation']['allOf']=[{'if':{'required':['requirement'],'properties':{'requirement':{'enum':['required','optional']}}},'then':{'properties':{'kind':{'enum':['roomEquipment','roomFurniture','departmentRoom']}}}},
+    {'if':{'required':['priority'],'properties':{'priority':{'type':'integer'}}},'then':{'properties':{'kind':{'const':'diseaseDepartment'}}}},
+    {'if':{'required':['treatmentRoom'],'properties':{'treatmentRoom':{'type':'boolean'}}},'then':{'properties':{'kind':{'const':'departmentRoom'}}}}]
 defs['annotationReference']=obj({'externalId':text,'contentId':nullable(id)},['externalId'])
 defs['observationFrequency']=obj({'sourceValue':text,'term':nullable(ref('annotationReference'))},['sourceValue'])
 defs['medicalAnnotation']=obj({
@@ -88,7 +89,7 @@ defs['contentPackageManifest']=obj(manifest,['schemaVersion','id','namespace','v
 defs['modManifest']=obj({**manifest,'nameKey':key,'author':text,'compatibleGameVersions':text,'contentFiles':array({'type':'string','minLength':1,'pattern':r'^(?!/)(?!.*\\)(?!.*:)(?!.*(?:^|/)\.\.?(/|$)).+$'}),'supportedLanguages':array({'type':'string','pattern':r'^[a-z]{2,3}(-[A-Za-z0-9]{2,8})*$'})},['schemaVersion','id','namespace','nameKey','author','version','compatibleGameVersions','license'])
 bal={'definitionId':id}
 for name in ['rarity','severity','diagnosticDifficulty','simulatedSuccessProbability']:bal[name]=nullable({'type':'number','minimum':0,'maximum':1})
-for name in ['treatmentDurationSeconds','examinationDurationSeconds','examinationCost','treatmentCost','capacity','purchaseCost','wagePerHour']:bal[name]=nullable({'type':'number','minimum':0})
+for name in ['treatmentDurationSeconds','examinationDurationSeconds','examinationCost','treatmentCost','capacity','purchaseCost','wagePerHour','unlockCost','unlockDischargedPatients']:bal[name]=nullable({'type':'number','minimum':0})
 bal['requiredResources']={'type':'object','propertyNames':text,'additionalProperties':{'type':'number','minimum':0}}
 defs['gameplayBalance']=obj(bal,['definitionId'])
 # Simulation-only overrides of declared dependencies' balancing (ADR 0015); only set fields replace earlier values.

@@ -118,12 +118,13 @@ public enum RelationKind
 {
     DiseaseSymptom, DiseaseFinding, ExaminationFinding, DiseaseExamination,
     DiseaseTreatment, ExaminationEquipment, TreatmentQualification, RoomFurniture, ExaminationObservation, ExaminationRoom, ExaminationQualification, ExaminationPrerequisite,
-    TreatmentEquipment, RoomEquipment, ExaminationStaffRole, DiseaseDepartment, FurnitureEquipment
+    TreatmentEquipment, RoomEquipment, ExaminationStaffRole, DiseaseDepartment, FurnitureEquipment, DepartmentRoom, DepartmentPrerequisite
 }
 
 /// <summary>
-/// For roomEquipment and roomFurniture: whether a room type needs the item to count as complete. Absent means optional for
-/// roomEquipment and required for roomFurniture; use RoomContents.EffectiveRequirement.
+/// For roomEquipment and roomFurniture: whether a room type needs the item to count as complete; for departmentRoom: whether
+/// a department needs the room type. Absent means optional for roomEquipment and required for roomFurniture and departmentRoom;
+/// use RoomContents.EffectiveRequirement.
 /// </summary>
 public enum RelationRequirement { Required, Optional }
 
@@ -135,10 +136,12 @@ public sealed record ContentRelation : ExtensibleRecord
     public required string FromId { get; init; }
     public required string ToId { get; init; }
     public required Provenance Provenance { get; init; }
-    /// <summary>Optional, omitted when null; allowed only for roomEquipment and roomFurniture.</summary>
+    /// <summary>Optional, omitted when null; allowed only for roomEquipment, roomFurniture and departmentRoom.</summary>
     public RelationRequirement? Requirement { get; init; }
     /// <summary>Optional, omitted when null; only for diseaseDepartment: 1 is the first choice, higher values are fallbacks.</summary>
     public int? Priority { get; init; }
+    /// <summary>Optional, omitted when null; only for departmentRoom: the room type where the department treats patients (ADR 0020).</summary>
+    public bool? TreatmentRoom { get; init; }
 }
 
 /// <summary>Simulation only: none of these values expresses clinical evidence or advice.</summary>
@@ -159,6 +162,10 @@ public sealed record GameplayBalance : ExtensibleRecord
     public decimal? PurchaseCost { get; init; }
     /// <summary>Simulation only: game currency per game hour, typically for a staff role; not a real wage.</summary>
     public decimal? WagePerHour { get; init; }
+    /// <summary>Simulation only: game currency to open a department; not a real cost.</summary>
+    public decimal? UnlockCost { get; init; }
+    /// <summary>Simulation only: discharged patients needed before a department can open; a whole number.</summary>
+    public decimal? UnlockDischargedPatients { get; init; }
     public Dictionary<string, decimal> RequiredResources { get; init; } = [];
 }
 

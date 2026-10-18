@@ -20,6 +20,13 @@
       "nameEn": "Imaging",
       "MinimumCells": 9,
       "RequiresDoor": true
+    },
+    {
+      "key": "demo_clinic:room_type_operating",
+      "nameDe": "OP-Saal",
+      "nameEn": "Operating room",
+      "MinimumCells": 16,
+      "RequiresDoor": true
     }
   ],
   "departments": [
@@ -749,6 +756,39 @@
       "mount": "Floor",
       "surfaceAccepts": null,
       "surfaceCategories": null
+    },
+    {
+      "key": "demo_clinic:equipment_surgical_table",
+      "NameDe": "OP-Tisch",
+      "NameEn": "Surgical table",
+      "Width": 1,
+      "Depth": 3,
+      "asset": "iryomera.assets:equipment.surgical_table_basic",
+      "capabilities": [],
+      "transport": null,
+      "mount": "Floor",
+      "surfaceAccepts": null,
+      "surfaceCategories": null,
+      "interactionPoints": [
+        {
+          "key": "lying",
+          "kind": "lying",
+          "x": 0.5,
+          "y": 0.89,
+          "z": 1.5,
+          "headingDegrees": 180,
+          "placeholder": false
+        },
+        {
+          "key": "operator",
+          "kind": "operator",
+          "x": 1.4,
+          "y": 0,
+          "z": 1.5,
+          "headingDegrees": 270,
+          "placeholder": true
+        }
+      ]
     }
   ],
   "roomFurniture": [
@@ -861,6 +901,36 @@
       "room": "demo:room_type_imaging",
       "item": "demo:furniture_wall_picture",
       "requirement": "Optional"
+    },
+    {
+      "room": "demo_clinic:room_type_operating",
+      "item": "demo_clinic:equipment_surgical_table",
+      "requirement": "Required"
+    },
+    {
+      "room": "demo_clinic:room_type_operating",
+      "item": "demo:furniture_ceiling_lamp",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo_clinic:room_type_operating",
+      "item": "demo:furniture_disinfectant_dispenser",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo_clinic:room_type_operating",
+      "item": "demo:furniture_office_chair",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo_clinic:room_type_operating",
+      "item": "demo:furniture_stretcher",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo_clinic:room_type_operating",
+      "item": "demo:furniture_wall_picture",
+      "requirement": "Optional"
     }
   ],
   "patientNames": [
@@ -918,12 +988,20 @@
       "demo:furniture_ceiling_lamp": 300,
       "demo:furniture_wall_picture": 120,
       "demo:furniture_disinfectant_dispenser": 80,
-      "demo:equipment_microscope": 2500
+      "demo:equipment_microscope": 2500,
+      "demo_clinic:equipment_surgical_table": 25000
     },
     "wagePerHour": {
       "Physician": 60,
       "Nurse": 30,
       "Technician": 35
     }
+  },
+  "treatmentDurationMinutes": {
+    "demo:amber": 30,
+    "demo:blue": 20,
+    "demo:green": 60,
+    "demo:violet": 30,
+    "demo:silver": 45
   }
 }
