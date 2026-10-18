@@ -56,6 +56,9 @@ public partial class SmokeTest : Node
             Assert(furniture.Placement.Surfaces!.Single().Accepts!.Single() == "decoration" && RoomContents.Placeable([modContent.Value], "example_mod:demo_room").Any(i => i.Requirement == RelationRequirement.Required), "Surface categories or room contents were lost.");
             Assert(furniture.Placement.Surfaces!.Single().Key == "top" && modContent.Value.Relations.Single(r => r.Kind == RelationKind.RoomEquipment).Requirement == RelationRequirement.Required
                 && modContent.Value.Relations.Any(r => r.Kind == RelationKind.TreatmentEquipment), "Surface or equipment relation contracts were lost.");
+            var demoRoom = modContent.Value.Definitions.OfType<RoomDefinition>().Single();
+            Assert(demoRoom.MinimumCells == 6 && demoRoom.RequiresDoor == true && modContent.Value.Relations.Single(r => r.Kind == RelationKind.DiseaseDepartment).Priority == 1
+                && modContent.Value.Relations.Any(r => r.Kind == RelationKind.ExaminationStaffRole) && GameplayResolver.Resolve([modContent.Value]).Balances.Any(b => b.Capacity == 4), "Room rules, routing, staff roles or capacity were lost.");
             var wheelchair = modContent.Value.Definitions.OfType<FurnitureDefinition>().Single(f => f.Transport is not null);
             Assert(wheelchair.Mobility == FurnitureMobility.Pushable && wheelchair.Transport!.Posture == TransportPosture.Seated && wheelchair.Placement!.InteractionPoints.Any(p => p.Kind == InteractionPointKinds.Handle), "Movable furniture contracts were lost.");
             var wallItem = modContent.Value.Definitions.OfType<FurnitureDefinition>().Single(f => f.CatalogAssets is not null);

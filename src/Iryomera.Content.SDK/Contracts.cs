@@ -95,7 +95,14 @@ public sealed record MedicalProcedureDefinition : ContentDefinition;
 public sealed record MedicalDepartmentDefinition : ContentDefinition;
 public sealed record MedicalEquipmentDefinition : ContentDefinition;
 public sealed record StaffQualificationDefinition : ContentDefinition;
-public sealed record RoomDefinition : ContentDefinition;
+/// <summary>A room type. Size and door rules are game layout rules (ADR 0017), not medical statements; all are optional.</summary>
+public sealed record RoomDefinition : ContentDefinition
+{
+    /// <summary>Minimum floor area in grid cells; rooms may have any shape made of cells.</summary>
+    public int? MinimumCells { get; init; }
+    /// <summary>True when the room needs at least one door; absent means no door rule.</summary>
+    public bool? RequiresDoor { get; init; }
+}
 public sealed record FurnitureDefinition : ContentDefinition
 {
     public FurniturePlacement? Placement { get; init; }
@@ -111,7 +118,7 @@ public enum RelationKind
 {
     DiseaseSymptom, DiseaseFinding, ExaminationFinding, DiseaseExamination,
     DiseaseTreatment, ExaminationEquipment, TreatmentQualification, RoomFurniture, ExaminationObservation, ExaminationRoom, ExaminationQualification, ExaminationPrerequisite,
-    TreatmentEquipment, RoomEquipment
+    TreatmentEquipment, RoomEquipment, ExaminationStaffRole, DiseaseDepartment
 }
 
 /// <summary>
@@ -130,6 +137,8 @@ public sealed record ContentRelation : ExtensibleRecord
     public required Provenance Provenance { get; init; }
     /// <summary>Optional, omitted when null; allowed only for roomEquipment and roomFurniture.</summary>
     public RelationRequirement? Requirement { get; init; }
+    /// <summary>Optional, omitted when null; only for diseaseDepartment: 1 is the first choice, higher values are fallbacks.</summary>
+    public int? Priority { get; init; }
 }
 
 /// <summary>Simulation only: none of these values expresses clinical evidence or advice.</summary>
@@ -144,6 +153,8 @@ public sealed record GameplayBalance : ExtensibleRecord
     public decimal? TreatmentCost { get; init; }
     public decimal? DiagnosticDifficulty { get; init; }
     public decimal? SimulatedSuccessProbability { get; init; }
+    /// <summary>Simulation only: patients a department or room handles at the same time.</summary>
+    public decimal? Capacity { get; init; }
     public Dictionary<string, decimal> RequiredResources { get; init; } = [];
 }
 

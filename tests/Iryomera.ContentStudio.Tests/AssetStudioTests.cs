@@ -82,6 +82,22 @@ public sealed class AssetStudioTests
     }
 
     [Fact]
+    public async Task RoomRulesAndRoutingPrioritiesAreSaved()
+    {
+        await using var data = await StudioTestData.CreateAsync(); var id = await data.Synthetic(); var state = await data.Projects.GetAsync(id);
+        await data.Projects.SaveRoomRulesAsync(id, state.Project.Revision, "synthetic:demo_room", 6, true, "Synthetic editor", "Room rules");
+        state = await data.Projects.GetAsync(id);
+        var room = state.Package.Definitions.OfType<RoomDefinition>().Single(r => r.Id == "synthetic:demo_room");
+        Assert.Equal((6, true, ReviewStatus.Unreviewed), (room.MinimumCells!.Value, room.RequiresDoor!.Value, room.Provenance.ReviewStatus));
+        await Assert.ThrowsAsync<ArgumentException>(() => data.Projects.SaveRoomRulesAsync(id, state.Project.Revision, "synthetic:demo_desk", 6, null, "Synthetic editor", "Not a room"));
+        await Assert.ThrowsAsync<StudioValidationException>(() => data.Projects.SaveRoomRulesAsync(id, state.Project.Revision, "synthetic:demo_room", 0, null, "Synthetic editor", "Too small"));
+        var department = state.Package.Definitions.OfType<MedicalDepartmentDefinition>().First().Id;
+        await data.Projects.SaveRelationAsync(id, state.Project.Revision, new() { Id = "synthetic:route_test", Version = "1.0.0", Kind = RelationKind.DiseaseDepartment, FromId = "synthetic:amber_syndrome",
+            ToId = department, Provenance = state.Package.Relations[0].Provenance with { ExternalId = "route_test" }, Priority = 1 }, "Synthetic editor", "Routing", create: true);
+        Assert.Equal(1, (await data.Projects.GetAsync(id)).Package.Relations.Single(r => r.Id == "synthetic:route_test").Priority);
+    }
+
+    [Fact]
     public void CatalogIndexIsSchemaValidatedAndToleratesUnknownFields()
     {
         static (IReadOnlyList<CatalogAssetIndexEntry> Entries, string? Error) Parse(string json) { using var document = JsonDocument.Parse(json); return StudioCatalog.Parse(document.RootElement); }

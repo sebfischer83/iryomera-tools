@@ -165,7 +165,9 @@
         "license": "MIT",
         "importedAt": "2026-01-01T00:00:00Z",
         "reviewStatus": "unreviewed"
-      }
+      },
+      "minimumCells": 6,
+      "requiresDoor": true
     },
     {
       "kind": "furniture",
@@ -519,6 +521,37 @@
         "reviewStatus": "unreviewed"
       },
       "requirement": "required"
+    },
+    {
+      "id": "example_mod:relation_12",
+      "version": "1.0.0",
+      "kind": "examinationStaffRole",
+      "fromId": "example_mod:demo_examination",
+      "toId": "example_mod:demo_role",
+      "provenance": {
+        "source": "Own fictional ModKit software fixture, not medical knowledge",
+        "externalId": "synthetic-demo",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed"
+      }
+    },
+    {
+      "id": "example_mod:relation_13",
+      "version": "1.0.0",
+      "kind": "diseaseDepartment",
+      "fromId": "example_mod:demo_disease",
+      "toId": "example_mod:demo_department",
+      "provenance": {
+        "source": "Own fictional ModKit software fixture, not medical knowledge",
+        "externalId": "synthetic-demo",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed"
+      },
+      "priority": 1
     }
   ],
   "gameplay": [
@@ -535,6 +568,10 @@
       "definitionId": "example_mod:demo_disease",
       "rarity": 0.3,
       "severity": 0.2
+    },
+    {
+      "definitionId": "example_mod:demo_department",
+      "capacity": 4
     }
   ],
   "examplePurpose": "Own fictional data-only mod; not medical advice or reviewed content"

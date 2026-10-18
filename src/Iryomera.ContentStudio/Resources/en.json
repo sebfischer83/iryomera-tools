@@ -247,6 +247,15 @@
     "studio.posture.seated": "Seated",
     "studio.posture.lying": "Lying",
     "studio.catalogmismatch": "The referenced catalog model may not support this:",
-    "studio.qualification": "Required qualification"
+    "studio.qualification": "Required qualification",
+    "studio.relation.examinationstaffrole": "Examination → staff role",
+    "studio.relation.diseasedepartment": "Disease → department",
+    "studio.priority": "Priority (1 = first choice)",
+    "studio.capacity": "Capacity (patients at once)",
+    "studio.roomrules": "Room rules",
+    "studio.roomruleshint": "Layout rules for this room type, checked by the game when the player builds a room.",
+    "studio.minimumcells": "Minimum area (cells)",
+    "studio.requiresdoor": "Needs a door",
+    "studio.saveroomrules": "Save room rules"
   }
 }

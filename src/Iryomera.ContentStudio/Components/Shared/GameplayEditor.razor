@@ -11,6 +11,7 @@
         <label>@L["studio.treatmentCost"]<InputNumber @bind-Value="Model.TreatmentCost" step="any" /></label>
         <label>@L["studio.difficulty"]<InputNumber @bind-Value="Model.Difficulty" step="any" /></label>
         <label>@L["studio.successProbability"]<InputNumber @bind-Value="Model.Success" step="any" /></label>
+        <label>@L["studio.capacity"]<InputNumber @bind-Value="Model.Capacity" step="any" /></label>
     </div>
     <section class="card"><h3>@L["studio.requiredResources"]</h3><p>@L["studio.requirementsHint"]</p>
         @foreach (var row in Resources)
@@ -27,15 +28,15 @@
     {
         if (LoadedRevision == State.Project.Revision) return; LoadedRevision = State.Project.Revision;
         var old = State.Package.Gameplay.Find(b => b.DefinitionId == DefinitionId);
-        Model = new() { Rarity = old?.Rarity, Severity = old?.Severity, Duration = old?.TreatmentDurationSeconds, ExaminationDuration = old?.ExaminationDurationSeconds, ExaminationCost = old?.ExaminationCost, TreatmentCost = old?.TreatmentCost, Difficulty = old?.DiagnosticDifficulty, Success = old?.SimulatedSuccessProbability };
+        Model = new() { Rarity = old?.Rarity, Severity = old?.Severity, Duration = old?.TreatmentDurationSeconds, ExaminationDuration = old?.ExaminationDurationSeconds, ExaminationCost = old?.ExaminationCost, TreatmentCost = old?.TreatmentCost, Difficulty = old?.DiagnosticDifficulty, Success = old?.SimulatedSuccessProbability, Capacity = old?.Capacity };
         Resources = old?.RequiredResources.Select(r => new ResourceRow { Key = r.Key, Quantity = r.Value }).ToList() ?? [];
     }
     private Task Save() => Run(async () =>
     {
         await Projects.SaveGameplayAsync(State.Project.Id, State.Project.Revision, new()
-        { DefinitionId = DefinitionId, Rarity = Model.Rarity, Severity = Model.Severity, TreatmentDurationSeconds = Model.Duration, ExaminationDurationSeconds = Model.ExaminationDuration, ExaminationCost = Model.ExaminationCost, TreatmentCost = Model.TreatmentCost, DiagnosticDifficulty = Model.Difficulty, SimulatedSuccessProbability = Model.Success, RequiredResources = Resources.ToDictionary(r => r.Key, r => r.Quantity, StringComparer.Ordinal) }, Actor, Note);
+        { DefinitionId = DefinitionId, Rarity = Model.Rarity, Severity = Model.Severity, TreatmentDurationSeconds = Model.Duration, ExaminationDurationSeconds = Model.ExaminationDuration, ExaminationCost = Model.ExaminationCost, TreatmentCost = Model.TreatmentCost, DiagnosticDifficulty = Model.Difficulty, SimulatedSuccessProbability = Model.Success, Capacity = Model.Capacity, RequiredResources = Resources.ToDictionary(r => r.Key, r => r.Quantity, StringComparer.Ordinal) }, Actor, Note);
         await OnChanged.InvokeAsync();
     });
-    private sealed class BalanceModel { public decimal? Rarity { get; set; } public decimal? Severity { get; set; } public decimal? Duration { get; set; } public decimal? ExaminationDuration { get; set; } public decimal? ExaminationCost { get; set; } public decimal? TreatmentCost { get; set; } public decimal? Difficulty { get; set; } public decimal? Success { get; set; } }
+    private sealed class BalanceModel { public decimal? Rarity { get; set; } public decimal? Severity { get; set; } public decimal? Duration { get; set; } public decimal? ExaminationDuration { get; set; } public decimal? ExaminationCost { get; set; } public decimal? TreatmentCost { get; set; } public decimal? Difficulty { get; set; } public decimal? Success { get; set; } public decimal? Capacity { get; set; } }
     private sealed class ResourceRow { public string Key { get; set; } = ""; public decimal Quantity { get; set; } = 1; }
 }
