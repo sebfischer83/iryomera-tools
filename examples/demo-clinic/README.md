@@ -30,7 +30,8 @@ python scripts/generate-demo-clinic.py
 | `surfaceAccepts` | One surface `top` over the whole footprint with these `accepts` and a placeholder height of 0.9 m (`placeholder: true`); the game takes the height from the model and offers one spot per cell. |
 | `surfaceCategories` | `placement.surfaceCategories`. |
 | Furniture capabilities | `furnitureEquipment` to `medicalEquipment` `equipment_analyzer` or `equipment_scanner`. |
-| Transport `Seated`, `Lying` | `mobility: pushable`, `transport` for one patient, placeholder `seat`/`lying` and `handle` points marked `placeholder: true`. |
+| Transport `Seated`, `Lying` | `mobility: pushable`, `transport` for one patient. Without game points: placeholder `seat`/`lying` and `handle` points marked `placeholder: true`. |
+| `interactionPoints` | Points supplied by the game, used as given; `placeholder: false` (measured) drops the marker. Lying headings point from feet to head. |
 | Room furniture requirement | `roomFurniture` with `requirement`. |
 | Patient names | Name pools `demo_clinic:patients.given` and `demo_clinic:patients.family` (country `DE`, gender unknown); no name format, so installed formats are not contested. |
 | Patient mobility | Not content; stays in the game. |

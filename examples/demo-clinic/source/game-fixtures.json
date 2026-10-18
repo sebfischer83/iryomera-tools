@@ -522,18 +522,38 @@
   "furniture": [
     {
       "key": "demo:equipment_imaging_ring",
-      "NameDe": "Scanner-Ring",
-      "NameEn": "Scanner ring",
-      "Width": 4,
-      "Depth": 2,
-      "asset": "iryomera.assets:equipment.imaging_ring_basic",
+      "NameDe": "CT-Scanner",
+      "NameEn": "CT scanner",
+      "Width": 2,
+      "Depth": 3,
+      "asset": "iryomera.assets:equipment.ct_scanner_basic",
       "capabilities": [
         "demo:equipment_scanner"
       ],
       "transport": null,
       "mount": "Floor",
       "surfaceAccepts": null,
-      "surfaceCategories": null
+      "surfaceCategories": null,
+      "interactionPoints": [
+        {
+          "key": "lying",
+          "kind": "lying",
+          "x": 1.0,
+          "y": 0.71,
+          "z": 1.96,
+          "headingDegrees": 180,
+          "placeholder": false
+        },
+        {
+          "key": "operator",
+          "kind": "operator",
+          "x": 1.0,
+          "y": 0,
+          "z": 3.0,
+          "headingDegrees": 180,
+          "placeholder": true
+        }
+      ]
     },
     {
       "key": "demo:equipment_imaging_stand",
@@ -682,7 +702,27 @@
       "transport": "Lying",
       "mount": "Floor",
       "surfaceAccepts": null,
-      "surfaceCategories": null
+      "surfaceCategories": null,
+      "interactionPoints": [
+        {
+          "key": "lying",
+          "kind": "lying",
+          "x": 0.5,
+          "y": 0.82,
+          "z": 1.0,
+          "headingDegrees": 0,
+          "placeholder": false
+        },
+        {
+          "key": "handle",
+          "kind": "handle",
+          "x": 0.5,
+          "y": 0,
+          "z": 0,
+          "headingDegrees": 0,
+          "placeholder": true
+        }
+      ]
     },
     {
       "key": "demo:furniture_wall_picture",

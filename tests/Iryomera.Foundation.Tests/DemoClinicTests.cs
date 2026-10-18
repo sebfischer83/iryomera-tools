@@ -76,6 +76,15 @@ public sealed class DemoClinicTests
         Assert.Equal((FurnitureMobility.Pushable, TransportPosture.Seated, 1), (wheelchair.Mobility!.Value, wheelchair.Transport!.Posture, wheelchair.Placement!.Footprint.Width));
         Assert.Equal("iryomera.assets:transport.wheelchair_basic", wheelchair.CatalogAssets!.Single().CatalogId);
         Assert.All(wheelchair.Placement.InteractionPoints, p => Assert.True(p.Extensions!["placeholder"].GetBoolean()));
+        InteractionPoint Point(string id, string key) => package.Definitions.OfType<FurnitureDefinition>().Single(f => f.Id == Ns + id).Placement!.InteractionPoints.Single(p => p.Key == key);
+        var ct = package.Definitions.OfType<FurnitureDefinition>().Single(f => f.Id == Ns + "equipment_imaging_ring");
+        Assert.Equal((2, 3, "iryomera.assets:equipment.ct_scanner_basic"), (ct.Placement!.Footprint.Width, ct.Placement.Footprint.Depth, ct.CatalogAssets!.Single().CatalogId));
+        Assert.Equal((1.0m, 0.71m, 1.96m, 180m), (Point("equipment_imaging_ring", "lying").X, Point("equipment_imaging_ring", "lying").Y, Point("equipment_imaging_ring", "lying").Z, Point("equipment_imaging_ring", "lying").HeadingDegrees!.Value));
+        Assert.Null(Point("equipment_imaging_ring", "lying").Extensions);
+        Assert.True(Point("equipment_imaging_ring", "operator").Extensions!["placeholder"].GetBoolean());
+        Assert.Equal(0.82m, Point("furniture_stretcher", "lying").Y);
+        Assert.Null(Point("furniture_stretcher", "lying").Extensions);
+        Assert.True(Point("furniture_stretcher", "handle").Extensions!["placeholder"].GetBoolean());
         FurniturePlacement Placement(string id) => package.Definitions.OfType<FurnitureDefinition>().Single(f => f.Id == Ns + id).Placement!;
         var bench = Placement("furniture_lab_bench"); var microscope = Placement("equipment_microscope");
         Assert.Null(package.Definitions.OfType<FurnitureDefinition>().Single(f => f.Id == Ns + "furniture_lab_bench").Mobility);
