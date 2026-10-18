@@ -30,7 +30,7 @@ public sealed class DemoClinicTests
             catalogs.Add(catalog.Value!);
         }
         Assert.Empty(ContentLocalizationValidator.Validate(package, catalogs));
-        Assert.Equal((3, 4, 3, 1, 2, 8, 8, 5, 14), (Count<RoomDefinition>(), Count<MedicalDepartmentDefinition>(), Count<StaffRoleDefinition>(), Count<StaffQualificationDefinition>(),
+        Assert.Equal((4, 4, 3, 1, 2, 8, 8, 5, 15), (Count<RoomDefinition>(), Count<MedicalDepartmentDefinition>(), Count<StaffRoleDefinition>(), Count<StaffQualificationDefinition>(),
             Count<MedicalEquipmentDefinition>(), Count<ObservationDefinition>(), Count<ExaminationDefinition>(), Count<DiseaseDefinition>(), Count<FurnitureDefinition>()));
         Assert.All(package.Definitions.Select(d => d.Provenance).Concat(package.Relations.Select(r => r.Provenance)), p =>
             Assert.True(p is { License: "MIT", ReviewStatus: ReviewStatus.Unreviewed } && p.Source.Contains("fictional", StringComparison.Ordinal)));
@@ -55,7 +55,13 @@ public sealed class DemoClinicTests
         Assert.Equal((600m, 1200m, 60000m, 80m, 60m, 35m), (Field("imaging", b => b.ExaminationCost)!.Value, Field("green", b => b.TreatmentCost)!.Value,
             Field("equipment_imaging_ring", b => b.PurchaseCost)!.Value, Field("furniture_disinfectant_dispenser", b => b.PurchaseCost)!.Value,
             Field("role_physician", b => b.WagePerHour)!.Value, Field("role_technician", b => b.WagePerHour)!.Value));
-        Assert.Equal(14, gameplay.Balances.Count(b => b.PurchaseCost is not null));
+        Assert.Equal(15, gameplay.Balances.Count(b => b.PurchaseCost is not null));
+        Assert.DoesNotContain(package.Relations, r => r.Kind is RelationKind.DepartmentRoom or RelationKind.DepartmentPrerequisite); // department values are on hold
+        Assert.Equal(3600m, Field("green", b => b.TreatmentDurationSeconds));
+        var table = package.Definitions.OfType<FurnitureDefinition>().Single(f => f.Id == Ns + "equipment_surgical_table");
+        Assert.Equal((1, 3, table.Id), (table.Placement!.Footprint.Width, table.Placement.Footprint.Depth, table.Provenance.ExternalId));
+        Assert.Null(table.Placement.InteractionPoints.Single(p => p.Key == "lying").Extensions);
+        Assert.Equal(RelationRequirement.Required, RoomContents.Placeable(set, Ns + "room_type_operating").Single(i => i.DefinitionId == table.Id).Requirement);
 
         string[] Targets(string from, RelationKind kind) => package.Relations.Where(r => r.FromId == Ns + from && r.Kind == kind).Select(r => r.ToId).ToArray();
         Assert.Equal([Ns + "role_technician"], Targets("imaging", RelationKind.ExaminationStaffRole));

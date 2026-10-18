@@ -17,7 +17,8 @@ public static class RoomContents
     {
         RelationKind.RoomFurniture => relation.Requirement ?? RelationRequirement.Required,
         RelationKind.RoomEquipment => relation.Requirement ?? RelationRequirement.Optional,
-        _ => throw new ArgumentException("Only roomFurniture and roomEquipment relations describe room contents.", nameof(relation))
+        RelationKind.DepartmentRoom => relation.Requirement ?? RelationRequirement.Required,
+        _ => throw new ArgumentException("Only roomFurniture, roomEquipment and departmentRoom relations carry a requirement.", nameof(relation))
     };
 
     /// <summary>

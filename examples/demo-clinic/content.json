@@ -73,6 +73,27 @@
       "requiresDoor": true
     },
     {
+      "kind": "room",
+      "id": "demo_clinic:room_type_operating",
+      "nameKey": "demo_clinic.room_type_operating.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo_clinic:room_type_operating",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "minimumCells": 16,
+      "requiresDoor": true
+    },
+    {
       "kind": "medicalDepartment",
       "id": "demo_clinic:department_emergency",
       "nameKey": "demo_clinic.department_emergency.name",
@@ -1288,6 +1309,58 @@
       "transport": {
         "patientCapacity": 1,
         "posture": "seated"
+      }
+    },
+    {
+      "kind": "furniture",
+      "id": "demo_clinic:equipment_surgical_table",
+      "nameKey": "demo_clinic.equipment_surgical_table.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo_clinic:equipment_surgical_table",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "catalogAssets": [
+        {
+          "catalogId": "iryomera.assets:equipment.surgical_table_basic",
+          "kind": "modelGlb"
+        }
+      ],
+      "placement": {
+        "footprint": {
+          "width": 1,
+          "depth": 3,
+          "cellSizeMeters": 1,
+          "occupiedCells": []
+        },
+        "interactionPoints": [
+          {
+            "key": "lying",
+            "kind": "lying",
+            "x": 0.5,
+            "y": 0.89,
+            "z": 1.5,
+            "headingDegrees": 180
+          },
+          {
+            "key": "operator",
+            "kind": "operator",
+            "x": 1.4,
+            "y": 0,
+            "z": 1.5,
+            "headingDegrees": 270,
+            "placeholder": true
+          }
+        ]
       }
     }
   ],
@@ -2520,6 +2593,132 @@
         ]
       },
       "requirement": "optional"
+    },
+    {
+      "id": "demo_clinic:link_roomfurniture_room_type_operating_equipment_surgical_table",
+      "version": "1.0.0",
+      "kind": "roomFurniture",
+      "fromId": "demo_clinic:room_type_operating",
+      "toId": "demo_clinic:equipment_surgical_table",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo_clinic:room_type_operating",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "requirement": "required"
+    },
+    {
+      "id": "demo_clinic:link_roomfurniture_room_type_operating_furniture_ceiling_lamp",
+      "version": "1.0.0",
+      "kind": "roomFurniture",
+      "fromId": "demo_clinic:room_type_operating",
+      "toId": "demo_clinic:furniture_ceiling_lamp",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo_clinic:room_type_operating",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "requirement": "optional"
+    },
+    {
+      "id": "demo_clinic:link_roomfurniture_room_type_operating_furniture_disinfectant_dispenser",
+      "version": "1.0.0",
+      "kind": "roomFurniture",
+      "fromId": "demo_clinic:room_type_operating",
+      "toId": "demo_clinic:furniture_disinfectant_dispenser",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo_clinic:room_type_operating",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "requirement": "optional"
+    },
+    {
+      "id": "demo_clinic:link_roomfurniture_room_type_operating_furniture_office_chair",
+      "version": "1.0.0",
+      "kind": "roomFurniture",
+      "fromId": "demo_clinic:room_type_operating",
+      "toId": "demo_clinic:furniture_office_chair",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo_clinic:room_type_operating",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "requirement": "optional"
+    },
+    {
+      "id": "demo_clinic:link_roomfurniture_room_type_operating_furniture_stretcher",
+      "version": "1.0.0",
+      "kind": "roomFurniture",
+      "fromId": "demo_clinic:room_type_operating",
+      "toId": "demo_clinic:furniture_stretcher",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo_clinic:room_type_operating",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "requirement": "optional"
+    },
+    {
+      "id": "demo_clinic:link_roomfurniture_room_type_operating_furniture_wall_picture",
+      "version": "1.0.0",
+      "kind": "roomFurniture",
+      "fromId": "demo_clinic:room_type_operating",
+      "toId": "demo_clinic:furniture_wall_picture",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo_clinic:room_type_operating",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "requirement": "optional"
     }
   ],
   "medicalAnnotations": [],
@@ -2612,26 +2811,31 @@
     {
       "definitionId": "demo_clinic:amber",
       "treatmentCost": 900,
+      "treatmentDurationSeconds": 1800,
       "requiredResources": {}
     },
     {
       "definitionId": "demo_clinic:blue",
       "treatmentCost": 700,
+      "treatmentDurationSeconds": 1200,
       "requiredResources": {}
     },
     {
       "definitionId": "demo_clinic:green",
       "treatmentCost": 1200,
+      "treatmentDurationSeconds": 3600,
       "requiredResources": {}
     },
     {
       "definitionId": "demo_clinic:violet",
       "treatmentCost": 1000,
+      "treatmentDurationSeconds": 1800,
       "requiredResources": {}
     },
     {
       "definitionId": "demo_clinic:silver",
       "treatmentCost": 1100,
+      "treatmentDurationSeconds": 2700,
       "requiredResources": {}
     },
     {
@@ -2702,6 +2906,11 @@
     {
       "definitionId": "demo_clinic:furniture_wheelchair",
       "purchaseCost": 400,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:equipment_surgical_table",
+      "purchaseCost": 25000,
       "requiredResources": {}
     }
   ],

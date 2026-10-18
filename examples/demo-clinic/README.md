@@ -35,6 +35,10 @@ python scripts/generate-demo-clinic.py
 | Room furniture requirement | `roomFurniture` with `requirement`. |
 | Patient names | Name pools `demo_clinic:patients.given` and `demo_clinic:patients.family` (country `DE`, gender unknown); no name format, so installed formats are not contested. |
 | `balancing` | Synthetic game currency (M8): `examinationCost` per examination, `treatmentCost` per case, `purchaseCost` per furniture item, `wagePerHour` per staff role, all as gameplay balancing. Not real prices or wages. |
+| `departmentRooms` (when present) | `departmentRoom` with `requirement`; `treatment: true` becomes `treatmentRoom: true` (ADR 0020). The demo values are on hold while the game replans progression. |
+| `departmentUnlock` (when present) | Gameplay `unlockCost` and `unlockDischargedPatients` on the department; `requires` becomes `departmentPrerequisite`. |
+| `treatmentDurationMinutes` | Gameplay `treatmentDurationSeconds` (× 60) on the case. |
+| New content (operating room, surgical table) | Keys are already SDK IDs, so `provenance.externalId` equals the ID; there is no older game key. |
 | Patient mobility | Not content; stays in the game. |
 
 Units: `demo:C` → `Cel`, `demo:beats-per-minute` → `/min`, `demo:fictional-pressure` → `{fictional_pressure}`, `demo:fictional-count` → `{fictional_count}`, `demo:fictional-marker` → `{fictional_marker}`.
