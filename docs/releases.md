@@ -8,8 +8,9 @@ Released packages are published to the GitHub Packages NuGet feed of the reposit
 | `Iryomera.Localization` | net8.0/net10.0 en/de catalogs and formatting (game and tools) |
 | `Iryomera.MedicalImporter` | .NET tool `iryomera-medical` |
 | `Iryomera.ModKit` | .NET tool `iryomera-mod` |
+| `Iryomera.NameImporter` | .NET tool `iryomera-names` |
 
-All four share the single `<Version>` in `Directory.Build.props`.
+All five share the single `<Version>` in `Directory.Build.props`.
 
 ## Publishing a release
 
@@ -21,7 +22,7 @@ All four share the single `<Version>` in `Directory.Build.props`.
    git push origin v0.6.0
    ```
 
-3. The tag runs the full Tools CI on Windows and Linux. Only if both pass, the `publish` job takes the four `.nupkg` files built and tested by the Ubuntu job, checks that they carry exactly the tag version, and pushes them with the workflow's `GITHUB_TOKEN`. A tag that does not match `<Version>` fails without publishing. ContentStudio is not published; on tag runs its browser smoke test is reported but does not block publishing, while pull requests and branch pushes still require it to pass.
+3. The tag runs the full Tools CI on Windows and Linux. Only if both pass, the `publish` job takes the five `.nupkg` files built and tested by the Ubuntu job, checks that they carry exactly the tag version, and pushes them with the workflow's `GITHUB_TOKEN`. A tag that does not match `<Version>` fails without publishing. ContentStudio is not published; on tag runs its browser smoke test is reported but does not block publishing, while pull requests and branch pushes still require it to pass.
 
 A published version is immutable. Fix mistakes with a new version; never move or reuse a release tag. Re-running the workflow for the same tag skips packages that already exist.
 
@@ -57,7 +58,7 @@ In a GitHub Actions workflow of another repository, use a repository secret hold
 Install a tool from the feed:
 
 ```sh
-dotnet tool install Iryomera.ModKit --version 0.7.0 --tool-path ./tools
+dotnet tool install Iryomera.ModKit --version 0.8.0 --tool-path ./tools
 ```
 
 Packaging and publication are technical distribution steps. They grant no clinical approval and no rights to third-party data; packages contain only MIT code and synthetic examples.

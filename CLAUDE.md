@@ -31,6 +31,7 @@ python scripts/generate-schemas.py            # schemas/v1 (SDK content format)
 python scripts/generate-importer-schemas.py   # schemas/importer/v1
 python scripts/generate-studio-schemas.py     # schemas/studio/v1
 python scripts/generate-modkit-schemas.py     # schemas/modkit/v1
+python scripts/generate-name-importer-schemas.py  # schemas/names/v1
 python scripts/generate-diagnostic-example.py
 python scripts/generate-modkit-example.py
 ```
@@ -49,6 +50,7 @@ python scripts/run-godot-smoke.py                                           # af
 Run the tools locally:
 - `dotnet run --project src/Iryomera.MedicalImporter -c Release -- <sources|import|validate|status|matches|review|review-bulk|rights|export>` (tool command `iryomera-medical`)
 - `dotnet run --project src/Iryomera.ModKit -c Release -- <new|validate|edit|pack|inspect|unpack>` (tool command `iryomera-mod`)
+- `dotnet run --project src/Iryomera.NameImporter -c Release -- <sources|import|validate|status|review|rights|export>` (tool command `iryomera-names`)
 - `dotnet run --project src/Iryomera.ContentStudio -c Release`, then open http://127.0.0.1:5180. EF migrations run at startup.
 
 Full-dataset tests are opt-in: `python scripts/run-full-dataset-tests.py`. See docs/full-dataset-tests.md.
@@ -69,9 +71,10 @@ MedicalImporter (CLI) <- ContentStudio (Blazor Server + SQLite)
 - **Localization** (net8/net10 NuGet): separate en/de catalogs keyed by localization keys, never by IDs. Uses SmartFormat and an `IStringLocalizer` adapter. Shared alias handling lives here.
 - **MedicalImporter**: source adapters (`Adapters/`: OBO/OBO Graph, HPOA/MAxO TSV, ClaML, LOINC CSV, Wikidata SPARQL) produce one strict, versioned JSON *workspace*. Writes take a file lock and replace atomically. Pipeline: `import` (always unreviewed) → `review` / `review-bulk` / `rights` (append-only audit) → `export` (`ReleaseExporter`: approved, reference-closed content plus a `source-assertions.json` sidecar and license notices). Staging v1 rejects unknown properties, unlike the additive SDK format.
 - **ContentStudio**: Blazor Interactive Server UI over services that use short-lived contexts from `IDbContextFactory`. SQLite stores full SDK JSON snapshots, a normalized search index, revision tokens and audit rows. It calls the MedicalImporter application APIs for review, rights and export instead of reimplementing them. UI strings are in `Resources/` en/de JSON.
+- **NameImporter**: name source adapters (`Adapters/`: US SSA, US Census surnames, Statistik Austria, Wikidata names with an explicit language-to-country mapping; sigpwned local-only, never exportable) produce a strict, versioned name workspace (schemas/names/v1) with append-only review and batch rights decisions; `export` writes approved, permitted records as SDK `namePools` plus en/de pool labels and notices. Depends on SDK/Localization only, not on MedicalImporter.
 - **ModKit**: data-only mod projects with typed inventories and SHA-256 indexes. `ModArchive` handles bounded streaming ZIP pack/inspect/unpack with staged atomic publication.
 - **Godot integration test** (`tests/Iryomera.Godot.Integration`): references the *packed* NuGet packages (`FoundationPackageVersion`), not project references. It runs only through `run-godot-smoke.py`.
 
 JSON Schemas are **not** generated from C#. They are hand-written in the Python generators, so a public contract change means editing the C# model and the matching generator, then the docs (docs/formats.md etc.), examples and tests together.
 
-Read docs/plans and the ADRs in docs/architecture before changing scope. The docs index is docs/README.md. NameImporter (Phase 5, see docs/plans/names.md and ADR 0011) and ModIo (Phase 6) are planned but have no project yet.
+Read docs/plans and the ADRs in docs/architecture before changing scope. The docs index is docs/README.md. NameImporter (Phase 5, docs/plans/names.md, ADR 0011) is in progress: the tool exists with the first adapters. ModIo (Phase 6) is planned but has no project yet.

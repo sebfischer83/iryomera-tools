@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>iryomera-names</ToolCommandName>
+    <Description>Offline, reproducible name source import, review and rights staging, and export of SDK name pools.</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../Iryomera.Content.SDK/Iryomera.Content.SDK.csproj" />
+    <ProjectReference Include="../Iryomera.Localization/Iryomera.Localization.csproj" />
+    <PackageReference Include="System.CommandLine" />
+    <PackageReference Include="CsvHelper" />
+  </ItemGroup>
+  <ItemGroup><EmbeddedResource Include="../../schemas/names/v1/contracts.schema.json" LogicalName="Iryomera.NameImporter.Schemas.v1.json" /></ItemGroup>
+  <ItemGroup><None Include="../../schemas/names/v1/*.json" Pack="true" PackagePath="schemas/names/v1" /></ItemGroup>
+  <ItemGroup>
+    <None Include="../../THIRD-PARTY-NOTICES.md" Link="THIRD-PARTY-NOTICES.md" CopyToOutputDirectory="PreserveNewest" Pack="true" PackagePath="/" />
+    <None Include="../../NAMEIMPORTER-THIRD-PARTY-NOTICES.md" Link="NAMEIMPORTER-THIRD-PARTY-NOTICES.md" CopyToOutputDirectory="PreserveNewest" Pack="true" PackagePath="/" />
+    <None Include="../../third-party/*.txt" Link="third-party/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" Pack="true" PackagePath="third-party" />
+  </ItemGroup>
+</Project>

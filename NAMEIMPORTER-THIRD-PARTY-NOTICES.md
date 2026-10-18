@@ -1,0 +1,3 @@
+# NameImporter binary dependency notices
+
+The NameImporter .NET tool bundles unmodified SDK, Localization and CLI dependencies. Own source and synthetic test fixtures are MIT. Preserve the notices and original license texts in `THIRD-PARTY-NOTICES.md` and `third-party/`: System.CommandLine, CsvHelper (Apache-2.0 option), JsonSchema.Net/JsonPointer.Net/Json.More.Net, Humanizer and NuGet.Versioning; SmartFormat 3.6.1 (MIT, SmartFormat Project contributors), ZString 2.6.0 (MIT, Cysharp) and Microsoft.Extensions.Localization.Abstractions (MIT, .NET Foundation). No EF, SQLite, Godot, browser or mod.io runtime is bundled. Imported name data keeps its own source licenses, which every export lists in `NOTICE.md`; packaging grants no data rights.

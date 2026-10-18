@@ -26,6 +26,7 @@ Tools deliver **name data**, the game **generates** names.
 
 - Never link name origin, script or country to diseases, medical risk, patient factors or balancing. The game holds the same rule.
 - Never import data about real persons or ethnicity/race/nationality columns. Generated combinations are synthetic and must be labeled as such where shown in tooling.
+- Release only license-safe sources: CC0/public domain or CC BY 4.0 with attribution (owner decision 2026-10-17). Adapters for other sources may exist for local analysis but are marked not redistributable and can never be permitted or exported.
 - Preserve exact source releases, licenses, attribution and update dates. Restricted sources (for example commercial-use restrictions) are local user-supplied input with redistribution undecided.
 - Patient gender is not introduced by this ADR. If the game adds it, that is a separate decision because it has medical relevance.
 
