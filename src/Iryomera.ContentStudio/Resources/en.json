@@ -182,6 +182,8 @@
     "studio.relation.examinationobservation": "Examination → observation",
     "studio.relation.examinationroom": "Examination → room",
     "studio.relation.examinationqualification": "Examination → qualification",
-    "studio.relation.examinationprerequisite": "Examination → prerequisite"
+    "studio.relation.examinationprerequisite": "Examination → prerequisite",
+    "studio.relation.treatmentequipment": "Treatment → equipment",
+    "studio.relation.roomequipment": "Room → equipment"
   }
 }

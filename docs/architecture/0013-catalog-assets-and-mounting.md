@@ -13,6 +13,10 @@ Purchased models used by the base game must never enter this repository or a pub
 - No pivot, rotation or scale corrections in the SDK; they are presentation owned by the game catalog. Mod GLB files follow documented conventions instead: meters, Y up, front +Z, scale 1:1, origin per mount type, one file is one model. No node selector in this version.
 - Placement legality (free wall edge, doors, storey height, whether wall/ceiling footprints block floor cells) is game logic. Decorative per-room-type fixtures stay a game fixture; placeable furniture later uses `roomFurniture`.
 
+## Amendment 2026-10-18: surfaces (library 0.9.0)
+
+Furniture can carry `surfaces` (key, height and an X/Z rectangle in local meters) on which other items stand with `mount: surface`. The footprint covers the whole floor projection, so a surface lies inside the footprint rectangle; the SDK checks keys, positive sizes and that bound, the game checks fit, stacking and clearance. Allowed pairings are not modeled yet; if needed later they become sourced relations. Agreed with the game session; accepted by the owner.
+
 ## Consequences
 
 Additive within content schemaVersion 1.0.0 as library 0.7.0; content using the new fields needs a 0.7.0 reader to be validated. ModKit reports catalog references as unresolved external references and never fetches or packages them. No purchased asset, catalog file or model-splitting tool is added here.

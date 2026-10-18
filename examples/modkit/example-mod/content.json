@@ -225,6 +225,16 @@
             "headingDegrees": 0,
             "requiredQualificationId": "example_mod:demo_qualification"
           }
+        ],
+        "surfaces": [
+          {
+            "key": "top",
+            "heightMeters": 1,
+            "x": 0,
+            "z": 0,
+            "width": 2,
+            "depth": 1
+          }
         ]
       }
     },
@@ -422,6 +432,37 @@
         "importedAt": "2026-01-01T00:00:00Z",
         "reviewStatus": "unreviewed"
       }
+    },
+    {
+      "id": "example_mod:relation_10",
+      "version": "1.0.0",
+      "kind": "treatmentEquipment",
+      "fromId": "example_mod:demo_treatment",
+      "toId": "example_mod:demo_equipment",
+      "provenance": {
+        "source": "Own fictional ModKit software fixture, not medical knowledge",
+        "externalId": "synthetic-demo",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed"
+      }
+    },
+    {
+      "id": "example_mod:relation_11",
+      "version": "1.0.0",
+      "kind": "roomEquipment",
+      "fromId": "example_mod:demo_room",
+      "toId": "example_mod:demo_equipment",
+      "provenance": {
+        "source": "Own fictional ModKit software fixture, not medical knowledge",
+        "externalId": "synthetic-demo",
+        "sourceVersion": "synthetic-1",
+        "license": "MIT",
+        "importedAt": "2026-01-01T00:00:00Z",
+        "reviewStatus": "unreviewed"
+      },
+      "requirement": "required"
     }
   ],
   "gameplay": [
