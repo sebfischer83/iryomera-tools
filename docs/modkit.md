@@ -14,7 +14,7 @@ Replace `iryomera-mod` below with `dotnet run --project src/Iryomera.ModKit -c R
 
 ```sh
 dotnet pack src/Iryomera.ModKit -c Release --no-build -o artifacts
-dotnet tool install Iryomera.ModKit --version 0.10.0 --add-source ./artifacts --tool-path ./artifacts/mod-tools
+dotnet tool install Iryomera.ModKit --version 0.11.0 --add-source ./artifacts --tool-path ./artifacts/mod-tools
 # Windows: artifacts/mod-tools/iryomera-mod.exe
 # Linux: ./artifacts/mod-tools/iryomera-mod
 ```
@@ -76,7 +76,7 @@ iryomera-mod pack --input ./my-mod --output ./my-mod.zip --dependency ./base/con
 iryomera-mod unpack --input ./my-mod.zip --output ./installed/my-mod --dependency ./base/content.json
 ```
 
-Within ModKit, balancing resource keys containing a colon must resolve as content IDs through declared dependencies; unqualified symbolic resources such as `power_supply` remain valid. This profile rule does not change legacy SDK resource vocabularies. Dependencies use existing package IDs and NuGet version ranges. Missing packages, version mismatches, duplicate IDs/namespaces, undeclared references and cycles fail. Mods can refer to a shared examination without copying its definition. Dependencies are never downloaded, automatically installed or bundled into the dependent archive. The game version check is separate from package dependency versions. Dependency files can themselves be validated standalone SDK packages; for split dependency projects supply their combined SDK package through the API. An installed-mod discovery/catalog UI is future work.
+Mods may override balancing values of declared dependencies with `gameplayOverrides` (field by field, last package in load order wins, conflicts reported as warnings by `validate`); see [formats](formats.md) and [ADR 0015](architecture/0015-gameplay-overrides.md). Within ModKit, balancing resource keys containing a colon must resolve as content IDs through declared dependencies; unqualified symbolic resources such as `power_supply` remain valid. This profile rule does not change legacy SDK resource vocabularies. Dependencies use existing package IDs and NuGet version ranges. Missing packages, version mismatches, duplicate IDs/namespaces, undeclared references and cycles fail. Mods can refer to a shared examination without copying its definition. Dependencies are never downloaded, automatically installed or bundled into the dependent archive. The game version check is separate from package dependency versions. Dependency files can themselves be validated standalone SDK packages; for split dependency projects supply their combined SDK package through the API. An installed-mod discovery/catalog UI is future work.
 
 ## Archive format and safety
 

@@ -44,6 +44,12 @@ public sealed class ModValidator
                     content.Definitions.AddRange(part.Value.Definitions); content.Relations.AddRange(part.Value.Relations);
                     content.MedicalAnnotations.AddRange(part.Value.MedicalAnnotations); content.ReferenceRanges.AddRange(part.Value.ReferenceRanges);
                     content.DiagnosticRecommendations.AddRange(part.Value.DiagnosticRecommendations); content.Gameplay.AddRange(part.Value.Gameplay);
+                    // Optional lists must merge too; otherwise a second content file would silently drop them.
+                    content = content with
+                    {
+                        NamePools = Merge(content.NamePools, part.Value.NamePools), NameFormats = Merge(content.NameFormats, part.Value.NameFormats),
+                        GameplayOverrides = Merge(content.GameplayOverrides, part.Value.GameplayOverrides)
+                    };
                     if (part.Value.DiagnosticSimulation is { } sim)
                     {
                         content = content with { DiagnosticSimulation = content.DiagnosticSimulation ?? new() };
@@ -91,6 +97,7 @@ public sealed class ModValidator
                     Error("asset-reference", definition.Id, "Asset path, kind, license and attribution must match a declared local file.");
         return new(project, content, catalogs, issues);
 
+        static List<T>? Merge<T>(List<T>? left, List<T>? right) => left is null && right is null ? null : [.. left ?? [], .. right ?? []];
         Dictionary<string, JsonElement>? MergeExtensions(Dictionary<string, JsonElement>? previous, Dictionary<string, JsonElement>? next)
         {
             if (next is null) return previous;

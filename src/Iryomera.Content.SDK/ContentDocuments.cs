@@ -31,7 +31,7 @@ public static class ContentDocuments
         typeof(AssetReference), typeof(CatalogAssetReference), typeof(FurnitureSurface), typeof(FootprintCell), typeof(FurnitureFootprint), typeof(InteractionPoint), typeof(FurniturePlacement),
         typeof(ObservationResultDefinition), typeof(ObservationCategory), typeof(PatientContextCriterion), typeof(ObservationReferenceRange),
         typeof(DiagnosticRecommendation), typeof(SimulatedObservationDistribution), typeof(SimulatedManifestation), typeof(ExaminationResultPolicy), typeof(DiagnosticSimulationSettings),
-        typeof(NamePool), typeof(NamePoolSource), typeof(NameEntry), typeof(NameAttestation), typeof(NameFormat),
+        typeof(NamePool), typeof(GameplayOverride), typeof(NamePoolSource), typeof(NameEntry), typeof(NameAttestation), typeof(NameFormat),
         typeof(ContentPackage), typeof(ContentPackageManifest), typeof(ModManifest), typeof(ContentDependency),
         typeof(LocalizationDefinition), typeof(ContentRelation), typeof(MedicalAnnotation), typeof(AnnotationReference),
         typeof(ObservationFrequency), typeof(Provenance), typeof(EvidenceReference), typeof(ExternalIdentifier), typeof(GameplayBalance),

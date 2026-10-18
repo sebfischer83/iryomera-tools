@@ -50,6 +50,32 @@ public sealed class ProjectTests
         await Assert.ThrowsAsync<InvalidDataException>(() => new ModArchive().InspectAsync(archive));
         Assert.True((await new ModArchive().InspectAsync(archive, [dependency])).IsValid);
     }
+    [Fact]
+    public async Task OptionalListsFromSeveralContentFilesAreMerged()
+    {
+        using var data = new TestMod(); await data.Create(); var package = await data.Read<ContentPackage>("content.json"); var project = await data.Read<ModProject>("mod.json");
+        var provenance = package.Definitions[0].Provenance;
+        var names = new ContentPackage
+        {
+            Manifest = package.Manifest,
+            NamePools = [new() { Id = "author.example:names.given", Version = "1.0.0", NameKey = "author.example.pool.given.name", Country = "DE", Part = NamePart.Given, Provenance = provenance,
+                Sources = [new() { Key = "own", Provenance = provenance }], Entries = [new() { Key = "talvine", Localized = "Talvine", Gender = NameGender.Female, Attestations = [new() { SourceKey = "own" }] }] }],
+            NameFormats = [new() { Id = "author.example:names.format_de", Version = "1.0.0", Country = "DE", Order = NameOrder.GivenFamily, Provenance = provenance }]
+        };
+        await data.Write("names.json", names);
+        foreach (var language in new[] { "en", "de" })
+        {
+            var catalog = await data.Read<LocalizationDefinition>("localization/" + language + ".json"); catalog.Entries["author.example.pool.given.name"] = language == "en" ? "Synthetic given names" : "Synthetische Vornamen";
+            await data.Write("localization/" + language + ".json", catalog);
+        }
+        project = project with { Manifest = project.Manifest with { ContentFiles = [.. project.Manifest.ContentFiles, "names.json"] }, Files = [.. project.Files, new() { Path = "names.json", Kind = ModFileKind.Content, License = "MIT" }] };
+        await data.Write("mod.json", project);
+        var result = await new ModValidator().ValidateAsync(data.Project);
+        Assert.Empty(result.Issues);
+        Assert.Equal("author.example:names.given", result.Content.NamePools!.Single().Id);
+        Assert.Single(result.Content.NameFormats!);
+        Assert.Null(result.Content.GameplayOverrides);
+    }
     [Theory]
     [InlineData("missing-language", "missing-language")]
     [InlineData("placeholder", "placeholder-mismatch")]

@@ -8,7 +8,7 @@
     <Deterministic>true</Deterministic>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
-    <Version>0.10.0</Version>
+    <Version>0.11.0</Version>
     <Authors>Iryomera contributors</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/sebfischer83/iryomera-tools</RepositoryUrl>

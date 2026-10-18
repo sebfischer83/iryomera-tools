@@ -1,6 +1,6 @@
 # ADR 0015 — mods overriding gameplay balancing
 
-Status: accepted on 2026-10-18. Not implemented; scheduled after the Studio asset work.
+Status: accepted on 2026-10-18, implemented for library 0.11.0.
 
 ## Context
 
@@ -13,7 +13,8 @@ The owner wants data-only mods to replace balancing values of existing content: 
 - **Field-level merge.** An override replaces only the fields it sets. `requiredResources` merges per key; removing a key is not supported in v1.
 - **Deterministic resolution in the SDK.** A pure function, for example `GameplayResolver.Resolve(IReadOnlyList<ContentPackage> loadOrder)`, starts from each definition's own `gameplay` record and applies overrides in the given order; for each field the last package wins. The game owns the load order (mod settings) and passes it explicitly; the SDK never sorts by file system, time or culture. Game and ModKit therefore get identical results.
 - **Conflicts are warnings.** When two packages set the same field of the same target, the resolver reports a `gameplay-override-conflict` result with the field, both package IDs and the winner. These are returned separately from `ValidationIssue`, which today always means an error; nothing is silently dropped. Structural problems remain errors: `gameplay-override-target` (unknown target or undeclared dependency), `gameplay-override-own` (targets its own namespace), and the existing range checks.
-- **ModKit.** `validate` checks overrides against the supplied dependencies; `inspect` lists override targets. Packaging remains technical validation.
+- **ModKit.** `validate` checks overrides against the supplied dependencies and prints conflicts for that load order; `inspect` lists override targets. Packaging remains technical validation.
+- **Existing data.** A `gameplay` record for another package's definition, which validation already allowed, is treated like an override in load order, so existing mods keep working and their conflicts become visible.
 
 ## Rules kept
 

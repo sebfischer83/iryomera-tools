@@ -84,6 +84,10 @@ for name in ['rarity','severity','diagnosticDifficulty','simulatedSuccessProbabi
 for name in ['treatmentDurationSeconds','examinationDurationSeconds','examinationCost','treatmentCost']:bal[name]=nullable({'type':'number','minimum':0})
 bal['requiredResources']={'type':'object','propertyNames':text,'additionalProperties':{'type':'number','minimum':0}}
 defs['gameplayBalance']=obj(bal,['definitionId'])
+# Simulation-only overrides of declared dependencies' balancing (ADR 0015); only set fields replace earlier values.
+over={k:v for k,v in bal.items() if k!='definitionId'}
+over['requiredResources']=nullable(bal['requiredResources'])
+defs['gameplayOverride']=obj({'schemaVersion':{'const':'1.0.0'},'id':id,'version':version,'simulationOnly':{'const':True},'targetDefinitionId':id,**over},['schemaVersion','id','version','simulationOnly','targetDefinitionId'])
 # Names are data, not localized text; statistics stay per source. See ADR 0011.
 country={'type':'string','pattern':r'^[A-Z]{2}$'}
 region=nullable({'type':'string','pattern':r'^[A-Z]{2}-[A-Z0-9]{1,3}$'})
@@ -95,7 +99,7 @@ defs['nameEntry']=obj({'key':ns,'localized':nametext,'romanized':nullable(namete
 defs['namePool']=obj({**versioned,'nameKey':key,'country':country,'region':region,'part':{'enum':['given','family']},'provenance':ref('provenance'),'sources':{'type':'array','minItems':1,'items':ref('namePoolSource')},'entries':{'type':'array','minItems':1,'items':ref('nameEntry')}},['schemaVersion','id','version','nameKey','country','part','provenance','sources','entries'])
 defs['namePool']['allOf']=[{'if':{'properties':{'part':{'const':'given'}},'required':['part']},'then':{'properties':{'entries':{'items':{'required':['gender'],'properties':{'gender':{'enum':['female','male','unisex','unknown']}}}}}}}]
 defs['nameFormat']=obj({**versioned,'country':country,'region':region,'order':{'enum':['givenFamily','familyGiven']},'familyNameParts':{'type':'integer','minimum':1,'maximum':3},'localizedSeparator':{'enum':['',' ']},'provenance':ref('provenance')},['schemaVersion','id','version','country','order','provenance'])
-defs['contentPackage']=obj({'schemaVersion':{'const':'1.0.0'},'manifest':ref('contentPackageManifest'),'definitions':array(ref('contentDefinition')),'relations':array(ref('contentRelation')),'medicalAnnotations':array(ref('medicalAnnotation')),'referenceRanges':array(ref('observationReferenceRange')),'diagnosticRecommendations':array(ref('diagnosticRecommendation')),'diagnosticSimulation':nullable(ref('diagnosticSimulationSettings')),'gameplay':array(ref('gameplayBalance')),'namePools':nullable(array(ref('namePool'))),'nameFormats':nullable(array(ref('nameFormat')))},['schemaVersion','manifest'])
+defs['contentPackage']=obj({'schemaVersion':{'const':'1.0.0'},'manifest':ref('contentPackageManifest'),'definitions':array(ref('contentDefinition')),'relations':array(ref('contentRelation')),'medicalAnnotations':array(ref('medicalAnnotation')),'referenceRanges':array(ref('observationReferenceRange')),'diagnosticRecommendations':array(ref('diagnosticRecommendation')),'diagnosticSimulation':nullable(ref('diagnosticSimulationSettings')),'gameplay':array(ref('gameplayBalance')),'namePools':nullable(array(ref('namePool'))),'nameFormats':nullable(array(ref('nameFormat'))),'gameplayOverrides':nullable(array(ref('gameplayOverride')))},['schemaVersion','manifest'])
 defs['localizationDefinition']=obj({'schemaVersion':{'const':'1.0.0'},'namespace':ns,'language':{'type':'string','pattern':r'^[a-z]{2,3}(-[A-Za-z0-9]{2,8})*$'},'entries':{'type':'object','propertyNames':{'pattern':keypattern},'additionalProperties':text}},['schemaVersion','namespace','language'])
 # A single bundled file supports every public exchange contract; small entry files work offline.
 dump(s/'contracts.schema.json',{'$schema':'https://json-schema.org/draft/2020-12/schema','$id':'https://schemas.iryomera.org/v1/contracts.schema.json','title':'Iryomera v1 exchange contracts','$defs':defs})
