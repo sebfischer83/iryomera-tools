@@ -10,6 +10,7 @@
     <ProjectReference Include="../Iryomera.Localization/Iryomera.Localization.csproj" />
     <PackageReference Include="System.CommandLine" />
     <PackageReference Include="CsvHelper" />
+    <InternalsVisibleTo Include="Iryomera.NameImporter.Tests" />
   </ItemGroup>
   <ItemGroup><EmbeddedResource Include="../../schemas/names/v1/contracts.schema.json" LogicalName="Iryomera.NameImporter.Schemas.v1.json" /></ItemGroup>
   <ItemGroup><None Include="../../schemas/names/v1/*.json" Pack="true" PackagePath="schemas/names/v1" /></ItemGroup>
