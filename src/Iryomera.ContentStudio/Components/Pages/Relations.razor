@@ -23,13 +23,13 @@
             <label>@L["studio.kind"]<select @bind="Kind">@foreach (var kind in Enum.GetValues<RelationKind>()) { <option value="@kind">@L["studio.relation." + kind]</option> }</select></label>
             <label>@L["studio.from"]<select @bind="From"><option value="">@L["studio.select"]</option>@foreach (var d in State.Package.Definitions) { <option value="@d.Id">@Label(d.Id) (@StudioContent.Kind(d))</option> }</select></label>
             @if (Kind is RelationKind.RoomEquipment or RelationKind.RoomFurniture or RelationKind.DepartmentRoom) { <label>@L["studio.requirement"]<select @bind="Requirement"><option value="">@L[Kind == RelationKind.RoomEquipment ? "studio.requirement.default" : "studio.requirement.defaultrequired"]</option><option value="Required">@L["studio.requirement.required"]</option><option value="Optional">@L["studio.requirement.optional"]</option></select></label> }
-            @if (Kind == RelationKind.DiseaseDepartment) { <label>@L["studio.priority"]<input type="number" min="1" @bind="Priority" /></label> }
+            @if (Kind is RelationKind.DiseaseDepartment or RelationKind.DiseaseTreatment) { <label>@L["studio.priority"]<input type="number" min="1" @bind="Priority" /></label> }
             @if (Kind == RelationKind.DepartmentRoom) { <label><input type="checkbox" @bind="TreatmentRoom" /> @L["studio.treatmentroom"]</label> }
             <label>@L["studio.to"]<select @bind="To"><option value="">@L["studio.select"]</option>@foreach (var d in State.Package.Definitions) { <option value="@d.Id">@Label(d.Id) (@StudioContent.Kind(d))</option> }</select></label>
             @if (Creating) { <label>@L["studio.source"]<input @bind="Source" /></label><label>@L["studio.license"]<input @bind="License" /></label> }
             <label>@L["studio.reviewer"]<input @bind="Actor" /></label><label>@L["studio.reason"]<textarea @bind="Note"></textarea></label><button @onclick="Save" disabled="@Busy">@L["studio.saveDraft"]</button>
         </section>
-        @if (Selected is not null) { <div><ReviewPanel ProjectId="Id" Revision="State.Project.Revision" RecordId="@Selected.Id" Provenance="Selected.Provenance" OnChanged="Refresh" /><details><summary>@L["studio.originalSource"]</summary><pre>@StudioContent.Json(Selected)</pre></details></div> }
+        @if (Selected is not null) { <div><ReviewPanel ProjectId="Id" Revision="State.Project.Revision" RecordId="@Selected.Id" Provenance="Selected.Provenance" OnChanged="Refresh" /><details><summary>@L["studio.originalSource"]</summary><pre>@StudioContent.Json(Selected)</pre></details>@if (Selected.Kind is RelationKind.DiseaseTreatment or RelationKind.TreatmentComplication) { <p>@L["studio.pairbalancinghint"]</p><GameplayEditor State="State" DefinitionId="@Selected.Id" OnChanged="Refresh" /> }</div> }
     </div>
     <table><thead><tr><th>@L["studio.kind"]</th><th>@L["studio.from"]</th><th>@L["studio.to"]</th><th>@L["studio.reviewStatus"]</th></tr></thead><tbody>@foreach (var r in Visible) { <tr><td><button class="secondary" @onclick="() => Select(r)">@L["studio.relation." + r.Kind]</button></td><td>@Label(r.FromId)</td><td>@Label(r.ToId)</td><td>@L["studio.status." + r.Provenance.ReviewStatus]</td></tr> }</tbody></table>
     <section class="card"><h2>@L["studio.annotation"]</h2>@foreach (var a in State.Package.MedicalAnnotations) { <p><a href="@($"/projects/{Id}/annotations/{Uri.EscapeDataString(a.Id)}")">@a.Predicate · @a.Id</a></p> }</section>
@@ -50,7 +50,7 @@
         var provenance = Selected?.Provenance ?? new Provenance { Source = Source, ExternalId = RecordId, SourceVersion = "1.0.0", License = License, ImportedAt = DateTimeOffset.UtcNow };
         await Projects.SaveRelationAsync(Id, State!.Project.Revision, new() { Id = RecordId, Version = Selected?.Version ?? "1.0.0", Kind = Kind, FromId = From, ToId = To, Provenance = provenance,
             Requirement = Kind is RelationKind.RoomEquipment or RelationKind.RoomFurniture or RelationKind.DepartmentRoom && Enum.TryParse<RelationRequirement>(Requirement, out var requirement) ? requirement : null,
-            Priority = Kind == RelationKind.DiseaseDepartment ? Priority : null,
+            Priority = Kind is RelationKind.DiseaseDepartment or RelationKind.DiseaseTreatment ? Priority : null,
             TreatmentRoom = Kind == RelationKind.DepartmentRoom && TreatmentRoom ? true : null }, Actor, Note, Creating);
         State = await Projects.GetAsync(Id); Select(State.Package.Relations.Single(r => r.Id == RecordId));
     });

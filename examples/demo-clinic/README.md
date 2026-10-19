@@ -38,9 +38,11 @@ python scripts/generate-demo-clinic.py
 | `departmentRooms` (when present) | `departmentRoom` with `requirement`; `treatment: true` becomes `treatmentRoom: true` (ADR 0020). |
 | `departmentUnlock` (when present) | Gameplay `unlockCost`, `unlockDischargedPatients`, `openFromHour` and `openToHour` on the department; `requires` becomes `departmentPrerequisite`. |
 | Room `role`, `shareable` | RoomDefinition `role` and `shareable`. |
-| `arrival`, `stayHours` | Gameplay `arrival` and `stayDurationSeconds` (× 3600) on the case. |
+| `arrival` | Gameplay `arrival` on the case. |
 | Department `Capacity` | No longer emitted (M9); department capacity follows from beds and rooms in the game. |
-| `treatmentDurationMinutes` | Gameplay `treatmentDurationSeconds` (× 60) on the case. |
+| `treatments` | `treatment` with `treatmentRoom` and `treatmentStaffRole`; optional own values (`minutes`, `cost`, `stayChance`, `stayHours`) as treatment balancing. |
+| `diseaseTreatments` | `diseaseTreatment` with `priority`; its values (duration, cost, stay chance, stay range in hours × 3600) are balancing on the relation ID (ADR 0021). Diseases no longer carry treatment values. |
+| `complications` | `complication` with `effect` and `timing`; `treatmentComplication` from `after` with `complicationChance` on the relation, `complicationExamination` / `complicationTreatment` for the effect, `extraStayHours` × 3600 as `extraStayDurationSeconds`. |
 | New content (operating room, surgical table) | Keys are already SDK IDs, so `provenance.externalId` equals the ID; there is no older game key. |
 | Patient mobility | Not content; stays in the game. |
 

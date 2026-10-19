@@ -99,6 +99,25 @@ public sealed class AssetStudioTests
     }
 
     [Fact]
+    public async Task ComplicationsAndPairBalancingAreEditable()
+    {
+        await using var data = await StudioTestData.CreateAsync(); var id = await data.Synthetic(); var state = await data.Projects.GetAsync(id);
+        await data.Projects.SaveDefinitionAsync(id, state.Project.Revision, new() { Id = "synthetic:wound", Kind = "complication", NameEn = "Synthetic wound problem", NameDe = "Synthetisches Wundproblem",
+            ExternalId = "wound", Actor = "Synthetic editor", Note = "New complication" }, create: true);
+        state = await data.Projects.GetAsync(id);
+        Assert.Equal((ComplicationEffect.ExtraStay, ComplicationTiming.DuringStay), (state.Package.Definitions.OfType<ComplicationDefinition>().Single().Effect, state.Package.Definitions.OfType<ComplicationDefinition>().Single().Timing));
+        await data.Projects.SaveComplicationRulesAsync(id, state.Project.Revision, "synthetic:wound", ComplicationEffect.ExtraStay, ComplicationTiming.DuringTreatment, "Synthetic editor", "Timing");
+        state = await data.Projects.GetAsync(id);
+        Assert.Equal(ComplicationTiming.DuringTreatment, state.Package.Definitions.OfType<ComplicationDefinition>().Single().Timing);
+        await Assert.ThrowsAsync<ArgumentException>(() => data.Projects.SaveComplicationRulesAsync(id, state.Project.Revision, "synthetic:demo_room", ComplicationEffect.ExtraStay, ComplicationTiming.DuringStay, "Synthetic editor", "Not a complication"));
+        var pair = state.Package.Relations.First(r => r.Kind == RelationKind.DiseaseTreatment);
+        await data.Projects.SaveGameplayAsync(id, state.Project.Revision, new() { DefinitionId = pair.Id, StayChance = 0.5m, StayDurationSeconds = 3600, StayDurationMaxSeconds = 7200 }, "Synthetic editor", "Pair values");
+        state = await data.Projects.GetAsync(id);
+        Assert.Equal(0.5m, state.Package.Gameplay.Single(b => b.DefinitionId == pair.Id).StayChance);
+        await Assert.ThrowsAsync<StudioValidationException>(() => data.Projects.SaveGameplayAsync(id, state.Project.Revision, new() { DefinitionId = pair.Id, StayChance = 2 }, "Synthetic editor", "Out of range"));
+    }
+
+    [Fact]
     public void CatalogIndexIsSchemaValidatedAndToleratesUnknownFields()
     {
         static (IReadOnlyList<CatalogAssetIndexEntry> Entries, string? Error) Parse(string json) { using var document = JsonDocument.Parse(json); return StudioCatalog.Parse(document.RootElement); }

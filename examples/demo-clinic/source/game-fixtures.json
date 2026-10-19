@@ -1159,13 +1159,6 @@
       "demo:urine": 90,
       "demo:imaging": 600
     },
-    "treatmentCost": {
-      "demo:amber": 900,
-      "demo:blue": 700,
-      "demo:green": 1200,
-      "demo:violet": 1000,
-      "demo:silver": 1100
-    },
     "purchaseCost": {
       "demo:furniture_exam_couch": 1200,
       "demo:furniture_exam_chair": 600,
@@ -1191,13 +1184,6 @@
       "Nurse": 30,
       "Technician": 35
     }
-  },
-  "treatmentDurationMinutes": {
-    "demo:amber": 30,
-    "demo:blue": 20,
-    "demo:green": 60,
-    "demo:violet": 30,
-    "demo:silver": 45
   },
   "departmentRooms": [
     {
@@ -1312,11 +1298,161 @@
     "demo:green": "emergency",
     "demo:silver": "emergency"
   },
-  "stayHours": {
-    "demo:blue": 0,
-    "demo:amber": 12,
-    "demo:violet": 8,
-    "demo:green": 24,
-    "demo:silver": 16
-  }
+  "treatments": [
+    {
+      "key": "demo_clinic:treatment_general",
+      "nameDe": "Allgemeine Behandlung",
+      "nameEn": "General treatment",
+      "rooms": [
+        "demo:room_type_consultation"
+      ],
+      "staffRole": "Physician"
+    },
+    {
+      "key": "demo_clinic:treatment_internal",
+      "nameDe": "Internistische Therapie",
+      "nameEn": "Internal therapy",
+      "rooms": [
+        "demo:room_type_consultation"
+      ],
+      "staffRole": "Physician"
+    },
+    {
+      "key": "demo_clinic:treatment_operation",
+      "nameDe": "Operation",
+      "nameEn": "Operation",
+      "rooms": [
+        "demo_clinic:room_type_operating"
+      ],
+      "staffRole": "Physician"
+    },
+    {
+      "key": "demo_clinic:treatment_conservative",
+      "nameDe": "Konservative Therapie",
+      "nameEn": "Conservative therapy",
+      "rooms": [
+        "demo:room_type_consultation"
+      ],
+      "staffRole": "Physician"
+    },
+    {
+      "key": "demo_clinic:treatment_reoperation",
+      "nameDe": "Nachoperation",
+      "nameEn": "Re-operation",
+      "rooms": [
+        "demo_clinic:room_type_operating"
+      ],
+      "staffRole": "Physician",
+      "minutes": 45,
+      "cost": 1100,
+      "stayChance": 1.0,
+      "stayHours": [
+        12,
+        20
+      ]
+    }
+  ],
+  "diseaseTreatments": [
+    {
+      "disease": "demo:blue",
+      "treatment": "demo_clinic:treatment_general",
+      "priority": 1,
+      "minutes": 20,
+      "cost": 700,
+      "stayChance": 0.0,
+      "stayHours": null
+    },
+    {
+      "disease": "demo:amber",
+      "treatment": "demo_clinic:treatment_internal",
+      "priority": 1,
+      "minutes": 30,
+      "cost": 900,
+      "stayChance": 0.8,
+      "stayHours": [
+        8,
+        16
+      ]
+    },
+    {
+      "disease": "demo:violet",
+      "treatment": "demo_clinic:treatment_internal",
+      "priority": 1,
+      "minutes": 30,
+      "cost": 1000,
+      "stayChance": 0.6,
+      "stayHours": [
+        6,
+        10
+      ]
+    },
+    {
+      "disease": "demo:green",
+      "treatment": "demo_clinic:treatment_operation",
+      "priority": 1,
+      "minutes": 60,
+      "cost": 1200,
+      "stayChance": 1.0,
+      "stayHours": [
+        18,
+        30
+      ]
+    },
+    {
+      "disease": "demo:silver",
+      "treatment": "demo_clinic:treatment_operation",
+      "priority": 1,
+      "minutes": 45,
+      "cost": 1100,
+      "stayChance": 1.0,
+      "stayHours": [
+        12,
+        20
+      ]
+    },
+    {
+      "disease": "demo:silver",
+      "treatment": "demo_clinic:treatment_conservative",
+      "priority": 2,
+      "minutes": 30,
+      "cost": 800,
+      "stayChance": 0.7,
+      "stayHours": [
+        8,
+        16
+      ]
+    }
+  ],
+  "complications": [
+    {
+      "key": "demo_clinic:complication_wound_problem",
+      "nameDe": "Wundproblem",
+      "nameEn": "Wound problem",
+      "after": "demo_clinic:treatment_operation",
+      "chance": 0.1,
+      "timing": "duringStay",
+      "effect": "extraStay",
+      "extraStayHours": 6
+    },
+    {
+      "key": "demo_clinic:complication_relapse",
+      "nameDe": "R\u00FCckfall",
+      "nameEn": "Relapse",
+      "after": "demo_clinic:treatment_internal",
+      "chance": 0.08,
+      "timing": "duringStay",
+      "effect": "requiredExamination",
+      "examination": "demo:interview"
+    },
+    {
+      "key": "demo_clinic:complication_reoperation",
+      "nameDe": "Nachoperation n\u00F6tig",
+      "nameEn": "Re-operation needed",
+      "after": "demo_clinic:treatment_operation",
+      "chance": 0.05,
+      "timing": "duringTreatment",
+      "effect": "followUpTreatment",
+      "followUp": "demo_clinic:treatment_reoperation"
+    }
+  ]
 }

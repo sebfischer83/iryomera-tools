@@ -154,6 +154,14 @@ RoomDefinition has optional `role` (`reception`, `waiting` or `ward`; absent mea
 
 GameplayBalance and GameplayOverride also have `openFromHour` and `openToHour` (whole game hours in [0,24], from before to; 0–24 is always open; they apply to new admissions and referrals), `arrival` (`walkIn` or `emergency`, how a disease's cases arrive) and `stayDurationSeconds` (inpatient stay after treatment; 0 or absent is outpatient). All are simulation only and overridable by mods; `arrival` conflicts are reported like numeric fields. The abstract department `capacity` stays valid but is no longer used by the game.
 
+## Treatments and complications (library 0.19.0)
+
+Relations `treatmentRoom` (treatment → room type) and `treatmentStaffRole` (treatment → staff role; at most one, `treatment-staff-role`) say where and by whom a treatment is done; `Treatments.Playable` is true with at least one room and exactly one role, otherwise the game keeps the disease's values. `diseaseTreatment` accepts `priority` (1 first choice); `Treatments.Options` orders a disease's treatments.
+
+New definition kind `complication` with required `effect` (`extraStay`, `requiredExamination`, `followUpTreatment`) and `timing` (`duringTreatment`, `duringStay`). `treatmentComplication` (treatment → complication) links a risk; `complicationExamination` (complication → examination) and `complicationTreatment` (complication → treatment) are the effect's parameters, allowed only with the matching effect and required by it (`complication-effect`). Follow-up chains must not loop (`treatment-cycle`).
+
+Balancing gains `stayChance` and `complicationChance` (0–1), `stayDurationMaxSeconds` (not below `stayDurationSeconds` in one record) and `extraStayDurationSeconds`. A balancing record or override may target a `diseaseTreatment` or `treatmentComplication` relation ID to set values for that pair (`gameplay-target` for other relations); mods override and conflict on them like on definitions. `Treatments.Effective` merges pair, treatment and disease values in that order and reports each source. Older readers reject the new kind and relation kinds. See [ADR 0021](architecture/0021-treatments-and-complications.md).
+
 ModKit authoring (`mod.json`) and archive integrity (`checksums.json`) have separate schemas in `schemas/modkit/v1`. No executable/script/plugin payload kind is defined. The archive is not a Godot PCK or game save format. The runtime game remains responsible for asset rendering and interaction behavior.
 
 ## Name pools and formats (library 0.6.0)
