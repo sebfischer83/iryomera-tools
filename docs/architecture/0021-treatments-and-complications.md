@@ -1,6 +1,6 @@
 # ADR 0021 — treatments and complications
 
-Status: proposed on 2026-10-19 for library 0.19.0 (game request, owner-approved; game ADR 0021 §11).
+Status: accepted on 2026-10-19, implemented for library 0.19.0 (game request; owner decisions 2026-10-19: incomplete treatments stay valid but not playable, follow-up loops are forbidden; game ADR 0021 §11).
 
 ## Context
 
