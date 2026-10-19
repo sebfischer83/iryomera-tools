@@ -60,6 +60,8 @@ public static class ContentValidator
         if (errors.Count > 0) return errors;
         var byId = new Dictionary<string, ContentPackage>(StringComparer.Ordinal);
         var definitions = new Dictionary<string, (ContentDefinition Definition, ContentPackage Package)>(StringComparer.Ordinal);
+        var relationTargets = new Dictionary<string, (ContentRelation Relation, ContentPackage Package)>(StringComparer.Ordinal);
+        foreach (var other in packages) foreach (var relation in other.Relations) relationTargets.TryAdd(relation.Id, (relation, other));
         var ids = new HashSet<string>(StringComparer.Ordinal);
         var namespaces = new HashSet<string>(StringComparer.Ordinal);
         void Error(string code, string path, string message) => errors.Add(new(code, path, message));
@@ -129,8 +131,8 @@ public static class ContentValidator
                 Register(relation.Id, manifest.Namespace, path + ".relations[" + relation.Id + "]");
                 CheckVersion(relation.Version, relation.Id);
                 CheckProvenance(relation.Provenance, relation.Id);
-                if (relation.Priority is { } priority && (priority < 1 || relation.Kind != RelationKind.DiseaseDepartment))
-                    Error("relation-priority", relation.Id, "A priority is allowed only on diseaseDepartment relations and must be at least 1.");
+                if (relation.Priority is { } priority && (priority < 1 || relation.Kind is not (RelationKind.DiseaseDepartment or RelationKind.DiseaseTreatment)))
+                    Error("relation-priority", relation.Id, "A priority is allowed only on diseaseDepartment and diseaseTreatment relations and must be at least 1.");
                 if (relation.Requirement is { } requirement && (!Enum.IsDefined(requirement) || relation.Kind is not (RelationKind.RoomEquipment or RelationKind.RoomFurniture or RelationKind.DepartmentRoom)))
                     Error("relation-requirement", relation.Id, "A requirement is allowed only on roomEquipment, roomFurniture and departmentRoom relations and must be required or optional.");
             }
@@ -170,6 +172,14 @@ public static class ContentValidator
             }
             Walk(item);
             var allowed = visited;
+            // Balancing targets a definition or a diseaseTreatment/treatmentComplication relation: values for that pair (ADR 0021).
+            void ResolveBalancingTarget(string id, string path)
+            {
+                if (definitions.ContainsKey(id) || !relationTargets.TryGetValue(id, out var target)) { Resolve(id, path); return; }
+                if (target.Relation.Kind is not (RelationKind.DiseaseTreatment or RelationKind.TreatmentComplication))
+                    Error("gameplay-target", path, "Balancing can target only definitions and diseaseTreatment or treatmentComplication relations.");
+                if (!allowed.Contains(target.Package.Manifest.Id)) Error("undeclared-dependency", path, "Reference to " + id + " requires a declared dependency.");
+            }
             (ContentDefinition Definition, ContentPackage Package)? Resolve(string id, string path)
             {
                 CheckId(id, path);
@@ -215,17 +225,18 @@ public static class ContentValidator
             errors.AddRange(DiagnosticValidator.Validate(item, id => Resolve(id, id)?.Definition));
             errors.AddRange(AssetValidator.Validate(item, id => Resolve(id, id)?.Definition));
             errors.AddRange(DepartmentValidator.Validate(item));
+            errors.AddRange(TreatmentValidator.Validate(item, packages.Where(p => allowed.Contains(p.Manifest.Id)).ToArray()));
             var overridden = new HashSet<string>(StringComparer.Ordinal);
             foreach (var change in item.GameplayOverrides ?? [])
             {
                 if (change.TargetDefinitionId.StartsWith(item.Manifest.Namespace + ":", StringComparison.Ordinal))
                     Error("gameplay-override-own", change.Id, "Override balancing of your own definitions in gameplay instead.");
-                else Resolve(change.TargetDefinitionId, change.Id + ".targetDefinitionId");
+                else ResolveBalancingTarget(change.TargetDefinitionId, change.Id + ".targetDefinitionId");
                 if (!overridden.Add(change.TargetDefinitionId)) Error("duplicate-gameplay-override", change.Id, "One override per target definition and package.");
                 if (!change.Values().Any()) Error("gameplay-override-empty", change.Id, "An override must set at least one balancing value.");
-                if (new[] { change.Rarity, change.Severity, change.DiagnosticDifficulty, change.SimulatedSuccessProbability }.Any(x => x is < 0 or > 1))
+                if (new[] { change.Rarity, change.Severity, change.DiagnosticDifficulty, change.SimulatedSuccessProbability, change.StayChance, change.ComplicationChance }.Any(x => x is < 0 or > 1))
                     Error("balance-range", change.Id, "Normalized simulation values must be within [0,1].");
-                if (new[] { change.TreatmentDurationSeconds, change.ExaminationDurationSeconds, change.ExaminationCost, change.TreatmentCost, change.Capacity, change.PurchaseCost, change.WagePerHour, change.UnlockCost, change.UnlockDischargedPatients, change.StayDurationSeconds }.Any(x => x < 0) || (change.RequiredResources ?? []).Values.Any(x => x < 0))
+                if (new[] { change.TreatmentDurationSeconds, change.ExaminationDurationSeconds, change.ExaminationCost, change.TreatmentCost, change.Capacity, change.PurchaseCost, change.WagePerHour, change.UnlockCost, change.UnlockDischargedPatients, change.StayDurationSeconds, change.StayDurationMaxSeconds, change.ExtraStayDurationSeconds }.Any(x => x < 0) || (change.RequiredResources ?? []).Values.Any(x => x < 0))
                     Error("balance-range", change.Id, "Simulation time, costs and resources must be nonnegative.");
                 foreach (var resource in (change.RequiredResources ?? []).Keys)
                     if (string.IsNullOrWhiteSpace(resource)) Error("resource-key", change.Id, "Resource keys must be nonempty.");
@@ -233,11 +244,11 @@ public static class ContentValidator
             var balances = new HashSet<string>(StringComparer.Ordinal);
             foreach (var balance in item.Gameplay)
             {
-                Resolve(balance.DefinitionId, balance.DefinitionId + ".gameplay");
+                ResolveBalancingTarget(balance.DefinitionId, balance.DefinitionId + ".gameplay");
                 if (!balances.Add(balance.DefinitionId)) Error("duplicate-balance", balance.DefinitionId, "Multiple balance records for one definition.");
-                if (new[] { balance.Rarity, balance.Severity, balance.DiagnosticDifficulty, balance.SimulatedSuccessProbability }.Any(x => x is < 0 or > 1))
+                if (new[] { balance.Rarity, balance.Severity, balance.DiagnosticDifficulty, balance.SimulatedSuccessProbability, balance.StayChance, balance.ComplicationChance }.Any(x => x is < 0 or > 1))
                     Error("balance-range", balance.DefinitionId, "Normalized simulation values must be within [0,1].");
-                if (new[] { balance.TreatmentDurationSeconds, balance.ExaminationDurationSeconds, balance.ExaminationCost, balance.TreatmentCost, balance.Capacity, balance.PurchaseCost, balance.WagePerHour, balance.UnlockCost, balance.UnlockDischargedPatients, balance.StayDurationSeconds }.Any(x => x < 0) || balance.RequiredResources.Values.Any(x => x < 0))
+                if (new[] { balance.TreatmentDurationSeconds, balance.ExaminationDurationSeconds, balance.ExaminationCost, balance.TreatmentCost, balance.Capacity, balance.PurchaseCost, balance.WagePerHour, balance.UnlockCost, balance.UnlockDischargedPatients, balance.StayDurationSeconds, balance.StayDurationMaxSeconds, balance.ExtraStayDurationSeconds }.Any(x => x < 0) || balance.RequiredResources.Values.Any(x => x < 0))
                     Error("balance-range", balance.DefinitionId, "Simulation time, costs and resources must be nonnegative.");
                 foreach (var resource in balance.RequiredResources.Keys)
                     if (string.IsNullOrWhiteSpace(resource)) Error("resource-key", balance.DefinitionId, "Resource keys must be nonempty.");
@@ -308,6 +319,11 @@ public static class ContentValidator
         RelationKind.FurnitureEquipment => (typeof(FurnitureDefinition), typeof(MedicalEquipmentDefinition)),
         RelationKind.DepartmentRoom => (typeof(MedicalDepartmentDefinition), typeof(RoomDefinition)),
         RelationKind.DepartmentPrerequisite => (typeof(MedicalDepartmentDefinition), typeof(MedicalDepartmentDefinition)),
+        RelationKind.TreatmentRoom => (typeof(TreatmentDefinition), typeof(RoomDefinition)),
+        RelationKind.TreatmentStaffRole => (typeof(TreatmentDefinition), typeof(StaffRoleDefinition)),
+        RelationKind.TreatmentComplication => (typeof(TreatmentDefinition), typeof(ComplicationDefinition)),
+        RelationKind.ComplicationExamination => (typeof(ComplicationDefinition), typeof(ExaminationDefinition)),
+        RelationKind.ComplicationTreatment => (typeof(ComplicationDefinition), typeof(TreatmentDefinition)),
         _ => null
     };
 }

@@ -40,7 +40,7 @@ public sealed class DefinitionEdit
 
 public static class StudioContent
 {
-    public static readonly string[] Kinds = ["disease", "symptom", "finding", "examination", "observation", "treatment", "medicalProcedure", "medicalDepartment", "medicalEquipment", "staffQualification", "room", "furniture", "staffRole"];
+    public static readonly string[] Kinds = ["disease", "symptom", "finding", "examination", "observation", "treatment", "medicalProcedure", "medicalDepartment", "medicalEquipment", "staffQualification", "room", "furniture", "staffRole", "complication"];
     public static string Json<T>(T value) => JsonSerializer.Serialize(value, ContentJson.Options);
     public static T Parse<T>(string json) => JsonSerializer.Deserialize<T>(json, ContentJson.Options) ?? throw new InvalidDataException("Expected a JSON value.");
     public static string Kind(ContentDefinition definition) => char.ToLowerInvariant(definition.GetType().Name[0]) + definition.GetType().Name[1..^10];
@@ -67,6 +67,8 @@ public static class StudioContent
         "room" => new RoomDefinition { Id = id, NameKey = nameKey, Version = version, Provenance = provenance },
         "furniture" => new FurnitureDefinition { Id = id, NameKey = nameKey, Version = version, Provenance = provenance },
         "staffRole" => new StaffRoleDefinition { Id = id, NameKey = nameKey, Version = version, Provenance = provenance },
+        // New complications start as an extra stay during the stay; the Assets tab changes effect and timing.
+        "complication" => new ComplicationDefinition { Id = id, NameKey = nameKey, Version = version, Provenance = provenance, Effect = ComplicationEffect.ExtraStay, Timing = ComplicationTiming.DuringStay },
         _ => throw new ArgumentException("Unknown definition kind.")
     };
 }

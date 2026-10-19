@@ -836,6 +836,164 @@
       }
     },
     {
+      "kind": "treatment",
+      "id": "demo_clinic:treatment_general",
+      "nameKey": "demo_clinic.treatment_general.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo_clinic:treatment_general",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "treatment",
+      "id": "demo_clinic:treatment_internal",
+      "nameKey": "demo_clinic.treatment_internal.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo_clinic:treatment_internal",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "treatment",
+      "id": "demo_clinic:treatment_operation",
+      "nameKey": "demo_clinic.treatment_operation.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo_clinic:treatment_operation",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "treatment",
+      "id": "demo_clinic:treatment_conservative",
+      "nameKey": "demo_clinic.treatment_conservative.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo_clinic:treatment_conservative",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "treatment",
+      "id": "demo_clinic:treatment_reoperation",
+      "nameKey": "demo_clinic.treatment_reoperation.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo_clinic:treatment_reoperation",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "complication",
+      "id": "demo_clinic:complication_wound_problem",
+      "nameKey": "demo_clinic.complication_wound_problem.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo_clinic:complication_wound_problem",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "effect": "extraStay",
+      "timing": "duringStay"
+    },
+    {
+      "kind": "complication",
+      "id": "demo_clinic:complication_relapse",
+      "nameKey": "demo_clinic.complication_relapse.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo_clinic:complication_relapse",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "effect": "requiredExamination",
+      "timing": "duringStay"
+    },
+    {
+      "kind": "complication",
+      "id": "demo_clinic:complication_reoperation",
+      "nameKey": "demo_clinic.complication_reoperation.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo_clinic:complication_reoperation",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "effect": "followUpTreatment",
+      "timing": "duringTreatment"
+    },
+    {
       "kind": "furniture",
       "id": "demo_clinic:equipment_imaging_ring",
       "nameKey": "demo_clinic.equipment_imaging_ring.name",
@@ -2325,6 +2483,432 @@
       "priority": 2
     },
     {
+      "id": "demo_clinic:link_treatmentroom_treatment_general_room_type_consultation",
+      "version": "1.0.0",
+      "kind": "treatmentRoom",
+      "fromId": "demo_clinic:treatment_general",
+      "toId": "demo_clinic:room_type_consultation",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo_clinic:treatment_general",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_treatmentstaffrole_treatment_general_role_physician",
+      "version": "1.0.0",
+      "kind": "treatmentStaffRole",
+      "fromId": "demo_clinic:treatment_general",
+      "toId": "demo_clinic:role_physician",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo_clinic:treatment_general",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_treatmentroom_treatment_internal_room_type_consultation",
+      "version": "1.0.0",
+      "kind": "treatmentRoom",
+      "fromId": "demo_clinic:treatment_internal",
+      "toId": "demo_clinic:room_type_consultation",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo_clinic:treatment_internal",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_treatmentstaffrole_treatment_internal_role_physician",
+      "version": "1.0.0",
+      "kind": "treatmentStaffRole",
+      "fromId": "demo_clinic:treatment_internal",
+      "toId": "demo_clinic:role_physician",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo_clinic:treatment_internal",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_treatmentroom_treatment_operation_room_type_operating",
+      "version": "1.0.0",
+      "kind": "treatmentRoom",
+      "fromId": "demo_clinic:treatment_operation",
+      "toId": "demo_clinic:room_type_operating",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo_clinic:treatment_operation",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_treatmentstaffrole_treatment_operation_role_physician",
+      "version": "1.0.0",
+      "kind": "treatmentStaffRole",
+      "fromId": "demo_clinic:treatment_operation",
+      "toId": "demo_clinic:role_physician",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo_clinic:treatment_operation",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_treatmentroom_treatment_conservative_room_type_consultation",
+      "version": "1.0.0",
+      "kind": "treatmentRoom",
+      "fromId": "demo_clinic:treatment_conservative",
+      "toId": "demo_clinic:room_type_consultation",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo_clinic:treatment_conservative",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_treatmentstaffrole_treatment_conservative_role_physician",
+      "version": "1.0.0",
+      "kind": "treatmentStaffRole",
+      "fromId": "demo_clinic:treatment_conservative",
+      "toId": "demo_clinic:role_physician",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo_clinic:treatment_conservative",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_treatmentroom_treatment_reoperation_room_type_operating",
+      "version": "1.0.0",
+      "kind": "treatmentRoom",
+      "fromId": "demo_clinic:treatment_reoperation",
+      "toId": "demo_clinic:room_type_operating",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo_clinic:treatment_reoperation",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_treatmentstaffrole_treatment_reoperation_role_physician",
+      "version": "1.0.0",
+      "kind": "treatmentStaffRole",
+      "fromId": "demo_clinic:treatment_reoperation",
+      "toId": "demo_clinic:role_physician",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo_clinic:treatment_reoperation",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_diseasetreatment_blue_treatment_general",
+      "version": "1.0.0",
+      "kind": "diseaseTreatment",
+      "fromId": "demo_clinic:blue",
+      "toId": "demo_clinic:treatment_general",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:blue",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "priority": 1
+    },
+    {
+      "id": "demo_clinic:link_diseasetreatment_amber_treatment_internal",
+      "version": "1.0.0",
+      "kind": "diseaseTreatment",
+      "fromId": "demo_clinic:amber",
+      "toId": "demo_clinic:treatment_internal",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:amber",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "priority": 1
+    },
+    {
+      "id": "demo_clinic:link_diseasetreatment_violet_treatment_internal",
+      "version": "1.0.0",
+      "kind": "diseaseTreatment",
+      "fromId": "demo_clinic:violet",
+      "toId": "demo_clinic:treatment_internal",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:violet",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "priority": 1
+    },
+    {
+      "id": "demo_clinic:link_diseasetreatment_green_treatment_operation",
+      "version": "1.0.0",
+      "kind": "diseaseTreatment",
+      "fromId": "demo_clinic:green",
+      "toId": "demo_clinic:treatment_operation",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:green",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "priority": 1
+    },
+    {
+      "id": "demo_clinic:link_diseasetreatment_silver_treatment_operation",
+      "version": "1.0.0",
+      "kind": "diseaseTreatment",
+      "fromId": "demo_clinic:silver",
+      "toId": "demo_clinic:treatment_operation",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:silver",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "priority": 1
+    },
+    {
+      "id": "demo_clinic:link_diseasetreatment_silver_treatment_conservative",
+      "version": "1.0.0",
+      "kind": "diseaseTreatment",
+      "fromId": "demo_clinic:silver",
+      "toId": "demo_clinic:treatment_conservative",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:silver",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "priority": 2
+    },
+    {
+      "id": "demo_clinic:link_treatmentcomplication_treatment_operation_complication_wound_problem",
+      "version": "1.0.0",
+      "kind": "treatmentComplication",
+      "fromId": "demo_clinic:treatment_operation",
+      "toId": "demo_clinic:complication_wound_problem",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo_clinic:complication_wound_problem",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_complicationexamination_complication_relapse_interview",
+      "version": "1.0.0",
+      "kind": "complicationExamination",
+      "fromId": "demo_clinic:complication_relapse",
+      "toId": "demo_clinic:interview",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo_clinic:complication_relapse",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_treatmentcomplication_treatment_internal_complication_relapse",
+      "version": "1.0.0",
+      "kind": "treatmentComplication",
+      "fromId": "demo_clinic:treatment_internal",
+      "toId": "demo_clinic:complication_relapse",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo_clinic:complication_relapse",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_complicationtreatment_complication_reoperation_treatment_reoperation",
+      "version": "1.0.0",
+      "kind": "complicationTreatment",
+      "fromId": "demo_clinic:complication_reoperation",
+      "toId": "demo_clinic:treatment_reoperation",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo_clinic:complication_reoperation",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_treatmentcomplication_treatment_operation_complication_reoperation",
+      "version": "1.0.0",
+      "kind": "treatmentComplication",
+      "fromId": "demo_clinic:treatment_operation",
+      "toId": "demo_clinic:complication_reoperation",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo_clinic:complication_reoperation",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
       "id": "demo_clinic:link_furnitureequipment_equipment_imaging_ring_equipment_scanner",
       "version": "1.0.0",
       "kind": "furnitureEquipment",
@@ -3590,42 +4174,108 @@
     },
     {
       "definitionId": "demo_clinic:amber",
-      "treatmentCost": 900,
-      "treatmentDurationSeconds": 1800,
       "arrival": "walkIn",
-      "stayDurationSeconds": 43200,
       "requiredResources": {}
     },
     {
       "definitionId": "demo_clinic:blue",
-      "treatmentCost": 700,
-      "treatmentDurationSeconds": 1200,
       "arrival": "walkIn",
-      "stayDurationSeconds": 0,
       "requiredResources": {}
     },
     {
       "definitionId": "demo_clinic:green",
-      "treatmentCost": 1200,
-      "treatmentDurationSeconds": 3600,
       "arrival": "emergency",
-      "stayDurationSeconds": 86400,
       "requiredResources": {}
     },
     {
       "definitionId": "demo_clinic:violet",
-      "treatmentCost": 1000,
-      "treatmentDurationSeconds": 1800,
       "arrival": "walkIn",
-      "stayDurationSeconds": 28800,
       "requiredResources": {}
     },
     {
       "definitionId": "demo_clinic:silver",
-      "treatmentCost": 1100,
-      "treatmentDurationSeconds": 2700,
       "arrival": "emergency",
-      "stayDurationSeconds": 57600,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:treatment_reoperation",
+      "treatmentDurationSeconds": 2700,
+      "treatmentCost": 1100,
+      "stayChance": 1.0,
+      "stayDurationSeconds": 43200,
+      "stayDurationMaxSeconds": 72000,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:link_diseasetreatment_blue_treatment_general",
+      "treatmentDurationSeconds": 1200,
+      "treatmentCost": 700,
+      "stayChance": 0.0,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:link_diseasetreatment_amber_treatment_internal",
+      "treatmentDurationSeconds": 1800,
+      "treatmentCost": 900,
+      "stayChance": 0.8,
+      "stayDurationSeconds": 28800,
+      "stayDurationMaxSeconds": 57600,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:link_diseasetreatment_violet_treatment_internal",
+      "treatmentDurationSeconds": 1800,
+      "treatmentCost": 1000,
+      "stayChance": 0.6,
+      "stayDurationSeconds": 21600,
+      "stayDurationMaxSeconds": 36000,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:link_diseasetreatment_green_treatment_operation",
+      "treatmentDurationSeconds": 3600,
+      "treatmentCost": 1200,
+      "stayChance": 1.0,
+      "stayDurationSeconds": 64800,
+      "stayDurationMaxSeconds": 108000,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:link_diseasetreatment_silver_treatment_operation",
+      "treatmentDurationSeconds": 2700,
+      "treatmentCost": 1100,
+      "stayChance": 1.0,
+      "stayDurationSeconds": 43200,
+      "stayDurationMaxSeconds": 72000,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:link_diseasetreatment_silver_treatment_conservative",
+      "treatmentDurationSeconds": 1800,
+      "treatmentCost": 800,
+      "stayChance": 0.7,
+      "stayDurationSeconds": 28800,
+      "stayDurationMaxSeconds": 57600,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:complication_wound_problem",
+      "extraStayDurationSeconds": 21600,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:link_treatmentcomplication_treatment_operation_complication_wound_problem",
+      "complicationChance": 0.1,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:link_treatmentcomplication_treatment_internal_complication_relapse",
+      "complicationChance": 0.08,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:link_treatmentcomplication_treatment_operation_complication_reoperation",
+      "complicationChance": 0.05,
       "requiredResources": {}
     },
     {

@@ -51,7 +51,7 @@ public sealed class DemoClinicTests
         Assert.All(gameplay.Balances, b => Assert.Null(b.Capacity)); // abstract department capacity is no longer used (M9)
         Assert.Equal(1500m, gameplay.Balances.Single(b => b.DefinitionId == Ns + "imaging").ExaminationDurationSeconds);
         decimal? Field(string id, Func<GameplayBalance, decimal?> field) => field(gameplay.Balances.Single(b => b.DefinitionId == Ns + id));
-        Assert.Equal((600m, 1200m, 60000m, 80m, 60m, 35m), (Field("imaging", b => b.ExaminationCost)!.Value, Field("green", b => b.TreatmentCost)!.Value,
+        Assert.Equal((600m, 1200m, 60000m, 80m, 60m, 35m), (Field("imaging", b => b.ExaminationCost)!.Value, Field("link_diseasetreatment_green_treatment_operation", b => b.TreatmentCost)!.Value,
             Field("equipment_imaging_ring", b => b.PurchaseCost)!.Value, Field("furniture_disinfectant_dispenser", b => b.PurchaseCost)!.Value,
             Field("role_physician", b => b.WagePerHour)!.Value, Field("role_technician", b => b.WagePerHour)!.Value));
         Assert.Equal(18, gameplay.Balances.Count(b => b.PurchaseCost is not null));
@@ -67,7 +67,23 @@ public sealed class DemoClinicTests
         Assert.Equal((0m, 24m), (Field("department_emergency", b => b.OpenFromHour)!.Value, Field("department_emergency", b => b.OpenToHour)!.Value));
         PatientArrival Arrival(string id) => gameplay.Balances.Single(b => b.DefinitionId == Ns + id).Arrival!.Value;
         Assert.Equal((PatientArrival.WalkIn, PatientArrival.Emergency, PatientArrival.Emergency), (Arrival("blue"), Arrival("green"), Arrival("silver")));
-        Assert.Equal((0m, 86400m), (Field("blue", b => b.StayDurationSeconds)!.Value, Field("green", b => b.StayDurationSeconds)!.Value));
+        var silver = Treatments.Options(set, Ns + "silver");
+        Assert.Equal([(Ns + "treatment_operation", 1), (Ns + "treatment_conservative", 2)], silver.Select(o => (o.TreatmentId, o.Priority!.Value)));
+        var amber = Treatments.Options(set, Ns + "amber").Single();
+        var effective = Treatments.Effective(gameplay, Ns + "amber", amber.TreatmentId, amber.RelationId);
+        Assert.Equal((1800m, 900m, 0.8m, 28800m, 57600m), (effective.TreatmentDurationSeconds!.Value, effective.TreatmentCost!.Value, effective.StayChance!.Value, effective.StayDurationSeconds!.Value, effective.StayDurationMaxSeconds!.Value));
+        Assert.All(effective.Sources.Values, s => Assert.Equal(TreatmentValueSource.Pair, s));
+        var violet = Treatments.Effective(gameplay, Ns + "violet", Ns + "treatment_internal", Treatments.Options(set, Ns + "violet").Single().RelationId);
+        Assert.Equal((1000m, 0.6m), (violet.TreatmentCost!.Value, violet.StayChance!.Value)); // same treatment, different pair values
+        var followUp = Treatments.Effective(gameplay, Ns + "green", Ns + "treatment_reoperation", null);
+        Assert.Equal((TreatmentValueSource.Treatment, 2700m), (followUp.Sources["treatmentDurationSeconds"], followUp.TreatmentDurationSeconds!.Value));
+        Assert.All(package.Definitions.OfType<TreatmentDefinition>(), t => Assert.True(Treatments.Playable(set, t.Id), t.Id));
+        Assert.Equal([Ns + "complication_reoperation", Ns + "complication_wound_problem"], Treatments.Complications(set, Ns + "treatment_operation").Select(c => c.ComplicationId));
+        var wound = Treatments.Complications(set, Ns + "treatment_operation").Single(c => c.ComplicationId.EndsWith("wound_problem", StringComparison.Ordinal));
+        Assert.Equal((0.10m, 21600m), (Field(wound.RelationId.Split(':')[1], b => b.ComplicationChance)!.Value, Field("complication_wound_problem", b => b.ExtraStayDurationSeconds)!.Value));
+        var relapse = package.Definitions.OfType<ComplicationDefinition>().Single(c => c.Id == Ns + "complication_relapse");
+        Assert.Equal((ComplicationEffect.RequiredExamination, ComplicationTiming.DuringStay), (relapse.Effect, relapse.Timing));
+        Assert.Null(gameplay.Balances.Single(b => b.DefinitionId == Ns + "blue").TreatmentCost); // treatment values moved to the pairs
         Assert.Equal([(Ns + "department_general", 1), (Ns + "department_internal", 2)],
             package.Relations.Where(r => r.FromId == Ns + "blue" && r.Kind == RelationKind.DiseaseDepartment).Select(r => (r.ToId, r.Priority!.Value)).OrderBy(x => x.Item2));
         RoomDefinition Room(string id) => package.Definitions.OfType<RoomDefinition>().Single(r => r.Id == Ns + id);
@@ -76,7 +92,7 @@ public sealed class DemoClinicTests
         var waiting = package.Definitions.OfType<FurnitureDefinition>().Single(f => f.Id == Ns + "furniture_waiting_bench").Placement!;
         Assert.Equal((2, 3), (waiting.Footprint.Width, waiting.InteractionPoints.Count(p => p.Kind == "seat")));
         Assert.Equal(RelationRequirement.Required, RoomContents.Placeable(set, Ns + "room_type_ward").Single(i => i.DefinitionId == Ns + "furniture_hospital_bed").Requirement);
-        Assert.Equal(3600m, Field("green", b => b.TreatmentDurationSeconds));
+        Assert.Equal(3600m, Field("link_diseasetreatment_green_treatment_operation", b => b.TreatmentDurationSeconds));
         var table = package.Definitions.OfType<FurnitureDefinition>().Single(f => f.Id == Ns + "equipment_surgical_table");
         Assert.Equal((1, 3, table.Id), (table.Placement!.Footprint.Width, table.Placement.Footprint.Depth, table.Provenance.ExternalId));
         Assert.Null(table.Placement.InteractionPoints.Single(p => p.Key == "lying").Extensions);

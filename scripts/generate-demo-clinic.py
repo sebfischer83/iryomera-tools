@@ -103,8 +103,9 @@ for key, (en, de) in OBSERVATIONS.items():
         result = {'valueKind':'categorical', 'categories':[{'key':c, 'nameKey':text(local(key, 'observation_') + '.' + c, *CATEGORIES[c])} for c in order], 'patientContextKeys':[]}
     observations[key] = definition('observation', local(key, 'observation_'), key, en, de, result=result)
 
+examinations = {}
 for exam in fixtures['examinations']:
-    exam_id = definition('examination', local(exam['key']), exam['key'], exam['NameEn'], exam['NameDe'])
+    exam_id = examinations[exam['key']] = definition('examination', local(exam['key']), exam['key'], exam['NameEn'], exam['NameDe'])
     relation('examinationObservation', exam_id, observations[exam['observation']], exam['key'])
     for room in exam['roomTypes']: relation('examinationRoom', exam_id, rooms[room], exam['key'])
     relation('examinationStaffRole', exam_id, roles[exam['staffRole']], exam['key'])
@@ -131,6 +132,28 @@ for route in fixtures['diseaseDepartments']:
     allowed = [route['preferred']] + [d for d in route['allowed'] if d != route['preferred']]
     for priority, department in enumerate(allowed, 1):
         relation('diseaseDepartment', diseases[route['disease']], departments[department], route['disease'], priority=priority)
+
+# Treatments with room, staff role and values per disease pair (balancing on the diseaseTreatment relation, ADR 0021).
+def stay(values, hours):
+    if hours: values.update(stayDurationSeconds=hours[0] * 3600, stayDurationMaxSeconds=hours[1] * 3600)
+    return values
+treatments = {}
+for item in fixtures.get('treatments', []):
+    treatment = treatments[item['key']] = definition('treatment', local(item['key']), item['key'], item['nameEn'], item['nameDe'])
+    for room in item['rooms']: relation('treatmentRoom', treatment, rooms[room], item['key'])
+    relation('treatmentStaffRole', treatment, roles[item['staffRole']], item['key'])
+    if 'minutes' in item:
+        balance(treatment, **stay({'treatmentDurationSeconds':item['minutes'] * 60, 'treatmentCost':item['cost'], 'stayChance':item['stayChance']}, item.get('stayHours')))
+for link in fixtures.get('diseaseTreatments', []):
+    relation('diseaseTreatment', diseases[link['disease']], treatments[link['treatment']], link['disease'], priority=link['priority'])
+    balance(package['relations'][-1]['id'], **stay({'treatmentDurationSeconds':link['minutes'] * 60, 'treatmentCost':link['cost'], 'stayChance':link['stayChance']}, link['stayHours']))
+for item in fixtures.get('complications', []):
+    complication = definition('complication', local(item['key']), item['key'], item['nameEn'], item['nameDe'], effect=item['effect'], timing=item['timing'])
+    if item.get('extraStayHours'): balance(complication, extraStayDurationSeconds=item['extraStayHours'] * 3600)
+    if item.get('examination'): relation('complicationExamination', complication, examinations[item['examination']], item['key'])
+    if item.get('followUp'): relation('complicationTreatment', complication, treatments[item['followUp']], item['key'])
+    relation('treatmentComplication', treatments[item['after']], complication, item['key'])
+    balance(package['relations'][-1]['id'], complicationChance=item['chance'])
 
 furniture = {}
 for item in fixtures['furniture']:

@@ -1643,6 +1643,102 @@
       ],
       "additionalProperties": true
     },
+    "complicationDefinition": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "complication"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "nameKey": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+        },
+        "descriptionKey": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z.-]+)?(\\+[0-9A-Za-z.-]+)?$(?![\\s\\S])"
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        },
+        "classifications": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/externalIdentifier"
+          }
+        },
+        "synonymKeys": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+          }
+        },
+        "assets": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/assetReference"
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "catalogAssets": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/catalogAssetReference"
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "effect": {
+          "enum": [
+            "extraStay",
+            "requiredExamination",
+            "followUpTreatment"
+          ]
+        },
+        "timing": {
+          "enum": [
+            "duringTreatment",
+            "duringStay"
+          ]
+        }
+      },
+      "required": [
+        "kind",
+        "id",
+        "nameKey",
+        "version",
+        "provenance",
+        "effect",
+        "timing"
+      ],
+      "additionalProperties": true
+    },
     "furnitureTransport": {
       "type": "object",
       "properties": {
@@ -2317,6 +2413,9 @@
         },
         {
           "$ref": "#/$defs/staffRoleDefinition"
+        },
+        {
+          "$ref": "#/$defs/complicationDefinition"
         }
       ]
     },
@@ -2351,7 +2450,12 @@
             "diseaseDepartment",
             "furnitureEquipment",
             "departmentRoom",
-            "departmentPrerequisite"
+            "departmentPrerequisite",
+            "treatmentRoom",
+            "treatmentStaffRole",
+            "treatmentComplication",
+            "complicationExamination",
+            "complicationTreatment"
           ]
         },
         "fromId": {
@@ -2450,7 +2554,10 @@
           "then": {
             "properties": {
               "kind": {
-                "const": "diseaseDepartment"
+                "enum": [
+                  "diseaseDepartment",
+                  "diseaseTreatment"
+                ]
               }
             }
           }
@@ -2840,6 +2947,30 @@
             }
           ]
         },
+        "stayChance": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "complicationChance": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
         "treatmentDurationSeconds": {
           "anyOf": [
             {
@@ -2940,6 +3071,28 @@
           ]
         },
         "stayDurationSeconds": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "stayDurationMaxSeconds": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "extraStayDurationSeconds": {
           "anyOf": [
             {
               "type": "number",
@@ -3074,6 +3227,30 @@
             }
           ]
         },
+        "stayChance": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "complicationChance": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
         "treatmentDurationSeconds": {
           "anyOf": [
             {
@@ -3174,6 +3351,28 @@
           ]
         },
         "stayDurationSeconds": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "stayDurationMaxSeconds": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "extraStayDurationSeconds": {
           "anyOf": [
             {
               "type": "number",

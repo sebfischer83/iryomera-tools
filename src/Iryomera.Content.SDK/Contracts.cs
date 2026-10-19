@@ -67,6 +67,7 @@ public sealed record ExternalIdentifier : ExtensibleRecord
 [JsonDerivedType(typeof(RoomDefinition), "room")]
 [JsonDerivedType(typeof(FurnitureDefinition), "furniture")]
 [JsonDerivedType(typeof(StaffRoleDefinition), "staffRole")]
+[JsonDerivedType(typeof(ComplicationDefinition), "complication")]
 public abstract record ContentDefinition : ExtensibleRecord
 {
     public required string Id { get; init; }
@@ -120,13 +121,27 @@ public sealed record FurnitureDefinition : ContentDefinition
     public FurnitureTransport? Transport { get; init; }
 }
 public sealed record StaffRoleDefinition : ContentDefinition;
+/// <summary>
+/// A game complication after a treatment (ADR 0021). Effect and timing are game rules; probabilities and extra time are
+/// simulation-only balancing. Not a medical statement.
+/// </summary>
+public sealed record ComplicationDefinition : ContentDefinition
+{
+    public required ComplicationEffect Effect { get; init; }
+    public required ComplicationTiming Timing { get; init; }
+}
+/// <summary>What a complication does: extra stay time, a required examination or a follow-up treatment.</summary>
+public enum ComplicationEffect { ExtraStay, RequiredExamination, FollowUpTreatment }
+/// <summary>When a complication can occur.</summary>
+public enum ComplicationTiming { DuringTreatment, DuringStay }
 
 /// <summary>Directed, typed assertions, never inferred from balancing values.</summary>
 public enum RelationKind
 {
     DiseaseSymptom, DiseaseFinding, ExaminationFinding, DiseaseExamination,
     DiseaseTreatment, ExaminationEquipment, TreatmentQualification, RoomFurniture, ExaminationObservation, ExaminationRoom, ExaminationQualification, ExaminationPrerequisite,
-    TreatmentEquipment, RoomEquipment, ExaminationStaffRole, DiseaseDepartment, FurnitureEquipment, DepartmentRoom, DepartmentPrerequisite
+    TreatmentEquipment, RoomEquipment, ExaminationStaffRole, DiseaseDepartment, FurnitureEquipment, DepartmentRoom, DepartmentPrerequisite,
+    TreatmentRoom, TreatmentStaffRole, TreatmentComplication, ComplicationExamination, ComplicationTreatment
 }
 
 /// <summary>
@@ -146,7 +161,7 @@ public sealed record ContentRelation : ExtensibleRecord
     public required Provenance Provenance { get; init; }
     /// <summary>Optional, omitted when null; allowed only for roomEquipment, roomFurniture and departmentRoom.</summary>
     public RelationRequirement? Requirement { get; init; }
-    /// <summary>Optional, omitted when null; only for diseaseDepartment: 1 is the first choice, higher values are fallbacks.</summary>
+    /// <summary>Optional, omitted when null; only for diseaseDepartment and diseaseTreatment: 1 is the first choice, higher values are fallbacks.</summary>
     public int? Priority { get; init; }
     /// <summary>Optional, omitted when null; only for departmentRoom: the room type where the department treats patients (ADR 0020).</summary>
     public bool? TreatmentRoom { get; init; }
@@ -181,6 +196,14 @@ public sealed record GameplayBalance : ExtensibleRecord
     public PatientArrival? Arrival { get; init; }
     /// <summary>Simulation only: inpatient stay after treatment; 0 or absent means outpatient.</summary>
     public decimal? StayDurationSeconds { get; init; }
+    /// <summary>Simulation only: probability in [0,1] that a treatment leads to an inpatient stay.</summary>
+    public decimal? StayChance { get; init; }
+    /// <summary>Simulation only: longest stay; with stayDurationSeconds as the shortest it forms a range.</summary>
+    public decimal? StayDurationMaxSeconds { get; init; }
+    /// <summary>Simulation only: base probability in [0,1] of a complication, typically on a treatmentComplication relation.</summary>
+    public decimal? ComplicationChance { get; init; }
+    /// <summary>Simulation only: extra stay a complication with effect extraStay adds.</summary>
+    public decimal? ExtraStayDurationSeconds { get; init; }
     public Dictionary<string, decimal> RequiredResources { get; init; } = [];
 }
 

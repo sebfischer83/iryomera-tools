@@ -79,6 +79,15 @@ public sealed partial class ProjectService
             state.Package.Definitions[index] = room with { MinimumCells = minimumCells, RequiresDoor = requiresDoor, Role = role, Shareable = shareable, Provenance = StudioContent.Draft(room.Provenance) };
         }, ct: ct);
 
+    /// <summary>Complication effect and timing (ADR 0021). Like other definition edits this resets the complication's review only.</summary>
+    public Task SaveComplicationRulesAsync(Guid project, long revision, string complicationId, ComplicationEffect effect, ComplicationTiming timing, string actor, string note, CancellationToken ct = default) =>
+        MutateAsync(project, revision, "complication-rules", complicationId, actor, note, state =>
+        {
+            var index = state.Package.Definitions.FindIndex(d => d.Id == complicationId);
+            if (index < 0 || state.Package.Definitions[index] is not ComplicationDefinition complication) throw new ArgumentException("Select a complication definition.");
+            state.Package.Definitions[index] = complication with { Effect = effect, Timing = timing, Provenance = StudioContent.Draft(complication.Provenance) };
+        }, ct: ct);
+
     public Task SaveRelationAsync(Guid project, long revision, ContentRelation relation, string actor, string note, bool create = false, CancellationToken ct = default) =>
         MutateAsync(project, revision, "relation-edit", relation.Id, actor, note, state =>
         {

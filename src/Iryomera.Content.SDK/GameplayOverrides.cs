@@ -32,6 +32,10 @@ public sealed record GameplayOverride : ExtensibleRecord
     public decimal? OpenToHour { get; init; }
     public PatientArrival? Arrival { get; init; }
     public decimal? StayDurationSeconds { get; init; }
+    public decimal? StayChance { get; init; }
+    public decimal? StayDurationMaxSeconds { get; init; }
+    public decimal? ComplicationChance { get; init; }
+    public decimal? ExtraStayDurationSeconds { get; init; }
     public Dictionary<string, decimal>? RequiredResources { get; init; }
 
     internal IEnumerable<(string Field, decimal Value)> Values()
@@ -54,6 +58,10 @@ public sealed record GameplayOverride : ExtensibleRecord
         // The resolver works on decimals; the arrival enum travels as its numeric value and is restored in ToBalance.
         if (Arrival is { } q) yield return ("arrival", (int)q);
         if (StayDurationSeconds is { } r) yield return ("stayDurationSeconds", r);
+        if (StayChance is { } s) yield return ("stayChance", s);
+        if (StayDurationMaxSeconds is { } t) yield return ("stayDurationMaxSeconds", t);
+        if (ComplicationChance is { } u) yield return ("complicationChance", u);
+        if (ExtraStayDurationSeconds is { } w) yield return ("extraStayDurationSeconds", w);
         foreach (var (key, value) in RequiredResources ?? []) yield return ("requiredResources." + key, value);
     }
 }
@@ -110,7 +118,8 @@ public static class GameplayResolver
         TreatmentCost = b.TreatmentCost, DiagnosticDifficulty = b.DiagnosticDifficulty, SimulatedSuccessProbability = b.SimulatedSuccessProbability, Capacity = b.Capacity,
         PurchaseCost = b.PurchaseCost, WagePerHour = b.WagePerHour,
         UnlockCost = b.UnlockCost, UnlockDischargedPatients = b.UnlockDischargedPatients,
-        OpenFromHour = b.OpenFromHour, OpenToHour = b.OpenToHour, Arrival = b.Arrival, StayDurationSeconds = b.StayDurationSeconds, RequiredResources = b.RequiredResources
+        OpenFromHour = b.OpenFromHour, OpenToHour = b.OpenToHour, Arrival = b.Arrival, StayDurationSeconds = b.StayDurationSeconds,
+        StayChance = b.StayChance, StayDurationMaxSeconds = b.StayDurationMaxSeconds, ComplicationChance = b.ComplicationChance, ExtraStayDurationSeconds = b.ExtraStayDurationSeconds, RequiredResources = b.RequiredResources
     };
 
     private static GameplayBalance ToBalance(string target, SortedDictionary<string, decimal> v)
@@ -124,7 +133,8 @@ public static class GameplayResolver
             PurchaseCost = Get("purchaseCost"), WagePerHour = Get("wagePerHour"),
             UnlockCost = Get("unlockCost"), UnlockDischargedPatients = Get("unlockDischargedPatients"),
             OpenFromHour = Get("openFromHour"), OpenToHour = Get("openToHour"), Arrival = Get("arrival") is { } arrival ? (PatientArrival)(int)arrival : null,
-            StayDurationSeconds = Get("stayDurationSeconds"),
+            StayDurationSeconds = Get("stayDurationSeconds"), StayChance = Get("stayChance"), StayDurationMaxSeconds = Get("stayDurationMaxSeconds"),
+            ComplicationChance = Get("complicationChance"), ExtraStayDurationSeconds = Get("extraStayDurationSeconds"),
             RequiredResources = v.Where(p => p.Key.StartsWith("requiredResources.", StringComparison.Ordinal))
                 .ToDictionary(p => p.Key["requiredResources.".Length..], p => p.Value, StringComparer.Ordinal)
         };
