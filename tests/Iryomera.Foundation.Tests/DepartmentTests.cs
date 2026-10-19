@@ -62,6 +62,53 @@ public sealed class DepartmentTests
         Assert.Equal((500m, 3m), (resolved.UnlockCost!.Value, resolved.UnlockDischargedPatients!.Value));
     }
 
+    [Fact]
+    public async Task RoomRolesOpeningHoursArrivalAndStayRoundTripAndOverride()
+    {
+        var (base_, department, _, roomId) = Setup();
+        var room = base_.Definitions.OfType<RoomDefinition>().Single(r => r.Id == roomId);
+        base_.Definitions[base_.Definitions.IndexOf(room)] = room with { Role = RoomRole.Ward, Shareable = true };
+        var disease = base_.Definitions.OfType<DiseaseDefinition>().First().Id;
+        base_.Gameplay.Add(new() { DefinitionId = department, OpenFromHour = 8, OpenToHour = 18 });
+        base_.Gameplay.RemoveAll(x => x.DefinitionId == disease);
+        base_.Gameplay.Add(new() { DefinitionId = disease, Arrival = PatientArrival.WalkIn, StayDurationSeconds = 43200 });
+        Assert.Empty(ContentValidator.Validate(base_));
+        Assert.True(Fixtures.Evaluate("roomDefinition", JsonSerializer.SerializeToNode<ContentDefinition>(base_.Definitions.Single(d => d.Id == roomId), ContentJson.Options)).IsValid);
+        Assert.True(Fixtures.Evaluate("gameplayBalance", JsonSerializer.SerializeToNode(base_.Gameplay[^1], ContentJson.Options)).IsValid);
+        Assert.Equal("walkIn", JsonSerializer.SerializeToNode(base_.Gameplay[^1], ContentJson.Options)!["arrival"]!.GetValue<string>());
+        await using var bytes = new MemoryStream(); await ContentJson.WriteAsync(bytes, base_); bytes.Position = 0;
+        var read = await ContentDocuments.ReadValidatedAsync<ContentPackage>(bytes);
+        Assert.True(read.IsValid, string.Join(';', read.Issues));
+        Assert.Equal((RoomRole.Ward, true), (read.Value!.Definitions.OfType<RoomDefinition>().Single(r => r.Id == roomId).Role!.Value, read.Value.Definitions.OfType<RoomDefinition>().Single(r => r.Id == roomId).Shareable!.Value));
+        ContentPackage Mod(string ns, PatientArrival arrival) => new()
+        {
+            Manifest = new() { Id = ns + ":mod", Namespace = ns, Version = "1.0.0", License = "MIT", Dependencies = [new() { PackageId = base_.Manifest.Id, VersionRange = "[1.0.0,2.0.0)" }] },
+            GameplayOverrides = [new() { Id = ns + ":night", Version = "1.0.0", TargetDefinitionId = disease, Arrival = arrival }, new() { Id = ns + ":hours", Version = "1.0.0", TargetDefinitionId = department, OpenFromHour = 0, OpenToHour = 24 }]
+        };
+        var (a, b) = (Mod("mod_a", PatientArrival.Emergency), Mod("mod_b", PatientArrival.WalkIn));
+        Assert.Empty(ContentValidator.Validate(a, [read.Value]));
+        var resolved = GameplayResolver.Resolve([read.Value, a, b]);
+        var flow = resolved.Balances.Single(x => x.DefinitionId == disease);
+        Assert.Equal((PatientArrival.WalkIn, 43200m), (flow.Arrival!.Value, flow.StayDurationSeconds!.Value));
+        Assert.Equal((PatientArrival.Emergency), GameplayResolver.Resolve([read.Value, a]).Balances.Single(x => x.DefinitionId == disease).Arrival);
+        Assert.Contains(resolved.Conflicts, c => c.Field == "arrival" && c.WinnerPackageId == "mod_b:mod");
+        Assert.Equal((0m, 24m), (resolved.Balances.Single(x => x.DefinitionId == department).OpenFromHour!.Value, resolved.Balances.Single(x => x.DefinitionId == department).OpenToHour!.Value));
+        var legacy = JsonSerializer.Serialize(Fixtures.Package(), ContentJson.Options);
+        Assert.DoesNotContain("openFromHour", legacy); Assert.DoesNotContain("\"arrival\"", legacy); Assert.DoesNotContain("\"role\"", legacy); Assert.DoesNotContain("shareable", legacy);
+    }
+
+    [Theory]
+    [InlineData(25.0, null)]
+    [InlineData(18.0, 8.0)]
+    [InlineData(8.5, 18.0)]
+    [InlineData(null, -1.0)]
+    public void InvalidOpeningHoursAreRejected(double? from, double? to)
+    {
+        var (package, department, _, _) = Setup();
+        package.Gameplay.Add(new() { DefinitionId = department, OpenFromHour = (decimal?)from, OpenToHour = (decimal?)to });
+        Assert.Contains(ContentValidator.Validate(package), i => i.Code == "balance-range");
+    }
+
     [Theory]
     [InlineData("treatment-kind", "relation-treatment-room")]
     [InlineData("treatment-optional", "relation-treatment-room")]

@@ -25,6 +25,8 @@ else if (Index.Error is { } indexError) { <p class="error">@L["studio.catalogErr
         <div class="columns">
             <label>@L["studio.minimumCells"]<input type="number" min="1" @bind="MinimumCells" /></label>
             <label><input type="checkbox" @bind="RequiresDoor" /> @L["studio.requiresDoor"]</label>
+            <label>@L["studio.roomrole"]<select @bind="Role"><option value="">@L["studio.roomrole.none"]</option>@foreach (var role in Enum.GetValues<RoomRole>()) { <option value="@role">@L["studio.roomrole." + role.ToString().ToLowerInvariant()]</option> }</select></label>
+            <label><input type="checkbox" @bind="Shareable" /> @L["studio.shareable"]</label>
         </div>
         <button type="button" @onclick="SaveRoomRules" disabled="@Busy">@L["studio.saveRoomRules"]</button>
     </section>
@@ -93,13 +95,14 @@ else if (Index.Error is { } indexError) { <p class="error">@L["studio.catalogErr
     private List<AssetRow> Rows = []; private List<SurfaceRow> Surfaces = []; private List<PointRow> Points = [];
     private bool HasPlacement; private int Width = 1; private int Depth = 1; private decimal CellSize = 1; private string Mount = ""; private decimal? MountHeight; private string SurfaceCategories = "";
     private string Mobility = ""; private bool HasTransport; private int PatientCapacity = 1; private TransportPosture Posture = TransportPosture.Seated; private string TransportQualification = "";
-    private int? MinimumCells; private bool RequiresDoor;
+    private int? MinimumCells; private bool RequiresDoor; private string Role = ""; private bool Shareable;
     private string Actor = ""; private string Note = ""; private long LoadedRevision = -1;
     protected override void OnParametersSet()
     {
         Index = Catalog.Index();
         if (LoadedRevision == State.Project.Revision) return; LoadedRevision = State.Project.Revision;
         MinimumCells = (Definition as RoomDefinition)?.MinimumCells; RequiresDoor = (Definition as RoomDefinition)?.RequiresDoor ?? false;
+        Role = (Definition as RoomDefinition)?.Role?.ToString() ?? ""; Shareable = (Definition as RoomDefinition)?.Shareable ?? false;
         Rows = (Definition.CatalogAssets ?? []).Select(a => new AssetRow { CatalogId = a.CatalogId, Kind = a.Kind }).ToList();
         var furniture = Definition as FurnitureDefinition; var placement = furniture?.Placement;
         HasPlacement = placement is not null; Width = placement?.Footprint.Width ?? 1; Depth = placement?.Footprint.Depth ?? 1; CellSize = placement?.Footprint.CellSizeMeters ?? 1;
@@ -161,7 +164,8 @@ else if (Index.Error is { } indexError) { <p class="error">@L["studio.catalogErr
     // The reviewer and reason fields below the editor apply to this save too.
     private Task SaveRoomRules() => Run(async () =>
     {
-        await Projects.SaveRoomRulesAsync(State.Project.Id, State.Project.Revision, Definition.Id, MinimumCells, RequiresDoor ? true : null, Actor, Note);
+        await Projects.SaveRoomRulesAsync(State.Project.Id, State.Project.Revision, Definition.Id, MinimumCells, RequiresDoor ? true : null, Actor, Note,
+            Enum.TryParse<RoomRole>(Role, out var role) ? role : null, Shareable ? true : null);
         await OnChanged.InvokeAsync();
     });
     private static List<string>? Keys(string text) => text.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries) is { Length: > 0 } keys ? [.. keys] : null;

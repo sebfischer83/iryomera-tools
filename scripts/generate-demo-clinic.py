@@ -68,12 +68,19 @@ def balance(definition_id, **values): package['gameplay'].append({'definitionId'
 PRICES = fixtures.get('balancing', {})
 def price(field, game_key): return {field:PRICES[field][game_key]} if game_key in PRICES.get(field, {}) else {}
 
-rooms = {r['key']:definition('room', local(r['key']), r['key'], r['nameEn'], r['nameDe'], minimumCells=r['MinimumCells'], requiresDoor=r['RequiresDoor']) for r in fixtures['roomTypes']}
+def room_rules(r):
+    rules = {'minimumCells':r['MinimumCells'], 'requiresDoor':r['RequiresDoor']}
+    if r.get('role'): rules['role'] = r['role']
+    if r.get('shareable'): rules['shareable'] = True
+    return rules
+rooms = {r['key']:definition('room', local(r['key']), r['key'], r['nameEn'], r['nameDe'], **room_rules(r)) for r in fixtures['roomTypes']}
 departments = {}
 for d in fixtures['departments']:
     departments[d['key']] = definition('medicalDepartment', local(d['key']), d['key'], d['NameEn'], d['NameDe'])
     unlock = next((u for u in fixtures.get('departmentUnlock', []) if u['department'] == d['key']), None)
-    balance(departments[d['key']], capacity=d['Capacity'], **({'unlockCost':unlock['cost'], 'unlockDischargedPatients':unlock['dischargedPatients']} if unlock else {}))
+    values = {'capacity':d['Capacity']} if d['Capacity'] is not None else {}
+    if unlock: values.update(unlockCost=unlock['cost'], unlockDischargedPatients=unlock['dischargedPatients'], openFromHour=unlock['openFromHour'], openToHour=unlock['openToHour'])
+    if values: balance(departments[d['key']], **values)
 roles = {role:definition('staffRole', 'role_' + role.lower(), 'staffRole:' + role, *names) for role, names in ROLES.items()}
 for role, role_id in roles.items():
     if price('wagePerHour', role): balance(role_id, **price('wagePerHour', role))
@@ -110,6 +117,8 @@ for case in fixtures['cases']:
     disease = diseases[case['key']] = definition('disease', local(case['key']), case['key'], case['NameEn'], case['NameDe'])
     duration = fixtures.get('treatmentDurationMinutes', {}).get(case['key'])
     values = {**price('treatmentCost', case['key']), **({'treatmentDurationSeconds':duration * 60} if duration else {})}
+    if case['key'] in fixtures.get('arrival', {}): values['arrival'] = fixtures['arrival'][case['key']]
+    if case['key'] in fixtures.get('stayHours', {}): values['stayDurationSeconds'] = fixtures['stayHours'][case['key']] * 3600
     if values: balance(disease, **values)
     for reading in case['readings']:
         distribution = {'schemaVersion':'1.0.0', 'simulationOnly':True, 'id':ident('reading_' + local(case['key']) + '_' + local(reading['ObservationId'])), 'version':'1.0.0',

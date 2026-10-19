@@ -1416,6 +1416,26 @@
             "boolean",
             "null"
           ]
+        },
+        "role": {
+          "anyOf": [
+            {
+              "enum": [
+                "reception",
+                "waiting",
+                "ward"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "shareable": {
+          "type": [
+            "boolean",
+            "null"
+          ]
         }
       },
       "required": [
@@ -2919,6 +2939,54 @@
             }
           ]
         },
+        "stayDurationSeconds": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "openFromHour": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 24
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "openToHour": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 24
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "arrival": {
+          "anyOf": [
+            {
+              "enum": [
+                "walkIn",
+                "emergency"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
         "requiredResources": {
           "type": "object",
           "propertyNames": {
@@ -3099,6 +3167,54 @@
             {
               "type": "number",
               "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "stayDurationSeconds": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "openFromHour": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 24
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "openToHour": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 24
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "arrival": {
+          "anyOf": [
+            {
+              "enum": [
+                "walkIn",
+                "emergency"
+              ]
             },
             {
               "type": "null"

@@ -20,7 +20,7 @@ python scripts/generate-demo-clinic.py
 | --- | --- |
 | `demo:<key>` | `demo_clinic:<key>`, hyphens become underscores; the game key stays in `provenance.externalId`. |
 | Room type `MinimumCells`, `RequiresDoor` | `room` with `minimumCells`, `requiresDoor`. |
-| Department `Capacity` | `medicalDepartment` plus gameplay `capacity`. `ServiceOnly` stays in the game. |
+| Department | `medicalDepartment`. `ServiceOnly` stays in the game. |
 | Staff role `Physician`, `Nurse`, `Technician` | `staffRole` `role_physician`, `role_nurse`, `role_technician`. |
 | Examination | `examination` with `examinationObservation`, `examinationRoom`, `examinationStaffRole`, `examinationEquipment`, `examinationQualification`; `durationMinutes × 60` as `examinationDurationSeconds`. |
 | Observation `demo:<key>` | `observation` `observation_<key>`: numeric, categorical (`clear`, `marked`, `cloudy`) or text (complaint). |
@@ -35,8 +35,11 @@ python scripts/generate-demo-clinic.py
 | Room furniture requirement | `roomFurniture` with `requirement`. |
 | Patient names | Name pools `demo_clinic:patients.given` and `demo_clinic:patients.family` (country `DE`, gender unknown); no name format, so installed formats are not contested. |
 | `balancing` | Synthetic game currency (M8): `examinationCost` per examination, `treatmentCost` per case, `purchaseCost` per furniture item, `wagePerHour` per staff role, all as gameplay balancing. Not real prices or wages. |
-| `departmentRooms` (when present) | `departmentRoom` with `requirement`; `treatment: true` becomes `treatmentRoom: true` (ADR 0020). The demo values are on hold while the game replans progression. |
-| `departmentUnlock` (when present) | Gameplay `unlockCost` and `unlockDischargedPatients` on the department; `requires` becomes `departmentPrerequisite`. |
+| `departmentRooms` (when present) | `departmentRoom` with `requirement`; `treatment: true` becomes `treatmentRoom: true` (ADR 0020). |
+| `departmentUnlock` (when present) | Gameplay `unlockCost`, `unlockDischargedPatients`, `openFromHour` and `openToHour` on the department; `requires` becomes `departmentPrerequisite`. |
+| Room `role`, `shareable` | RoomDefinition `role` and `shareable`. |
+| `arrival`, `stayHours` | Gameplay `arrival` and `stayDurationSeconds` (× 3600) on the case. |
+| Department `Capacity` | No longer emitted (M9); department capacity follows from beds and rooms in the game. |
 | `treatmentDurationMinutes` | Gameplay `treatmentDurationSeconds` (× 60) on the case. |
 | New content (operating room, surgical table) | Keys are already SDK IDs, so `provenance.externalId` equals the ID; there is no older game key. |
 | Patient mobility | Not content; stays in the game. |
