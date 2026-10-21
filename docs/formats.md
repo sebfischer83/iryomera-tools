@@ -162,6 +162,10 @@ New definition kind `complication` with required `effect` (`extraStay`, `require
 
 Balancing gains `stayChance` and `complicationChance` (0–1), `stayDurationMaxSeconds` (not below `stayDurationSeconds` in one record) and `extraStayDurationSeconds`. A balancing record or override may target a `diseaseTreatment` or `treatmentComplication` relation ID to set values for that pair (`gameplay-target` for other relations); mods override and conflict on them like on definitions. `Treatments.Effective` merges pair, treatment and disease values in that order and reports each source. Older readers reject the new kind and relation kinds. See [ADR 0021](architecture/0021-treatments-and-complications.md).
 
+## Comfort and insurers (library 0.20.0)
+
+Balancing gains `comfort` (whole number 0–10, typically on furniture, absent 0), `minimumReputation` (0–100, absent 0), `priceFactor` (above 0, absent 1) and `patientShare` (0–1, absent 0). New definition kind `insurer`; `Insurers.All` lists insurers with resolved terms and defaults, `Insurers.SelfPayShare` the rest of 1 for patients without an insurer. Range errors are `balance-range`; `insurer-share` reports shares above 1 in total over a package and its declared dependencies after overrides. Older readers reject the new kind. See [ADR 0022](architecture/0022-comfort-and-insurers.md).
+
 ModKit authoring (`mod.json`) and archive integrity (`checksums.json`) have separate schemas in `schemas/modkit/v1`. No executable/script/plugin payload kind is defined. The archive is not a Godot PCK or game save format. The runtime game remains responsible for asset rendering and interaction behavior.
 
 ## Name pools and formats (library 0.6.0)

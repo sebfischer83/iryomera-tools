@@ -68,6 +68,7 @@ public sealed record ExternalIdentifier : ExtensibleRecord
 [JsonDerivedType(typeof(FurnitureDefinition), "furniture")]
 [JsonDerivedType(typeof(StaffRoleDefinition), "staffRole")]
 [JsonDerivedType(typeof(ComplicationDefinition), "complication")]
+[JsonDerivedType(typeof(InsurerDefinition), "insurer")]
 public abstract record ContentDefinition : ExtensibleRecord
 {
     public required string Id { get; init; }
@@ -134,6 +135,11 @@ public sealed record ComplicationDefinition : ContentDefinition
 public enum ComplicationEffect { ExtraStay, RequiredExamination, FollowUpTreatment }
 /// <summary>When a complication can occur.</summary>
 public enum ComplicationTiming { DuringTreatment, DuringStay }
+/// <summary>
+/// A fictional game insurer (ADR 0022). Contract terms are simulation-only balancing (minimumReputation, priceFactor,
+/// patientShare); not an insurance-law statement and not a real organisation.
+/// </summary>
+public sealed record InsurerDefinition : ContentDefinition;
 
 /// <summary>Directed, typed assertions, never inferred from balancing values.</summary>
 public enum RelationKind
@@ -204,6 +210,14 @@ public sealed record GameplayBalance : ExtensibleRecord
     public decimal? ComplicationChance { get; init; }
     /// <summary>Simulation only: extra stay a complication with effect extraStay adds.</summary>
     public decimal? ExtraStayDurationSeconds { get; init; }
+    /// <summary>Simulation only: comfort of a furniture item, a whole number in [0,10]; absent means 0.</summary>
+    public decimal? Comfort { get; init; }
+    /// <summary>Simulation only: reputation in [0,100] from which an insurer offers a contract; absent means 0.</summary>
+    public decimal? MinimumReputation { get; init; }
+    /// <summary>Simulation only: factor above 0 on the income from an insurer's patients; absent means 1.</summary>
+    public decimal? PriceFactor { get; init; }
+    /// <summary>Simulation only: an insurer's share in [0,1] of all arrivals; absent means 0, the rest are self-payers.</summary>
+    public decimal? PatientShare { get; init; }
     public Dictionary<string, decimal> RequiredResources { get; init; } = [];
 }
 

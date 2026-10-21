@@ -22,7 +22,7 @@ def dump(path,value):
         if isinstance(item,list):return [anchor(x) for x in item]
         return item
     path.write_text(json.dumps(anchor(value),indent=2,ensure_ascii=False)+'\n')
-kinds=['disease','symptom','finding','examination','observation','treatment','medicalProcedure','medicalDepartment','medicalEquipment','staffQualification','room','furniture','staffRole','complication']
+kinds=['disease','symptom','finding','examination','observation','treatment','medicalProcedure','medicalDepartment','medicalEquipment','staffQualification','room','furniture','staffRole','complication','insurer']
 rels=['diseaseSymptom','diseaseFinding','examinationFinding','diseaseExamination','diseaseTreatment','examinationEquipment','treatmentQualification','roomFurniture','examinationObservation','examinationRoom','examinationQualification','examinationPrerequisite','treatmentEquipment','roomEquipment','examinationStaffRole','diseaseDepartment','furnitureEquipment','departmentRoom','departmentPrerequisite','treatmentRoom','treatmentStaffRole','treatmentComplication','complicationExamination','complicationTreatment']
 defs={}
 defs['evidenceReference']=obj({'citation':text,'uri':nullable({'type':'string','format':'uri'}),'evidenceCode':nullable(text)},['citation'])
@@ -90,10 +90,14 @@ manifest={'schemaVersion':{'const':'1.0.0'},'id':id,'namespace':ns,'version':ver
 defs['contentPackageManifest']=obj(manifest,['schemaVersion','id','namespace','version','license'])
 defs['modManifest']=obj({**manifest,'nameKey':key,'author':text,'compatibleGameVersions':text,'contentFiles':array({'type':'string','minLength':1,'pattern':r'^(?!/)(?!.*\\)(?!.*:)(?!.*(?:^|/)\.\.?(/|$)).+$'}),'supportedLanguages':array({'type':'string','pattern':r'^[a-z]{2,3}(-[A-Za-z0-9]{2,8})*$'})},['schemaVersion','id','namespace','nameKey','author','version','compatibleGameVersions','license'])
 bal={'definitionId':id}
-for name in ['rarity','severity','diagnosticDifficulty','simulatedSuccessProbability','stayChance','complicationChance']:bal[name]=nullable({'type':'number','minimum':0,'maximum':1})
+for name in ['rarity','severity','diagnosticDifficulty','simulatedSuccessProbability','stayChance','complicationChance','patientShare']:bal[name]=nullable({'type':'number','minimum':0,'maximum':1})
 for name in ['treatmentDurationSeconds','examinationDurationSeconds','examinationCost','treatmentCost','capacity','purchaseCost','wagePerHour','unlockCost','unlockDischargedPatients','stayDurationSeconds','stayDurationMaxSeconds','extraStayDurationSeconds']:bal[name]=nullable({'type':'number','minimum':0})
 for name in ['openFromHour','openToHour']:bal[name]=nullable({'type':'integer','minimum':0,'maximum':24})
 bal['arrival']=nullable({'enum':['walkIn','emergency']})
+# Comfort and insurer terms (ADR 0022): simulation-only game values.
+bal['comfort']=nullable({'type':'integer','minimum':0,'maximum':10})
+bal['minimumReputation']=nullable({'type':'number','minimum':0,'maximum':100})
+bal['priceFactor']=nullable({'type':'number','exclusiveMinimum':0})
 bal['requiredResources']={'type':'object','propertyNames':text,'additionalProperties':{'type':'number','minimum':0}}
 defs['gameplayBalance']=obj(bal,['definitionId'])
 # Simulation-only overrides of declared dependencies' balancing (ADR 0015); only set fields replace earlier values.

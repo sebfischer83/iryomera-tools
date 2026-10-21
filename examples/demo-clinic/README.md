@@ -43,7 +43,9 @@ python scripts/generate-demo-clinic.py
 | `treatments` | `treatment` with `treatmentRoom` and `treatmentStaffRole`; optional own values (`minutes`, `cost`, `stayChance`, `stayHours`) as treatment balancing. |
 | `diseaseTreatments` | `diseaseTreatment` with `priority`; its values (duration, cost, stay chance, stay range in hours × 3600) are balancing on the relation ID (ADR 0021). Diseases no longer carry treatment values. |
 | `complications` | `complication` with `effect` and `timing`; `treatmentComplication` from `after` with `complicationChance` on the relation, `complicationExamination` / `complicationTreatment` for the effect, `extraStayHours` × 3600 as `extraStayDurationSeconds`. |
-| New content (operating room, surgical table) | Keys are already SDK IDs, so `provenance.externalId` equals the ID; there is no older game key. |
+| `balancing.comfort` | Gameplay `comfort` on the furniture item, in the same record as its `purchaseCost` (ADR 0022). |
+| `insurers` | Fictional `insurer` with a description key and gameplay `minimumReputation`, `priceFactor` and `patientShare`; not real organisations or insurance terms. |
+| New content (operating room, surgical table, plant, water dispenser, insurers) | Keys are already SDK IDs, so `provenance.externalId` equals the ID; there is no older game key. |
 | Patient mobility | Not content; stays in the game. |
 
 Units: `demo:C` → `Cel`, `demo:beats-per-minute` → `/min`, `demo:fictional-pressure` → `{fictional_pressure}`, `demo:fictional-count` → `{fictional_count}`, `demo:fictional-marker` → `{fictional_marker}`.

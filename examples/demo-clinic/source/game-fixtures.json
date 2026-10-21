@@ -911,6 +911,26 @@
           "placeholder": false
         }
       ]
+    },
+    {
+      "key": "demo_clinic:furniture_potted_plant",
+      "NameDe": "Topfpflanze",
+      "NameEn": "Potted plant",
+      "Width": 1,
+      "Depth": 1,
+      "asset": "iryomera.assets:decor.potted_plant_basic",
+      "capabilities": [],
+      "transport": null
+    },
+    {
+      "key": "demo_clinic:furniture_water_dispenser",
+      "NameDe": "Wasserspender",
+      "NameEn": "Water dispenser",
+      "Width": 1,
+      "Depth": 1,
+      "asset": "iryomera.assets:decor.water_dispenser_basic",
+      "capabilities": [],
+      "transport": null
     }
   ],
   "roomFurniture": [
@@ -1123,6 +1143,26 @@
       "room": "demo_clinic:room_type_ward",
       "item": "demo:furniture_office_chair",
       "requirement": "Optional"
+    },
+    {
+      "room": "demo_clinic:room_type_waiting",
+      "item": "demo_clinic:furniture_potted_plant",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo_clinic:room_type_reception",
+      "item": "demo_clinic:furniture_potted_plant",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo_clinic:room_type_waiting",
+      "item": "demo_clinic:furniture_water_dispenser",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo_clinic:room_type_reception",
+      "item": "demo_clinic:furniture_water_dispenser",
+      "requirement": "Optional"
     }
   ],
   "patientNames": [
@@ -1177,12 +1217,22 @@
       "demo_clinic:equipment_surgical_table": 25000,
       "demo_clinic:furniture_reception_desk": 2000,
       "demo_clinic:furniture_waiting_bench": 600,
-      "demo_clinic:furniture_hospital_bed": 3000
+      "demo_clinic:furniture_hospital_bed": 3000,
+      "demo_clinic:furniture_potted_plant": 300,
+      "demo_clinic:furniture_water_dispenser": 500
     },
     "wagePerHour": {
       "Physician": 60,
       "Nurse": 30,
       "Technician": 35
+    },
+    "comfort": {
+      "demo:furniture_wall_picture": 3,
+      "demo:furniture_ceiling_lamp": 1,
+      "demo_clinic:furniture_waiting_bench": 2,
+      "demo:furniture_office_chair": 1,
+      "demo_clinic:furniture_potted_plant": 4,
+      "demo_clinic:furniture_water_dispenser": 3
     }
   },
   "departmentRooms": [
@@ -1453,6 +1503,38 @@
       "timing": "duringTreatment",
       "effect": "followUpTreatment",
       "followUp": "demo_clinic:treatment_reoperation"
+    }
+  ],
+  "insurers": [
+    {
+      "key": "demo_clinic:insurer_basic_fund",
+      "nameEn": "Basic Fund",
+      "nameDe": "Grundkasse",
+      "descriptionEn": "Fictional basic health fund; insures most patients.",
+      "descriptionDe": "Fiktive Grundkasse; versichert die meisten Patienten.",
+      "minimumReputation": 0,
+      "priceFactor": 1.0,
+      "patientShare": 0.6
+    },
+    {
+      "key": "demo_clinic:insurer_substitute_fund",
+      "nameEn": "Substitute Fund",
+      "nameDe": "Ersatzkasse",
+      "descriptionEn": "Fictional substitute fund; pays a little more.",
+      "descriptionDe": "Fiktive Ersatzkasse; zahlt etwas mehr.",
+      "minimumReputation": 55,
+      "priceFactor": 1.1,
+      "patientShare": 0.25
+    },
+    {
+      "key": "demo_clinic:insurer_private_cover",
+      "nameEn": "Private Cover",
+      "nameDe": "Privatversicherung",
+      "descriptionEn": "Fictional private insurance; pays the most, only for a good reputation.",
+      "descriptionDe": "Fiktive Privatversicherung; zahlt am meisten, nur bei gutem Ruf.",
+      "minimumReputation": 70,
+      "priceFactor": 1.4,
+      "patientShare": 0.1
     }
   ]
 }
