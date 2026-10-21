@@ -78,6 +78,14 @@
     "demo_clinic.furniture_reception_desk.name": "Reception desk",
     "demo_clinic.furniture_waiting_bench.name": "Waiting bench",
     "demo_clinic.furniture_hospital_bed.name": "Hospital bed",
+    "demo_clinic.furniture_potted_plant.name": "Potted plant",
+    "demo_clinic.furniture_water_dispenser.name": "Water dispenser",
+    "demo_clinic.insurer_basic_fund.description": "Fictional basic health fund; insures most patients.",
+    "demo_clinic.insurer_basic_fund.name": "Basic Fund",
+    "demo_clinic.insurer_substitute_fund.description": "Fictional substitute fund; pays a little more.",
+    "demo_clinic.insurer_substitute_fund.name": "Substitute Fund",
+    "demo_clinic.insurer_private_cover.description": "Fictional private insurance; pays the most, only for a good reputation.",
+    "demo_clinic.insurer_private_cover.name": "Private Cover",
     "demo_clinic.pool.patients_given.name": "Demo patient given names",
     "demo_clinic.pool.patients_family.name": "Demo patient family names"
   }

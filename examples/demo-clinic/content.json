@@ -1752,6 +1752,134 @@
           }
         ]
       }
+    },
+    {
+      "kind": "furniture",
+      "id": "demo_clinic:furniture_potted_plant",
+      "nameKey": "demo_clinic.furniture_potted_plant.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo_clinic:furniture_potted_plant",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "catalogAssets": [
+        {
+          "catalogId": "iryomera.assets:decor.potted_plant_basic",
+          "kind": "modelGlb"
+        }
+      ],
+      "placement": {
+        "footprint": {
+          "width": 1,
+          "depth": 1,
+          "cellSizeMeters": 1,
+          "occupiedCells": []
+        },
+        "interactionPoints": []
+      }
+    },
+    {
+      "kind": "furniture",
+      "id": "demo_clinic:furniture_water_dispenser",
+      "nameKey": "demo_clinic.furniture_water_dispenser.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo_clinic:furniture_water_dispenser",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "catalogAssets": [
+        {
+          "catalogId": "iryomera.assets:decor.water_dispenser_basic",
+          "kind": "modelGlb"
+        }
+      ],
+      "placement": {
+        "footprint": {
+          "width": 1,
+          "depth": 1,
+          "cellSizeMeters": 1,
+          "occupiedCells": []
+        },
+        "interactionPoints": []
+      }
+    },
+    {
+      "kind": "insurer",
+      "id": "demo_clinic:insurer_basic_fund",
+      "nameKey": "demo_clinic.insurer_basic_fund.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo_clinic:insurer_basic_fund",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "descriptionKey": "demo_clinic.insurer_basic_fund.description"
+    },
+    {
+      "kind": "insurer",
+      "id": "demo_clinic:insurer_substitute_fund",
+      "nameKey": "demo_clinic.insurer_substitute_fund.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo_clinic:insurer_substitute_fund",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "descriptionKey": "demo_clinic.insurer_substitute_fund.description"
+    },
+    {
+      "kind": "insurer",
+      "id": "demo_clinic:insurer_private_cover",
+      "nameKey": "demo_clinic.insurer_private_cover.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo_clinic:insurer_private_cover",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "descriptionKey": "demo_clinic.insurer_private_cover.description"
     }
   ],
   "relations": [
@@ -3831,6 +3959,90 @@
       "requirement": "optional"
     },
     {
+      "id": "demo_clinic:link_roomfurniture_room_type_waiting_furniture_potted_plant",
+      "version": "1.0.0",
+      "kind": "roomFurniture",
+      "fromId": "demo_clinic:room_type_waiting",
+      "toId": "demo_clinic:furniture_potted_plant",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo_clinic:room_type_waiting",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "requirement": "optional"
+    },
+    {
+      "id": "demo_clinic:link_roomfurniture_room_type_reception_furniture_potted_plant",
+      "version": "1.0.0",
+      "kind": "roomFurniture",
+      "fromId": "demo_clinic:room_type_reception",
+      "toId": "demo_clinic:furniture_potted_plant",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo_clinic:room_type_reception",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "requirement": "optional"
+    },
+    {
+      "id": "demo_clinic:link_roomfurniture_room_type_waiting_furniture_water_dispenser",
+      "version": "1.0.0",
+      "kind": "roomFurniture",
+      "fromId": "demo_clinic:room_type_waiting",
+      "toId": "demo_clinic:furniture_water_dispenser",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo_clinic:room_type_waiting",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "requirement": "optional"
+    },
+    {
+      "id": "demo_clinic:link_roomfurniture_room_type_reception_furniture_water_dispenser",
+      "version": "1.0.0",
+      "kind": "roomFurniture",
+      "fromId": "demo_clinic:room_type_reception",
+      "toId": "demo_clinic:furniture_water_dispenser",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo_clinic:room_type_reception",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      },
+      "requirement": "optional"
+    },
+    {
       "id": "demo_clinic:link_departmentroom_department_general_room_type_consultation",
       "version": "1.0.0",
       "kind": "departmentRoom",
@@ -4301,6 +4513,7 @@
     {
       "definitionId": "demo_clinic:furniture_ceiling_lamp",
       "purchaseCost": 300,
+      "comfort": 1,
       "requiredResources": {}
     },
     {
@@ -4331,6 +4544,7 @@
     {
       "definitionId": "demo_clinic:furniture_office_chair",
       "purchaseCost": 250,
+      "comfort": 1,
       "requiredResources": {}
     },
     {
@@ -4341,6 +4555,7 @@
     {
       "definitionId": "demo_clinic:furniture_wall_picture",
       "purchaseCost": 120,
+      "comfort": 3,
       "requiredResources": {}
     },
     {
@@ -4361,11 +4576,45 @@
     {
       "definitionId": "demo_clinic:furniture_waiting_bench",
       "purchaseCost": 600,
+      "comfort": 2,
       "requiredResources": {}
     },
     {
       "definitionId": "demo_clinic:furniture_hospital_bed",
       "purchaseCost": 3000,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:furniture_potted_plant",
+      "purchaseCost": 300,
+      "comfort": 4,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:furniture_water_dispenser",
+      "purchaseCost": 500,
+      "comfort": 3,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:insurer_basic_fund",
+      "minimumReputation": 0,
+      "priceFactor": 1.0,
+      "patientShare": 0.6,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:insurer_substitute_fund",
+      "minimumReputation": 55,
+      "priceFactor": 1.1,
+      "patientShare": 0.25,
+      "requiredResources": {}
+    },
+    {
+      "definitionId": "demo_clinic:insurer_private_cover",
+      "minimumReputation": 70,
+      "priceFactor": 1.4,
+      "patientShare": 0.1,
       "requiredResources": {}
     }
   ],

@@ -226,6 +226,7 @@ public static class ContentValidator
             errors.AddRange(AssetValidator.Validate(item, id => Resolve(id, id)?.Definition));
             errors.AddRange(DepartmentValidator.Validate(item));
             errors.AddRange(TreatmentValidator.Validate(item, packages.Where(p => allowed.Contains(p.Manifest.Id)).ToArray()));
+            errors.AddRange(InsurerValidator.Validate(item, packages.Where(p => allowed.Contains(p.Manifest.Id)).ToArray()));
             var overridden = new HashSet<string>(StringComparer.Ordinal);
             foreach (var change in item.GameplayOverrides ?? [])
             {
@@ -234,7 +235,7 @@ public static class ContentValidator
                 else ResolveBalancingTarget(change.TargetDefinitionId, change.Id + ".targetDefinitionId");
                 if (!overridden.Add(change.TargetDefinitionId)) Error("duplicate-gameplay-override", change.Id, "One override per target definition and package.");
                 if (!change.Values().Any()) Error("gameplay-override-empty", change.Id, "An override must set at least one balancing value.");
-                if (new[] { change.Rarity, change.Severity, change.DiagnosticDifficulty, change.SimulatedSuccessProbability, change.StayChance, change.ComplicationChance }.Any(x => x is < 0 or > 1))
+                if (new[] { change.Rarity, change.Severity, change.DiagnosticDifficulty, change.SimulatedSuccessProbability, change.StayChance, change.ComplicationChance, change.PatientShare }.Any(x => x is < 0 or > 1))
                     Error("balance-range", change.Id, "Normalized simulation values must be within [0,1].");
                 if (new[] { change.TreatmentDurationSeconds, change.ExaminationDurationSeconds, change.ExaminationCost, change.TreatmentCost, change.Capacity, change.PurchaseCost, change.WagePerHour, change.UnlockCost, change.UnlockDischargedPatients, change.StayDurationSeconds, change.StayDurationMaxSeconds, change.ExtraStayDurationSeconds }.Any(x => x < 0) || (change.RequiredResources ?? []).Values.Any(x => x < 0))
                     Error("balance-range", change.Id, "Simulation time, costs and resources must be nonnegative.");
@@ -246,7 +247,7 @@ public static class ContentValidator
             {
                 ResolveBalancingTarget(balance.DefinitionId, balance.DefinitionId + ".gameplay");
                 if (!balances.Add(balance.DefinitionId)) Error("duplicate-balance", balance.DefinitionId, "Multiple balance records for one definition.");
-                if (new[] { balance.Rarity, balance.Severity, balance.DiagnosticDifficulty, balance.SimulatedSuccessProbability, balance.StayChance, balance.ComplicationChance }.Any(x => x is < 0 or > 1))
+                if (new[] { balance.Rarity, balance.Severity, balance.DiagnosticDifficulty, balance.SimulatedSuccessProbability, balance.StayChance, balance.ComplicationChance, balance.PatientShare }.Any(x => x is < 0 or > 1))
                     Error("balance-range", balance.DefinitionId, "Normalized simulation values must be within [0,1].");
                 if (new[] { balance.TreatmentDurationSeconds, balance.ExaminationDurationSeconds, balance.ExaminationCost, balance.TreatmentCost, balance.Capacity, balance.PurchaseCost, balance.WagePerHour, balance.UnlockCost, balance.UnlockDischargedPatients, balance.StayDurationSeconds, balance.StayDurationMaxSeconds, balance.ExtraStayDurationSeconds }.Any(x => x < 0) || balance.RequiredResources.Values.Any(x => x < 0))
                     Error("balance-range", balance.DefinitionId, "Simulation time, costs and resources must be nonnegative.");

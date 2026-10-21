@@ -1739,6 +1739,87 @@
       ],
       "additionalProperties": true
     },
+    "insurerDefinition": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "insurer"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "nameKey": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+        },
+        "descriptionKey": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z.-]+)?(\\+[0-9A-Za-z.-]+)?$(?![\\s\\S])"
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        },
+        "classifications": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/externalIdentifier"
+          }
+        },
+        "synonymKeys": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+          }
+        },
+        "assets": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/assetReference"
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "catalogAssets": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/catalogAssetReference"
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "kind",
+        "id",
+        "nameKey",
+        "version",
+        "provenance"
+      ],
+      "additionalProperties": true
+    },
     "furnitureTransport": {
       "type": "object",
       "properties": {
@@ -2416,6 +2497,9 @@
         },
         {
           "$ref": "#/$defs/complicationDefinition"
+        },
+        {
+          "$ref": "#/$defs/insurerDefinition"
         }
       ]
     },
@@ -2971,6 +3055,18 @@
             }
           ]
         },
+        "patientShare": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
         "treatmentDurationSeconds": {
           "anyOf": [
             {
@@ -3134,6 +3230,41 @@
                 "walkIn",
                 "emergency"
               ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "comfort": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "minimumReputation": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "priceFactor": {
+          "anyOf": [
+            {
+              "type": "number",
+              "exclusiveMinimum": 0
             },
             {
               "type": "null"
@@ -3251,6 +3382,18 @@
             }
           ]
         },
+        "patientShare": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
         "treatmentDurationSeconds": {
           "anyOf": [
             {
@@ -3414,6 +3557,41 @@
                 "walkIn",
                 "emergency"
               ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "comfort": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "minimumReputation": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "priceFactor": {
+          "anyOf": [
+            {
+              "type": "number",
+              "exclusiveMinimum": 0
             },
             {
               "type": "null"

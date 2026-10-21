@@ -99,6 +99,24 @@ public sealed class AssetStudioTests
     }
 
     [Fact]
+    public async Task InsurersAndComfortAreEditable()
+    {
+        await using var data = await StudioTestData.CreateAsync(); var id = await data.Synthetic(); var state = await data.Projects.GetAsync(id);
+        await data.Projects.SaveDefinitionAsync(id, state.Project.Revision, new() { Id = "synthetic:fund", Kind = "insurer", NameEn = "Synthetic fund", NameDe = "Synthetische Kasse",
+            ExternalId = "fund", Actor = "Synthetic editor", Note = "New insurer" }, create: true);
+        state = await data.Projects.GetAsync(id);
+        Assert.Single(state.Package.Definitions.OfType<InsurerDefinition>());
+        await data.Projects.SaveGameplayAsync(id, state.Project.Revision, new() { DefinitionId = "synthetic:fund", MinimumReputation = 55, PriceFactor = 1.1m, PatientShare = 0.25m }, "Synthetic editor", "Contract terms");
+        state = await data.Projects.GetAsync(id);
+        var desk = state.Package.Definitions.OfType<FurnitureDefinition>().First().Id;
+        await data.Projects.SaveGameplayAsync(id, state.Project.Revision, new() { DefinitionId = desk, Comfort = 4 }, "Synthetic editor", "Comfort");
+        state = await data.Projects.GetAsync(id);
+        var fund = state.Package.Gameplay.Single(b => b.DefinitionId == "synthetic:fund");
+        Assert.Equal((55m, 1.1m, 0.25m, 4m), (fund.MinimumReputation!.Value, fund.PriceFactor!.Value, fund.PatientShare!.Value, state.Package.Gameplay.Single(b => b.DefinitionId == desk).Comfort!.Value));
+        Assert.Empty(ContentValidator.Validate(state.Package));
+    }
+
+    [Fact]
     public async Task ComplicationsAndPairBalancingAreEditable()
     {
         await using var data = await StudioTestData.CreateAsync(); var id = await data.Synthetic(); var state = await data.Projects.GetAsync(id);

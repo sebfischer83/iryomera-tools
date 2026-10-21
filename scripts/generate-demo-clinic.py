@@ -171,7 +171,9 @@ for item in fixtures['furniture']:
     if item['transport']:
         extra.update(mobility='pushable', transport={'patientCapacity':1, 'posture':item['transport'].lower()})
     furniture[item['key']] = definition('furniture', local(item['key']), item['key'], item['NameEn'], item['NameDe'], **extra)
-    if price('purchaseCost', item['key']): balance(furniture[item['key']], **price('purchaseCost', item['key']))
+    # Purchase price and comfort (ADR 0022) form one balancing record per item.
+    values = price('purchaseCost', item['key']) | price('comfort', item['key'])
+    if values: balance(furniture[item['key']], **values)
     for capability in item['capabilities']: relation('furnitureEquipment', furniture[item['key']], equipment[capability], item['key'])
 for link in fixtures['roomFurniture']:
     relation('roomFurniture', rooms[link['room']], furniture[link['item']], link['room'], requirement=link['requirement'].lower())
@@ -180,6 +182,12 @@ for link in fixtures.get('departmentRooms', []):
     relation('departmentRoom', departments[link['department']], rooms[link['room']], link['department'], requirement=link['requirement'].lower(), **({'treatmentRoom':True} if link['treatment'] else {}))
 for unlock in fixtures.get('departmentUnlock', []):
     for required in unlock['requires']: relation('departmentPrerequisite', departments[unlock['department']], departments[required], unlock['department'])
+
+# Fictional insurers with simulation-only contract terms (ADR 0022); not real organisations or insurance law.
+for item in fixtures.get('insurers', []):
+    name = local(item['key'])
+    insurer = definition('insurer', name, item['key'], item['nameEn'], item['nameDe'], descriptionKey=text(name + '.description', item['descriptionEn'], item['descriptionDe']))
+    balance(insurer, minimumReputation=item['minimumReputation'], priceFactor=item['priceFactor'], patientShare=item['patientShare'])
 
 for part, index in (('given', 0), ('family', 1)):
     entries = []

@@ -30,8 +30,8 @@ public sealed class DemoClinicTests
             catalogs.Add(catalog.Value!);
         }
         Assert.Empty(ContentLocalizationValidator.Validate(package, catalogs));
-        Assert.Equal((7, 5, 3, 1, 2, 8, 8, 5, 18), (Count<RoomDefinition>(), Count<MedicalDepartmentDefinition>(), Count<StaffRoleDefinition>(), Count<StaffQualificationDefinition>(),
-            Count<MedicalEquipmentDefinition>(), Count<ObservationDefinition>(), Count<ExaminationDefinition>(), Count<DiseaseDefinition>(), Count<FurnitureDefinition>()));
+        Assert.Equal((7, 5, 3, 1, 2, 8, 8, 5, 20, 3), (Count<RoomDefinition>(), Count<MedicalDepartmentDefinition>(), Count<StaffRoleDefinition>(), Count<StaffQualificationDefinition>(),
+            Count<MedicalEquipmentDefinition>(), Count<ObservationDefinition>(), Count<ExaminationDefinition>(), Count<DiseaseDefinition>(), Count<FurnitureDefinition>(), Count<InsurerDefinition>()));
         Assert.All(package.Definitions.Select(d => d.Provenance).Concat(package.Relations.Select(r => r.Provenance)), p =>
             Assert.True(p is { License: "MIT", ReviewStatus: ReviewStatus.Unreviewed } && p.Source.Contains("fictional", StringComparison.Ordinal)));
         Assert.Equal("demo:blood-pressure", package.Definitions.Single(d => d.Id == Ns + "blood_pressure").Provenance.ExternalId);
@@ -54,7 +54,7 @@ public sealed class DemoClinicTests
         Assert.Equal((600m, 1200m, 60000m, 80m, 60m, 35m), (Field("imaging", b => b.ExaminationCost)!.Value, Field("link_diseasetreatment_green_treatment_operation", b => b.TreatmentCost)!.Value,
             Field("equipment_imaging_ring", b => b.PurchaseCost)!.Value, Field("furniture_disinfectant_dispenser", b => b.PurchaseCost)!.Value,
             Field("role_physician", b => b.WagePerHour)!.Value, Field("role_technician", b => b.WagePerHour)!.Value));
-        Assert.Equal(18, gameplay.Balances.Count(b => b.PurchaseCost is not null));
+        Assert.Equal(20, gameplay.Balances.Count(b => b.PurchaseCost is not null));
         var surgery = Ns + "department_surgery";
         Assert.Equal([(Ns + "room_type_consultation", RelationRequirement.Required, false), (Ns + "room_type_operating", RelationRequirement.Required, true), (Ns + "room_type_ward", RelationRequirement.Required, false)],
             Departments.Rooms(set, surgery).Select(r => (r.RoomId, r.Requirement, r.TreatmentRoom)));
@@ -145,6 +145,32 @@ public sealed class DemoClinicTests
 
         Assert.Equal(["Alex", "Mika", "Robin", "Jona", "Kim", "Toni", "Sam", "Luca", "Nico", "Chris"], package.NamePools!.Single(p => p.Part == NamePart.Given).Entries.Select(e => e.Localized));
         Assert.Equal("krueger", package.NamePools!.Single(p => p.Part == NamePart.Family).Entries.Single(e => e.Localized == "Krüger").Key);
+    }
+
+    [Fact]
+    public async Task ComfortAndInsurersMatchTheGameRequest()
+    {
+        var package = await Package(); ContentPackage[] set = [package];
+        var gameplay = GameplayResolver.Resolve(set);
+        decimal? Comfort(string id) => gameplay.Balances.SingleOrDefault(b => b.DefinitionId == Ns + id)?.Comfort;
+        Assert.Equal((3m, 1m, 2m, 1m, 4m, 3m), (Comfort("furniture_wall_picture")!.Value, Comfort("furniture_ceiling_lamp")!.Value, Comfort("furniture_waiting_bench")!.Value,
+            Comfort("furniture_office_chair")!.Value, Comfort("furniture_potted_plant")!.Value, Comfort("furniture_water_dispenser")!.Value));
+        Assert.Null(Comfort("furniture_exam_couch"));
+        Assert.Equal((300m, 500m), (gameplay.Balances.Single(b => b.DefinitionId == Ns + "furniture_potted_plant").PurchaseCost!.Value,
+            gameplay.Balances.Single(b => b.DefinitionId == Ns + "furniture_water_dispenser").PurchaseCost!.Value));
+        foreach (var room in new[] { "room_type_waiting", "room_type_reception" })
+        {
+            var placeable = RoomContents.Placeable(set, Ns + room);
+            Assert.All(new[] { "furniture_potted_plant", "furniture_water_dispenser" }, item =>
+                Assert.Equal(RelationRequirement.Optional, placeable.Single(i => i.DefinitionId == Ns + item).Requirement));
+        }
+        Assert.Empty(RoomContents.ProvidedEquipment(set, [Ns + "furniture_potted_plant", Ns + "furniture_water_dispenser"]));
+
+        var insurers = Insurers.All(set, gameplay);
+        Assert.Equal([(Ns + "insurer_basic_fund", 0m, 1.0m, 0.6m), (Ns + "insurer_private_cover", 70m, 1.4m, 0.1m), (Ns + "insurer_substitute_fund", 55m, 1.1m, 0.25m)],
+            insurers.Select(i => (i.InsurerId, i.MinimumReputation, i.PriceFactor, i.PatientShare)));
+        Assert.Equal(0.05m, Insurers.SelfPayShare(insurers));
+        Assert.All(package.Definitions.OfType<InsurerDefinition>(), i => Assert.NotNull(i.DescriptionKey));
     }
 
     [Fact]

@@ -78,6 +78,14 @@
     "demo_clinic.furniture_reception_desk.name": "Empfangstresen",
     "demo_clinic.furniture_waiting_bench.name": "Wartebank",
     "demo_clinic.furniture_hospital_bed.name": "Krankenbett",
+    "demo_clinic.furniture_potted_plant.name": "Topfpflanze",
+    "demo_clinic.furniture_water_dispenser.name": "Wasserspender",
+    "demo_clinic.insurer_basic_fund.description": "Fiktive Grundkasse; versichert die meisten Patienten.",
+    "demo_clinic.insurer_basic_fund.name": "Grundkasse",
+    "demo_clinic.insurer_substitute_fund.description": "Fiktive Ersatzkasse; zahlt etwas mehr.",
+    "demo_clinic.insurer_substitute_fund.name": "Ersatzkasse",
+    "demo_clinic.insurer_private_cover.description": "Fiktive Privatversicherung; zahlt am meisten, nur bei gutem Ruf.",
+    "demo_clinic.insurer_private_cover.name": "Privatversicherung",
     "demo_clinic.pool.patients_given.name": "Demo-Patienten: Vornamen",
     "demo_clinic.pool.patients_family.name": "Demo-Patienten: Nachnamen"
   }
