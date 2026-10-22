@@ -259,12 +259,17 @@
       "ComplaintDe": "M\u00FCdigkeit und Fr\u00F6steln",
       "ComplaintEn": "Fatigue and chills",
       "manifestations": {
-        "fatigue": 0.8,
-        "chills": 0.7,
-        "cough": 0.3,
-        "headache": 0.2,
-        "breath_sounds": 0.3,
-        "pallor": 0.4
+        "fatigue": 0.65,
+        "chills": 0.6,
+        "dizziness": 0.25,
+        "headache": 0.35,
+        "abdominal_pain": 0.25,
+        "nausea": 0.25,
+        "cough": 0.4,
+        "tremor": 0.25,
+        "tenderness": 0.25,
+        "breath_sounds": 0.4,
+        "pallor": 0.45
       },
       "readings": [
         {
@@ -278,40 +283,40 @@
           "Number": 38.4,
           "Qualitative": null,
           "Unit": "demo:C",
-          "Min": 37.8,
-          "Max": 39.0
+          "Min": 36.6,
+          "Max": 40.2
         },
         {
           "ObservationId": "demo:pulse",
           "Number": 108,
           "Qualitative": null,
           "Unit": "demo:beats-per-minute",
-          "Min": 98,
-          "Max": 118
+          "Min": 78,
+          "Max": 138
         },
         {
           "ObservationId": "demo:pressure",
           "Number": 119,
           "Qualitative": null,
           "Unit": "demo:fictional-pressure",
-          "Min": 115,
-          "Max": 123
+          "Min": 107,
+          "Max": 131
         },
         {
           "ObservationId": "demo:count",
           "Number": 8.2,
           "Qualitative": null,
           "Unit": "demo:fictional-count",
-          "Min": 7.2,
-          "Max": 9.2
+          "Min": 5.2,
+          "Max": 11.2
         },
         {
           "ObservationId": "demo:marker",
           "Number": 42,
           "Qualitative": null,
           "Unit": "demo:fictional-marker",
-          "Min": 34,
-          "Max": 50
+          "Min": 18,
+          "Max": 66
         },
         {
           "ObservationId": "demo:urine",
@@ -325,7 +330,7 @@
           "Number": null,
           "Qualitative": "demo:image-cloudy",
           "Unit": null,
-          "Weights": {"cloudy": 0.8, "marked": 0.2}
+          "Weights": {"cloudy": 1}
         }
       ]
     },
@@ -336,12 +341,17 @@
       "ComplaintDe": "Schwindel und Kopfschmerz",
       "ComplaintEn": "Dizziness and headache",
       "manifestations": {
-        "dizziness": 0.8,
-        "headache": 0.7,
-        "nausea": 0.3,
-        "fatigue": 0.2,
-        "tremor": 0.2,
-        "pallor": 0.3
+        "fatigue": 0.35,
+        "chills": 0.25,
+        "dizziness": 0.65,
+        "headache": 0.6,
+        "abdominal_pain": 0.25,
+        "nausea": 0.4,
+        "cough": 0.25,
+        "tremor": 0.35,
+        "tenderness": 0.25,
+        "breath_sounds": 0.25,
+        "pallor": 0.4
       },
       "readings": [
         {
@@ -355,16 +365,16 @@
           "Number": 36.8,
           "Qualitative": null,
           "Unit": "demo:C",
-          "Min": 36.2,
-          "Max": 37.4
+          "Min": 35.0,
+          "Max": 38.6
         },
         {
           "ObservationId": "demo:pulse",
           "Number": 79,
           "Qualitative": null,
           "Unit": "demo:beats-per-minute",
-          "Min": 69,
-          "Max": 89
+          "Min": 49,
+          "Max": 109
         },
         {
           "ObservationId": "demo:pressure",
@@ -379,16 +389,16 @@
           "Number": 5.3,
           "Qualitative": null,
           "Unit": "demo:fictional-count",
-          "Min": 4.3,
-          "Max": 6.3
+          "Min": 2.3,
+          "Max": 8.3
         },
         {
           "ObservationId": "demo:marker",
           "Number": 8,
           "Qualitative": null,
           "Unit": "demo:fictional-marker",
-          "Min": 4,
-          "Max": 12
+          "Min": 0,
+          "Max": 16
         },
         {
           "ObservationId": "demo:urine",
@@ -413,12 +423,17 @@
       "ComplaintDe": "Bauchbeschwerden",
       "ComplaintEn": "Abdominal discomfort",
       "manifestations": {
-        "abdominal_pain": 0.8,
-        "nausea": 0.6,
-        "fatigue": 0.3,
-        "chills": 0.2,
-        "tenderness": 0.8,
-        "pallor": 0.2
+        "fatigue": 0.4,
+        "chills": 0.35,
+        "dizziness": 0.25,
+        "headache": 0.25,
+        "abdominal_pain": 0.65,
+        "nausea": 0.55,
+        "cough": 0.25,
+        "tremor": 0.25,
+        "tenderness": 0.65,
+        "breath_sounds": 0.25,
+        "pallor": 0.35
       },
       "readings": [
         {
@@ -432,40 +447,40 @@
           "Number": 37.1,
           "Qualitative": null,
           "Unit": "demo:C",
-          "Min": 36.5,
-          "Max": 37.7
+          "Min": 35.3,
+          "Max": 38.9
         },
         {
           "ObservationId": "demo:pulse",
           "Number": 90,
           "Qualitative": null,
           "Unit": "demo:beats-per-minute",
-          "Min": 80,
-          "Max": 100
+          "Min": 60,
+          "Max": 120
         },
         {
           "ObservationId": "demo:pressure",
           "Number": 124,
           "Qualitative": null,
           "Unit": "demo:fictional-pressure",
-          "Min": 118,
-          "Max": 130
+          "Min": 120,
+          "Max": 128
         },
         {
           "ObservationId": "demo:count",
           "Number": 7,
           "Qualitative": null,
           "Unit": "demo:fictional-count",
-          "Min": 6.0,
-          "Max": 8.0
+          "Min": 4.0,
+          "Max": 10.0
         },
         {
           "ObservationId": "demo:marker",
           "Number": 14,
           "Qualitative": null,
           "Unit": "demo:fictional-marker",
-          "Min": 10,
-          "Max": 18
+          "Min": 2,
+          "Max": 26
         },
         {
           "ObservationId": "demo:urine",
@@ -490,12 +505,17 @@
       "ComplaintDe": "Husten und Schw\u00E4che",
       "ComplaintEn": "Cough and weakness",
       "manifestations": {
-        "cough": 0.8,
-        "fatigue": 0.6,
-        "chills": 0.4,
-        "dizziness": 0.2,
-        "breath_sounds": 0.8,
-        "pallor": 0.3
+        "fatigue": 0.55,
+        "chills": 0.45,
+        "dizziness": 0.35,
+        "headache": 0.25,
+        "abdominal_pain": 0.25,
+        "nausea": 0.25,
+        "cough": 0.65,
+        "tremor": 0.25,
+        "tenderness": 0.25,
+        "breath_sounds": 0.65,
+        "pallor": 0.4
       },
       "readings": [
         {
@@ -509,40 +529,40 @@
           "Number": 38,
           "Qualitative": null,
           "Unit": "demo:C",
-          "Min": 37.4,
-          "Max": 38.6
+          "Min": 36.2,
+          "Max": 39.8
         },
         {
           "ObservationId": "demo:pulse",
           "Number": 101,
           "Qualitative": null,
           "Unit": "demo:beats-per-minute",
-          "Min": 91,
-          "Max": 111
+          "Min": 71,
+          "Max": 131
         },
         {
           "ObservationId": "demo:pressure",
           "Number": 127,
           "Qualitative": null,
           "Unit": "demo:fictional-pressure",
-          "Min": 124,
-          "Max": 130
+          "Min": 118,
+          "Max": 136
         },
         {
           "ObservationId": "demo:count",
           "Number": 9.8,
           "Qualitative": null,
           "Unit": "demo:fictional-count",
-          "Min": 8.8,
-          "Max": 10.8
+          "Min": 6.8,
+          "Max": 12.8
         },
         {
           "ObservationId": "demo:marker",
           "Number": 32,
           "Qualitative": null,
           "Unit": "demo:fictional-marker",
-          "Min": 26,
-          "Max": 38
+          "Min": 14,
+          "Max": 50
         },
         {
           "ObservationId": "demo:urine",
@@ -556,7 +576,7 @@
           "Number": null,
           "Qualitative": "demo:image-marked",
           "Unit": null,
-          "Weights": {"marked": 0.7, "cloudy": 0.3}
+          "Weights": {"marked": 1}
         }
       ]
     },
@@ -567,11 +587,16 @@
       "ComplaintDe": "Unwohlsein und Zittern",
       "ComplaintEn": "Discomfort and shaking",
       "manifestations": {
-        "tremor": 0.7,
+        "fatigue": 0.25,
+        "chills": 0.25,
+        "dizziness": 0.4,
+        "headache": 0.25,
         "abdominal_pain": 0.5,
-        "nausea": 0.4,
-        "dizziness": 0.3,
-        "tenderness": 0.6,
+        "nausea": 0.45,
+        "cough": 0.25,
+        "tremor": 0.6,
+        "tenderness": 0.55,
+        "breath_sounds": 0.25,
         "pallor": 0.5
       },
       "readings": [
@@ -586,40 +611,40 @@
           "Number": 37,
           "Qualitative": null,
           "Unit": "demo:C",
-          "Min": 36.4,
-          "Max": 37.6
+          "Min": 35.2,
+          "Max": 38.8
         },
         {
           "ObservationId": "demo:pulse",
           "Number": 86,
           "Qualitative": null,
           "Unit": "demo:beats-per-minute",
-          "Min": 76,
-          "Max": 96
+          "Min": 56,
+          "Max": 116
         },
         {
           "ObservationId": "demo:pressure",
           "Number": 130,
           "Qualitative": null,
           "Unit": "demo:fictional-pressure",
-          "Min": 126,
-          "Max": 134
+          "Min": 129,
+          "Max": 131
         },
         {
           "ObservationId": "demo:count",
           "Number": 6.1,
           "Qualitative": null,
           "Unit": "demo:fictional-count",
-          "Min": 5.1,
-          "Max": 7.1
+          "Min": 3.1,
+          "Max": 9.1
         },
         {
           "ObservationId": "demo:marker",
           "Number": 5,
           "Qualitative": null,
           "Unit": "demo:fictional-marker",
-          "Min": 3,
-          "Max": 7
+          "Min": 0,
+          "Max": 10
         },
         {
           "ObservationId": "demo:urine",
@@ -633,7 +658,7 @@
           "Number": null,
           "Qualitative": "demo:image-clear",
           "Unit": null,
-          "Weights": {"clear": 0.9, "marked": 0.1}
+          "Weights": {"clear": 1}
         }
       ]
     }
