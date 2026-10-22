@@ -4639,8 +4639,8 @@
         "diseaseId": "demo_clinic:amber",
         "observationId": "demo_clinic:observation_temperature",
         "categoryWeights": {},
-        "numericMinimum": 38.4,
-        "numericMaximum": 38.4
+        "numericMinimum": 37.8,
+        "numericMaximum": 39.0
       },
       {
         "schemaVersion": "1.0.0",
@@ -4650,8 +4650,8 @@
         "diseaseId": "demo_clinic:amber",
         "observationId": "demo_clinic:observation_pulse",
         "categoryWeights": {},
-        "numericMinimum": 108,
-        "numericMaximum": 108
+        "numericMinimum": 98,
+        "numericMaximum": 118
       },
       {
         "schemaVersion": "1.0.0",
@@ -4661,8 +4661,8 @@
         "diseaseId": "demo_clinic:amber",
         "observationId": "demo_clinic:observation_pressure",
         "categoryWeights": {},
-        "numericMinimum": 119,
-        "numericMaximum": 119
+        "numericMinimum": 115,
+        "numericMaximum": 123
       },
       {
         "schemaVersion": "1.0.0",
@@ -4672,8 +4672,8 @@
         "diseaseId": "demo_clinic:amber",
         "observationId": "demo_clinic:observation_count",
         "categoryWeights": {},
-        "numericMinimum": 8.2,
-        "numericMaximum": 8.2
+        "numericMinimum": 7.2,
+        "numericMaximum": 9.2
       },
       {
         "schemaVersion": "1.0.0",
@@ -4683,8 +4683,8 @@
         "diseaseId": "demo_clinic:amber",
         "observationId": "demo_clinic:observation_marker",
         "categoryWeights": {},
-        "numericMinimum": 42,
-        "numericMaximum": 42
+        "numericMinimum": 34,
+        "numericMaximum": 50
       },
       {
         "schemaVersion": "1.0.0",
@@ -4694,7 +4694,8 @@
         "diseaseId": "demo_clinic:amber",
         "observationId": "demo_clinic:observation_urine",
         "categoryWeights": {
-          "clear": 1
+          "clear": 0.9,
+          "marked": 0.1
         }
       },
       {
@@ -4705,7 +4706,8 @@
         "diseaseId": "demo_clinic:amber",
         "observationId": "demo_clinic:observation_image",
         "categoryWeights": {
-          "cloudy": 1
+          "cloudy": 0.8,
+          "marked": 0.2
         }
       },
       {
@@ -4726,8 +4728,8 @@
         "diseaseId": "demo_clinic:blue",
         "observationId": "demo_clinic:observation_temperature",
         "categoryWeights": {},
-        "numericMinimum": 36.8,
-        "numericMaximum": 36.8
+        "numericMinimum": 36.2,
+        "numericMaximum": 37.4
       },
       {
         "schemaVersion": "1.0.0",
@@ -4737,8 +4739,8 @@
         "diseaseId": "demo_clinic:blue",
         "observationId": "demo_clinic:observation_pulse",
         "categoryWeights": {},
-        "numericMinimum": 79,
-        "numericMaximum": 79
+        "numericMinimum": 69,
+        "numericMaximum": 89
       },
       {
         "schemaVersion": "1.0.0",
@@ -4748,8 +4750,8 @@
         "diseaseId": "demo_clinic:blue",
         "observationId": "demo_clinic:observation_pressure",
         "categoryWeights": {},
-        "numericMinimum": 142,
-        "numericMaximum": 142
+        "numericMinimum": 136,
+        "numericMaximum": 148
       },
       {
         "schemaVersion": "1.0.0",
@@ -4759,8 +4761,8 @@
         "diseaseId": "demo_clinic:blue",
         "observationId": "demo_clinic:observation_count",
         "categoryWeights": {},
-        "numericMinimum": 5.3,
-        "numericMaximum": 5.3
+        "numericMinimum": 4.3,
+        "numericMaximum": 6.3
       },
       {
         "schemaVersion": "1.0.0",
@@ -4770,8 +4772,8 @@
         "diseaseId": "demo_clinic:blue",
         "observationId": "demo_clinic:observation_marker",
         "categoryWeights": {},
-        "numericMinimum": 8,
-        "numericMaximum": 8
+        "numericMinimum": 4,
+        "numericMaximum": 12
       },
       {
         "schemaVersion": "1.0.0",
@@ -4813,8 +4815,8 @@
         "diseaseId": "demo_clinic:green",
         "observationId": "demo_clinic:observation_temperature",
         "categoryWeights": {},
-        "numericMinimum": 37.1,
-        "numericMaximum": 37.1
+        "numericMinimum": 36.5,
+        "numericMaximum": 37.7
       },
       {
         "schemaVersion": "1.0.0",
@@ -4824,8 +4826,8 @@
         "diseaseId": "demo_clinic:green",
         "observationId": "demo_clinic:observation_pulse",
         "categoryWeights": {},
-        "numericMinimum": 90,
-        "numericMaximum": 90
+        "numericMinimum": 80,
+        "numericMaximum": 100
       },
       {
         "schemaVersion": "1.0.0",
@@ -4835,8 +4837,8 @@
         "diseaseId": "demo_clinic:green",
         "observationId": "demo_clinic:observation_pressure",
         "categoryWeights": {},
-        "numericMinimum": 124,
-        "numericMaximum": 124
+        "numericMinimum": 118,
+        "numericMaximum": 130
       },
       {
         "schemaVersion": "1.0.0",
@@ -4846,8 +4848,8 @@
         "diseaseId": "demo_clinic:green",
         "observationId": "demo_clinic:observation_count",
         "categoryWeights": {},
-        "numericMinimum": 7,
-        "numericMaximum": 7
+        "numericMinimum": 6.0,
+        "numericMaximum": 8.0
       },
       {
         "schemaVersion": "1.0.0",
@@ -4857,8 +4859,8 @@
         "diseaseId": "demo_clinic:green",
         "observationId": "demo_clinic:observation_marker",
         "categoryWeights": {},
-        "numericMinimum": 14,
-        "numericMaximum": 14
+        "numericMinimum": 10,
+        "numericMaximum": 18
       },
       {
         "schemaVersion": "1.0.0",
@@ -4868,7 +4870,8 @@
         "diseaseId": "demo_clinic:green",
         "observationId": "demo_clinic:observation_urine",
         "categoryWeights": {
-          "marked": 1
+          "marked": 0.8,
+          "clear": 0.2
         }
       },
       {
@@ -4900,8 +4903,8 @@
         "diseaseId": "demo_clinic:violet",
         "observationId": "demo_clinic:observation_temperature",
         "categoryWeights": {},
-        "numericMinimum": 38,
-        "numericMaximum": 38
+        "numericMinimum": 37.4,
+        "numericMaximum": 38.6
       },
       {
         "schemaVersion": "1.0.0",
@@ -4911,8 +4914,8 @@
         "diseaseId": "demo_clinic:violet",
         "observationId": "demo_clinic:observation_pulse",
         "categoryWeights": {},
-        "numericMinimum": 101,
-        "numericMaximum": 101
+        "numericMinimum": 91,
+        "numericMaximum": 111
       },
       {
         "schemaVersion": "1.0.0",
@@ -4922,8 +4925,8 @@
         "diseaseId": "demo_clinic:violet",
         "observationId": "demo_clinic:observation_pressure",
         "categoryWeights": {},
-        "numericMinimum": 127,
-        "numericMaximum": 127
+        "numericMinimum": 124,
+        "numericMaximum": 130
       },
       {
         "schemaVersion": "1.0.0",
@@ -4933,8 +4936,8 @@
         "diseaseId": "demo_clinic:violet",
         "observationId": "demo_clinic:observation_count",
         "categoryWeights": {},
-        "numericMinimum": 9.8,
-        "numericMaximum": 9.8
+        "numericMinimum": 8.8,
+        "numericMaximum": 10.8
       },
       {
         "schemaVersion": "1.0.0",
@@ -4944,8 +4947,8 @@
         "diseaseId": "demo_clinic:violet",
         "observationId": "demo_clinic:observation_marker",
         "categoryWeights": {},
-        "numericMinimum": 32,
-        "numericMaximum": 32
+        "numericMinimum": 26,
+        "numericMaximum": 38
       },
       {
         "schemaVersion": "1.0.0",
@@ -4955,7 +4958,8 @@
         "diseaseId": "demo_clinic:violet",
         "observationId": "demo_clinic:observation_urine",
         "categoryWeights": {
-          "clear": 1
+          "clear": 0.8,
+          "marked": 0.2
         }
       },
       {
@@ -4966,7 +4970,8 @@
         "diseaseId": "demo_clinic:violet",
         "observationId": "demo_clinic:observation_image",
         "categoryWeights": {
-          "marked": 1
+          "marked": 0.7,
+          "cloudy": 0.3
         }
       },
       {
@@ -4987,8 +4992,8 @@
         "diseaseId": "demo_clinic:silver",
         "observationId": "demo_clinic:observation_temperature",
         "categoryWeights": {},
-        "numericMinimum": 37,
-        "numericMaximum": 37
+        "numericMinimum": 36.4,
+        "numericMaximum": 37.6
       },
       {
         "schemaVersion": "1.0.0",
@@ -4998,8 +5003,8 @@
         "diseaseId": "demo_clinic:silver",
         "observationId": "demo_clinic:observation_pulse",
         "categoryWeights": {},
-        "numericMinimum": 86,
-        "numericMaximum": 86
+        "numericMinimum": 76,
+        "numericMaximum": 96
       },
       {
         "schemaVersion": "1.0.0",
@@ -5009,8 +5014,8 @@
         "diseaseId": "demo_clinic:silver",
         "observationId": "demo_clinic:observation_pressure",
         "categoryWeights": {},
-        "numericMinimum": 130,
-        "numericMaximum": 130
+        "numericMinimum": 126,
+        "numericMaximum": 134
       },
       {
         "schemaVersion": "1.0.0",
@@ -5020,8 +5025,8 @@
         "diseaseId": "demo_clinic:silver",
         "observationId": "demo_clinic:observation_count",
         "categoryWeights": {},
-        "numericMinimum": 6.1,
-        "numericMaximum": 6.1
+        "numericMinimum": 5.1,
+        "numericMaximum": 7.1
       },
       {
         "schemaVersion": "1.0.0",
@@ -5031,8 +5036,8 @@
         "diseaseId": "demo_clinic:silver",
         "observationId": "demo_clinic:observation_marker",
         "categoryWeights": {},
-        "numericMinimum": 5,
-        "numericMaximum": 5
+        "numericMinimum": 3,
+        "numericMaximum": 7
       },
       {
         "schemaVersion": "1.0.0",
@@ -5042,7 +5047,8 @@
         "diseaseId": "demo_clinic:silver",
         "observationId": "demo_clinic:observation_urine",
         "categoryWeights": {
-          "marked": 1
+          "marked": 0.7,
+          "clear": 0.3
         }
       },
       {
@@ -5053,7 +5059,8 @@
         "diseaseId": "demo_clinic:silver",
         "observationId": "demo_clinic:observation_image",
         "categoryWeights": {
-          "clear": 1
+          "clear": 0.9,
+          "marked": 0.1
         }
       }
     ],

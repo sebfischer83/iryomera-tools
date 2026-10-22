@@ -124,9 +124,11 @@ for case in fixtures['cases']:
     for reading in case['readings']:
         distribution = {'schemaVersion':'1.0.0', 'simulationOnly':True, 'id':ident('reading_' + local(case['key']) + '_' + local(reading['ObservationId'])), 'version':'1.0.0',
                         'diseaseId':disease, 'observationId':observations[reading['ObservationId']], 'categoryWeights':{}}
-        if reading['Number'] is not None: distribution.update(numericMinimum=reading['Number'], numericMaximum=reading['Number'])
+        # Synthetic overlapping ranges and category weights (game milestone "diagnostic uncertainty"); without them a
+        # reading is a single value as before.
+        if reading['Number'] is not None: distribution.update(numericMinimum=reading.get('Min', reading['Number']), numericMaximum=reading.get('Max', reading['Number']))
         elif reading['ObservationId'] == 'demo:complaint': distribution['textKey'] = text(local(case['key']) + '.complaint', case['ComplaintEn'], case['ComplaintDe'])
-        else: distribution['categoryWeights'] = {reading['Qualitative'].split('-', 1)[1]:1}
+        else: distribution['categoryWeights'] = reading.get('Weights') or {reading['Qualitative'].split('-', 1)[1]:1}
         package['diagnosticSimulation']['observationDistributions'].append(distribution)
 for route in fixtures['diseaseDepartments']:
     allowed = [route['preferred']] + [d for d in route['allowed'] if d != route['preferred']]
