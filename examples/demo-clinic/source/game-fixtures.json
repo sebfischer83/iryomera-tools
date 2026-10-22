@@ -135,7 +135,12 @@
       "key": "demo:interview",
       "NameDe": "Anamnese",
       "NameEn": "Interview",
-      "observation": "demo:complaint",
+      "observation": null,
+      "findings": [
+        "tenderness",
+        "breath_sounds",
+        "pallor"
+      ],
       "durationMinutes": 5,
       "roomTypes": [
         "demo:room_type_consultation"
@@ -253,6 +258,14 @@
       "NameEn": "Amber case",
       "ComplaintDe": "M\u00FCdigkeit und Fr\u00F6steln",
       "ComplaintEn": "Fatigue and chills",
+      "manifestations": {
+        "fatigue": 0.8,
+        "chills": 0.7,
+        "cough": 0.3,
+        "headache": 0.2,
+        "breath_sounds": 0.3,
+        "pallor": 0.4
+      },
       "readings": [
         {
           "ObservationId": "demo:complaint",
@@ -322,6 +335,14 @@
       "NameEn": "Blue case",
       "ComplaintDe": "Schwindel und Kopfschmerz",
       "ComplaintEn": "Dizziness and headache",
+      "manifestations": {
+        "dizziness": 0.8,
+        "headache": 0.7,
+        "nausea": 0.3,
+        "fatigue": 0.2,
+        "tremor": 0.2,
+        "pallor": 0.3
+      },
       "readings": [
         {
           "ObservationId": "demo:complaint",
@@ -391,6 +412,14 @@
       "NameEn": "Green case",
       "ComplaintDe": "Bauchbeschwerden",
       "ComplaintEn": "Abdominal discomfort",
+      "manifestations": {
+        "abdominal_pain": 0.8,
+        "nausea": 0.6,
+        "fatigue": 0.3,
+        "chills": 0.2,
+        "tenderness": 0.8,
+        "pallor": 0.2
+      },
       "readings": [
         {
           "ObservationId": "demo:complaint",
@@ -460,6 +489,14 @@
       "NameEn": "Violet case",
       "ComplaintDe": "Husten und Schw\u00E4che",
       "ComplaintEn": "Cough and weakness",
+      "manifestations": {
+        "cough": 0.8,
+        "fatigue": 0.6,
+        "chills": 0.4,
+        "dizziness": 0.2,
+        "breath_sounds": 0.8,
+        "pallor": 0.3
+      },
       "readings": [
         {
           "ObservationId": "demo:complaint",
@@ -529,6 +566,14 @@
       "NameEn": "Silver case",
       "ComplaintDe": "Unwohlsein und Zittern",
       "ComplaintEn": "Discomfort and shaking",
+      "manifestations": {
+        "tremor": 0.7,
+        "abdominal_pain": 0.5,
+        "nausea": 0.4,
+        "dizziness": 0.3,
+        "tenderness": 0.6,
+        "pallor": 0.5
+      },
       "readings": [
         {
           "ObservationId": "demo:complaint",
@@ -1596,5 +1641,53 @@
       "priceFactor": 1.4,
       "patientShare": 0.1
     }
-  ]
+  ],
+  "symptoms": {
+    "fatigue": [
+      "Fatigue",
+      "Müdigkeit"
+    ],
+    "chills": [
+      "Chills",
+      "Frösteln"
+    ],
+    "dizziness": [
+      "Dizziness",
+      "Schwindel"
+    ],
+    "headache": [
+      "Headache",
+      "Kopfschmerz"
+    ],
+    "abdominal_pain": [
+      "Abdominal pain",
+      "Bauchschmerz"
+    ],
+    "nausea": [
+      "Nausea",
+      "Übelkeit"
+    ],
+    "cough": [
+      "Cough",
+      "Husten"
+    ],
+    "tremor": [
+      "Tremor",
+      "Zittern"
+    ]
+  },
+  "findings": {
+    "tenderness": [
+      "Tenderness on pressure",
+      "Druckschmerz"
+    ],
+    "breath_sounds": [
+      "Abnormal breath sounds",
+      "Atemgeräusch"
+    ],
+    "pallor": [
+      "Pallor",
+      "Blässe"
+    ]
+  }
 }

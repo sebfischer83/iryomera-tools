@@ -45,6 +45,7 @@ python scripts/generate-demo-clinic.py
 | `complications` | `complication` with `effect` and `timing`; `treatmentComplication` from `after` with `complicationChance` on the relation, `complicationExamination` / `complicationTreatment` for the effect, `extraStayHours` × 3600 as `extraStayDurationSeconds`. |
 | `balancing.comfort` | Gameplay `comfort` on the furniture item, in the same record as its `purchaseCost` (ADR 0022). |
 | `insurers` | Fictional `insurer` with a description key and gameplay `minimumReputation`, `priceFactor` and `patientShare`; not real organisations or insurance terms. |
+| `symptoms`, `findings`, case `manifestations`, examination `findings` | `symptom` / `finding` with `diseaseSymptom` / `diseaseFinding`, `examinationFinding` from the examination, and simulation-only manifestations (chance; symptoms `initiallyVisible`, findings `afterExamination`). Since 0.20.2 the one-complaint-per-case text (observation `complaint`) is no longer emitted; an examination with `observation: null` reveals only findings. |
 | New content (operating room, surgical table, plant, water dispenser, insurers) | Keys are already SDK IDs, so `provenance.externalId` equals the ID; there is no older game key. |
 | Patient mobility | Not content; stays in the game. |
 

@@ -16,7 +16,7 @@ ROLES = {'Physician':('Physician','Ärztin oder Arzt'), 'Nurse':('Nurse','Pflege
 QUALIFICATIONS = {'demo:qualification_imaging':('Imaging qualification','Qualifikation Bildgebung')}
 EQUIPMENT = {'demo:equipment_analyzer':('Laboratory analysis','Laboranalyse'), 'demo:equipment_scanner':('Imaging scan','Bildgebender Scan')}
 OBSERVATIONS = {
-    'demo:complaint':('Complaint','Beschwerden'), 'demo:temperature':('Temperature','Temperatur'), 'demo:pulse':('Pulse','Puls'),
+    'demo:temperature':('Temperature','Temperatur'), 'demo:pulse':('Pulse','Puls'),
     'demo:pressure':('Pressure (fictional scale)','Druck (fiktive Skala)'), 'demo:count':('Count (fictional scale)','Zählwert (fiktive Skala)'),
     'demo:marker':('Marker (fictional scale)','Marker (fiktive Skala)'), 'demo:urine':('Urine result','Urinbefund'), 'demo:image':('Image result','Bildbefund')}
 CATEGORIES = {'clear':('Clear','Unauffällig'), 'marked':('Marked','Auffällig'), 'cloudy':('Cloudy','Verschattet')}
@@ -95,8 +95,6 @@ for key, (en, de) in OBSERVATIONS.items():
     sample = readings[key][0]
     if sample['Number'] is not None:
         result = {'valueKind':'numeric', 'unitCode':UNITS[sample['Unit']], 'categories':[], 'patientContextKeys':[]}
-    elif key == 'demo:complaint':
-        result = {'valueKind':'text', 'categories':[], 'patientContextKeys':[]}
     else:
         values = list(dict.fromkeys(r['Qualitative'].split('-', 1)[1] for r in readings[key]))
         order = [c for c in CATEGORIES if c in values]
@@ -106,7 +104,7 @@ for key, (en, de) in OBSERVATIONS.items():
 examinations = {}
 for exam in fixtures['examinations']:
     exam_id = examinations[exam['key']] = definition('examination', local(exam['key']), exam['key'], exam['NameEn'], exam['NameDe'])
-    relation('examinationObservation', exam_id, observations[exam['observation']], exam['key'])
+    if exam['observation']: relation('examinationObservation', exam_id, observations[exam['observation']], exam['key'])
     for room in exam['roomTypes']: relation('examinationRoom', exam_id, rooms[room], exam['key'])
     relation('examinationStaffRole', exam_id, roles[exam['staffRole']], exam['key'])
     for item in exam['equipment']: relation('examinationEquipment', exam_id, equipment[item], exam['key'])
@@ -122,6 +120,8 @@ for case in fixtures['cases']:
     if case['key'] in fixtures.get('stayHours', {}): values['stayDurationSeconds'] = fixtures['stayHours'][case['key']] * 3600
     if values: balance(disease, **values)
     for reading in case['readings']:
+        # The one complaint per case is gone (D2b): shared symptoms and findings replace it.
+        if reading['ObservationId'] not in observations: continue
         distribution = {'schemaVersion':'1.0.0', 'simulationOnly':True, 'id':ident('reading_' + local(case['key']) + '_' + local(reading['ObservationId'])), 'version':'1.0.0',
                         'diseaseId':disease, 'observationId':observations[reading['ObservationId']], 'categoryWeights':{}}
         # Synthetic overlapping ranges and category weights (game milestone "diagnostic uncertainty"); without them a
@@ -130,6 +130,20 @@ for case in fixtures['cases']:
         elif reading['ObservationId'] == 'demo:complaint': distribution['textKey'] = text(local(case['key']) + '.complaint', case['ComplaintEn'], case['ComplaintDe'])
         else: distribution['categoryWeights'] = reading.get('Weights') or {reading['Qualitative'].split('-', 1)[1]:1}
         package['diagnosticSimulation']['observationDistributions'].append(distribution)
+# Shared symptoms (reported on arrival) and findings (the interview reveals them) with game chances per case (D2b).
+signs = {}
+for key, (en, de) in fixtures.get('symptoms', {}).items(): signs[key] = definition('symptom', 'symptom_' + key, 'symptom:' + key, en, de)
+for key, (en, de) in fixtures.get('findings', {}).items(): signs[key] = definition('finding', 'finding_' + key, 'finding:' + key, en, de)
+for exam in fixtures['examinations']:
+    for key in exam.get('findings', []): relation('examinationFinding', examinations[exam['key']], signs[key], exam['key'])
+for case in fixtures['cases']:
+    for key, chance in case.get('manifestations', {}).items():
+        symptom = key in fixtures.get('symptoms', {})
+        relation('diseaseSymptom' if symptom else 'diseaseFinding', diseases[case['key']], signs[key], case['key'])
+        package['diagnosticSimulation']['manifestations'].append({'schemaVersion':'1.0.0', 'simulationOnly':True,
+            'id':ident('manifestation_' + local(case['key']) + '_' + key), 'version':'1.0.0', 'diseaseId':diseases[case['key']],
+            'manifestationId':signs[key], 'probability':chance, 'visibility':'initiallyVisible' if symptom else 'afterExamination'})
+
 for route in fixtures['diseaseDepartments']:
     allowed = [route['preferred']] + [d for d in route['allowed'] if d != route['preferred']]
     for priority, department in enumerate(allowed, 1):

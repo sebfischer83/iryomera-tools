@@ -10,6 +10,7 @@ public sealed class DemoClinicTests
 {
     private const string Ns = "demo_clinic:";
     private static Task<ContentPackage> Package() => Fixtures.Load<ContentPackage>("demo-clinic/content");
+    private static Task<LocalizationDefinition> Catalog(string language) => Fixtures.Load<LocalizationDefinition>("demo-clinic/" + language);
 
     [Fact]
     public async Task GeneratedDemoClinicIsAValidBilingualSyntheticPackage()
@@ -30,7 +31,7 @@ public sealed class DemoClinicTests
             catalogs.Add(catalog.Value!);
         }
         Assert.Empty(ContentLocalizationValidator.Validate(package, catalogs));
-        Assert.Equal((7, 5, 3, 1, 2, 8, 8, 5, 20, 3), (Count<RoomDefinition>(), Count<MedicalDepartmentDefinition>(), Count<StaffRoleDefinition>(), Count<StaffQualificationDefinition>(),
+        Assert.Equal((7, 5, 3, 1, 2, 7, 8, 5, 20, 3), (Count<RoomDefinition>(), Count<MedicalDepartmentDefinition>(), Count<StaffRoleDefinition>(), Count<StaffQualificationDefinition>(),
             Count<MedicalEquipmentDefinition>(), Count<ObservationDefinition>(), Count<ExaminationDefinition>(), Count<DiseaseDefinition>(), Count<FurnitureDefinition>(), Count<InsurerDefinition>()));
         Assert.All(package.Definitions.Select(d => d.Provenance).Concat(package.Relations.Select(r => r.Provenance)), p =>
             Assert.True(p is { License: "MIT", ReviewStatus: ReviewStatus.Unreviewed } && p.Source.Contains("fictional", StringComparison.Ordinal)));
@@ -116,7 +117,7 @@ public sealed class DemoClinicTests
         Assert.Equal((37.8m, 39.0m), (temperature.NumericMinimum!.Value, temperature.NumericMaximum!.Value));
         Assert.Equal("Cel", package.Definitions.OfType<ObservationDefinition>().Single(o => o.Id == temperature.ObservationId).Result!.UnitCode);
         Assert.Equal(0.7m, distributions.Single(d => d.DiseaseId == Ns + "violet" && d.ObservationId == Ns + "observation_image").CategoryWeights["marked"]);
-        Assert.Equal("demo_clinic.amber.complaint", distributions.Single(d => d.DiseaseId == Ns + "amber" && d.ObservationId == Ns + "observation_complaint").TextKey);
+        Assert.DoesNotContain(distributions, d => d.ObservationId == Ns + "observation_complaint"); // replaced by symptoms (0.20.2)
 
         var wheelchair = package.Definitions.OfType<FurnitureDefinition>().Single(f => f.Id == Ns + "furniture_wheelchair");
         Assert.Equal((FurnitureMobility.Pushable, TransportPosture.Seated, 1), (wheelchair.Mobility!.Value, wheelchair.Transport!.Posture, wheelchair.Placement!.Footprint.Width));
@@ -195,6 +196,27 @@ public sealed class DemoClinicTests
         Assert.Contains(distributions, d => d.CategoryWeights.Count > 1);
         var temperature = Of(Ns + "amber", Ns + "observation_temperature");
         Assert.Equal(38.4m, (temperature.NumericMinimum!.Value + temperature.NumericMaximum!.Value) / 2);
+    }
+
+    [Fact]
+    public async Task SymptomsAndFindingsAreSharedManifestations()
+    {
+        // Synthetic signs (game milestone "diagnostic uncertainty" D2b): shared symptoms visible on arrival, findings the
+        // interview reveals; the old one-complaint-per-case text is gone.
+        var package = await Package(); var simulation = package.DiagnosticSimulation!;
+        var symptoms = package.Definitions.OfType<SymptomDefinition>().Select(d => d.Id).ToHashSet();
+        var findings = package.Definitions.OfType<FindingDefinition>().Select(d => d.Id).ToHashSet();
+        Assert.Equal((8, 3), (symptoms.Count, findings.Count));
+        Assert.All(symptoms.Concat(findings), sign => Assert.True(simulation.Manifestations.Count(m => m.ManifestationId == sign) >= 2, sign));
+        Assert.All(simulation.Manifestations, m => Assert.Equal(symptoms.Contains(m.ManifestationId) ? FindingVisibility.InitiallyVisible : FindingVisibility.AfterExamination, m.Visibility));
+        Assert.Equal(0.8m, simulation.Manifestations.Single(m => m.DiseaseId == Ns + "amber" && m.ManifestationId == Ns + "symptom_fatigue").Probability);
+        Assert.All(simulation.Manifestations, m => Assert.Contains(package.Relations, r => r.FromId == m.DiseaseId && r.ToId == m.ManifestationId &&
+            r.Kind == (symptoms.Contains(m.ManifestationId) ? RelationKind.DiseaseSymptom : RelationKind.DiseaseFinding)));
+        Assert.Equal(findings.Order(StringComparer.Ordinal), package.Relations.Where(r => r.FromId == Ns + "interview" && r.Kind == RelationKind.ExaminationFinding)
+            .Select(r => r.ToId).Order(StringComparer.Ordinal));
+        Assert.DoesNotContain(package.Relations, r => r.FromId == Ns + "interview" && r.Kind == RelationKind.ExaminationObservation);
+        Assert.DoesNotContain(simulation.ObservationDistributions, d => d.TextKey is not null);
+        Assert.Equal("Müdigkeit", (await Catalog("de")).Entries[package.Definitions.Single(d => d.Id == Ns + "symptom_fatigue").NameKey]);
     }
 
     [Fact]
