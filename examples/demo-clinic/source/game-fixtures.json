@@ -264,43 +264,55 @@
           "ObservationId": "demo:temperature",
           "Number": 38.4,
           "Qualitative": null,
-          "Unit": "demo:C"
+          "Unit": "demo:C",
+          "Min": 37.8,
+          "Max": 39.0
         },
         {
           "ObservationId": "demo:pulse",
           "Number": 108,
           "Qualitative": null,
-          "Unit": "demo:beats-per-minute"
+          "Unit": "demo:beats-per-minute",
+          "Min": 98,
+          "Max": 118
         },
         {
           "ObservationId": "demo:pressure",
           "Number": 119,
           "Qualitative": null,
-          "Unit": "demo:fictional-pressure"
+          "Unit": "demo:fictional-pressure",
+          "Min": 115,
+          "Max": 123
         },
         {
           "ObservationId": "demo:count",
           "Number": 8.2,
           "Qualitative": null,
-          "Unit": "demo:fictional-count"
+          "Unit": "demo:fictional-count",
+          "Min": 7.2,
+          "Max": 9.2
         },
         {
           "ObservationId": "demo:marker",
           "Number": 42,
           "Qualitative": null,
-          "Unit": "demo:fictional-marker"
+          "Unit": "demo:fictional-marker",
+          "Min": 34,
+          "Max": 50
         },
         {
           "ObservationId": "demo:urine",
           "Number": null,
           "Qualitative": "demo:urine-clear",
-          "Unit": null
+          "Unit": null,
+          "Weights": {"clear": 0.9, "marked": 0.1}
         },
         {
           "ObservationId": "demo:image",
           "Number": null,
           "Qualitative": "demo:image-cloudy",
-          "Unit": null
+          "Unit": null,
+          "Weights": {"cloudy": 0.8, "marked": 0.2}
         }
       ]
     },
@@ -321,43 +333,55 @@
           "ObservationId": "demo:temperature",
           "Number": 36.8,
           "Qualitative": null,
-          "Unit": "demo:C"
+          "Unit": "demo:C",
+          "Min": 36.2,
+          "Max": 37.4
         },
         {
           "ObservationId": "demo:pulse",
           "Number": 79,
           "Qualitative": null,
-          "Unit": "demo:beats-per-minute"
+          "Unit": "demo:beats-per-minute",
+          "Min": 69,
+          "Max": 89
         },
         {
           "ObservationId": "demo:pressure",
           "Number": 142,
           "Qualitative": null,
-          "Unit": "demo:fictional-pressure"
+          "Unit": "demo:fictional-pressure",
+          "Min": 136,
+          "Max": 148
         },
         {
           "ObservationId": "demo:count",
           "Number": 5.3,
           "Qualitative": null,
-          "Unit": "demo:fictional-count"
+          "Unit": "demo:fictional-count",
+          "Min": 4.3,
+          "Max": 6.3
         },
         {
           "ObservationId": "demo:marker",
           "Number": 8,
           "Qualitative": null,
-          "Unit": "demo:fictional-marker"
+          "Unit": "demo:fictional-marker",
+          "Min": 4,
+          "Max": 12
         },
         {
           "ObservationId": "demo:urine",
           "Number": null,
           "Qualitative": "demo:urine-clear",
-          "Unit": null
+          "Unit": null,
+          "Weights": {"clear": 1}
         },
         {
           "ObservationId": "demo:image",
           "Number": null,
           "Qualitative": "demo:image-clear",
-          "Unit": null
+          "Unit": null,
+          "Weights": {"clear": 1}
         }
       ]
     },
@@ -378,43 +402,55 @@
           "ObservationId": "demo:temperature",
           "Number": 37.1,
           "Qualitative": null,
-          "Unit": "demo:C"
+          "Unit": "demo:C",
+          "Min": 36.5,
+          "Max": 37.7
         },
         {
           "ObservationId": "demo:pulse",
           "Number": 90,
           "Qualitative": null,
-          "Unit": "demo:beats-per-minute"
+          "Unit": "demo:beats-per-minute",
+          "Min": 80,
+          "Max": 100
         },
         {
           "ObservationId": "demo:pressure",
           "Number": 124,
           "Qualitative": null,
-          "Unit": "demo:fictional-pressure"
+          "Unit": "demo:fictional-pressure",
+          "Min": 118,
+          "Max": 130
         },
         {
           "ObservationId": "demo:count",
           "Number": 7,
           "Qualitative": null,
-          "Unit": "demo:fictional-count"
+          "Unit": "demo:fictional-count",
+          "Min": 6.0,
+          "Max": 8.0
         },
         {
           "ObservationId": "demo:marker",
           "Number": 14,
           "Qualitative": null,
-          "Unit": "demo:fictional-marker"
+          "Unit": "demo:fictional-marker",
+          "Min": 10,
+          "Max": 18
         },
         {
           "ObservationId": "demo:urine",
           "Number": null,
           "Qualitative": "demo:urine-marked",
-          "Unit": null
+          "Unit": null,
+          "Weights": {"marked": 0.8, "clear": 0.2}
         },
         {
           "ObservationId": "demo:image",
           "Number": null,
           "Qualitative": "demo:image-clear",
-          "Unit": null
+          "Unit": null,
+          "Weights": {"clear": 1}
         }
       ]
     },
@@ -435,43 +471,55 @@
           "ObservationId": "demo:temperature",
           "Number": 38,
           "Qualitative": null,
-          "Unit": "demo:C"
+          "Unit": "demo:C",
+          "Min": 37.4,
+          "Max": 38.6
         },
         {
           "ObservationId": "demo:pulse",
           "Number": 101,
           "Qualitative": null,
-          "Unit": "demo:beats-per-minute"
+          "Unit": "demo:beats-per-minute",
+          "Min": 91,
+          "Max": 111
         },
         {
           "ObservationId": "demo:pressure",
           "Number": 127,
           "Qualitative": null,
-          "Unit": "demo:fictional-pressure"
+          "Unit": "demo:fictional-pressure",
+          "Min": 124,
+          "Max": 130
         },
         {
           "ObservationId": "demo:count",
           "Number": 9.8,
           "Qualitative": null,
-          "Unit": "demo:fictional-count"
+          "Unit": "demo:fictional-count",
+          "Min": 8.8,
+          "Max": 10.8
         },
         {
           "ObservationId": "demo:marker",
           "Number": 32,
           "Qualitative": null,
-          "Unit": "demo:fictional-marker"
+          "Unit": "demo:fictional-marker",
+          "Min": 26,
+          "Max": 38
         },
         {
           "ObservationId": "demo:urine",
           "Number": null,
           "Qualitative": "demo:urine-clear",
-          "Unit": null
+          "Unit": null,
+          "Weights": {"clear": 0.8, "marked": 0.2}
         },
         {
           "ObservationId": "demo:image",
           "Number": null,
           "Qualitative": "demo:image-marked",
-          "Unit": null
+          "Unit": null,
+          "Weights": {"marked": 0.7, "cloudy": 0.3}
         }
       ]
     },
@@ -492,43 +540,55 @@
           "ObservationId": "demo:temperature",
           "Number": 37,
           "Qualitative": null,
-          "Unit": "demo:C"
+          "Unit": "demo:C",
+          "Min": 36.4,
+          "Max": 37.6
         },
         {
           "ObservationId": "demo:pulse",
           "Number": 86,
           "Qualitative": null,
-          "Unit": "demo:beats-per-minute"
+          "Unit": "demo:beats-per-minute",
+          "Min": 76,
+          "Max": 96
         },
         {
           "ObservationId": "demo:pressure",
           "Number": 130,
           "Qualitative": null,
-          "Unit": "demo:fictional-pressure"
+          "Unit": "demo:fictional-pressure",
+          "Min": 126,
+          "Max": 134
         },
         {
           "ObservationId": "demo:count",
           "Number": 6.1,
           "Qualitative": null,
-          "Unit": "demo:fictional-count"
+          "Unit": "demo:fictional-count",
+          "Min": 5.1,
+          "Max": 7.1
         },
         {
           "ObservationId": "demo:marker",
           "Number": 5,
           "Qualitative": null,
-          "Unit": "demo:fictional-marker"
+          "Unit": "demo:fictional-marker",
+          "Min": 3,
+          "Max": 7
         },
         {
           "ObservationId": "demo:urine",
           "Number": null,
           "Qualitative": "demo:urine-marked",
-          "Unit": null
+          "Unit": null,
+          "Weights": {"marked": 0.7, "clear": 0.3}
         },
         {
           "ObservationId": "demo:image",
           "Number": null,
           "Qualitative": "demo:image-clear",
-          "Unit": null
+          "Unit": null,
+          "Weights": {"clear": 0.9, "marked": 0.1}
         }
       ]
     }

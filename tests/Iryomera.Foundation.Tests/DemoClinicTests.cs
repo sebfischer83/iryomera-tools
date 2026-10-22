@@ -113,9 +113,9 @@ public sealed class DemoClinicTests
 
         var distributions = package.DiagnosticSimulation!.ObservationDistributions;
         var temperature = distributions.Single(d => d.DiseaseId == Ns + "amber" && d.ObservationId == Ns + "observation_temperature");
-        Assert.Equal((38.4m, 38.4m), (temperature.NumericMinimum!.Value, temperature.NumericMaximum!.Value));
+        Assert.Equal((37.8m, 39.0m), (temperature.NumericMinimum!.Value, temperature.NumericMaximum!.Value));
         Assert.Equal("Cel", package.Definitions.OfType<ObservationDefinition>().Single(o => o.Id == temperature.ObservationId).Result!.UnitCode);
-        Assert.Equal(1m, distributions.Single(d => d.DiseaseId == Ns + "violet" && d.ObservationId == Ns + "observation_image").CategoryWeights["marked"]);
+        Assert.Equal(0.7m, distributions.Single(d => d.DiseaseId == Ns + "violet" && d.ObservationId == Ns + "observation_image").CategoryWeights["marked"]);
         Assert.Equal("demo_clinic.amber.complaint", distributions.Single(d => d.DiseaseId == Ns + "amber" && d.ObservationId == Ns + "observation_complaint").TextKey);
 
         var wheelchair = package.Definitions.OfType<FurnitureDefinition>().Single(f => f.Id == Ns + "furniture_wheelchair");
@@ -171,6 +171,30 @@ public sealed class DemoClinicTests
             insurers.Select(i => (i.InsurerId, i.MinimumReputation, i.PriceFactor, i.PatientShare)));
         Assert.Equal(0.05m, Insurers.SelfPayShare(insurers));
         Assert.All(package.Definitions.OfType<InsurerDefinition>(), i => Assert.NotNull(i.DescriptionKey));
+    }
+
+    [Fact]
+    public async Task ObservationRangesOverlapButEveryPairIsSeparable()
+    {
+        // Synthetic readings (game milestone "diagnostic uncertainty"): ranges overlap, so one finding often fits several
+        // cases, but for every pair of cases some observation tells them apart; the middle stays the old fixture value.
+        var package = await Package();
+        var distributions = package.DiagnosticSimulation!.ObservationDistributions.Where(d => d.TextKey is null).ToArray();
+        var diseases = distributions.Select(d => d.DiseaseId).Distinct().Order(StringComparer.Ordinal).ToArray();
+        SimulatedObservationDistribution Of(string disease, string observation) => distributions.Single(d => d.DiseaseId == disease && d.ObservationId == observation);
+        bool Disjoint(SimulatedObservationDistribution a, SimulatedObservationDistribution b) => a.NumericMinimum is { } min
+            ? min > b.NumericMaximum!.Value || b.NumericMinimum!.Value > a.NumericMaximum!.Value
+            : !a.CategoryWeights.Any(w => w.Value > 0 && b.CategoryWeights.GetValueOrDefault(w.Key) > 0);
+        var observations = distributions.Select(d => d.ObservationId).Distinct().ToArray();
+        foreach (var a in diseases)
+            foreach (var b in diseases.Where(b => string.CompareOrdinal(a, b) < 0))
+                Assert.True(observations.Any(o => Disjoint(Of(a, o), Of(b, o))), $"{a} and {b} cannot be told apart");
+        foreach (var a in diseases)
+            Assert.True(diseases.Where(b => b != a).Any(b => observations.Any(o => !Disjoint(Of(a, o), Of(b, o)))), $"{a} overlaps nowhere");
+        Assert.All(distributions.Where(d => d.NumericMinimum is not null), d => Assert.True(d.NumericMinimum < d.NumericMaximum, d.Id));
+        Assert.Contains(distributions, d => d.CategoryWeights.Count > 1);
+        var temperature = Of(Ns + "amber", Ns + "observation_temperature");
+        Assert.Equal(38.4m, (temperature.NumericMinimum!.Value + temperature.NumericMaximum!.Value) / 2);
     }
 
     [Fact]
