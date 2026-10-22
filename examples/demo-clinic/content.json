@@ -371,30 +371,6 @@
     },
     {
       "kind": "observation",
-      "id": "demo_clinic:observation_complaint",
-      "nameKey": "demo_clinic.observation_complaint.name",
-      "version": "1.0.0",
-      "provenance": {
-        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
-        "externalId": "demo:complaint",
-        "sourceVersion": "game-fixtures-1",
-        "license": "MIT",
-        "importedAt": "2026-10-18T00:00:00Z",
-        "reviewStatus": "unreviewed",
-        "evidence": [
-          {
-            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
-          }
-        ]
-      },
-      "result": {
-        "valueKind": "text",
-        "categories": [],
-        "patientContextKeys": []
-      }
-    },
-    {
-      "kind": "observation",
       "id": "demo_clinic:observation_temperature",
       "nameKey": "demo_clinic.observation_temperature.name",
       "version": "1.0.0",
@@ -824,6 +800,215 @@
       "provenance": {
         "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
         "externalId": "demo:silver",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "symptom",
+      "id": "demo_clinic:symptom_fatigue",
+      "nameKey": "demo_clinic.symptom_fatigue.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "symptom:fatigue",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "symptom",
+      "id": "demo_clinic:symptom_chills",
+      "nameKey": "demo_clinic.symptom_chills.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "symptom:chills",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "symptom",
+      "id": "demo_clinic:symptom_dizziness",
+      "nameKey": "demo_clinic.symptom_dizziness.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "symptom:dizziness",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "symptom",
+      "id": "demo_clinic:symptom_headache",
+      "nameKey": "demo_clinic.symptom_headache.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "symptom:headache",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "symptom",
+      "id": "demo_clinic:symptom_abdominal_pain",
+      "nameKey": "demo_clinic.symptom_abdominal_pain.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "symptom:abdominal_pain",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "symptom",
+      "id": "demo_clinic:symptom_nausea",
+      "nameKey": "demo_clinic.symptom_nausea.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "symptom:nausea",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "symptom",
+      "id": "demo_clinic:symptom_cough",
+      "nameKey": "demo_clinic.symptom_cough.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "symptom:cough",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "symptom",
+      "id": "demo_clinic:symptom_tremor",
+      "nameKey": "demo_clinic.symptom_tremor.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "symptom:tremor",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "finding",
+      "id": "demo_clinic:finding_tenderness",
+      "nameKey": "demo_clinic.finding_tenderness.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "finding:tenderness",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "finding",
+      "id": "demo_clinic:finding_breath_sounds",
+      "nameKey": "demo_clinic.finding_breath_sounds.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "finding:breath_sounds",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "finding",
+      "id": "demo_clinic:finding_pallor",
+      "nameKey": "demo_clinic.finding_pallor.name",
+      "version": "1.0.0",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "finding:pallor",
         "sourceVersion": "game-fixtures-1",
         "license": "MIT",
         "importedAt": "2026-10-18T00:00:00Z",
@@ -1884,26 +2069,6 @@
   ],
   "relations": [
     {
-      "id": "demo_clinic:link_examinationobservation_interview_observation_complaint",
-      "version": "1.0.0",
-      "kind": "examinationObservation",
-      "fromId": "demo_clinic:interview",
-      "toId": "demo_clinic:observation_complaint",
-      "provenance": {
-        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
-        "externalId": "demo:interview",
-        "sourceVersion": "game-fixtures-1",
-        "license": "MIT",
-        "importedAt": "2026-10-18T00:00:00Z",
-        "reviewStatus": "unreviewed",
-        "evidence": [
-          {
-            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
-          }
-        ]
-      }
-    },
-    {
       "id": "demo_clinic:link_examinationroom_interview_room_type_consultation",
       "version": "1.0.0",
       "kind": "examinationRoom",
@@ -2452,6 +2617,666 @@
       "provenance": {
         "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
         "externalId": "demo:imaging",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_examinationfinding_interview_finding_tenderness",
+      "version": "1.0.0",
+      "kind": "examinationFinding",
+      "fromId": "demo_clinic:interview",
+      "toId": "demo_clinic:finding_tenderness",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:interview",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_examinationfinding_interview_finding_breath_sounds",
+      "version": "1.0.0",
+      "kind": "examinationFinding",
+      "fromId": "demo_clinic:interview",
+      "toId": "demo_clinic:finding_breath_sounds",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:interview",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_examinationfinding_interview_finding_pallor",
+      "version": "1.0.0",
+      "kind": "examinationFinding",
+      "fromId": "demo_clinic:interview",
+      "toId": "demo_clinic:finding_pallor",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:interview",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_diseasesymptom_amber_symptom_fatigue",
+      "version": "1.0.0",
+      "kind": "diseaseSymptom",
+      "fromId": "demo_clinic:amber",
+      "toId": "demo_clinic:symptom_fatigue",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:amber",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_diseasesymptom_amber_symptom_chills",
+      "version": "1.0.0",
+      "kind": "diseaseSymptom",
+      "fromId": "demo_clinic:amber",
+      "toId": "demo_clinic:symptom_chills",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:amber",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_diseasesymptom_amber_symptom_cough",
+      "version": "1.0.0",
+      "kind": "diseaseSymptom",
+      "fromId": "demo_clinic:amber",
+      "toId": "demo_clinic:symptom_cough",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:amber",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_diseasesymptom_amber_symptom_headache",
+      "version": "1.0.0",
+      "kind": "diseaseSymptom",
+      "fromId": "demo_clinic:amber",
+      "toId": "demo_clinic:symptom_headache",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:amber",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_diseasefinding_amber_finding_breath_sounds",
+      "version": "1.0.0",
+      "kind": "diseaseFinding",
+      "fromId": "demo_clinic:amber",
+      "toId": "demo_clinic:finding_breath_sounds",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:amber",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_diseasefinding_amber_finding_pallor",
+      "version": "1.0.0",
+      "kind": "diseaseFinding",
+      "fromId": "demo_clinic:amber",
+      "toId": "demo_clinic:finding_pallor",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:amber",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_diseasesymptom_blue_symptom_dizziness",
+      "version": "1.0.0",
+      "kind": "diseaseSymptom",
+      "fromId": "demo_clinic:blue",
+      "toId": "demo_clinic:symptom_dizziness",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:blue",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_diseasesymptom_blue_symptom_headache",
+      "version": "1.0.0",
+      "kind": "diseaseSymptom",
+      "fromId": "demo_clinic:blue",
+      "toId": "demo_clinic:symptom_headache",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:blue",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_diseasesymptom_blue_symptom_nausea",
+      "version": "1.0.0",
+      "kind": "diseaseSymptom",
+      "fromId": "demo_clinic:blue",
+      "toId": "demo_clinic:symptom_nausea",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:blue",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_diseasesymptom_blue_symptom_fatigue",
+      "version": "1.0.0",
+      "kind": "diseaseSymptom",
+      "fromId": "demo_clinic:blue",
+      "toId": "demo_clinic:symptom_fatigue",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:blue",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_diseasesymptom_blue_symptom_tremor",
+      "version": "1.0.0",
+      "kind": "diseaseSymptom",
+      "fromId": "demo_clinic:blue",
+      "toId": "demo_clinic:symptom_tremor",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:blue",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_diseasefinding_blue_finding_pallor",
+      "version": "1.0.0",
+      "kind": "diseaseFinding",
+      "fromId": "demo_clinic:blue",
+      "toId": "demo_clinic:finding_pallor",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:blue",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_diseasesymptom_green_symptom_abdominal_pain",
+      "version": "1.0.0",
+      "kind": "diseaseSymptom",
+      "fromId": "demo_clinic:green",
+      "toId": "demo_clinic:symptom_abdominal_pain",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:green",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_diseasesymptom_green_symptom_nausea",
+      "version": "1.0.0",
+      "kind": "diseaseSymptom",
+      "fromId": "demo_clinic:green",
+      "toId": "demo_clinic:symptom_nausea",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:green",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_diseasesymptom_green_symptom_fatigue",
+      "version": "1.0.0",
+      "kind": "diseaseSymptom",
+      "fromId": "demo_clinic:green",
+      "toId": "demo_clinic:symptom_fatigue",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:green",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_diseasesymptom_green_symptom_chills",
+      "version": "1.0.0",
+      "kind": "diseaseSymptom",
+      "fromId": "demo_clinic:green",
+      "toId": "demo_clinic:symptom_chills",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:green",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_diseasefinding_green_finding_tenderness",
+      "version": "1.0.0",
+      "kind": "diseaseFinding",
+      "fromId": "demo_clinic:green",
+      "toId": "demo_clinic:finding_tenderness",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:green",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_diseasefinding_green_finding_pallor",
+      "version": "1.0.0",
+      "kind": "diseaseFinding",
+      "fromId": "demo_clinic:green",
+      "toId": "demo_clinic:finding_pallor",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:green",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_diseasesymptom_violet_symptom_cough",
+      "version": "1.0.0",
+      "kind": "diseaseSymptom",
+      "fromId": "demo_clinic:violet",
+      "toId": "demo_clinic:symptom_cough",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:violet",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_diseasesymptom_violet_symptom_fatigue",
+      "version": "1.0.0",
+      "kind": "diseaseSymptom",
+      "fromId": "demo_clinic:violet",
+      "toId": "demo_clinic:symptom_fatigue",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:violet",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_diseasesymptom_violet_symptom_chills",
+      "version": "1.0.0",
+      "kind": "diseaseSymptom",
+      "fromId": "demo_clinic:violet",
+      "toId": "demo_clinic:symptom_chills",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:violet",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_diseasesymptom_violet_symptom_dizziness",
+      "version": "1.0.0",
+      "kind": "diseaseSymptom",
+      "fromId": "demo_clinic:violet",
+      "toId": "demo_clinic:symptom_dizziness",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:violet",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_diseasefinding_violet_finding_breath_sounds",
+      "version": "1.0.0",
+      "kind": "diseaseFinding",
+      "fromId": "demo_clinic:violet",
+      "toId": "demo_clinic:finding_breath_sounds",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:violet",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_diseasefinding_violet_finding_pallor",
+      "version": "1.0.0",
+      "kind": "diseaseFinding",
+      "fromId": "demo_clinic:violet",
+      "toId": "demo_clinic:finding_pallor",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:violet",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_diseasesymptom_silver_symptom_tremor",
+      "version": "1.0.0",
+      "kind": "diseaseSymptom",
+      "fromId": "demo_clinic:silver",
+      "toId": "demo_clinic:symptom_tremor",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:silver",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_diseasesymptom_silver_symptom_abdominal_pain",
+      "version": "1.0.0",
+      "kind": "diseaseSymptom",
+      "fromId": "demo_clinic:silver",
+      "toId": "demo_clinic:symptom_abdominal_pain",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:silver",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_diseasesymptom_silver_symptom_nausea",
+      "version": "1.0.0",
+      "kind": "diseaseSymptom",
+      "fromId": "demo_clinic:silver",
+      "toId": "demo_clinic:symptom_nausea",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:silver",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_diseasesymptom_silver_symptom_dizziness",
+      "version": "1.0.0",
+      "kind": "diseaseSymptom",
+      "fromId": "demo_clinic:silver",
+      "toId": "demo_clinic:symptom_dizziness",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:silver",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_diseasefinding_silver_finding_tenderness",
+      "version": "1.0.0",
+      "kind": "diseaseFinding",
+      "fromId": "demo_clinic:silver",
+      "toId": "demo_clinic:finding_tenderness",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:silver",
+        "sourceVersion": "game-fixtures-1",
+        "license": "MIT",
+        "importedAt": "2026-10-18T00:00:00Z",
+        "reviewStatus": "unreviewed",
+        "evidence": [
+          {
+            "citation": "Own synthetic game fixture; not a medical reference, range or recommendation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo_clinic:link_diseasefinding_silver_finding_pallor",
+      "version": "1.0.0",
+      "kind": "diseaseFinding",
+      "fromId": "demo_clinic:silver",
+      "toId": "demo_clinic:finding_pallor",
+      "provenance": {
+        "source": "Iryomera demo clinic fixtures from the private game; fictional demo content, not medical knowledge",
+        "externalId": "demo:silver",
         "sourceVersion": "game-fixtures-1",
         "license": "MIT",
         "importedAt": "2026-10-18T00:00:00Z",
@@ -4624,16 +5449,6 @@
       {
         "schemaVersion": "1.0.0",
         "simulationOnly": true,
-        "id": "demo_clinic:reading_amber_complaint",
-        "version": "1.0.0",
-        "diseaseId": "demo_clinic:amber",
-        "observationId": "demo_clinic:observation_complaint",
-        "categoryWeights": {},
-        "textKey": "demo_clinic.amber.complaint"
-      },
-      {
-        "schemaVersion": "1.0.0",
-        "simulationOnly": true,
         "id": "demo_clinic:reading_amber_temperature",
         "version": "1.0.0",
         "diseaseId": "demo_clinic:amber",
@@ -4709,16 +5524,6 @@
           "cloudy": 0.8,
           "marked": 0.2
         }
-      },
-      {
-        "schemaVersion": "1.0.0",
-        "simulationOnly": true,
-        "id": "demo_clinic:reading_blue_complaint",
-        "version": "1.0.0",
-        "diseaseId": "demo_clinic:blue",
-        "observationId": "demo_clinic:observation_complaint",
-        "categoryWeights": {},
-        "textKey": "demo_clinic.blue.complaint"
       },
       {
         "schemaVersion": "1.0.0",
@@ -4800,16 +5605,6 @@
       {
         "schemaVersion": "1.0.0",
         "simulationOnly": true,
-        "id": "demo_clinic:reading_green_complaint",
-        "version": "1.0.0",
-        "diseaseId": "demo_clinic:green",
-        "observationId": "demo_clinic:observation_complaint",
-        "categoryWeights": {},
-        "textKey": "demo_clinic.green.complaint"
-      },
-      {
-        "schemaVersion": "1.0.0",
-        "simulationOnly": true,
         "id": "demo_clinic:reading_green_temperature",
         "version": "1.0.0",
         "diseaseId": "demo_clinic:green",
@@ -4884,16 +5679,6 @@
         "categoryWeights": {
           "clear": 1
         }
-      },
-      {
-        "schemaVersion": "1.0.0",
-        "simulationOnly": true,
-        "id": "demo_clinic:reading_violet_complaint",
-        "version": "1.0.0",
-        "diseaseId": "demo_clinic:violet",
-        "observationId": "demo_clinic:observation_complaint",
-        "categoryWeights": {},
-        "textKey": "demo_clinic.violet.complaint"
       },
       {
         "schemaVersion": "1.0.0",
@@ -4977,16 +5762,6 @@
       {
         "schemaVersion": "1.0.0",
         "simulationOnly": true,
-        "id": "demo_clinic:reading_silver_complaint",
-        "version": "1.0.0",
-        "diseaseId": "demo_clinic:silver",
-        "observationId": "demo_clinic:observation_complaint",
-        "categoryWeights": {},
-        "textKey": "demo_clinic.silver.complaint"
-      },
-      {
-        "schemaVersion": "1.0.0",
-        "simulationOnly": true,
         "id": "demo_clinic:reading_silver_temperature",
         "version": "1.0.0",
         "diseaseId": "demo_clinic:silver",
@@ -5064,7 +5839,308 @@
         }
       }
     ],
-    "manifestations": [],
+    "manifestations": [
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:manifestation_amber_fatigue",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:amber",
+        "manifestationId": "demo_clinic:symptom_fatigue",
+        "probability": 0.8,
+        "visibility": "initiallyVisible"
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:manifestation_amber_chills",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:amber",
+        "manifestationId": "demo_clinic:symptom_chills",
+        "probability": 0.7,
+        "visibility": "initiallyVisible"
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:manifestation_amber_cough",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:amber",
+        "manifestationId": "demo_clinic:symptom_cough",
+        "probability": 0.3,
+        "visibility": "initiallyVisible"
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:manifestation_amber_headache",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:amber",
+        "manifestationId": "demo_clinic:symptom_headache",
+        "probability": 0.2,
+        "visibility": "initiallyVisible"
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:manifestation_amber_breath_sounds",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:amber",
+        "manifestationId": "demo_clinic:finding_breath_sounds",
+        "probability": 0.3,
+        "visibility": "afterExamination"
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:manifestation_amber_pallor",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:amber",
+        "manifestationId": "demo_clinic:finding_pallor",
+        "probability": 0.4,
+        "visibility": "afterExamination"
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:manifestation_blue_dizziness",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:blue",
+        "manifestationId": "demo_clinic:symptom_dizziness",
+        "probability": 0.8,
+        "visibility": "initiallyVisible"
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:manifestation_blue_headache",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:blue",
+        "manifestationId": "demo_clinic:symptom_headache",
+        "probability": 0.7,
+        "visibility": "initiallyVisible"
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:manifestation_blue_nausea",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:blue",
+        "manifestationId": "demo_clinic:symptom_nausea",
+        "probability": 0.3,
+        "visibility": "initiallyVisible"
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:manifestation_blue_fatigue",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:blue",
+        "manifestationId": "demo_clinic:symptom_fatigue",
+        "probability": 0.2,
+        "visibility": "initiallyVisible"
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:manifestation_blue_tremor",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:blue",
+        "manifestationId": "demo_clinic:symptom_tremor",
+        "probability": 0.2,
+        "visibility": "initiallyVisible"
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:manifestation_blue_pallor",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:blue",
+        "manifestationId": "demo_clinic:finding_pallor",
+        "probability": 0.3,
+        "visibility": "afterExamination"
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:manifestation_green_abdominal_pain",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:green",
+        "manifestationId": "demo_clinic:symptom_abdominal_pain",
+        "probability": 0.8,
+        "visibility": "initiallyVisible"
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:manifestation_green_nausea",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:green",
+        "manifestationId": "demo_clinic:symptom_nausea",
+        "probability": 0.6,
+        "visibility": "initiallyVisible"
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:manifestation_green_fatigue",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:green",
+        "manifestationId": "demo_clinic:symptom_fatigue",
+        "probability": 0.3,
+        "visibility": "initiallyVisible"
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:manifestation_green_chills",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:green",
+        "manifestationId": "demo_clinic:symptom_chills",
+        "probability": 0.2,
+        "visibility": "initiallyVisible"
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:manifestation_green_tenderness",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:green",
+        "manifestationId": "demo_clinic:finding_tenderness",
+        "probability": 0.8,
+        "visibility": "afterExamination"
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:manifestation_green_pallor",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:green",
+        "manifestationId": "demo_clinic:finding_pallor",
+        "probability": 0.2,
+        "visibility": "afterExamination"
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:manifestation_violet_cough",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:violet",
+        "manifestationId": "demo_clinic:symptom_cough",
+        "probability": 0.8,
+        "visibility": "initiallyVisible"
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:manifestation_violet_fatigue",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:violet",
+        "manifestationId": "demo_clinic:symptom_fatigue",
+        "probability": 0.6,
+        "visibility": "initiallyVisible"
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:manifestation_violet_chills",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:violet",
+        "manifestationId": "demo_clinic:symptom_chills",
+        "probability": 0.4,
+        "visibility": "initiallyVisible"
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:manifestation_violet_dizziness",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:violet",
+        "manifestationId": "demo_clinic:symptom_dizziness",
+        "probability": 0.2,
+        "visibility": "initiallyVisible"
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:manifestation_violet_breath_sounds",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:violet",
+        "manifestationId": "demo_clinic:finding_breath_sounds",
+        "probability": 0.8,
+        "visibility": "afterExamination"
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:manifestation_violet_pallor",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:violet",
+        "manifestationId": "demo_clinic:finding_pallor",
+        "probability": 0.3,
+        "visibility": "afterExamination"
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:manifestation_silver_tremor",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:silver",
+        "manifestationId": "demo_clinic:symptom_tremor",
+        "probability": 0.7,
+        "visibility": "initiallyVisible"
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:manifestation_silver_abdominal_pain",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:silver",
+        "manifestationId": "demo_clinic:symptom_abdominal_pain",
+        "probability": 0.5,
+        "visibility": "initiallyVisible"
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:manifestation_silver_nausea",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:silver",
+        "manifestationId": "demo_clinic:symptom_nausea",
+        "probability": 0.4,
+        "visibility": "initiallyVisible"
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:manifestation_silver_dizziness",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:silver",
+        "manifestationId": "demo_clinic:symptom_dizziness",
+        "probability": 0.3,
+        "visibility": "initiallyVisible"
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:manifestation_silver_tenderness",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:silver",
+        "manifestationId": "demo_clinic:finding_tenderness",
+        "probability": 0.6,
+        "visibility": "afterExamination"
+      },
+      {
+        "schemaVersion": "1.0.0",
+        "simulationOnly": true,
+        "id": "demo_clinic:manifestation_silver_pallor",
+        "version": "1.0.0",
+        "diseaseId": "demo_clinic:silver",
+        "manifestationId": "demo_clinic:finding_pallor",
+        "probability": 0.5,
+        "visibility": "afterExamination"
+      }
+    ],
     "examinationPolicies": []
   },
   "namePools": [
