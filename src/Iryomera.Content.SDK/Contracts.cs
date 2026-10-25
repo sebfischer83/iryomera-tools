@@ -218,6 +218,10 @@ public sealed record GameplayBalance : ExtensibleRecord
     public decimal? PriceFactor { get; init; }
     /// <summary>Simulation only: an insurer's share in [0,1] of all arrivals; absent means 0, the rest are self-payers.</summary>
     public decimal? PatientShare { get; init; }
+    /// <summary>Simulation only: how unpleasant an examination or treatment is for the patient, a whole number in [0,10]; absent means 0.</summary>
+    public decimal? Discomfort { get; init; }
+    /// <summary>Simulation only: care level of a ward room, 1 normal, 2 intermediate, 3 intensive; absent means 1.</summary>
+    public decimal? CareLevel { get; init; }
     public Dictionary<string, decimal> RequiredResources { get; init; } = [];
 }
 

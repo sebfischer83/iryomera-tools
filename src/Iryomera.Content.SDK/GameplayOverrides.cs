@@ -40,6 +40,8 @@ public sealed record GameplayOverride : ExtensibleRecord
     public decimal? MinimumReputation { get; init; }
     public decimal? PriceFactor { get; init; }
     public decimal? PatientShare { get; init; }
+    public decimal? Discomfort { get; init; }
+    public decimal? CareLevel { get; init; }
     public Dictionary<string, decimal>? RequiredResources { get; init; }
 
     internal IEnumerable<(string Field, decimal Value)> Values()
@@ -70,6 +72,8 @@ public sealed record GameplayOverride : ExtensibleRecord
         if (MinimumReputation is { } y) yield return ("minimumReputation", y);
         if (PriceFactor is { } z) yield return ("priceFactor", z);
         if (PatientShare is { } share) yield return ("patientShare", share);
+        if (Discomfort is { } discomfort) yield return ("discomfort", discomfort);
+        if (CareLevel is { } level) yield return ("careLevel", level);
         foreach (var (key, value) in RequiredResources ?? []) yield return ("requiredResources." + key, value);
     }
 }
@@ -128,7 +132,7 @@ public static class GameplayResolver
         UnlockCost = b.UnlockCost, UnlockDischargedPatients = b.UnlockDischargedPatients,
         OpenFromHour = b.OpenFromHour, OpenToHour = b.OpenToHour, Arrival = b.Arrival, StayDurationSeconds = b.StayDurationSeconds,
         StayChance = b.StayChance, StayDurationMaxSeconds = b.StayDurationMaxSeconds, ComplicationChance = b.ComplicationChance, ExtraStayDurationSeconds = b.ExtraStayDurationSeconds,
-        Comfort = b.Comfort, MinimumReputation = b.MinimumReputation, PriceFactor = b.PriceFactor, PatientShare = b.PatientShare, RequiredResources = b.RequiredResources
+        Comfort = b.Comfort, MinimumReputation = b.MinimumReputation, PriceFactor = b.PriceFactor, PatientShare = b.PatientShare, Discomfort = b.Discomfort, CareLevel = b.CareLevel, RequiredResources = b.RequiredResources
     };
 
     private static GameplayBalance ToBalance(string target, SortedDictionary<string, decimal> v)
@@ -145,6 +149,7 @@ public static class GameplayResolver
             StayDurationSeconds = Get("stayDurationSeconds"), StayChance = Get("stayChance"), StayDurationMaxSeconds = Get("stayDurationMaxSeconds"),
             ComplicationChance = Get("complicationChance"), ExtraStayDurationSeconds = Get("extraStayDurationSeconds"),
             Comfort = Get("comfort"), MinimumReputation = Get("minimumReputation"), PriceFactor = Get("priceFactor"), PatientShare = Get("patientShare"),
+            Discomfort = Get("discomfort"), CareLevel = Get("careLevel"),
             RequiredResources = v.Where(p => p.Key.StartsWith("requiredResources.", StringComparison.Ordinal))
                 .ToDictionary(p => p.Key["requiredResources.".Length..], p => p.Value, StringComparer.Ordinal)
         };
