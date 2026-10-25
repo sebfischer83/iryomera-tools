@@ -23,11 +23,30 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v7.0.1
-      - uses: actions/setup-dotnet@v6.0.0
-        with:
-          # The exact SDK from global.json fixes implicit ASP.NET package versions in the lock files.
-          global-json-file: global.json
-          dotnet-version: 8.0.x
+      # Workaround (2026-10-25): actions/setup-dotnet resolves through aka.ms to dotnetorigin.blob.core.windows.net,
+      # which answers 409 since Microsoft closed public access (actions/setup-dotnet#794, dotnet/install-scripts#745).
+      # The official install script with exact versions and builds.dotnet.microsoft.com as feed avoids both. The exact
+      # SDK from global.json fixes implicit ASP.NET package versions in the lock files; the .NET 8 SDK brings the net8.0
+      # test runtime. Return to setup-dotnet once it no longer uses the old storage.
+      - name: Install .NET (Linux)
+        if: runner.os != 'Windows'
+        shell: bash
+        run: |
+          curl -fsSL https://builds.dotnet.microsoft.com/dotnet/scripts/v1/dotnet-install.sh -o "$RUNNER_TEMP/dotnet-install.sh"
+          bash "$RUNNER_TEMP/dotnet-install.sh" --jsonfile global.json --azure-feed https://builds.dotnet.microsoft.com/dotnet --install-dir "$HOME/.dotnet"
+          bash "$RUNNER_TEMP/dotnet-install.sh" --version 8.0.427 --azure-feed https://builds.dotnet.microsoft.com/dotnet --install-dir "$HOME/.dotnet"
+          echo "DOTNET_ROOT=$HOME/.dotnet" >> "$GITHUB_ENV"
+          echo "$HOME/.dotnet" >> "$GITHUB_PATH"
+      - name: Install .NET (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          Invoke-WebRequest https://builds.dotnet.microsoft.com/dotnet/scripts/v1/dotnet-install.ps1 -OutFile "$env:RUNNER_TEMP\dotnet-install.ps1"
+          $dir = "$env:USERPROFILE\.dotnet"
+          & "$env:RUNNER_TEMP\dotnet-install.ps1" -JsonFile global.json -AzureFeed https://builds.dotnet.microsoft.com/dotnet -InstallDir $dir
+          & "$env:RUNNER_TEMP\dotnet-install.ps1" -Version 8.0.427 -AzureFeed https://builds.dotnet.microsoft.com/dotnet -InstallDir $dir
+          "DOTNET_ROOT=$dir" >> $env:GITHUB_ENV
+          $dir >> $env:GITHUB_PATH
       - uses: actions/setup-python@v7.0.0
         with:
           python-version: '3.x'
@@ -102,9 +121,15 @@ jobs:
         with:
           name: tools-ubuntu-latest
           path: release
-      - uses: actions/setup-dotnet@v6.0.0
-        with:
-          dotnet-version: 10.0.x
+      # Same workaround as in the tools job; this job has no checkout, so the SDK version is named here.
+      - name: Install .NET (Linux)
+        if: runner.os != 'Windows'
+        shell: bash
+        run: |
+          curl -fsSL https://builds.dotnet.microsoft.com/dotnet/scripts/v1/dotnet-install.sh -o "$RUNNER_TEMP/dotnet-install.sh"
+          bash "$RUNNER_TEMP/dotnet-install.sh" --version 10.0.402 --azure-feed https://builds.dotnet.microsoft.com/dotnet --install-dir "$HOME/.dotnet"
+          echo "DOTNET_ROOT=$HOME/.dotnet" >> "$GITHUB_ENV"
+          echo "$HOME/.dotnet" >> "$GITHUB_PATH"
       - name: Require exactly the five packages at the tag version
         run: |
           version="${GITHUB_REF_NAME#v}"
