@@ -4012,6 +4012,84 @@
       ],
       "additionalProperties": true
     },
+    "stationPlace": {
+      "type": "object",
+      "properties": {
+        "pointKind": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "equipmentId": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "pointKind"
+      ],
+      "additionalProperties": true
+    },
+    "procedureStation": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "share": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1
+        },
+        "patient": {
+          "$ref": "#/$defs/stationPlace"
+        },
+        "staff": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/stationPlace"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "key",
+        "share",
+        "patient"
+      ],
+      "additionalProperties": true
+    },
+    "procedureStationSet": {
+      "type": "object",
+      "properties": {
+        "definitionId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "stations": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/procedureStation"
+          }
+        }
+      },
+      "required": [
+        "definitionId",
+        "stations"
+      ],
+      "additionalProperties": true
+    },
     "contentPackage": {
       "type": "object",
       "properties": {
@@ -4099,6 +4177,19 @@
               "type": "array",
               "items": {
                 "$ref": "#/$defs/gameplayOverride"
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "procedureStations": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/procedureStationSet"
               }
             },
             {

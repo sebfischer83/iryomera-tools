@@ -225,6 +225,7 @@ public static class ContentValidator
             errors.AddRange(DiagnosticValidator.Validate(item, id => Resolve(id, id)?.Definition));
             errors.AddRange(AssetValidator.Validate(item, id => Resolve(id, id)?.Definition));
             errors.AddRange(DepartmentValidator.Validate(item));
+            errors.AddRange(ProcedureStationValidator.Validate(item, id => Resolve(id, id)?.Definition));
             errors.AddRange(TreatmentValidator.Validate(item, packages.Where(p => allowed.Contains(p.Manifest.Id)).ToArray()));
             errors.AddRange(InsurerValidator.Validate(item, packages.Where(p => allowed.Contains(p.Manifest.Id)).ToArray()));
             var overridden = new HashSet<string>(StringComparer.Ordinal);
