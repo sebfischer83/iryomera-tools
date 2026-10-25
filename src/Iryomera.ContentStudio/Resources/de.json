@@ -298,6 +298,8 @@
     "studio.minimumreputation": "Ruf für einen Vertrag (0–100)",
     "studio.pricefactor": "Preisfaktor (über 0)",
     "studio.patientshare": "Anteil der Patienten (0–1)",
+    "studio.discomfort": "Unbehagen für den Patienten (0–10, ganze Zahl)",
+    "studio.carelevel": "Pflegestufe eines Bettenraums (1 normal, 2 Überwachung, 3 Intensiv)",
     "studio.pairbalancinghint": "Werte für diese Kombination gehen vor Behandlung und Krankheit.",
     "studio.roomrules": "Raumregeln",
     "studio.roomruleshint": "Bauregeln für diese Raumart; das Spiel prüft sie, wenn der Spieler einen Raum baut.",

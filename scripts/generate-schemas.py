@@ -98,6 +98,9 @@ bal['arrival']=nullable({'enum':['walkIn','emergency']})
 bal['comfort']=nullable({'type':'integer','minimum':0,'maximum':10})
 bal['minimumReputation']=nullable({'type':'number','minimum':0,'maximum':100})
 bal['priceFactor']=nullable({'type':'number','exclusiveMinimum':0})
+# Discomfort of examinations/treatments and care levels of ward rooms (ADR 0023): simulation-only game values.
+bal['discomfort']=nullable({'type':'integer','minimum':0,'maximum':10})
+bal['careLevel']=nullable({'type':'integer','minimum':1,'maximum':3})
 bal['requiredResources']={'type':'object','propertyNames':text,'additionalProperties':{'type':'number','minimum':0}}
 defs['gameplayBalance']=obj(bal,['definitionId'])
 # Simulation-only overrides of declared dependencies' balancing (ADR 0015); only set fields replace earlier values.

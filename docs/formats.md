@@ -166,6 +166,10 @@ Balancing gains `stayChance` and `complicationChance` (0–1), `stayDurationMaxS
 
 Balancing gains `comfort` (whole number 0–10, typically on furniture, absent 0), `minimumReputation` (0–100, absent 0), `priceFactor` (above 0, absent 1) and `patientShare` (0–1, absent 0). New definition kind `insurer`; `Insurers.All` lists insurers with resolved terms and defaults, `Insurers.SelfPayShare` the rest of 1 for patients without an insurer. Range errors are `balance-range`; `insurer-share` reports shares above 1 in total over a package and its declared dependencies after overrides. Older readers reject the new kind. See [ADR 0022](architecture/0022-comfort-and-insurers.md).
 
+## Discomfort and care levels (library 0.21.0)
+
+Balancing gains `discomfort` (whole number 0–10, typically on examinations and treatments, absent 0) and `careLevel` (whole number 1–3 on ward rooms: 1 normal, 2 intermediate, 3 intensive; absent 1). Both are simulation-only, overridable by mods and range-checked (`balance-range`). See [ADR 0023](architecture/0023-discomfort-and-care-levels.md).
+
 ModKit authoring (`mod.json`) and archive integrity (`checksums.json`) have separate schemas in `schemas/modkit/v1`. No executable/script/plugin payload kind is defined. The archive is not a Godot PCK or game save format. The runtime game remains responsible for asset rendering and interaction behavior.
 
 ## Name pools and formats (library 0.6.0)

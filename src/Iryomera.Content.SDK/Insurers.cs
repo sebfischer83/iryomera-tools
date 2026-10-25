@@ -29,15 +29,23 @@ public static class Insurers
 
 internal static class InsurerValidator
 {
-    /// <summary>Comfort, reputation and price factor ranges, and the summed shares of the package with its dependencies.</summary>
+    /// <summary>
+    /// Comfort, reputation, price factor, discomfort and care level ranges, and the summed shares of the package with its
+    /// dependencies.
+    /// </summary>
     internal static IEnumerable<ValidationIssue> Validate(ContentPackage package, IReadOnlyList<ContentPackage> closure)
     {
-        var values = package.Gameplay.Select(b => (Path: b.DefinitionId, b.Comfort, b.MinimumReputation, b.PriceFactor))
-            .Concat((package.GameplayOverrides ?? []).Select(c => (Path: c.Id, c.Comfort, c.MinimumReputation, c.PriceFactor)));
-        foreach (var (path, comfort, reputation, factor) in values)
+        var values = package.Gameplay.Select(b => (Path: b.DefinitionId, b.Comfort, b.MinimumReputation, b.PriceFactor, b.Discomfort, b.CareLevel))
+            .Concat((package.GameplayOverrides ?? []).Select(c => (Path: c.Id, c.Comfort, c.MinimumReputation, c.PriceFactor, c.Discomfort, c.CareLevel)));
+        foreach (var (path, comfort, reputation, factor, discomfort, careLevel) in values)
         {
             if (comfort is { } c && (c < 0 || c > 10 || c != decimal.Truncate(c)))
                 yield return new("balance-range", path, "Comfort is a whole number in [0,10].");
+            // Discomfort and care levels (ADR 0023).
+            if (discomfort is { } d && (d < 0 || d > 10 || d != decimal.Truncate(d)))
+                yield return new("balance-range", path, "Discomfort is a whole number in [0,10].");
+            if (careLevel is { } l && (l < 1 || l > 3 || l != decimal.Truncate(l)))
+                yield return new("balance-range", path, "The care level is a whole number in [1,3].");
             if (reputation is < 0 or > 100) yield return new("balance-range", path, "The minimum reputation is within [0,100].");
             if (factor is <= 0) yield return new("balance-range", path, "The price factor is above 0.");
         }
