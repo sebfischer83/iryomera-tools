@@ -43,7 +43,7 @@ base={'id':id,'nameKey':key,'descriptionKey':nullable(key),'version':version,'pr
 for kind in kinds:defs[kind+'Definition']=obj({'kind':{'const':kind},**base},['kind','id','nameKey','version','provenance'])
 defs['furnitureDefinition']['properties']['placement']=nullable(ref('furniturePlacement'))
 # Room layout rules (ADR 0017): game rules in grid cells, not medical statements.
-defs['roomDefinition']['properties'].update({'minimumCells':nullable({'type':'integer','minimum':1}),'requiresDoor':{'type':['boolean','null']},'role':nullable({'enum':['reception','waiting','ward']}),'shareable':{'type':['boolean','null']}})
+defs['roomDefinition']['properties'].update({'minimumCells':nullable({'type':'integer','minimum':1}),'requiresDoor':{'type':['boolean','null']},'role':nullable({'enum':['reception','waiting','ward','staffRoom','wardOffice','patientToilet','staffToilet','cleaningRoom']}),'shareable':{'type':['boolean','null']}})
 # Movable furniture (ADR 0016): game rules, not medical statements. Headings: 0 deg = local +Z, counterclockwise from above (90 deg = +X).
 defs['furnitureTransport']=obj({'patientCapacity':{'type':'integer','minimum':1},'posture':{'enum':['seated','lying']},'requiredQualificationId':nullable(id)},['patientCapacity','posture'])
 defs['complicationDefinition']['properties'].update({'effect':{'enum':['extraStay','requiredExamination','followUpTreatment']},'timing':{'enum':['duringTreatment','duringStay']}})

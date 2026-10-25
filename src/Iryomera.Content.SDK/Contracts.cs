@@ -109,8 +109,11 @@ public sealed record RoomDefinition : ContentDefinition
     /// <summary>True when several departments may use one room of this type; absent means not shared.</summary>
     public bool? Shareable { get; init; }
 }
-/// <summary>Reception, waiting room or ward (bed room). Beds are ward furniture with a lying point.</summary>
-public enum RoomRole { Reception, Waiting, Ward }
+/// <summary>
+/// Reception, waiting room or ward (bed room; beds are ward furniture with a lying point); since 0.22.0 also the staff
+/// room for breaks, the ward office of a bed station, separate patient and staff toilets and the cleaning room (ADR 0024).
+/// </summary>
+public enum RoomRole { Reception, Waiting, Ward, StaffRoom, WardOffice, PatientToilet, StaffToilet, CleaningRoom }
 /// <summary>Simulation only: how a case reaches the clinic. Walk-in cases come during opening hours; emergency cases only to an open emergency department.</summary>
 public enum PatientArrival { WalkIn, Emergency }
 public sealed record FurnitureDefinition : ContentDefinition
