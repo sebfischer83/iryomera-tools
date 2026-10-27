@@ -305,6 +305,7 @@
     "studio.patientshare": "Share of patients (0–1)",
     "studio.discomfort": "Discomfort for the patient (0–10, whole number)",
     "studio.carelevel": "Care level of a ward (1 normal, 2 intermediate, 3 intensive)",
+    "studio.recurrencedays": "Recurrence of a chronic disease (mean days between visits, 1–365)",
     "studio.pairbalancinghint": "Values for this pair override the treatment and the disease.",
     "studio.roomrules": "Room rules",
     "studio.roomruleshint": "Layout rules for this room type, checked by the game when the player builds a room.",

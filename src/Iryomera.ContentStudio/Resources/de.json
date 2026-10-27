@@ -305,6 +305,7 @@
     "studio.patientshare": "Anteil der Patienten (0–1)",
     "studio.discomfort": "Unbehagen für den Patienten (0–10, ganze Zahl)",
     "studio.carelevel": "Pflegestufe eines Bettenraums (1 normal, 2 Überwachung, 3 Intensiv)",
+    "studio.recurrencedays": "Wiederkehr einer chronischen Erkrankung (mittlere Tage zwischen Besuchen, 1–365)",
     "studio.pairbalancinghint": "Werte für diese Kombination gehen vor Behandlung und Krankheit.",
     "studio.roomrules": "Raumregeln",
     "studio.roomruleshint": "Bauregeln für diese Raumart; das Spiel prüft sie, wenn der Spieler einen Raum baut.",
