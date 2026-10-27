@@ -225,6 +225,11 @@ public sealed record GameplayBalance : ExtensibleRecord
     public decimal? Discomfort { get; init; }
     /// <summary>Simulation only: care level of a ward room, 1 normal, 2 intermediate, 3 intensive; absent means 1.</summary>
     public decimal? CareLevel { get; init; }
+    /// <summary>
+    /// Simulation only: a disease that recurs – the mean number of days between a patient's visits, a whole number in
+    /// [1,365]; absent means the disease does not recur (ADR 0026).
+    /// </summary>
+    public decimal? RecurrenceDays { get; init; }
     public Dictionary<string, decimal> RequiredResources { get; init; } = [];
 }
 

@@ -191,6 +191,10 @@ Name strings are data, not localization keys; only the pool's display `nameKey` 
 
 RoomDefinition `role` accepts five more values: `staffRoom` (staff take their breaks there), `wardOffice` (the office of a bed station where its free staff wait), `patientToilet` and `staffToilet` (separate toilets for patients and staff) and `cleaningRoom` (where cleaners keep their equipment). Like the other roles they only give a room type its meaning in the game; what breaks, toilets and cleaning do is game logic. Older readers reject the new values. See [ADR 0024](architecture/0024-staff-and-service-room-roles.md).
 
+## Recurring diseases (library 0.24.0)
+
+Balancing gains `recurrenceDays` (whole number 1–365 on diseases): the mean number of days between a patient's visits for a disease that recurs; absent means it does not. Simulation-only, overridable by mods and range-checked (`balance-range`). See [ADR 0026](architecture/0026-recurring-diseases.md).
+
 ## Stations of examinations and treatments (library 0.23.0)
 
 ContentPackage has an optional `procedureStations` list, omitted when null. Each ProcedureStationSet names an examination or treatment (`definitionId`) and its `stations` in order. A ProcedureStation has a `key` (stable, unique in the set), a `share` of the duration (above 0; the shares sum to 1 within 0.001), a `patient` place and an optional `staff` place (absent: the staff member stands next to the patient). A StationPlace has a `pointKind` (an interaction point kind such as `seat`, `lying` or `operator`, or `standing` for no item) and an optional `equipmentId` (a medicalEquipment definition): the person takes a point of that kind on an item in the room that provides the equipment through furnitureEquipment, or on any item with such a point when no equipment is named. `standing` names no equipment.
