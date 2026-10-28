@@ -1825,6 +1825,87 @@
       ],
       "additionalProperties": true
     },
+    "competitorDefinition": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "competitor"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*:[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$(?![\\s\\S])"
+        },
+        "nameKey": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+        },
+        "descriptionKey": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z.-]+)?(\\+[0-9A-Za-z.-]+)?$(?![\\s\\S])"
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        },
+        "classifications": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/externalIdentifier"
+          }
+        },
+        "synonymKeys": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$(?![\\s\\S])"
+          }
+        },
+        "assets": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/assetReference"
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "catalogAssets": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/catalogAssetReference"
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "kind",
+        "id",
+        "nameKey",
+        "version",
+        "provenance"
+      ],
+      "additionalProperties": true
+    },
     "furnitureTransport": {
       "type": "object",
       "properties": {
@@ -2505,6 +2586,9 @@
         },
         {
           "$ref": "#/$defs/insurerDefinition"
+        },
+        {
+          "$ref": "#/$defs/competitorDefinition"
         }
       ]
     },

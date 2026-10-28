@@ -173,6 +173,7 @@
     "studio.kind.staffrole": "Staff roles",
     "studio.kind.complication": "Complications",
     "studio.kind.insurer": "Insurers",
+  "studio.kind.competitor": "Competing hospitals",
     "studio.relation.diseasesymptom": "Disease → symptom",
     "studio.relation.diseasefinding": "Disease → finding",
     "studio.relation.examinationfinding": "Examination → finding",

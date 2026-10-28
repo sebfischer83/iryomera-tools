@@ -22,7 +22,7 @@ def dump(path,value):
         if isinstance(item,list):return [anchor(x) for x in item]
         return item
     path.write_text(json.dumps(anchor(value),indent=2,ensure_ascii=False)+'\n')
-kinds=['disease','symptom','finding','examination','observation','treatment','medicalProcedure','medicalDepartment','medicalEquipment','staffQualification','room','furniture','staffRole','complication','insurer']
+kinds=['disease','symptom','finding','examination','observation','treatment','medicalProcedure','medicalDepartment','medicalEquipment','staffQualification','room','furniture','staffRole','complication','insurer','competitor']
 rels=['diseaseSymptom','diseaseFinding','examinationFinding','diseaseExamination','diseaseTreatment','examinationEquipment','treatmentQualification','roomFurniture','examinationObservation','examinationRoom','examinationQualification','examinationPrerequisite','treatmentEquipment','roomEquipment','examinationStaffRole','diseaseDepartment','furnitureEquipment','departmentRoom','departmentPrerequisite','treatmentRoom','treatmentStaffRole','treatmentComplication','complicationExamination','complicationTreatment']
 defs={}
 defs['evidenceReference']=obj({'citation':text,'uri':nullable({'type':'string','format':'uri'}),'evidenceCode':nullable(text)},['citation'])
