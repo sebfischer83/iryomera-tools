@@ -69,6 +69,7 @@ public sealed record ExternalIdentifier : ExtensibleRecord
 [JsonDerivedType(typeof(StaffRoleDefinition), "staffRole")]
 [JsonDerivedType(typeof(ComplicationDefinition), "complication")]
 [JsonDerivedType(typeof(InsurerDefinition), "insurer")]
+[JsonDerivedType(typeof(CompetitorDefinition), "competitor")]
 public abstract record ContentDefinition : ExtensibleRecord
 {
     public required string Id { get; init; }
@@ -143,6 +144,11 @@ public enum ComplicationTiming { DuringTreatment, DuringStay }
 /// patientShare); not an insurance-law statement and not a real organisation.
 /// </summary>
 public sealed record InsurerDefinition : ContentDefinition;
+/// <summary>
+/// A fictional competing hospital (ADR 0027): a name the game shows beside its own house, for example in comparisons of
+/// departments. Not a real organisation; it carries no medical or simulation data.
+/// </summary>
+public sealed record CompetitorDefinition : ContentDefinition;
 
 /// <summary>Directed, typed assertions, never inferred from balancing values.</summary>
 public enum RelationKind
