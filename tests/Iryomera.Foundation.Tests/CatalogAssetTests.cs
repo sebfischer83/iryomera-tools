@@ -33,6 +33,38 @@ public sealed class CatalogAssetTests
     }
 
     [Fact]
+    public async Task ItemHeightsRoundTripAndMatchSchemas()
+    {
+        // Arrange: a tall floor cabinet.
+        var (package, furniture) = Example();
+        var cabinet = furniture with { Placement = furniture.Placement! with { Mount = null, MountHeightMeters = null, HeightMeters = 1.9m } };
+        package.Definitions[package.Definitions.IndexOf(furniture)] = cabinet;
+
+        // Act
+        await using var bytes = new MemoryStream(); await ContentJson.WriteAsync(bytes, package); bytes.Position = 0;
+        var result = await ContentDocuments.ReadValidatedAsync<ContentPackage>(bytes);
+
+        // Assert
+        Assert.Empty(ContentValidator.Validate(package));
+        Assert.True(Fixtures.Evaluate("furnitureDefinition", JsonSerializer.SerializeToNode<ContentDefinition>(cabinet, ContentJson.Options)).IsValid);
+        Assert.True(result.IsValid, string.Join(';', result.Issues));
+        Assert.Equal(1.9m, result.Value!.Definitions.OfType<FurnitureDefinition>().Single(d => d.Id == cabinet.Id).Placement!.HeightMeters);
+    }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-1)]
+    public void NonPositiveItemHeightsAreRejected(double height)
+    {
+        var (package, furniture) = Example();
+        var changed = furniture with { Placement = furniture.Placement! with { HeightMeters = (decimal)height } };
+        package.Definitions[package.Definitions.IndexOf(furniture)] = changed;
+
+        Assert.Contains(ContentValidator.Validate(package), i => i.Code == "furniture-height");
+        Assert.False(Fixtures.Evaluate("furnitureDefinition", JsonSerializer.SerializeToNode<ContentDefinition>(changed, ContentJson.Options)).IsValid);
+    }
+
+    [Fact]
     public void LegacyPlacementsAndDefinitionsOmitTheNewFields()
     {
         var json = JsonSerializer.Serialize(Fixtures.Package(), ContentJson.Options);

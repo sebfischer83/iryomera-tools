@@ -215,6 +215,7 @@
     "studio.mount.ceiling": "Ceiling",
     "studio.mount.surface": "On a surface",
     "studio.mountheight": "Height above floor (m)",
+    "studio.itemheight": "Item height (m)",
     "studio.surfaces": "Surfaces",
     "studio.surfacekey": "Key",
     "studio.surfaceheight": "Height (m)",
