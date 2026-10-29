@@ -26,7 +26,7 @@ python scripts/generate-demo-clinic.py
 | Observation `demo:<key>` | `observation` `observation_<key>`: numeric, categorical (`clear`, `marked`, `cloudy`) or text (complaint). |
 | Case | `disease` with simulation-only readings in `diagnosticSimulation.observationDistributions` (`reading_<case>_<observation>`). A reading's optional `Min`/`Max` become `numericMinimum`/`numericMaximum` (otherwise both are `Number`) and its optional `Weights` become `categoryWeights` (0.20.1: synthetic overlapping ranges, middle = the old value). |
 | Preferred and allowed departments | `diseaseDepartment` with `priority` 1 for the preferred department and 2, 3 … for the others in fixture order. |
-| Furniture | `furniture` with footprint and a `modelGlb` catalog asset. `mount` `Wall`, `Ceiling` or `Surface` becomes `placement.mount` (floor stays absent). |
+| Furniture | `furniture` with footprint and a `modelGlb` catalog asset. `mount` `Wall`, `Ceiling` or `Surface` becomes `placement.mount` (floor stays absent). Since 0.26.1 six wall decor items (ECG poster, notice, round clock, X-ray viewer, radiation sign, molecule chart) with a price and no comfort, optional in the rooms they suit, so the game can dress its test clinic without changing its balance. |
 | `surfaceAccepts` | One surface `top` over the whole footprint with these `accepts` and a placeholder height of 0.9 m (`placeholder: true`); the game takes the height from the model and offers one spot per cell. |
 | `surfaceCategories` | `placement.surfaceCategories`. |
 | Furniture capabilities | `furnitureEquipment` to `medicalEquipment` `equipment_analyzer` or `equipment_scanner`. |

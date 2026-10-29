@@ -907,6 +907,84 @@
       "surfaceCategories": null
     },
     {
+      "key": "demo:furniture_ecg_poster",
+      "NameDe": "EKG-Poster",
+      "NameEn": "ECG poster",
+      "Width": 1,
+      "Depth": 1,
+      "asset": "iryomera.assets:decor.ecg_poster",
+      "capabilities": [],
+      "transport": null,
+      "mount": "Wall",
+      "surfaceAccepts": null,
+      "surfaceCategories": null
+    },
+    {
+      "key": "demo:furniture_notice_list",
+      "NameDe": "Aushang",
+      "NameEn": "Notice",
+      "Width": 1,
+      "Depth": 1,
+      "asset": "iryomera.assets:decor.notice_list",
+      "capabilities": [],
+      "transport": null,
+      "mount": "Wall",
+      "surfaceAccepts": null,
+      "surfaceCategories": null
+    },
+    {
+      "key": "demo:furniture_wall_clock_round",
+      "NameDe": "Runde Wanduhr",
+      "NameEn": "Round wall clock",
+      "Width": 1,
+      "Depth": 1,
+      "asset": "iryomera.assets:decor.wall_clock_round",
+      "capabilities": [],
+      "transport": null,
+      "mount": "Wall",
+      "surfaceAccepts": null,
+      "surfaceCategories": null
+    },
+    {
+      "key": "demo:furniture_xray_viewer",
+      "NameDe": "R\u00F6ntgen-Leuchtkasten",
+      "NameEn": "X-ray viewer",
+      "Width": 1,
+      "Depth": 1,
+      "asset": "iryomera.assets:decor.xray_viewer",
+      "capabilities": [],
+      "transport": null,
+      "mount": "Wall",
+      "surfaceAccepts": null,
+      "surfaceCategories": null
+    },
+    {
+      "key": "demo:furniture_radiation_sign",
+      "NameDe": "Strahlenschutz-Schild",
+      "NameEn": "Radiation sign",
+      "Width": 1,
+      "Depth": 1,
+      "asset": "iryomera.assets:decor.radiation_sign",
+      "capabilities": [],
+      "transport": null,
+      "mount": "Wall",
+      "surfaceAccepts": null,
+      "surfaceCategories": null
+    },
+    {
+      "key": "demo:furniture_molecule_chart",
+      "NameDe": "Molek\u00FCltafel",
+      "NameEn": "Molecule chart",
+      "Width": 1,
+      "Depth": 1,
+      "asset": "iryomera.assets:decor.molecule_chart",
+      "capabilities": [],
+      "transport": null,
+      "mount": "Wall",
+      "surfaceAccepts": null,
+      "surfaceCategories": null
+    },
+    {
       "key": "demo:furniture_wheelchair",
       "NameDe": "Rollstuhl",
       "NameEn": "Wheelchair",
@@ -1293,6 +1371,106 @@
       "room": "demo_clinic:room_type_reception",
       "item": "demo_clinic:furniture_water_dispenser",
       "requirement": "Optional"
+    },
+    {
+      "room": "demo:room_type_consultation",
+      "item": "demo:furniture_ecg_poster",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo_clinic:room_type_ward",
+      "item": "demo:furniture_ecg_poster",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo_clinic:room_type_waiting",
+      "item": "demo:furniture_ecg_poster",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo:room_type_consultation",
+      "item": "demo:furniture_notice_list",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo:room_type_laboratory",
+      "item": "demo:furniture_notice_list",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo_clinic:room_type_reception",
+      "item": "demo:furniture_notice_list",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo_clinic:room_type_waiting",
+      "item": "demo:furniture_notice_list",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo_clinic:room_type_ward",
+      "item": "demo:furniture_notice_list",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo:room_type_consultation",
+      "item": "demo:furniture_wall_clock_round",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo:room_type_laboratory",
+      "item": "demo:furniture_wall_clock_round",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo:room_type_imaging",
+      "item": "demo:furniture_wall_clock_round",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo_clinic:room_type_operating",
+      "item": "demo:furniture_wall_clock_round",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo_clinic:room_type_reception",
+      "item": "demo:furniture_wall_clock_round",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo_clinic:room_type_waiting",
+      "item": "demo:furniture_wall_clock_round",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo_clinic:room_type_ward",
+      "item": "demo:furniture_wall_clock_round",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo:room_type_imaging",
+      "item": "demo:furniture_xray_viewer",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo_clinic:room_type_operating",
+      "item": "demo:furniture_xray_viewer",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo:room_type_consultation",
+      "item": "demo:furniture_xray_viewer",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo:room_type_imaging",
+      "item": "demo:furniture_radiation_sign",
+      "requirement": "Optional"
+    },
+    {
+      "room": "demo:room_type_laboratory",
+      "item": "demo:furniture_molecule_chart",
+      "requirement": "Optional"
     }
   ],
   "patientNames": [
@@ -1342,6 +1520,12 @@
       "demo:furniture_stretcher": 1800,
       "demo:furniture_ceiling_lamp": 300,
       "demo:furniture_wall_picture": 120,
+      "demo:furniture_ecg_poster": 40,
+      "demo:furniture_notice_list": 40,
+      "demo:furniture_wall_clock_round": 60,
+      "demo:furniture_xray_viewer": 250,
+      "demo:furniture_radiation_sign": 30,
+      "demo:furniture_molecule_chart": 60,
       "demo:furniture_disinfectant_dispenser": 80,
       "demo:equipment_microscope": 2500,
       "demo_clinic:equipment_surgical_table": 25000,
