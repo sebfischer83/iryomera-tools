@@ -215,6 +215,7 @@
     "studio.mount.ceiling": "Decke",
     "studio.mount.surface": "Auf einer Fläche",
     "studio.mountheight": "Höhe über dem Boden (m)",
+    "studio.itemheight": "Höhe des Gegenstands (m)",
     "studio.surfaces": "Flächen",
     "studio.surfacekey": "Schlüssel",
     "studio.surfaceheight": "Höhe (m)",

@@ -94,6 +94,11 @@ public sealed record FurniturePlacement : ExtensibleRecord
     public List<InteractionPoint> InteractionPoints { get; init; } = [];
     public FurnitureMount? Mount { get; init; }
     public decimal? MountHeightMeters { get; init; }
+    /// <summary>
+    /// Optional, omitted when null: how tall the item is in metres, from its base up (a floor item's top above the floor). The
+    /// game uses it for layout rules, for example no wall decor above a tall cabinet. Must be positive; any mount.
+    /// </summary>
+    public decimal? HeightMeters { get; init; }
     /// <summary>Optional, omitted when null; surfaces lie inside the footprint rectangle, which covers the whole projection.</summary>
     public List<FurnitureSurface>? Surfaces { get; init; }
     /// <summary>Optional, omitted when null; only with mount surface. Matched against FurnitureSurface.Accepts.</summary>
@@ -127,6 +132,8 @@ internal static class AssetValidator
                 issues.Add(new("furniture-mount", definition.Id, "Unknown furniture mount."));
             if (placement.MountHeightMeters is { } height && (placement.Mount != FurnitureMount.Wall || height < 0))
                 issues.Add(new("furniture-mount", definition.Id, "A mount height requires a wall mount and must be nonnegative."));
+            if (placement.HeightMeters is { } itemHeight && itemHeight <= 0)
+                issues.Add(new("furniture-height", definition.Id, "An item height must be positive."));
             var footprint = placement.Footprint;
             var surfaces = new HashSet<string>(StringComparer.Ordinal);
             foreach (var surface in placement.Surfaces ?? [])

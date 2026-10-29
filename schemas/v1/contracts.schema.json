@@ -429,6 +429,17 @@
             }
           ]
         },
+        "heightMeters": {
+          "anyOf": [
+            {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
         "surfaces": {
           "anyOf": [
             {

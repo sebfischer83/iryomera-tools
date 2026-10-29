@@ -65,6 +65,7 @@ else if (Index.Error is { } indexError) { <p class="error">@L["studio.catalogErr
                 <label>@L["studio.cellSize"]<input type="number" step="any" min="0" @bind="CellSize" /></label>
                 <label>@L["studio.mount"]<select @bind="Mount"><option value="">@L["studio.mount.default"]</option>@foreach (var mount in Enum.GetValues<FurnitureMount>()) { <option value="@mount">@L["studio.mount." + mount]</option> }</select></label>
                 @if (Mount == nameof(FurnitureMount.Wall)) { <label>@L["studio.mountHeight"]<input type="number" step="any" min="0" @bind="MountHeight" /></label> }
+                <label>@L["studio.itemHeight"]<input type="number" step="any" min="0" @bind="ItemHeight" /></label>
                 @if (Mount == nameof(FurnitureMount.Surface)) { <label>@L["studio.surfaceCategories"]<input @bind="SurfaceCategories" placeholder="decoration" /></label> }
             </div>
             <h4>@L["studio.surfaces"]</h4>
@@ -103,7 +104,7 @@ else if (Index.Error is { } indexError) { <p class="error">@L["studio.catalogErr
     [Parameter] public ProjectSnapshot State { get; set; } = null!; [Parameter] public ContentDefinition Definition { get; set; } = null!; [Parameter] public EventCallback OnChanged { get; set; }
     private (IReadOnlyList<CatalogAssetIndexEntry> Entries, string? Error) Index = ([], null);
     private List<AssetRow> Rows = []; private List<SurfaceRow> Surfaces = []; private List<PointRow> Points = [];
-    private bool HasPlacement; private int Width = 1; private int Depth = 1; private decimal CellSize = 1; private string Mount = ""; private decimal? MountHeight; private string SurfaceCategories = "";
+    private bool HasPlacement; private int Width = 1; private int Depth = 1; private decimal CellSize = 1; private string Mount = ""; private decimal? MountHeight; private decimal? ItemHeight; private string SurfaceCategories = "";
     private string Mobility = ""; private bool HasTransport; private int PatientCapacity = 1; private TransportPosture Posture = TransportPosture.Seated; private string TransportQualification = "";
     private int? MinimumCells; private bool RequiresDoor; private string Role = ""; private bool Shareable;
     private ComplicationEffect Effect; private ComplicationTiming Timing;
@@ -118,7 +119,7 @@ else if (Index.Error is { } indexError) { <p class="error">@L["studio.catalogErr
         Rows = (Definition.CatalogAssets ?? []).Select(a => new AssetRow { CatalogId = a.CatalogId, Kind = a.Kind }).ToList();
         var furniture = Definition as FurnitureDefinition; var placement = furniture?.Placement;
         HasPlacement = placement is not null; Width = placement?.Footprint.Width ?? 1; Depth = placement?.Footprint.Depth ?? 1; CellSize = placement?.Footprint.CellSizeMeters ?? 1;
-        Mount = placement?.Mount?.ToString() ?? ""; MountHeight = placement?.MountHeightMeters; SurfaceCategories = string.Join(", ", placement?.SurfaceCategories ?? []);
+        Mount = placement?.Mount?.ToString() ?? ""; MountHeight = placement?.MountHeightMeters; ItemHeight = placement?.HeightMeters; SurfaceCategories = string.Join(", ", placement?.SurfaceCategories ?? []);
         Surfaces = (placement?.Surfaces ?? []).Select(s => new SurfaceRow { Key = s.Key, Height = s.HeightMeters, X = s.X, Z = s.Z, Width = s.Width, Depth = s.Depth, Accepts = string.Join(", ", s.Accepts ?? []) }).ToList();
         Points = (placement?.InteractionPoints ?? []).Select(p => new PointRow { Key = p.Key, Kind = p.Kind ?? "", X = p.X, Y = p.Y, Z = p.Z, Heading = p.HeadingDegrees, Qualification = p.RequiredQualificationId ?? "" }).ToList();
         Mobility = furniture?.Mobility?.ToString() ?? ""; HasTransport = furniture?.Transport is not null;
@@ -165,6 +166,7 @@ else if (Index.Error is { } indexError) { <p class="error">@L["studio.catalogErr
                     }).ToList(),
                     Extensions = old?.Extensions,
                     Mount = Enum.TryParse<FurnitureMount>(Mount, out var mount) ? mount : null, MountHeightMeters = Mount == nameof(FurnitureMount.Wall) ? MountHeight : null,
+                    HeightMeters = ItemHeight,
                     Surfaces = Surfaces.Count == 0 ? null : Surfaces.Select(s => new FurnitureSurface { Key = s.Key.Trim(), HeightMeters = s.Height, X = s.X, Z = s.Z, Width = s.Width, Depth = s.Depth, Accepts = Keys(s.Accepts) }).ToList(),
                     SurfaceCategories = Mount == nameof(FurnitureMount.Surface) ? Keys(SurfaceCategories) : null
                 };
